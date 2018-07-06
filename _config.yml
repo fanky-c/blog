@@ -3,6 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
+# 网站综合内容设置：
 title: 前端博客
 subtitle: 
 description: js、nodejs、css、nginx、vue、react
@@ -10,6 +11,10 @@ keywords: js、nodejs、css、nginx、vue、react
 author: fanky_c
 language: zh
 timezone:
+SEOTitle: fanky_c的博客 | fanky_c's Blog
+header-img: img/home-bg.jpg
+email: 396850524@qq.com
+keyword: "网易"  
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -19,23 +24,11 @@ permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 
-
-
-#Custom Setting Start
-
-# Site settings
-# 网站综合内容设置：
-SEOTitle: fanky_c的博客 | fanky_c's Blog
-header-img: img/home-bg.jpg
-email: 396850524@qq.com
-# description: "fanky_c的博客"
-keyword: "网易"
-
 # SNS settings
 # 一些社交平台地址，支持以下几种：
+github_username:    fanky-c
 #weibo_username:     3286578617
 #zhihu_username:     ai-er-lan-xue-da
-github_username:    fanky-c
 #twitter_username:   iconie_alloy
 #facebook_username:  chaozhao
 #linkedin_username:  
