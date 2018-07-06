@@ -85,6 +85,11 @@ index_generator:
   path: ''
   per_page: 10
   order_by: -date
+
+
+# 文章样式(是否首行缩进)：
+#post_style:
+#  indent: indent  
   
 # Category & Tag
 default_category: uncategorized
