@@ -136,7 +136,9 @@ export function defineReactive (
 defineReactive 函数最开始初始化 Dep 对象的实例，接着拿到 obj 的属性描述符，然后对子对象递归调用 observe 方法，这样就保证了无论 obj 的结构多复杂，它的所有子属性也能变成响应式的对象，这样我们访问或修改 obj 中一个嵌套较深的属性，也能触发 getter 和 setter。最后利用 Object.defineProperty 去给 obj 的属性 key 添加 getter 和 setter。
 
 
-##### 总结：这一节我们介绍了响应式对象，核心就是利用 Object.defineProperty 给数据添加了 getter 和 setter，目的就是为了在我们访问数据以及写数据的时候能自动执行一些逻辑：getter 做的事情是依赖收集，setter 做的事情是派发更新，
+#### 总结
+
+这一节我们介绍了响应式对象，核心就是利用 Object.defineProperty 给数据添加了 getter 和 setter，目的就是为了在我们访问数据以及写数据的时候能自动执行一些逻辑：getter 做的事情是依赖收集，setter 做的事情是派发更新
 
 
 ## 2，依赖收集
@@ -147,8 +149,44 @@ defineReactive 函数最开始初始化 Dep 对象的实例，接着拿到 obj �
 
 ## 4，nextTick
 
+### js运行机制：
+
+JS 执行是单线程的，它是基于事件循环的。事件循环大致分为以下几个步骤：
+
+（1）所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。
+
+（2）主线程之外，还存在一个"任务队列"（task queue）。只要异步任务有了运行结果，就在"任务队列"之中放置一个事件。
+
+（3）一旦"执行栈"中的所有同步任务执行完毕，系统就会读取"任务队列"，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。
+
+（4）主线程不断重复上面的第三步。
+
+主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度被调度。 消息队列中存放的是一个个的任务（task）。 规范中规定 task 分为两大类，分别是 macro task 和 micro task，并且每个 macro task 结束后，都要清空所有的 micro task。
+
+关于 macro task 和 micro task 的概念，这里不会细讲，简单通过一段代码演示他们的执行顺序：
+
+```js
+for (macroTask of macroTaskQueue) {
+    // 1. Handle current MACRO-TASK
+    handleMacroTask();
+      
+    // 2. Handle all MICRO-TASK
+    for (microTask of microTaskQueue) {
+        handleMicroTask(microTask);
+    }
+}
+```
+在浏览器环境中，常见的 macro task 有 setTimeout、MessageChannel、postMessage、setImmediate；常见的 micro task 有 MutationObsever 和 Promise.then。
+
+vue的nextTick源码存放在src/core/util/next-tick.js（2.5+）
 
 ## 5，计算属性(computed)和侦听属性(watch)
 
 
+*计算属性本质上是 computed watcher，而侦听属性本质上是 user watcher。就应用场景而言，计算属性适合用在模板渲染中，某个值是依赖了其它的响应式对象甚至是计算属性计算而来；而侦听属性适用于观测某个值的变化去完成一段复杂的业务逻辑。*
+
+
 ## 6，组件更新 
+
+*原理图：*
+![原理图](/blog/img/reactive.png)
