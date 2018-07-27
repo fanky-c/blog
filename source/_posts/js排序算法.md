@@ -236,4 +236,51 @@ console.log(quickSort2(arr));//[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 
 ```
 
 
+
+#### 算法实例
+
+### 查找两个字符串的最长公共子串
+```js
+function findSubStr(arr1, arr2) {
+  var sstr = '';
+  var L1 = arr1.length;
+  var L2 = arr2.length;
+  if (L1 > L2) {
+    var temp = arr1;
+    arr1 = arr2;
+    arr2 = temp;
+    L1 = arr2.length;
+  }
+  for (var j = L1; j > 0; j--)
+    for (var i = 0; i <= L1 - j; i++) {
+      sstr = arr1.substr(i, j);
+      if (arr2.indexOf(sstr) >= 0){
+        return sstr;
+      } 
+    }
+  return '';
+}
+```
+
+
+### 统计一个字符串出现频率最高的字母/数字
+
+```js
+const getMaxChar = str => {
+  let string = [...str];
+  let maxValue = '';
+  let obj = {};
+  let max = 0;
+
+  string.forEach(value => {
+    obj[value] = obj[value] == undefined ? 1 : obj[value] + 1
+    if (obj[value] > max) {
+      max = obj[value]
+      maxValue = value
+    }
+  })
+  return maxValue;
+}
+```
+
 来源于：https://juejin.im/post/57dcd394a22b9d00610c5ec8
