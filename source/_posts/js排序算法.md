@@ -283,4 +283,40 @@ const getMaxChar = str => {
 }
 ```
 
+### 颠倒字符串
+```js
+function reverseBySeparator(str) {
+  return str.split('').reverse().join('');
+}
+```
+
+
+### 判断大括号是否闭合
+```js
+function isBalanced(expression) {
+  var checkString = expression;
+  var stack = [];
+
+  // If empty, parentheses are technically balanced
+  if (checkString.length <= 0) return true;
+
+  for (var i = 0; i < checkString.length; i++) {
+    if(checkString[i] === '{') {
+      stack.push(checkString[i]);
+    } else if (checkString[i] === '}') {
+      // Pop on an empty array is undefined
+      if (stack.length > 0) {
+        stack.pop();
+      } else {
+        return false;
+      }
+    }
+  }
+
+  // If the array is not empty, it is not balanced
+  if (stack.pop()) return false;
+  return true;
+}
+isBalanced('{}{')
+```
 来源于：https://juejin.im/post/57dcd394a22b9d00610c5ec8
