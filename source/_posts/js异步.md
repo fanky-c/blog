@@ -10,6 +10,8 @@ tags:
 
 ### js异步使用方法：
 
+#### setTimeout/setInterval
+
 #### Promise
 
 ##### Promise概念：
@@ -59,3 +61,48 @@ job1.then(job2).then(job3).catch(handleError); //job1、job2和job3都是Promise
 ```
 
 * Promise.prototype.finally(onFinally)==>添加一个事件处理回调于当前promise对象，并且在原promise对象解析完毕后，返回一个新的promise对象。回调会在当前promise运行完毕后被调用，无论当前promise的状态是完成(fulfilled)还是失败(rejected)
+
+
+
+
+#### async/await
+
+##### async 
+* 它作为一个关键字放到函数前面，用于表示函数是一个异步函数，因为async就是异步的意思， 异步函数也就意味着该函数的执行不会阻塞后面代码的执行。
+* async 函数返回的是一个promise 对象，如果要获取到promise 返回值，我们应该用then 方法。
+```js
+async function timeout() {
+    return 'hello world'
+}
+timeout().then(result => {
+    console.log(result);
+})
+console.log('虽然在后面，但是我先执行');
+```
+
+##### await
+* await是等待的意思，那么它等待什么呢，它后面跟着什么呢？其实它后面可以放任何表达式，不过我们更多的是放一个返回promise 对象的表达式。注意await 关键字只能放到async 函数里面。
+```js
+// 2s 之后返回双倍的值
+function doubleAfter2seconds(num) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(2 * num)
+        }, 2000);
+    } )
+}
+
+//2s秒 输出 2 * 30
+async function testResult() {
+    let result = await doubleAfter2seconds(30);
+    console.log(result);
+}
+
+//6s 输出 2 * 110
+async function testResult() {
+    let first = await doubleAfter2seconds(30);
+    let second = await doubleAfter2seconds(50);
+    let third = await doubleAfter2seconds(30);
+    console.log(first + second + third);
+}
+```
