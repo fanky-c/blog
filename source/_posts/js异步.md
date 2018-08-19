@@ -12,6 +12,62 @@ tags:
 
 #### setTimeout/setInterval
 
+###### setTimeout
+
+```js
+function fn2 (f) {
+  setTimeout(() => {
+    console.log('Function 2')
+    f()
+  }, 500)
+}
+ 
+fn2(fn3)
+```
+
+
+#### 事件发布/订阅
+
+##### 
+
+```js
+class AsyncFunArr {
+  constructor (...arr) {
+    this.funcArr = [...arr]
+  }
+ 
+  next () {
+    const fn = this.funcArr.shift()
+    if (typeof fn === 'function') fn()
+  }
+ 
+  run () {
+    this.next()
+  }
+}
+ 
+const asyncFunArr = new AsyncFunArr(fn1, fn2, fn3);
+
+
+//队列方法
+function fn1 () {
+  console.log('Function 1')
+  asyncFunArr.next()
+}
+ 
+function fn2 () {
+  setTimeout(() => {
+    console.log('Function 2')
+    asyncFunArr.next()
+  }, 500)
+}
+ 
+function fn3 () {
+  console.log('Function 3')
+  asyncFunArr.next()
+}
+```
+
 #### Promise
 
 ##### Promise概念：
@@ -69,7 +125,7 @@ job1.then(job2).then(job3).catch(handleError); //job1、job2和job3都是Promise
 
 ##### async 
 * 它作为一个关键字放到函数前面，用于表示函数是一个异步函数，因为async就是异步的意思， 异步函数也就意味着该函数的执行不会阻塞后面代码的执行。
-* async 函数返回的是一个promise 对象，如果要获取到promise 返回值，我们应该用then 方法。
+* async 函数返回的是一个promise 对象，如果要获取到promise 返回值，我们应该用then方法。
 ```js
 async function timeout() {
     return 'hello world'
