@@ -28,7 +28,7 @@ fn2(fn3)
 
 #### 事件发布/订阅
 
-##### 
+##### AsyncFunArr（异步函数数组）
 
 ```js
 class AsyncFunArr {
