@@ -37,7 +37,7 @@ class AsyncFunArr {
   }
  
   next () {
-    const fn = this.funcArr.shift()
+    const fn = this.funcArr.shift(); //返回头部删除第一个元素 
     if (typeof fn === 'function') fn()
   }
  
@@ -47,6 +47,8 @@ class AsyncFunArr {
 }
  
 const asyncFunArr = new AsyncFunArr(fn1, fn2, fn3);
+
+asyncFunArr.run()/asyncFunArr.next(); //执行
 
 
 //队列方法
