@@ -40,4 +40,6 @@ line-height属性最特别的地方，在于同时支持带单位和不带单位
 ****总结：有单位时，子元素继承了父元素计算得出的行距；无单位时继承了系数，子元素会分别计算各自行距（推荐使用）。****
 
 
-本文采集于：https://mp.weixin.qq.com/s/ilkmqnwVvPLjiVfEyNadHg
+#### 参考：
+* https://mp.weixin.qq.com/s/ilkmqnwVvPLjiVfEyNadHg
+* https://www.zhihu.com/question/20394889
