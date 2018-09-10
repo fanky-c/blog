@@ -87,6 +87,16 @@ tags:
 
 #### 缓存
 
+##### 缓存存储策略
+1. cache-control 响应数据会被缓存到客户端
+
+##### 缓存过期策略
+1. expires
+
+##### 缓存对比策略
+1. last-modified
+2. eTag
+
 #### HTTP 1.x 缺点
 * Head Of Line Blocking 队头阻塞
   1. HTTP/1.1实际上没实现pipelining，⼀条连接同时只能进⾏⼀个HTTP请求，若该请求的响应很慢，则后续使⽤该连接的HTTP请求都被阻塞
