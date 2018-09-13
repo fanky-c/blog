@@ -88,14 +88,18 @@ tags:
 #### 缓存
 
 ##### 缓存存储策略
-1. cache-control 响应数据会被缓存到客户端
+1. cache-control:  public, max-age=31536000。响应数据会被缓存到客户端
 
 ##### 缓存过期策略
 1. expires
+  * 表示存在时间，允许客户端在这个时间之前不去检查（发请求），等同max-age的
+效果。但是如果同时存在，则被Cache-Control的max-age覆盖
 
 ##### 缓存对比策略
-1. last-modified
-2. eTag
+1. last-modified:  Fri, 25 Nov 2016 08:15:46 GMT。 资源被修改的最后时间
+   * 浏览器会携带该值去服务器对比，对比成功在返回304，服务器提示浏览器从本地加载数据，否则返回200并响应数据。
+2. eTag:  "Fpwrobxxh6n6-E2sDbMMA2znbN1i"
+   * 对资源的索引节（INode），大小（Size）和最后修改时间（MTime）进行Hash后得到的，是资源的唯一标识
 
 #### HTTP 1.x 缺点
 * Head Of Line Blocking 队头阻塞
