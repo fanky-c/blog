@@ -81,3 +81,34 @@ class Popper extends React.Component{
     }
 }
 ```
+
+### Redux
+
+####  1, 介绍
+* Store
+* State
+* Action
+* Action Creator
+* store.dispatch()
+* Reducer
+* store.subscribe()
+
+####  2, 工作流程
+* 首先，用户发出 Action
+```js
+store.dispatch(action);
+```
+* 然后，Store 自动调用 Reducer，并且传入两个参数：当前 State 和收到的 Action。 Reducer 会返回新的 State 。
+```js
+let nextState = todoApp(previousState, action);
+```
+* State 一旦有变化，Store 就会调用监听函数。
+```js
+store.subscribe(listener)
+```
+* 可以通过store.getState()得到当前状态。如果使用的是 React，这时可以触发重新渲染 View。
+```js
+  let newState = store.getState();
+  component.setState(newState);
+```
+参考[http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_one_basic_usages.html]
