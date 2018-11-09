@@ -112,3 +112,63 @@ store.subscribe(listener)
   component.setState(newState);
 ```
 参考[http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_one_basic_usages.html]
+
+#### 3,组件拆分和react-redux、Provider、connect(连接器)
+* 在组件开发中，按职责我们可以划分：容器类组件、展示类组件，前者负责从state获取属性，后者负责渲染界面和自身的状态控制。
+* react-redux 为 React 组件和 Redux 提供的 state 提供了连接。当然可以直接在 React 中使用 Redux：在最外层容器组件中初始化 store，然后将 state 上的属性作为 props 层层传递下去。但是这样并是我们推荐的状态管理方式。
+```
+class App extends Component{
+  componentWillMount(){
+    store.subscribe((state)=>this.setState(state))
+  }
+  render(){
+    return <Comp state={this.state}
+                 onIncrease={()=>store.dispatch(actions.increase())}
+                 onDecrease={()=>store.dispatch(actions.decrease())}/>
+  }
+}
+```
+* 我们推荐的方式是react-redux：1，内容组件最外层包裹Provider，将之前创建的store作为prop传给Provider。2，Provider内的任何一个组件，如果需要使用state中的数据，就必须是「被 connect 过的」组件——使用connect方法对当前内容组件包装后的产物，connect会返回一个与store连接后的新组件。3，connect会返回一个与store连接后的新组件。那么，我们就可以传一个内容组件给connect，让connect返回一个与store连接后的容器组件。
+
+```
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as dictActions from '../../actions/dict';
+
+class DictPage extends Component {
+  constructor(props){
+    super(props);
+
+  }
+  componentWillMount(){
+     const { getDictsResult } = this.props;
+     getDictsResult({
+       q: 'good',
+       lang: 'en'
+     })
+  }
+  componentDidMount(){
+    const { dict } = this.props;
+  }
+  render() {
+    return (<div>xxxxx</div>);
+  }
+}
+//创建输入逻辑mapStateToProps,是store、state映射
+function mapStateToProps(state) {
+  return {
+    dict: state.dict.data.data
+  };
+}
+
+//输出逻辑mapDispatchToProps，是dispatch映射
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(dictActions, dispatch);
+}
+
+//把容器组件和ui组件结合导出
+export default connect(mapStateToProps, mapDispatchToProps)(DictPage);
+```
+
