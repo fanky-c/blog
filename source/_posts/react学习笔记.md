@@ -128,7 +128,7 @@ class App extends Component{
   }
 }
 ```
-* 我们推荐的方式是react-redux：1，内容组件最外层包裹Provider，将之前创建的store作为prop传给Provider。2，Provider内的任何一个组件，如果需要使用state中的数据，就必须是「被 connect 过的」组件——使用connect方法对当前内容组件包装后的产物，connect会返回一个与store连接后的新组件。3，connect会返回一个与store连接后的新组件。那么，我们就可以传一个内容组件给connect，让connect返回一个与store连接后的容器组件。
+* 我们推荐的方式是react-redux：1，内容组件最外层包裹Provider，将之前创建的store作为prop传给Provider。Provider接收redux的createStore()的结果，并且放到context里，让子组件可以通过context属性直接获取到这个createStore的结果。且返回一个与store连接后的容器组件。2，Provider内的任何一个组件，如果需要使用state中的数据，就必须是「被 connect 过的」组件——使用connect方法对当前内容组件包装后的产物，connect会返回一个与store连接后的新组件。3，connect会返回一个与store连接后的新组件。会接收到mapStateToProps，会在内部subscribe全局state的改变，来判断props是否更改，如果需要更新，才触发更新。
 
 ```
 import React, { Component } from 'react';
