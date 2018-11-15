@@ -9,7 +9,7 @@ tags:
 
 #### 开启
 * 第一种方法  格式为： ngin地址 -c nginx配置文件位置
-*例如：/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+* 例如：/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
 
 #### 停止
 ##### A:从容停止  需要知道进程号:
