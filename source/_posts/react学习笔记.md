@@ -172,3 +172,23 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(DictPage);
 ```
 
+### React-router(v4版本)
+
+#### 1， 包的选择
+* 浏览器用的router在react-router-dom里。所以浏览器里使用的时候只需要import react-router-dom就可以。react-router-native供React Native应用使用。
+
+#### 2，路由不在集中存放一起，可以和Ui组件放在一起，成为组件的一部分。
+
+#### 3，包含式路由与exact
+* 如匹配 path="/users" 的路由会匹配 path="/"的路由，在页面中这两个模块会同时进行渲染，所以就多了exact。
+
+#### 4，独立路由Switch
+* 采用Switch 只有一个路由会被渲染，并且总是渲染第一个匹配到的组件。
+
+#### 5，link
+* to（string / object）：要跳转的路径或地址；
+* replace ：为 true 时，点击链接后将使用新地址替换掉访问历史记录里面的原地址。反之不会替换记录，默认为false。
+* <NavLink>：<NavLink>是<Link>的一个特定版本，会在匹配上当前URL的时候会给已经渲染的元素添加样式参数。
+
+#### 6，异步加载路由和模块
+* [参考](https://www.jianshu.com/p/ba3c295be412)

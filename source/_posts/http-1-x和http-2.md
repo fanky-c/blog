@@ -133,4 +133,4 @@ tags:
 
 2. 因为引⼊新的⼆进制分帧层，HTTP/2⽆法向后兼容HTTP/1.x
 
-*** 资料来源于我的同事java大神郎哥的[ppt](http://luna.corp.youdao.com/images/d/d1/HTTP1.x%E5%92%8CHTTP2.pdf),非常感谢他。 ***
+***参考我的同事java大神郎哥的非常感谢他。 ***
