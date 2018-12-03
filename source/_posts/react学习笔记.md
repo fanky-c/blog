@@ -188,7 +188,45 @@ export default connect(mapStateToProps, mapDispatchToProps)(DictPage);
 #### 5，link
 * to（string / object）：要跳转的路径或地址；
 * replace ：为 true 时，点击链接后将使用新地址替换掉访问历史记录里面的原地址。反之不会替换记录，默认为false。
-* <NavLink>：<NavLink>是<Link>的一个特定版本，会在匹配上当前URL的时候会给已经渲染的元素添加样式参数。
+* NavLink ：<NavLink>是<Link>的一个特定版本，会在匹配上当前URL的时候会给已经渲染的元素添加样式参数。
 
 #### 6，异步加载路由和模块
 * [参考](https://www.jianshu.com/p/ba3c295be412)
+
+#### 7, 手动控制路由的跳转
+* 使用 withRouter高阶组件，提供了history让你使用
+```
+import React from "react";
+import {withRouter} from "react-router-dom";
+
+class MyComponent extends React.Component {
+  ...
+  myFunction() {
+    this.props.history.push("/some/Path");
+  }
+  ...
+}
+const MyComponent=withRouter(connect(mapStateToProps,mapDispatchToProps)(MyComponent))
+export default MyComponent;
+```
+* 使用Context,在Router组件中通过Contex暴露了一个router对象
+```
+import React from "react";
+import PropTypes from "prop-types";
+
+class MyComponent extends React.Component {
+  static contextTypes = {
+    router: PropTypes.object
+  }
+  constructor(props, context) {
+     super(props, context);
+  }
+  ...
+  myFunction() {
+    this.context.router.history.push("/some/Path");
+  }
+  ...
+}
+```
+* 引入Redirect，重定向。
+* 引入react-router-redux库，操作redux。
