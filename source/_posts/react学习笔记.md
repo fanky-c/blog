@@ -209,7 +209,7 @@ class MyComponent extends React.Component {
 const MyComponent=withRouter(connect(mapStateToProps,mapDispatchToProps)(MyComponent))
 export default MyComponent;
 ```
-* 使用Context,在Router组件中通过Contex暴露了一个router对象
+* 使用Context,在Router组件中通过Contex暴露了一个router对象。context增加了耦合难度尽量少用或者用在全局登录状态、颜色等等。
 ```
 import React from "react";
 import PropTypes from "prop-types";
@@ -217,9 +217,6 @@ import PropTypes from "prop-types";
 class MyComponent extends React.Component {
   static contextTypes = {
     router: PropTypes.object
-  }
-  constructor(props, context) {
-     super(props, context);
   }
   ...
   myFunction() {
@@ -229,4 +226,25 @@ class MyComponent extends React.Component {
 }
 ```
 * 引入Redirect，重定向。
-* 引入react-router-redux库，操作redux。
+
+* 引入react-router-redux库，操作redux，进行时间旅行调试。
+```
+import React from "react";
+import { push } from 'react-router-redux'
+import PropTypes from "prop-types";
+
+class MyComponent extends React.Component {
+  static contextTypes = {
+    store: PropTypes.object
+  }
+  ...
+  myFunction() {
+    this.context.store.dispatch(push('path'))
+  }
+  ...
+}
+```
+
+
+### 学习文章参考
+* https://juejin.im/post/5b4de4496fb9a04fc226a7af
