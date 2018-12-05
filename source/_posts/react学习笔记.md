@@ -302,7 +302,7 @@ class People{
 * 3.运行该构造函数；
 * 4.如果构造函数没有 return 或者 return 一个返回 this 值是基本类型，则返回this；如果 return 一个引用类型，则返回这个引用类型。
 
-##### es5和es6继承机制区别
+#### es5和es6继承机制区别
 * es5先创建子类的实例对象this，然后再将父类的方法添加到this上（ Parent.apply(this) ） 
 * ES6采用的是先创建父类的实例this（故要先调用 super( )方法），完后再用子类的构造函数修改this
 
