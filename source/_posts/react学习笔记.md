@@ -245,6 +245,66 @@ class MyComponent extends React.Component {
 }
 ```
 
+### constructor(super(props))
+#### constructor( )——构造方法
+* ES6对类的默认方法，new命令生成实例自动调用，如果没有显示定义会默认添加空的constructor方法。
+* es5没有继承写法，通过prototype来达到目的。
+```
+//构造函数People
+   function People (name,age){
+        this.name = name;
+        this.age = age
+    }
+    People.prototype.sayName = function(){
+        return '我的名字是：'+this.name;
+    }
+```
+* ES6中，可以通过class来实现
+```
+class People{
+        //构造方法constructor就等于上面的构造函数People
+        constructor(name,age){
+            this.name = name;
+            this.age = age;
+        }
+
+        sayName(){
+            return '我的名字是：'+this.name;
+        }
+    }
+```
+#### super() -- 继承。
+* 子类是没有自己的this对象的，它只能继承自父类的this对象，然后对其进行加工，而super( )就是将父类中的this对象继承给子类的。没有super，子类就得不到this对象
+```
+class People{
+        constructor(name,age){
+            this.name = name;
+            this.age = age;
+        }
+        sayName(){
+            return '我的名字是：'+this.name;
+        }
+    }
+
+    class har extends People{
+        constructor(name,age,sex){
+            super(name,age);//调用父类的constructor(name,age)
+            this.sex = sex;
+        }
+        haha(){
+            return this.sex + ' ' + super.sayName();//调用父类的sayName() 
+        }
+    }
+``` 
+####  es5 new
+* 1.生成一个空的对象并将其作为 this；
+* 2.将空对象的 __proto__ 指向构造函数的 prototype；
+* 3.运行该构造函数；
+* 4.如果构造函数没有 return 或者 return 一个返回 this 值是基本类型，则返回this；如果 return 一个引用类型，则返回这个引用类型。
+
+##### es5和es6继承机制区别
+* es5先创建子类的实例对象this，然后再将父类的方法添加到this上（ Parent.apply(this) ） 
+* ES6采用的是先创建父类的实例this（故要先调用 super( )方法），完后再用子类的构造函数修改this
 
 ### 学习文章参考
 * https://juejin.im/post/5b4de4496fb9a04fc226a7af
