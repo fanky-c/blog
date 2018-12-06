@@ -171,6 +171,8 @@ function mapDispatchToProps(dispatch) {
 //把容器组件和ui组件结合导出
 export default connect(mapStateToProps, mapDispatchToProps)(DictPage);
 ```
+#### 参考例子
+* 时间旅行案例：https://www.ibm.com/developerworks/cn/web/wa-manage-state-with-redux-p4-david-geary/index.html
 
 ### React-router(v4版本)
 
