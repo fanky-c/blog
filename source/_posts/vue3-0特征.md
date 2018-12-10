@@ -20,7 +20,7 @@ tags:
     descriptor：必需。目标属性所拥有的特性
   ```
   2. Proxy 对象用于定义基本操作的自定义行为（如属性查找，赋值，枚举，函数调用等）:[参考](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
-  3. Proxy是lazy by default，初始化很多数据，当用到才会被监听。
+     1. Proxy是lazy by default，初始化很多数据，当用到才会被监听。
 5. runTime会更小  
    1. tree-skaking结构, 之前的所有的功能都挂在vue对象上，vue3.x把不是必须的功能编译打包的时候按需引入。最最最基本核心代码大概10kg gziped压缩。
 6. flow变为type-script
