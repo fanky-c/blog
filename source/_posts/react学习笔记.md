@@ -2,6 +2,9 @@
 title: react学习笔记
 date: 2018-10-24 14:28:05
 tags:
+    - react
+    - react-router
+    - react-redux
 ---
 ### 事件处理
 
