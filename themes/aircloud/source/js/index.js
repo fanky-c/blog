@@ -60,6 +60,13 @@ escSearch.addEventListener('click',() => {
     hideSearchField()
 })
 
+window.addEventListener('click' , function(e){
+    e.stopPropagation(); 
+    if((e.target).classList.contains('search-field') && searchField.classList.contains('show-flex-fade')){
+        hideSearchField();
+    }
+})
+
 beginSearch.addEventListener('click',() => {
     let keyword = searchInput.value;
     if(keyword){
