@@ -8,7 +8,8 @@ tags:
     - ios
 ---
 
-入门参考：https://www.jianshu.com/p/be92a0a0f1a0
+* 入门参考：https://www.jianshu.com/p/be92a0a0f1a0
+* 个人练习：https://github.com/fanky-c/OcTest
 
 ### 1: objective-c与javascript交互
 
