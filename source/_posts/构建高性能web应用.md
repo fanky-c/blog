@@ -67,8 +67,8 @@ DNS查询->tcp连接->http请求->服务器响应->客户端加载渲染
       1. 缓存存储：Cache-Control: max-age=31536000
       2. 缓存过期：过期头 (Expires)
       3. 缓存对比：Last-Modified、E-Tag
-      ![image](http://user-gold-cdn.xitu.io/2018/7/1/16454a13e8cbd673?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
-      ![image](http://images2015.cnblogs.com/blog/408483/201605/408483-20160525202949975-1541314356.png)
+      <img src="/blog/img/expires" width="100%" alt="缓存">
+      ![image](/blog/img/expires1.png)
       >只有当ctrl+f5才会强制刷新，开发的时候一般建议用文件hash值避免这种修改的文件也被强缓存
    4. 单页面应用可以在webpack打包的时候使用code split和bundle split将代码分离动态加载
    > Bundle splitting: 实际上就是创建多个更小的文件，并行加载，以获得更好的缓存效果；主要的作用就是使浏览器并行下载，提高下载速度。并且运用浏览器缓存，只有代码被修改，文件名中的哈希值改变了才会去再次加载。
@@ -137,7 +137,7 @@ DNS查询->tcp连接->http请求->服务器响应->客户端加载渲染
             }
          })()
       ```
-   
+
       >debounce策略的电梯。如果电梯里有人进来，等待15秒。如果又人进来，15秒等待重新计时，直到15秒超时，开始运送。
 
       ```
