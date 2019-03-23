@@ -80,3 +80,64 @@ DOMDocument *document = [[webView mainFrame] DOMDocument];
 
 #### FMDB
 1. FMDB是iOS平台的SQLite数据库框架，FMDB以OC的方式封装了SQLite的C语言API，使用起来更加面向对象，省去了很多麻烦、冗余的C语言代码。
+
+
+### 3: 数据之间通信
+
+
+### 4: 文件操作
+
+### 5: GCD
+
+### 6: jsbridge
+
+#### OC端
+1. 引入依赖文件
+```
+#import "WebViewJavascriptBridge.h"
+...
+@property WebViewJavascriptBridge* bridge;
+```
+2. 实例化一个对象
+```
+self.bridge = [WebViewJavascriptBridge bridgeForWebView:webView];
+```
+3. OC端 注册一个方法+ 调用该方法的函数
+```
+//供前端调用
+[self.bridge registerHandler:@"OCTest" handler:^(id data, WVJBResponseCallback responseCallback) {
+    NSLog(@"ObjC Echo called with: %@", data);
+    responseCallback(data);
+}];
+
+//主动推送给前端
+[self.bridge callHandler:@"JsTest" data:nil responseCallback:^(id responseData) {
+    NSLog(@"ObjC received response: %@", responseData);
+}];
+```
+
+#### JS端
+```js
+function setupWebViewJavascriptBridge(callback) {
+    if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+    if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+    window.WVJBCallbacks = [callback];
+    var WVJBIframe = document.createElement('iframe');
+    WVJBIframe.style.display = 'none';
+    WVJBIframe.src = 'https://__bridge_loaded__';
+    document.documentElement.appendChild(WVJBIframe);
+    setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+}
+
+setupWebViewJavascriptBridge(function(bridge) {
+	 //主动调用
+    bridge.registerHandler('JsTest', function(data, responseCallback) {
+        console.log("JS Echo called with:", data)
+        responseCallback(data)
+    })
+	//接受oc端主动推送的消息
+    bridge.callHandler('OCTest', {'key':'value'}, function responseCallback(responseData) {
+        console.log("JS received response:", responseData)
+    })
+})
+```
