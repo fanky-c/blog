@@ -63,33 +63,7 @@ DOMDocument *document = [[webView mainFrame] DOMDocument];
 1. Objective-C 的语法沿袭自 SmallTalk，Objective-C 的 selector，与 JS 的 function 语法有相当的差异。WebKit 预设的实事是，如果我们要在 JS 调用 Objective-C selector，就是把所有的参数往后面摆，并且把所有的冒号改成底线，而原来 selector 如果有底线的话，又要另外处理。
 
 
-
-### 2: ios本地缓存数据
-
-#### 直接写文件方式
-1. 可以存储的对象有NSString、NSArray、NSDictionary、NSData、NSNumber，数据全部存放在一个属性列表文件（*.plist文件）中。
-
-#### NSUserDefaults
-1. 一般应用来存储应用设置信息，文件放在perference目录下。
-
-#### 归档操作（NSkeyedArchiver）
-1. 不同于前面两种，它可以把自定义对象存放在文件中。
-
-#### coreData
-1. coreData是苹果官方iOS5之后推出的综合型数据库。
-
-#### FMDB
-1. FMDB是iOS平台的SQLite数据库框架，FMDB以OC的方式封装了SQLite的C语言API，使用起来更加面向对象，省去了很多麻烦、冗余的C语言代码。
-
-
-### 3: 数据之间通信
-
-
-### 4: 文件操作
-
-### 5: GCD
-
-### 6: jsbridge
+### 2: jsbridge
 
 #### OC端
 1. 引入依赖文件
@@ -141,3 +115,29 @@ setupWebViewJavascriptBridge(function(bridge) {
     })
 })
 ```
+
+
+### 3: ios本地缓存数据
+
+#### 直接写文件方式
+1. 可以存储的对象有NSString、NSArray、NSDictionary、NSData、NSNumber，数据全部存放在一个属性列表文件（*.plist文件）中。
+
+#### NSUserDefaults
+1. 一般应用来存储应用设置信息，文件放在perference目录下。
+
+#### 归档操作（NSkeyedArchiver）
+1. 不同于前面两种，它可以把自定义对象存放在文件中。
+
+#### coreData
+1. coreData是苹果官方iOS5之后推出的综合型数据库。
+
+#### FMDB
+1. FMDB是iOS平台的SQLite数据库框架，FMDB以OC的方式封装了SQLite的C语言API，使用起来更加面向对象，省去了很多麻烦、冗余的C语言代码。
+
+
+### 4: 数据之间通信
+
+
+### 5: 文件操作
+
+### 6: GCD
