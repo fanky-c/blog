@@ -116,6 +116,11 @@ setupWebViewJavascriptBridge(function(bridge) {
 })
 ```
 
+#### 原理
+1. 在windows下面添加webviewJsbridge对象
+2. 然后动态的在webview中创建一个Iframe
+3. oc内部通过iframe的src惊喜通信，每次注册方法和调用方法动态的改变src
+4. 调用 js 中的方法_handleMessageFromObjC 进行数据交互
 
 ### 3: ios本地缓存数据
 
@@ -139,5 +144,59 @@ setupWebViewJavascriptBridge(function(bridge) {
 
 
 ### 5: 文件操作
+1. NSFileHandle：文件内容的读取和写入
+2. NSFileManager：文件的删除和创建等
+3. [参考](https://github.com/fanky-c/OcTest/blob/master/IOS%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/IOS%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/ViewController.m)
 
-### 6: GCD
+### 6: 多线程
+
+#### PThread(c框架，极少使用)
+1. [github参考](https://github.com/fanky-c/OcTest/blob/master/pThread/pThread/ViewController.m)
+
+#### NSThread
+1. 三种创建方式
+```
+//方式一
+NSThread *thread1 = [[NSThread alloc] initWithTarget: self selector:@selector(runThread1) object:nil];
+[thread1 setName:@"name_thread1"]; //在selector方法里面获取当前线程[NSThread currentThread].name;
+[thread1 setThreadPriority:0.5]; //优先级：0-1
+[thread1 start];
+
+
+//方式二
+[NSThread detachNewThreadSelector:@selector(runThread1) toTarget:self withObject:nil];
+
+
+//方式三
+//回到主线程：performSelectorOnMainThread
+[self performSelectorInBackground:@selector(runThread1) withObject:nil];
+```
+
+2. [github参考](https://github.com/fanky-c/OcTest/blob/master/%E5%A4%9A%E7%BA%BF%E7%A8%8BNSThread/%E5%A4%9A%E7%BA%BF%E7%A8%8BNSThread/TicketMangager.m)
+
+#### GCD
+1. 介绍
+*类似前端的new worker(), 把耗时较长的任务交给子线程处理，主线程处理ui操作，任务完成worker.postMessage()告诉给主线程。*
+
+1.
+
+
+#### NSOperation
+
+
+#### dispatch_semaphore（信号量）
+```
+- (NSInteger)methodSync {
+    __block NSInteger result = 0;
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    [self methodAsync:^(NSInteger value) {
+        result = value;
+        dispatch_semaphore_signal(sema);
+    }];
+   // 这里本来同步方法会立即返回，但信号量=0使得线程阻塞
+   // 当异步方法回调之后，发送信号，信号量变为1，这里的阻塞将被解除，从而返回正确的结果
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    NSLog(@"methodSync 结束 result:%ld", (long)result);
+    return result;
+}
+```
