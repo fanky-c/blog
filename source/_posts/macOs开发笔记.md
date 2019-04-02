@@ -176,9 +176,12 @@ NSThread *thread1 = [[NSThread alloc] initWithTarget: self selector:@selector(ru
 
 #### GCD
 1. 介绍
-*类似前端的new worker(), 把耗时较长的任务交给子线程处理，主线程处理ui操作，任务完成worker.postMessage()告诉给主线程。*
+*A: 类似前端的new worker(), 把耗时较长的任务交给子线程处理，主线程处理ui操作，任务完成worker.postMessage()告诉给主线程。*
+*B: 同步/异步、串行/并行*
+*C: dispath_get_global_queue & dispatch_get_main_queue*
 
-1.
+
+2. [github参考](https://github.com/fanky-c/OcTest/blob/master/%E5%A4%9A%E7%BA%BF%E7%A8%8B--GCD/%E5%A4%9A%E7%BA%BF%E7%A8%8B--GCD/ViewController.m)
 
 
 #### NSOperation
