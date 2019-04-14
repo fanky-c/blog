@@ -122,6 +122,12 @@ setupWebViewJavascriptBridge(function(bridge) {
 3. oc内部通过iframe的src惊喜通信，每次注册方法和调用方法动态的改变src
 4. 调用 js 中的方法_handleMessageFromObjC 进行数据交互
 
+#### 工作流
+1. JS 端加入 src 为 https://__bridge_loaded__ 的 iframe
+2. Native 端检测到 Request，检测如果是 __bridge_loaded__ 则通过当前的 WebView 组件注入 WebViewJavascriptBridge_JS 代码
+3. 注入代码成功之后会加入一个 messagingIframe，其 src 为 https://__wvjb_queue_message__
+4. 之后不论是 Native 端还是 JS 端都可以通过 registerHandler 方法注册一个两端约定好的 HandlerName 的处理，也都可以通过 callHandler 方法通过约定好的 HandlerName 调用另一端的处理（两端处理消息的实现逻辑对称）
+
 ### 3: ios本地缓存数据
 
 #### 直接写文件方式
@@ -140,8 +146,40 @@ setupWebViewJavascriptBridge(function(bridge) {
 1. FMDB是iOS平台的SQLite数据库框架，FMDB以OC的方式封装了SQLite的C语言API，使用起来更加面向对象，省去了很多麻烦、冗余的C语言代码。
 
 
-### 4: 数据之间通信
+### 4: 页面之间通信
+1. 属性传值
+   1. 正向传值：page1-->page2
+2. 单例传值
+```
++(instancetype)sharedInstance{
+    static SharedInstance* _sharedInstance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedInstance = [[SharedInstance alloc] init];
+    });
+    
+    return _sharedInstance;
+}
+```
+3. NSUserDefaults
+4. 代理传值
+  1. A:代理方(遵守协议、实现协议方法)   
+  2. B:委托方(制定持有协议，调用协议方法)
+  3. C:中间通讯（delegate）
+5. block传值
+6. 通知传值--NSNotificationCenter
+```
+//先监听
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateValue:) name:@"postValue" object:nil];
 
+-(void)updateValue:(NSNotification*)not{
+    self.lable.text = not.userInfo[@"val"];
+}
+
+//发送广播
+ [[NSNotificationCenter defaultCenter] postNotificationName:@"postValue" object:nil userInfo:@{@"val":self.inputText}];
+```
+7. [github参考](https://github.com/fanky-c/OcTest/tree/master/%E9%A1%B5%E9%9D%A2%E4%B9%8B%E9%97%B4%E4%BC%A0%E5%80%BC/%E9%A1%B5%E9%9D%A2%E4%B9%8B%E9%97%B4%E4%BC%A0%E5%80%BC)
 
 ### 5: 文件操作
 1. NSFileHandle：文件内容的读取和写入
@@ -175,10 +213,14 @@ NSThread *thread1 = [[NSThread alloc] initWithTarget: self selector:@selector(ru
 2. [github参考](https://github.com/fanky-c/OcTest/blob/master/%E5%A4%9A%E7%BA%BF%E7%A8%8BNSThread/%E5%A4%9A%E7%BA%BF%E7%A8%8BNSThread/TicketMangager.m)
 
 #### GCD
-1. 介绍
-*A: 类似前端的new worker(), 把耗时较长的任务交给子线程处理，主线程处理ui操作，任务完成worker.postMessage()告诉给主线程。*
-*B: 同步/异步、串行/并行*
-*C: dispath_get_global_queue & dispatch_get_main_queue*
+1. 介绍：
+   1. 类似前端的new worker(), 把耗时较长的任务交给子线程处理，主线程处理ui操作，任务完成worker.postMessage()告诉给主线程。
+2. 使用方式：   
+   1. 同步/异步、串行/并行
+   2. dispath_get_global_queue & dispatch_get_main_queue
+   3. dispatch_group_async
+   4. dispatch_once
+   5. dispatch_after
 
 
 2. [github参考](https://github.com/fanky-c/OcTest/blob/master/%E5%A4%9A%E7%BA%BF%E7%A8%8B--GCD/%E5%A4%9A%E7%BA%BF%E7%A8%8B--GCD/ViewController.m)
@@ -186,6 +228,20 @@ NSThread *thread1 = [[NSThread alloc] initWithTarget: self selector:@selector(ru
 
 #### NSOperation
 
+1. 实现方式:
+   1. NSInvocationOperation & NSBlockOperation（同步阻塞）
+   2. 自定义类继承NSOperation
+2. 相关概念
+   1. NSOperationQueue（异步队列）
+      1. addOperation
+      2. setMaxConcurrentOperationCount
+   2.  状态
+      1. ready、 cancelled、 executing、 finished、 asynchronous
+   3. 依赖-- addDependency
+
+3. NSRunloop阻塞当然线程，让异步到达同步的效果。
+
+4. [github参考](https://github.com/fanky-c/OcTest/blob/master/%E5%A4%9A%E7%BA%BF%E7%A8%8B--NSOperation/%E5%A4%9A%E7%BA%BF%E7%A8%8B--NSOperation/ViewController.m)  
 
 #### dispatch_semaphore（信号量）
 ```
