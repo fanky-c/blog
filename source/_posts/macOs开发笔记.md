@@ -259,3 +259,26 @@ NSThread *thread1 = [[NSThread alloc] initWithTarget: self selector:@selector(ru
     return result;
 }
 ```
+
+### 7: @property使用
+1. 使用方式
+```
+//test.h
+@property(nonatomic, readwrite, strong) NSString *test;
+
+//test.m
+@synthesize test;
+```
+
+2. 属性分类
+   1. **原子性**
+      1. atomic (默认、原子性) 只有一个线程访问实例，atmoic是线程安全的。
+      2. nonatomic (非原子性)， 可以被多个线程访问，效率比atomic高，但是不能保证在多线程的安全性。
+   2. **存取器控制**
+      1. readwrite (默认) 表示该属性同时拥有setter和getter。
+      2. readonly 表示只有getter没有setter。
+   3. **内存管理**
+      1. assign (默认) assign用于值类型，如int、float、double和NSInteger，CGFloat等表示单纯的复制。
+      2. strong strong是在IOS引入ARC的时候引入的关键字，是retain的一个可选的替代。表示实例变量对传入的对象要有所有权关系，即强引用。strong跟retain的意思相同并产生相同的代码，但是语意上更好更能体现对象的关系。
+      3. weak 在setter方法中，需要对传入的对象不进行引用计数加1的操作, 例如：IBOutlet、Delegate一般用的就是weak
+      4. copy 与strong类似，但区别在于实例变量是对传入对象的副本拥有所有权，而非对象本身
