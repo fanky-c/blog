@@ -28,8 +28,10 @@ tags:
   2. 当你修改数组的长度时，vm.items.length = newLength
     1. 解决方法：vm.items.splice(newLength)
 
+#### 2. 为什么defineProperty不能检测到数组长度的“变化”
+1. 
 
-#### 2. vue对数组方法的hack
+#### 3. vue对数组方法的hack
 ```
 const arrayProto = Array.prototype
 // 复制了数组构造函数的原型
@@ -83,7 +85,7 @@ methodsToPatch.forEach(function (method) {
   })
 })
 ```
-#### 3. Vue 不能检测对象属性的添加或删除
+#### 4. Vue 不能检测对象属性的添加或删除
 1. 对于已经创建的实例，Vue 不能动态添加根级别的响应式属性
 ```
 var vm = new Vue({
@@ -101,9 +103,10 @@ vm.b = 2
    2. vm.$set(vm.userProfile, key, value)
    3. Object.assign()
 
-#### 3. definePropery缺点
+#### 5. definePropery缺点
 1. 无法监听数组变化
-2. 性能差。只能劫持对象的属性,因此我们需要对每个对象的每个属性进行遍历，如果属性值也是对象那么需要深度遍历
+2. 无法检测对象属性的添加和删除
+3. 性能差。只能劫持对象的属性,因此我们需要对每个对象的每个属性进行遍历，如果属性值也是对象那么需要深度遍历
 
 
 ### Proxy
