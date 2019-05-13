@@ -41,8 +41,9 @@ tags:
    1. 登录受信用网站A，并在本地生成Cookie
    2. 在不登出A网站情况下，访问危险的B网站。
    3. 案例： 
-      1. 如果登录网银网站转账，接口：http://www.mybank.com/Transfer.php？money=1000&to=zhangsan   
-      2. 在危险的B网站：<img src=http://www.mybank.com/Transfer.php?money=1000&who=hacker>。 然后
+      1. 如果登录电商网站赠送积分或者礼物，接口：http://www.mybank.com/Transfer.php？money=1000&to=zhangsan   
+      2. 攻击者在评论区发表：<img src=http://www.mybank.com/Transfer.php?money=1000&who=hacker>。 然后就源源不断收到礼物。
+      3. 送礼物或礼物是有记录的，然后攻击者找到删除记录接口（发现是post方式），自己构造一个页面通过form表单删除，然后同window.location = 'XXXX' 返回之前网页。
 
 3. 措施：
    1. 验证HTTP referer字段，判断连接从哪个页面跳转过来。
