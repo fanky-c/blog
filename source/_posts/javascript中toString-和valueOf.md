@@ -22,7 +22,7 @@ tags:
  '3'.toString(); // "3"
  true.toString(); // "true"
  {test: 3, app: "test"}.toString(); //"[object Object]"
- function(){console.log(3)}.toString(); // "function(){console.log(3)}.toString()"
+ function(){console.log(3)}.toString(); // "function(){console.log(3)}"
  ['test', 'test2'].toString(); //"test,test2"  相当于调用Array.join(',')
  /\d/.toString();  // "/\d/"
 ```
