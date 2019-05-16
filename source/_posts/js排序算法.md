@@ -260,6 +260,32 @@ function findSubStr(arr1, arr2) {
     }
   return '';
 }
+
+
+function findMaxSubstr(str1, str2){
+   var shorter = str1;
+   var longer = str2;
+   //判断长短
+   if(str1.length > str2.length){
+       shorter = str2;
+       longer = str1;
+   }else{
+       shorter = str1;
+       longer = str2;      
+   }
+   
+   //判断
+   for(var subLength=shorter.length; subLength>0; subLength--){
+       for(var i=0; i<=shorter.length-subLength; i++){
+           var subString = shorter.substring(i,i+subLength);
+           if(longer.indexOf(subString) >= 0){
+               var targetString = subString;
+               return targetString;
+           }
+       }
+   }
+}
+
 ```
 
 
