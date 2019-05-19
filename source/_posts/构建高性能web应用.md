@@ -115,36 +115,45 @@ DNS查询->tcp连接->http请求->服务器响应->客户端加载渲染
    8. 在开发的过程， 对于连续行为及短时间会触发很多次的浏览器事件,例如：scroll,resize, mousemove,我们急需对其进行性能优化。两种方式可以去优化我们的性能 函数节流(throttle) 和 函数去抖(debounce)[参考](http://demo.nimius.net/debounce_throttle/)
       >throttle策略的电梯。保证如果电梯第一个人进来后，15秒后准时运送一次，不等待。如果没有人，则待机
 
-      ```
+      ```js
+        // 方法一
          var throttle = (function(){
-             var previous = 0,
-             before = +new Date;
-             return function(func, wait){
-                var now = +new Date;
-               if(previous == 0){
-                   before = +new Date;
-                   previous++;
-                   func();
-                   return; 
-                }
-
-                if(now - before > wait){
-                  previous++;
-                  func();
-                  before = now;
-                 return;
-                }
-            }
+             var statTime = 0,
+              return function(fn, wait){
+                 var currentTime = new Date();
+                 if(currentTime - statTime > wait){
+                    fn && fn();
+                    statTime = currentTime;
+                 }
+              }
          })()
+
+
+
+        //方法二
+        var throttle = function (fn, wait){
+           let timer = null;
+           return function(){
+              const that = this;
+              const args = arguments;
+              if(!timer){
+                 timer = setTimeout(funciton(){
+                     fn.apply(that, args);  //fn.call(that,arg1, arg2,...);
+                     clearTimeout(timer);
+                     timer = null;
+                 }, wait)
+              }
+           }
+        }
       ```
 
       >debounce策略的电梯。如果电梯里有人进来，等待15秒。如果又人进来，15秒等待重新计时，直到15秒超时，开始运送。
 
-      ```
+      ```js
          var dubounce = (function(){
-           var timer = 0;
+           var timer = null;
            return function(func, wait){
-             clearTimeout(timer);
+             timer && clearTimeout(timer);
 
              timer = setTimeout(function(){
                 func()

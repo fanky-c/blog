@@ -73,7 +73,7 @@ function deepClone(target) {
   for (let i in target) {
     let value = target[i]
     if (checkedType(value) ==='Object' || checkedType(value) ==='Array') {
-      result[i] = clone(value)
+      result[i] = deepClone(value)
     } else {
       result[i] = value;
     }
