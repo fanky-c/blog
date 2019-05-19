@@ -113,4 +113,33 @@ deepCopy(Ming.prototype,Person.prototype);
 
 Ming.prototype.constructor = Ming;
 
+//对象深拷贝
+function deepCopy(source){
+  let result = null;
+  let type = checkType(source);
+  
+  if(type === 'Object'){
+      result = {};
+  }else if(type === 'Array'){
+     result = [];
+  }else{
+      return result;
+  }
+  
+  for(let i in source){
+      let value = source[i];
+      if(checkType(value) === 'Object' || checkType(value) === 'Array'){
+        result[i] = deepCopy(value);
+      }else{
+        result[i] = value;
+      }
+  }
+  return result;
+}
+
+//返回具体类型
+function checkType(obj){
+    return Object.prototype.toString.call(obj).slice(8, -1); //[object,String] => String
+}
+
 ```
