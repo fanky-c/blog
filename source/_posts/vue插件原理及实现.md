@@ -5,6 +5,42 @@ tags:
     - vue
     - vue插件
 ---
+### 插件使用场景
+1. 添加全局方法或者属性，例如：[vue-custom-element](https://github.com/karol-f/vue-custom-element)
+2. 添加全局资源：指令/过滤器/过渡等, 例如：[vue-touch](https://github.com/vuejs/vue-touch)
+3. 通过全局混入来添加一些组件选项, 例如：[vue-router]()
+4. 添加 Vue 实例方法，通过把它们添加到 Vue.prototype 上实现
+5. 一个库，提供自己的 API，同时提供上面提到的一个或多个功能。 例如：[vue-route](https://github.com/vuejs/vue-router)
+
+```js
+MyPlugin.install = function (Vue, options) {
+  // 1. 添加全局方法或属性
+  Vue.myGlobalMethod = function () {
+    // 逻辑...
+  }
+
+  // 2. 添加全局资源
+  Vue.directive('my-directive', {
+    bind (el, binding, vnode, oldVnode) {
+      // 逻辑...
+    }
+    ...
+  })
+
+  // 3. 注入组件选项
+  Vue.mixin({
+    created: function () {
+      // 逻辑...
+    }
+    ...
+  })
+
+  // 4. 添加实例方法
+  Vue.prototype.$myMethod = function (methodOptions) {
+    // 逻辑...
+  }
+}
+```
 
 ### 插件使用
 1. 通过Vue.use(myPlugin)使用， 本质是调用myPlugin.install(Vue)
