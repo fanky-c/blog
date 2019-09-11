@@ -125,7 +125,7 @@ theme: aircloud
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: rsync
-  host: 112.74.58.122
+  host: 106.52.186.77
   user: root
   root: /usr/local/src/myspace/blog
   port: 22
