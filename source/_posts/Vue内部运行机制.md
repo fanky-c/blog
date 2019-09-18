@@ -16,10 +16,10 @@ tags:
 > 初始化之后调用 $mount 会挂载组件，如果是运行时编译，即不存在 render function 但是存在 template 的情况，需要进行「编译」步骤。
 
 
-#### 编译
+#### 编译(如果用了vue-loader则直接生成render function字符串)
 compile编译可以分成 parse、optimize 与 generate 三个阶段，最终需要得到 render function。
 ** 如果是用vue-loader实现预编译就直接生成了render function 字符串；如果是运行时编译就不会生成render function。**
-> 1. optimize 的主要作用是标记 static 静态节点，这是 Vue 在编译过程中的一处优化，后面当 update 更新界面时，会有一个 patch 的过程， diff 算法会直接跳过静态节点，从而减少了比较的过程，优化了 patch 的性能
+> 1. parse 会用正则等方式解析 template 模板中的指令、class、style等数据，形成AST。
 > 2. optimize 的主要作用是标记 static 静态节点，这是 Vue 在编译过程中的一处优化，后面当 update 更新界面时，会有一个 patch 的过程， diff 算法会直接跳过静态节点，从而减少了比较的过程，优化了 patch 的性能
 > 3. generate 是将 AST 转化成 render function 字符串的过程，得到结果是 render 的字符串以及 staticRenderFns 字符串。
 
@@ -59,7 +59,7 @@ render function 会被转化成 VNode 节点。Virtual DOM 其实就是一棵以
 
 那么我们为什么不能只修改那些「改变了的地方」呢？这个时候就要介绍我们的「patch」了。我们会将新的 VNode 与旧的 VNode 一起传入 patch 进行比较，经过 diff 算法得出它们的「差异」。最后我们只需要将这些「差异」的对应 DOM 进行修改即可
 
-### patch
+### patch原理
 首先说一下 patch 的核心 diff 算法，我们用 diff 算法可以比对出两颗树的「差异」，我们来看一下，假设我们现在有如下两颗树，它们分别是新老 VNode 节点，这时候到了 patch 的过程。
 
 diff 算法是通过同层的树节点进行比较而非对树进行逐层搜索遍历的方式，所以时间复杂度只有 O(n)，是一种相当高效的算法，如下图。
