@@ -255,3 +255,20 @@ function patch (oldVnode, vnode, parentElm) {
        1. test
 
 ##### 4.新VNode和老VNode都存在且不同，删除老节点，增加新节点。
+
+
+
+### 批量异步更新策略和nextTick原理
+#### 为啥什么要异步更新
+通过前面几个章节我们介绍，相信大家已经明白了 Vue.js 是如何在我们修改 data 中的数据后修改视图了。简单回顾一下，这里面其实就是一个“setter -> Dep -> Watcher -> patch -> 视图”的过程。
+
+Vue.js在默认情况下，每次触发某个数据的 setter 方法后，对应的 Watcher 对象其实会被 push 进一个队列 queue 中，在下一个 tick 的时候将这个队列 queue 全部拿出来 run（ Watcher 对象的一个方法，用来触发 patch 操作） 一遍
+
+<img src="/blog/img/vueWatcher.png" style="width:300px; margin:0 auto;display:block;" alt="离线日志" align=center />
+
+那么什么是下一个 tick 呢？
+
+#### nextTick
+Vue.js 实现了一个 nextTick 函数，传入一个 cb ，这个 cb 会被存储到一个队列中，在下一个 tick 时触发队列中的所有 cb 事件。
+
+因为目前浏览器平台并没有实现 nextTick 方法，所以 Vue.js 源码中分别用 Promise、setTimeout、setImmediate 等方式。目的是在当前调用栈执行完毕以后（不一定立即）才会去执行这个事件。
