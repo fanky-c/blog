@@ -59,7 +59,138 @@ render function 会被转化成 VNode 节点。Virtual DOM 其实就是一棵以
 
 那么我们为什么不能只修改那些「改变了的地方」呢？这个时候就要介绍我们的「patch」了。我们会将新的 VNode 与旧的 VNode 一起传入 patch 进行比较，经过 diff 算法得出它们的「差异」。最后我们只需要将这些「差异」的对应 DOM 进行修改即可
 
-### patch原理
+### 响应式系统依赖收集追踪原理
+
+### 实现Virtual DOM下的一个VNode节点
+
+
+### template模板怎么通过Compile编译
+#### 1.parse，利用正则解析template、class、style等数据，生成ast语法树
+AST语法树结构如下：
+```js
+{
+    /* 标签属性的map，记录了标签上属性 */
+    'attrsMap': {
+        ':class': 'c',
+        'class': 'demo',
+        'v-if': 'isShow'
+    },
+    /* 解析得到的:class */
+    'classBinding': 'c',
+    /* 标签属性v-if */
+    'if': 'isShow',
+    /* v-if的条件 */
+    'ifConditions': [
+        {
+            'exp': 'isShow'
+        }
+    ],
+    /* 标签属性class */
+    'staticClass': 'demo',
+    /* 标签的tag */
+    'tag': 'div',
+    /* 子标签数组 */
+    'children': [
+        {
+            'attrsMap': {
+                'v-for': "item in sz"
+            },
+            /* for循环的参数 */
+            'alias': "item",
+            /* for循环的对象 */
+            'for': 'sz',
+            /* for循环是否已经被处理的标记位 */
+            'forProcessed': true,
+            'tag': 'span',
+            'children': [
+                {
+                    /* 表达式，_s是一个转字符串的函数 */
+                    'expression': '_s(item)',
+                    'text': '{{item}}'
+                }
+            ]
+        }
+    ]
+}
+```
+#### 2.optimize，优化静态内容
+这个涉及到后面要讲 patch 的过程，因为 patch 的过程实际上是将 VNode 节点进行一层一层的比对，然后将「差异」更新到视图上。那么一些静态节点是不会根据数据变化而产生变化的，这些节点我们没有比对的需求，是不是可以跳过这些静态节点的比对，从而节省一些性能呢？
+```js
+{
+    'attrsMap': {
+        ':class': 'c',
+        'class': 'demo',
+        'v-if': 'isShow'
+    },
+    'classBinding': 'c',
+    'if': 'isShow',
+    'ifConditions': [
+        'exp': 'isShow'
+    ],
+    'staticClass': 'demo',
+    'tag': 'div',
+    /* 静态标志 */
+    'static': false,
+    'children': [
+        {
+            'attrsMap': {
+                'v-for': "item in sz"
+            },
+            'static': false,
+            'alias': "item",
+            'for': 'sz',
+            'forProcessed': true,
+            'tag': 'span',
+            'children': [
+                {
+                    'expression': '_s(item)',
+                    'text': '{{item}}',
+                    'static': false
+                }
+            ]
+        }
+    ]
+}
+```
+1. isStatic函数；判断的标准是当 type 为 2（表达式节点）则是非静态节点，当 type 为 3（文本节点）的时候则是静态节点，当然，如果存在 if 或者 for这样的条件的时候（表达式节点），也是非静态节点。
+```js
+function isStatic (node) {
+    if (node.type === 2) {
+        return false
+    }
+    if (node.type === 3) {
+        return true
+    }
+    return (!node.if && !node.for);
+}
+```
+2. markStatic函数；遍历所有节点通过 isStatic 来判断当前节点是否是静态节点，此外，会遍历当前节点的所有子节点，如果子节点是非静态节点，那么当前节点也是非静态节点。
+
+
+#### 3.generate,生成render function字符串
+generate 会将 AST 转化成 render funtion 字符串，最终得到 render 的字符串以及 staticRenderFns 字符串。
+Vue.js编译得到结果
+```js
+with(this){
+    return (isShow) ? 
+    _c(
+        'div',
+        {
+            staticClass: "demo",
+            class: c
+        },
+        _l(
+            (sz),
+            function(item){
+                return _c('span',[_v(_s(item))])
+            }
+        )
+    )
+    : _e()
+}
+```
+
+### 数据状态更新时差异diff以及patch机制
 首先说一下 patch 的核心 diff 算法，我们用 diff 算法可以比对出两颗树的「差异」，我们来看一下，假设我们现在有如下两颗树，它们分别是新老 VNode 节点，这时候到了 patch 的过程。
 
 diff 算法是通过同层的树节点进行比较而非对树进行逐层搜索遍历的方式，所以时间复杂度只有 O(n)，是一种相当高效的算法，如下图。
@@ -67,3 +198,60 @@ diff 算法是通过同层的树节点进行比较而非对树进行逐层搜索
 <img src="/blog/img/path.png" width = "700" height = "auto" alt="" align=center />
 
 这张图中的相同颜色的方块中的节点会进行比对，比对得到「差异」后将这些「差异」更新到视图上。因为只进行同层级的比对，所以十分高效。
+
+```js
+function patch (oldVnode, vnode, parentElm) {
+    if (!oldVnode) 
+    {
+        //老VNode节点不存在，向父元素中添加新VNode节点
+        addVnodes(parentElm, null, vnode, 0, vnode.length - 1);
+    } 
+    else if (!vnode) 
+    {
+        //没有新的VNode节点，就从父元素中把旧的VNode节点删除掉
+        removeVnodes(parentElm, oldVnode, 0, oldVnode.length - 1);
+    } 
+    else 
+    {  
+        if (sameVnode(oldVNode, vnode)) {
+            //新VNode和老VNode都存在且相同，比对 VNode
+            patchVnode(oldVNode, vnode); 
+        } 
+        else 
+        {
+            //新VNode和老VNode都存在且不同，删除老节点，增加新节点
+            removeVnodes(parentElm, oldVnode, 0, oldVnode.length - 1);
+            addVnodes(parentElm, null, vnode, 0, vnode.length - 1);
+        }
+    }
+}
+```
+#### patch四种情况
+##### 1.老VNode节点不存在，就向父元素中添加新VNode节点。
+##### 2.新VNode节点不存在，就从父元素中把旧的VNode节点删除掉。
+##### 3.新VNode和老VNode都存在且相同，比对 VNode。
+1. 怎么判断两个VNode是否为相同节点？
+   1. sameVnode 其实很简单，只有当 key、 tag(div、p)、 isComment（是否为注释节点）、 data同时定义（或不定义），同时满足当标签类型为 input 的时候 type 相同（某些浏览器不支持动态修改<input\>类型，所以他们被视为不同类型）即可
+      ```js
+      function sameVnode () {
+        return (
+            a.key === b.key &&
+            a.tag === b.tag &&
+            a.isComment === b.isComment &&
+            (!!a.data) === (!!b.data) &&
+            sameInputType(a, b)
+        )
+      }
+
+        function sameInputType (a, b) {
+            if (a.tag !== 'input') return true
+            let i
+            const typeA = (i = a.data) && (i = i.attrs) && i.type
+            const typeB = (i = b.data) && (i = i.attrs) && i.type
+            return typeA === typeB
+        }
+      ```
+    2. patchVnode过程
+       1. test
+
+##### 4.新VNode和老VNode都存在且不同，删除老节点，增加新节点。
