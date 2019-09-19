@@ -5,7 +5,6 @@ tags:
     - vue
     - vue运行机制
 ---
-[本文来源参考](https://juejin.im/book/5a36661851882538e2259c0f/section/5a37bbb35188257d167a4d64)
 
 ### new Vue() 内部流程图
 
@@ -272,3 +271,11 @@ Vue.js在默认情况下，每次触发某个数据的 setter 方法后，对应
 Vue.js 实现了一个 nextTick 函数，传入一个 cb ，这个 cb 会被存储到一个队列中，在下一个 tick 时触发队列中的所有 cb 事件。
 
 因为目前浏览器平台并没有实现 nextTick 方法，所以 Vue.js 源码中分别用 Promise、setTimeout、setImmediate 等方式。目的是在当前调用栈执行完毕以后（不一定立即）才会去执行这个事件。
+
+
+### Vuex状态管理的原理
+
+
+
+
+[本文来源参考](https://juejin.im/book/5a36661851882538e2259c0f/section/5a37bbb35188257d167a4d64)
