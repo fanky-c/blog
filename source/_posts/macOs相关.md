@@ -29,6 +29,8 @@ tags:
 1. 每条线程都有唯一的一个 RunLoop 对象与之对应的
 2. 主线程的 RunLoop 是自动创建并启动
 3. 子线程的 RunLoop 需要手动创建(懒加载,只创建一次)
+4. RunLoop保存在一个全局的Dictionary里，线程作为key,RunLoop作为value
+5. RunLoop在第一次获取时创建，在线程结束时销毁
 ```
  //启动RunLoop
 [[NSRunLoop currentRunLoop] run];
@@ -38,3 +40,9 @@ tags:
 //第二个参数:指定 RunLoop 的过期时间,即:到了这个时间后RunLoop 就失效了
 [[NSRunLoop currentRunLoop] runMode:kCFRunLoopDefaultModebeforeDate:[NSDate distantFuture]];
 ```
+
+
+### block的实质是什么？__block修饰的变量为什么能在block里面能改变其值？
+1. block其实也是一个oc对象，内部有一个isa指针
+2. __block 所起到的作用就是只要观察到该变量被 block 所持有，就将“外部变量”在栈中的内存地址放到了堆中。进而在block内部也可以修改外部变量的值。
+3. block不允许修改外部变量的值，这里所说的外部变量的值，指的是栈中指针的内存地址。栈区是红灯区，堆区才是绿灯区。
