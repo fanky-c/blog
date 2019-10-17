@@ -46,3 +46,25 @@ tags:
 1. block其实也是一个oc对象，内部有一个isa指针
 2. __block 所起到的作用就是只要观察到该变量被 block 所持有，就将“外部变量”在栈中的内存地址放到了堆中。进而在block内部也可以修改外部变量的值。
 3. block不允许修改外部变量的值，这里所说的外部变量的值，指的是栈中指针的内存地址。栈区是红灯区，堆区才是绿灯区。
+
+
+### 创建线程的方法是什么?如果在主线程中执行代码，方法是什么? 如果想延时执行代码、方法又是什么? 
+#### 创建线程
+   1. NSThread创建
+   2. GCD的dispatch创建
+   3. 使用子类化的NSOperation,然后将其加入NSOperationQueue;
+
+#### 在主线程执行代码
+   1. performSelectorOnMainThread 或者 GCD中 dispatch_main
+
+#### 延迟执行
+   1. performSelectorOnMainThread:onThread:withObject:waitUntilDone: 或者 GCD中 dispatch_after
+
+
+### delegate和notification区别和场景
+#### 区别
+   1. delegate效率高于notification
+   2. delegate比notification更加直观
+#### 场景
+   1. nofification适合2个不是很紧密的模块， 例如多线程传值。
+   2. delegate是一种简单的回调，且主要集中在一个模块。例如想把值从底层传到上层。
