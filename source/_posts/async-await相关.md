@@ -6,15 +6,17 @@ tags:
    - await
 ---
 
-### 什么是async函数
+### async函数
+
+#### async介绍
 1. 返回值是Promise， 可以直接使用 then() 方法进行调用。
 2. 更好的语义。async 和 await 相较于 * 和 yield 更加语义化
 3. 让异步代码看起来更像同步代码
 
-### async使用
+#### async使用
 
 
-### await介绍
+### await函数
 #### await使用
 1. await这个关键字只能在使用async定义的函数里面使用。
 2. 
