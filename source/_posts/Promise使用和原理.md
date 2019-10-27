@@ -9,6 +9,15 @@ tags:
 ### Promise是什么？
 Promise是JS异步编程中的重要概念，异步抽象处理对象，是目前比较流行Javascript异步编程解决方案之一。这句话说的很明白了，Promise是一种用于解决异步问题的思路、方案或者对象方式。
 
+### Promise基本Api
+1. Promise.resolve()
+1. Promise.reject()
+1. Promise.prototype.then()
+1. Promise.prototype.catch()
+1. Promise.all()  // 所有的完成
+1. Promise.race() // 竞速，完成一个即可
+
+
 
 ### Promise用法
 1. 首先，Promise是一个对象，因此，我们使用new的方式新建一个。
