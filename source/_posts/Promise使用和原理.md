@@ -14,6 +14,7 @@ Promise是JS异步编程中的重要概念，异步抽象处理对象，是目�
 1. Promise.reject()
 1. Promise.prototype.then()
 1. Promise.prototype.catch()
+1. Promise.prototype.finally()
 1. Promise.all()  // 所有的完成
 1. Promise.race() // 竞速，完成一个即可
 
