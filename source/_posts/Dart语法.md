@@ -41,7 +41,7 @@ final wordPair = new WordPair.random();
 
 ### 内置的类型(Built-in types)
 #### 类型
-##### numbers
+##### number
 1. 分为：int、double
 2. strings和numbers转换
 ```dart
@@ -62,7 +62,7 @@ String piAsString = 3.14159.toStringAsFixed(2);
 assert(piAsString == '3.14');
 ```
 
-##### strings
+##### string
 1. 可以在字符串中使用表达式，用法是这样的： ${expression}。如果表达式是一个比赛服，可以省略 {}。 如果表达式的结果为一个对象，则 Dart 会调用对象的 toString() 函数来获取一个字符串。
 ```dart
 var s = 'string interpolation';
@@ -94,18 +94,86 @@ var s2 = """This is also a
 multi-line string.""";
 ```
 
-##### booleans
+##### boolean
 1. 当 Dart 需要一个布尔值的时候，只有 true 对象才被认为是 true。 所有其他的值都是 false。这点和 JavaScript 不一样， 像 1、 "aString"、 以及 someObject 等值都被认为是 false。
 
 
-##### lists (也被称之为 arrays)
+##### list (也被称之为 array)
+1. 也许 array （或者有序集合）是所有编程语言中最常见的集合类型。 在 Dart 中数组就是 List 对象。所以 通常我们都称之为 lists。
+```
+var list = [1, 2, 3];
+assert(list.length == 3);
+assert(list[1] == 2);
+list[1] = 1;
+assert(list[1] == 1);
+```
+2. 在 list 字面量之前添加 const 关键字，可以 定义一个不变的 list 对象（编译时常量）：
+```
+var constantList = const [1, 2, 3];
+// constantList[1] = 1; // Uncommenting this causes an error.
+```
 
 
+#####  map
+1. 通常来说，Map 是一个键值对相关的对象。 键和值可以是任何类型的对象。每个 键 只出现一次， 而一个值则可以出现多次。
+```dart
+var gifts = {
+  'first' : 'partridge',
+  'second': 'turtledoves',
+  'fifth' : 'golden rings'
+};
 
-#####  maps
-##### runes (用于在字符串中表示 Unicode 字符)
-##### symbols
+var gifts = new Map();
+gifts['first'] = 'partridge';
+gifts['second'] = 'turtledoves';
+
+```
+
+2. 同样使用 const 可以创建一个 编译时常量的 map：
+```
+final constantMap = const {
+  2: 'helium',
+  10: 'neon',
+  18: 'argon',
+};
+// constantMap[2] = 'Helium'; // Uncommenting this causes an error.
+```
 
 
+##### rune (用于在字符串中表示 Unicode 字符)
+##### symbol
+
+### Function
+1. Dart 是一个真正的面向对象语言，方法也是对象并且具有一种 类型， Function。 这意味着，方法可以赋值给变量，也可以当做其他方法的参数。 也可以把 Dart 类的实例当做方法来调用。
+```
+bool isNoble(int atomicNumber) {
+  return _nobleGases[atomicNumber] != null;
+}
+
+//可以选择忽略类型定义
+isNoble(atomicNumber) {
+  return _nobleGases[atomicNumber] != null;
+}
+```
+2. 必须参数和可选参数
+```dart
+//参数放到 [] 中就变成可选
+String say(String from = 'china', String msg, [String device]) {
+  var result = '$from says $msg';
+  if (device != null) {
+    result = '$result with a $device';
+  }
+  return result;
+}
+```
+3. main() 入口函数
+```
+void main() {
+  querySelector("#sample_text_id")
+    ..text = "Click me!"
+    ..onClick.listen(reverseText);
+}
+//.. 语法为 级联调用（cascade）。 使用级联调用语法， 你可以在一个对象上执行多个操作。
+```
 
 [文字来源于](http://dart.goodev.org/guides/language/language-tour)
