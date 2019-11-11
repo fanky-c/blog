@@ -176,4 +176,92 @@ void main() {
 //.. 语法为 级联调用（cascade）。 使用级联调用语法， 你可以在一个对象上执行多个操作。
 ```
 
+
+4. 静态作用域（scope）
+```
+var topLevel = true;
+main() {
+  var insideMain = true;
+
+  myFunction() {
+    var insideFunction = true;
+
+    nestedFunction() {
+      var insideNestedFunction = true;
+      assert(topLevel);
+      assert(insideMain);
+      assert(insideFunction);
+      assert(insideNestedFunction);
+    }
+  }
+}
+//nestedFunction() 可以访问所有的变量， 包含顶级变量
+```
+5. 闭包（closures）
+一个 闭包 是一个方法对象，不管该对象在何处被调用， 该对象都可以访问其作用域内 的变量
+```
+Function makeAdder(num addBy) {
+  return (num i) => addBy + i;
+}
+main() {
+  // Create a function that adds 2.
+  var add2 = makeAdder(2);
+
+  // Create a function that adds 4.
+  var add4 = makeAdder(4);
+
+  assert(add2(3) == 5);
+  assert(add4(3) == 7);
+}
+```
+
+6. 返回值
+所有的函数都返回一个值。如果没有指定返回值，则 默认把语句 return null; 作为函数的最后一个语句执行。
+
+
+### 操作符
+#### 算术操作符
+```
+var a, b;
+
+a = 0;
+b = ++a;        // Increment a before b gets its value.
+assert(a == b); // 1 == 1
+
+a = 0;
+b = a++;        // Increment a AFTER b gets its value.
+assert(a != b); // 1 != 0
+
+a = 0;
+b = --a;        // Decrement a before b gets its value.
+assert(a == b); // -1 == -1
+
+a = 0;
+b = a--;        // Decrement a AFTER b gets its value.
+assert(a != b); // -1 != 0
+```
+
+#### 级联操作符（..）
+级联操作符 (..) 可以在同一个对象上连续调用多个函数以及访问成员变量。 使用级联操作符可以避免创建 临时变量， 并且写出来的代码看起来 更加流畅：
+正确使用：
+```
+querySelector('#button') // Get an object.
+  ..text = 'Confirm'   // Use its members.
+  ..classes.add('important')
+  ..onClick.listen((e) => window.alert('Confirmed!'));
+
+//上面代码和下面一样效果
+var button = querySelector('#button');
+button.text = 'Confirm';
+button.classes.add('important');
+button.onClick.listen((e) => window.alert('Confirmed!'));
+```
+
+错误使用：
+```
+var sb = new StringBuffer();
+sb.write('foo')..write('bar');
+//sb.write() 函数返回一个 void， 无法在 void 上使用级联操作符。
+```
+
 [文字来源于](http://dart.goodev.org/guides/language/language-tour)
