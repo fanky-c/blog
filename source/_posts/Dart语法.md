@@ -265,5 +265,65 @@ sb.write('foo')..write('bar');
 ```
 
 ### 异常（Exceptions）
+#### 异常类型
+1. Error
+2. Exception
+
+#### 异常调用
+1. Throw
+```
+throw new FormatException('Expected'); 
+throw 'Expected'; //任意对象
+```
+
+2. Catch
+捕获异常可以避免异常继续传递（你重新抛出rethrow异常除外）
+```dart
+try{
+
+}on Exception catch (e){  //指定exception类型错误
+
+}catch(e){  //如果捕获语句没有指定类型，则可以捕获任意类型
+
+}
+```
+
+3. rethrow
+把捕获的异常给重新抛出。
+```dart
+final foo = '';
+void misbehave() {
+  try {
+    foo = "You can't change a final variable's value.";
+  } catch (e) {
+    print('misbehave() partially handled ${e.runtimeType}.');
+    rethrow; // Allow callers to see the exception.
+  }
+}
+
+void main() {
+  try {
+    misbehave();
+  } catch (e) {
+    print('main() finished handling ${e.runtimeType}.');
+  }
+}
+```
+
+4. Finally
+要确保某些代码执行，不管有没有出现异常都需要执行，可以使用 一个 finally 语句来实现。如果没有 catch 语句来捕获异常， 则在执行完 finally 语句后， 异常被抛出了：
+```dart
+try {
+  breedMoreLlamas();
+} catch(e) {
+  print('Error: $e');  // Handle the exception first.
+} finally {
+  cleanLlamaStalls();  // Then clean up.
+}
+```
+
+### Class
+
+### 泛型
 
 [文字来源于](http://dart.goodev.org/guides/language/language-tour)
