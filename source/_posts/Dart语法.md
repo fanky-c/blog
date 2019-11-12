@@ -264,4 +264,6 @@ sb.write('foo')..write('bar');
 //sb.write() 函数返回一个 void， 无法在 void 上使用级联操作符。
 ```
 
+### 异常（Exceptions）
+
 [文字来源于](http://dart.goodev.org/guides/language/language-tour)
