@@ -141,3 +141,6 @@ Node.js 中的进程 Process 是一个全局对象，无需 require 直接使用
 2. 当你的项目中需要有大量计算，CPU 耗时的操作时候，要注意考虑开启多进程来完成了。
 3. Node.js 开发过程中，错误会引起整个应用退出，应用的健壮性值得考验，尤其是错误的异常抛出，以及进程守护（Pm2、Forever）是必须要做的。
 4. 单线程无法利用多核CPU，但是后来Node.js 提供的API以及一些第三方工具相应都得到了解决。
+
+
+[资料来源于](https://mp.weixin.qq.com/s/VzXnnfn4gCBMd5wea3LRIg)
