@@ -9,7 +9,7 @@ tags:
 #### 介绍
 进程是资源分配的最小单位。我们启动一个服务、运行一个实例，就是开一个服务进程，Node.js 里通过 node app.js 开启一个服务进程，多进程就是进程的复制（fork），fork 出来的每个进程都拥有自己的独立空间地址、数据栈，一个进程无法访问另外一个进程里定义的变量、数据结构，只有建立了 IPC 通信，进程之间才可数据共享。
 
-#### nodejs进程默认创建
+#### Node.js默认主进程创建
 1. node app.js
 ```js
 const server = http.createServer();
@@ -18,7 +18,7 @@ server.listen(3000,()=>{
     console.log('进程id',process.pid);
 })
 ```
-#### nodejs多进程创建
+#### Node.js多进程创建
 ##### child_process模块
 1，api使用
   1. child_process.spawn()：适用于返回大量数据，例如图像处理，二进制数据处理。
@@ -108,6 +108,14 @@ if(cluster.isMaster){
 
 ```
 
+> 在单核 CPU 系统之上我们采用 单进程 + 单线程 的模式来开发。在多核 CPU 系统之上，可以通过 child_process.fork 开启多个进程（Node.js 在 v0.8 版本之后新增了Cluster 来实现多进程架构） ，即 多进程 + 单线程 模式。注意：开启多进程不是为了解决高并发，主要是解决了单进程模式下 Node.js CPU 利用率不足的情况，充分利用多核 CPU 的性能。
+
+#### Node.js进程通信原理
+##### IPC(进程间通信)
+1. ipc创建过程
+  1. 主进程  ==> 生成工作进程
+  2. 工作进程  ==> 连接IPC   
+  3. 主进程  ==> 监听/接受IPC
 
 #### process模块
 ##### 介绍
