@@ -337,11 +337,81 @@ p?.y = 4;
 
 ### 泛型
 #### 为什么使用？
-在Dart 中类型是可选的，你可以选择不用泛型。 有些情况下你可能想使用类型来表明你的意图， 不管是使用泛型还是具体类型。
+在Dart中类型是可选的，你可以选择不用泛型，使用泛型有下面几个好处：
+1. 有些情况下你可能想使用类型来表明你的意图，不管是使用泛型还是具体类型。
+2. 可以使用检查模式和静态分析工具提供的代码分析功能，提高代码健壮和安全性。
+3. 减少重复的代码。一个方法可以实现多种不同类型的作用。
+```dart
+//String
+abstract class StringCache {
+  String getByKey(String key);
+  setByKey(String key, String value);
+}
+
+//Object
+abstract class ObjectCache {
+  Object getByKey(String key);
+  setByKey(String key, Object value);
+}
+
+//泛型实现
+abstract class Cache<T> {
+  T getByKey(String key);
+  setByKey(String key, T value);
+}
+```
 
 #### 泛型使用
+1. 限制泛型类型
+```dart
+// T must be SomeBaseClass or one of its descendants.
+class Foo<T extends SomeBaseClass> {...}
+
+class Extender extends SomeBaseClass {...}
+
+void main() {
+  // It's OK to use SomeBaseClass or any of its subclasses inside <>.
+  var someBaseClassFoo = new Foo<SomeBaseClass>();
+  var extenderFoo = new Foo<Extender>();
+
+  // It's also OK to use no <> at all.
+  var foo = new Foo();
+
+  // Specifying any non-SomeBaseClass type results in a warning and, in
+  // checked mode, a runtime error.
+  // var objectFoo = new Foo<Object>();
+}
+```
 
 ### 库
+1. 内置库和包管理器提供的库pub
+```dart
+import 'dart:io';  //内置库
+import 'package:mylib/mylib.dart'; //包管理器库
+import 'package:utils/utils.dart';
+```
+
+2. 导入库的一部分
+```dart
+// Import only foo.
+import 'package:lib1/lib1.dart' show foo;
+
+// Import all names EXCEPT foo.
+import 'package:lib2/lib2.dart' hide foo;
+```
+
+3. 延迟载入库
+```dart
+//deferred as
+import 'package:deferred/hello.dart' deferred as hello;
+
+//使用库标识符调用 loadLibrary() 函数来加载库
+//await 关键字暂停代码执行一直到库加载完成
+greet() async {
+  await hello.loadLibrary();
+  hello.printGreeting();
+}
+```
 
 ### 异步流程
 
