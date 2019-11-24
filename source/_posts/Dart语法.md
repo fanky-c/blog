@@ -430,6 +430,28 @@ greet() async {
 ```
 
 ### 异步流程
+#### 介绍
+有两种方式可以使用 Future 对象中的 数据：
+1. 使用 async 和 await
+2. 使用 Future API
+
+同样，从 Stream 中获取数据也有两种 方式：
+1. 使用 async 和一个 异步 for 循环 (await for)
+2. 使用 Stream API 
+
+
+##### 使用
+```dart
+checkVersion() async {
+  var version = await lookUpVersion();
+  if (version == expectedVersion) {
+    // Do something.
+  } else {
+    // Do something else.
+  }
+}
+```
+可以使用 try, catch, 和 finally 来处理使用 await 的异常
 
 
 [文字来源于](http://dart.goodev.org/guides/language/language-tour)
