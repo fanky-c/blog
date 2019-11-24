@@ -334,6 +334,22 @@ var p = new Point(2, 2);
 p?.y = 4;
 ```
 ##### Constructors(构造函数)
+A: 含义： 定义一个和类名字一样的方法就定义了一个构造函数
+```dart
+class Point {
+  num x;
+  num y;
+
+  Point(num x, num y) {
+    // this 指带当前的实例.
+    this.x = x;
+    this.y = y;
+  }
+}
+```
+B: 特点： 构造函数不会继承。
+
+
 
 ### 泛型
 #### 为什么使用？
