@@ -33,11 +33,28 @@ String name = 'chao';
 ```
 
 #### final and const
-如果你以后不打算修改一个变量，使用 final 或者 const。 一个 final 变量只能赋值一次；一个 const 变量是编译时常量。 （Const 变量同时也是 final 变量。） 顶级的 final 变量或者类中的 final 变量在 第一次使用的时候初始化。
+如果你以后不打算修改一个变量，使用 final 或者 const。 一个 final 变量只能赋值一次；一个 const 变量是编译时常量。 （const 变量同时也是 final 变量。） 顶级的 final 变量或者类中的 final 变量在 第一次使用的时候初始化。
+
+1. const 只能被设一次值，在声明处赋值，且值必须为编译时常量；用于修饰常量。
+```dart
+const bar = 1000000;       // 定义常量值
+// bar =13;   // 出现异常，const修饰的变量不能调用setter方法，即：不能设值，只能在声明处设值
+const atm = 1.01325 * bar; // 值的表达式中的变量必须是编译时常量（bar）;
+
+var c = 12;
+//  atm = 1 * c;  //出错，因为c不是一个编译时常量，即：非const修饰的变量（只有const修饰的变量才是编译时常量）
+```
+
+2. final：只能被设一次值，在声明处赋值，值和普通变量的设值一样，可以是对象、字符串、数字等，用于修饰值的表达式不变的变量；
+  1. 对象成员值能被修改，对于能够添加成员的类（如List、Map）则可以添加或删除成员。(类似js中const)
+  2. 变量本身实例不能被修改。(类似js中const)
+
 > 注意： 实例变量可以为 final 但是不能是 const 。
 ```dart
+//const就不能用在表达实例对象上
 final wordPair = new WordPair.random(); 
 ```
+
 
 ### 内置的类型(Built-in types)
 #### 类型
