@@ -23,6 +23,11 @@ tags:
 2. Row、 Column：这些具有弹性空间的布局类Widget可让您在水平（Row）和垂直（Column）方向上创建灵活的布局。其设计是基于web开发中的Flexbox布局模型。
 3. Stack:  取代线性布局 (译者语：和Android中的LinearLayout相似)，Stack允许子 widget 堆叠， 你可以使用 Positioned 来定位他们相对于Stack的上下左右四条边的位置。Stacks是基于Web开发中的绝度定位（absolute positioning )布局模型设计的
 4. Container: Container 可让您创建矩形视觉元素。container 可以装饰为一个BoxDecoration, 如 background、一个边框、或者一个阴影。 Container 也可以具有边距（margins）、填充(padding)和应用于其大小的约束(constraints)。另外， Container可以使用矩阵在三维空间中对其进行变换
+5. Scaffold： Material Design布局结构的基本实现。此类提供了用于显示drawer、snackbar和底部sheet的API。
+6. Image： 一个显示图片的widget。
+7. Icon: A Material Design icon。
+8. RaisedButton: Material Design中的button， 一个凸起的材质矩形按钮。
+9. Placeholder： 一个绘制了一个盒子的的widget，代表日后有widget将会被添加到该盒子中
 
 #### Widget运行原理
 1. Widget的主要工作是实现一个build函数，用以构建自身。
