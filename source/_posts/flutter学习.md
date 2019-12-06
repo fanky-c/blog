@@ -45,3 +45,8 @@ tags:
 ### State
 #### State介绍
 1. State对象在多次调用build()之间保持不变，允许它们记住信息(状态)。
+
+
+### Navigation & Router(导航与路由)
+1. Navigation.push();  //打开新页面
+2. Navigation.pop();   //退出当前页面
