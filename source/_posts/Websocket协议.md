@@ -54,3 +54,15 @@ ws.onclose = function(evt) {
 
 #### 服务器使用
 1. 常用的Node实现有:Socket.IO、WebSocket-Node。
+
+
+#### 检测心跳
+1. 在使用websocket的过程中，有时候会遇到客户端网络关闭的情况，而这时候在服务端并没有触发onclose事件。这样会：
+   1. 多余的连接
+   2. 服务端会继续给客户端发数据.
+
+#### 身份认证
+1. 大体上Websocket的身份认证都是发生在握手阶段，通过请求中的内容来认证。一个常见的例子是在url中附带参数token。
+
+#### 解决ws与wss共存
+1. nginx配置
