@@ -48,5 +48,16 @@ tags:
 
 
 ### Navigation & Router(导航与路由)
-1. Navigation.push();  //打开新页面
-2. Navigation.pop();   //退出当前页面
+
+#### 静态路由
+1. 静态路由，它不可以向下一个页面传递参数。
+2. 静态路由，它可以接收下一个页面的返回值的
+
+#### 动态路由
+1. 动态路由：自己生成页面对象，所以可以传递自己想要的参数。
+2. Navigation.push();  //打开新页面
+   1. Navigator.push(BuildContext context, Route route) //静态方法
+   2. Navigator.of(context).push(Route route)  //实例方法，和上面的静态方法用途相同
+3. Navigation.pop();   //退出当前页面
+   1. Navigation.pop(BuildContext context, [ result ])
+4. Navigator.replace()
