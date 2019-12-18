@@ -16,6 +16,16 @@ tags:
 3. 更新包的版本
    1. 运行命令行：flutter packages upgrade
 
+### import导入文件的方式
+1. import 'dart:xxx'; 引入Dart标准库
+2. import 'xxx/xxx.dart';引入相对路径的Dart文件
+3. import 'package:xxx/xxx.dart'; 引入Pub仓库pub.dev(或者pub.flutter-io.cn)中的第三方库
+4. import 'package:project/xxx/xxx.dart';引入自定义的dart文件
+5. import 'xxx' show compute1，compute2; 只导入compute1，compute2
+6. import 'xxx' hide compute3; 除了compute都引入
+7. import 'xxx' as compute4; 将库重命名，当有名字冲突时
+
+
 
 ### Widget框架
 #### 基础的Widget包括常用
@@ -52,6 +62,32 @@ tags:
 #### 静态路由
 1. 静态路由，它不可以向下一个页面传递参数。
 2. 静态路由，它可以接收下一个页面的返回值的
+```dart
+return new MaterialApp(
+      title: 'Flutter Demo',
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: new MyHomePage(title: 'Flutter实例'),
+      routes: <String, WidgetBuilder> {
+        // 这里可以定义静态路由，不能传递参数
+        '/router/second': (_) => new SecondPage(),
+        '/router/home': (_) => new RouterHomePage(),
+      },
+    );
+
+//push一个新页面,pushNamed方法是有一个Future的返回值的，
+//所以静态路由也是可以接收下一个页面的返回值的。但是不能向下一个页面传递参数。
+Navigator.of(context).pushNamed('/router/second');
+Navigator.of(context).pushNamed('/router/second').then((value) {
+   // dialog显示返回值
+   _showDialog(context, value);
+})
+
+//pop回上一个页面
+Navigator.of(context).pop('这个是要返回给上一个页面的数据')
+
+```
 
 #### 动态路由
 1. 动态路由：自己生成页面对象，所以可以传递自己想要的参数。
@@ -60,4 +96,5 @@ tags:
    2. Navigator.of(context).push(Route route)  //实例方法，和上面的静态方法用途相同
 3. Navigation.pop();   //退出当前页面
    1. Navigation.pop(BuildContext context, [ result ])
+   2. Navigation.of(context).pop('传给上一个页面消息')
 4. Navigator.replace()
