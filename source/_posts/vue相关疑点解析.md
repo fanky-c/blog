@@ -37,3 +37,34 @@ tags:
 
 
 ### vue中组件数据传递
+#### 父组件到子组件
+* props
+```js
+//父
+ <users :users="katty"></users>
+
+//子
+export default {
+  props:{
+    users:{           //这个就是父组件中子标签自定义名字
+      type:String,
+      required:true
+    }
+  }
+}
+```
+
+* $parent / $children / ref 
+```js
+//父
+<compent></compent>
+
+//子
+
+```
+
+#### 子组件到父组件
+* 通过事件形式
+
+
+#### 祖父组件到孙组件
