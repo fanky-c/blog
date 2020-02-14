@@ -57,14 +57,44 @@ export default {
 * $parent / $children / ref 
 ```js
 //父
-<compent></compent>
+<compent ref="compent1"></compent>
+export default {
+   data: function(){
+      return {
+
+      }
+   },
+   methods: {
+     test: function(){
+
+     }
+   },
+   mounted(){
+     this.$refs.compent1.name //获取子组件compent的data
+   }
+}
 
 //子
-
+export default {
+  data: function(){
+    return {
+      name: ''
+    }
+  }
+  created(){
+    this.$parent.test(); //获取父组件methods
+  }
+}
 ```
 
 #### 子组件到父组件
-* 通过事件形式
+* 通过事件形式$emit
+```js
+//父
+
+
+//子
+```
 
 
 #### 祖父组件到孙组件
