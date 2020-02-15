@@ -34,21 +34,29 @@ tags:
 3. 对不同的模块使用相应的loader
 4. 编译模块，生成抽象语法树AST
 5. 循环遍历AST树，拼接输出js
+> webpack输出的js文件：1. _webpack_require是模块加载函数， 2. 每个模块都有唯一的id(0, 1, 2,...)
 
 ## webpack优化
 ### 打包速度优化
 #### 缩小文件查找范围
 1. include指定查找范围、exclude排除文件查找范围
-2. 
 
 #### 减小编译的文件内容
 1. 动态链接库DLL（webpack4可以用splitChunks, 不然代码会重复
-2. 
 
 #### 充分利用电脑多核性能
 1. 多进程之HappyPack。 HappyPack就能让Webpack把任务分解给多个子进程去并发的执行，子进程处理完后再把结果发送给主进程，其中子进程的个数为cpu的个数减去1,需要在loader处修改如下
 
 ### 项目运行优化
-1. 懒加载
-2. tree shaking
-3. 代码合并和分离(splitChunks)
+#### 懒加载
+1. require.ensure();
+2. import();
+
+#### tree shaking
+1. 目的：消除无用到的代码， 推荐使用方法 { name } form './module.js' 
+2. 原理：ES6引入模块是静态分析，所以编译的时候知道我们加载了哪些代码；进而分析哪些变量未用到，从而删除掉
+3. 有一些副作用（babel转换代码、自执行函数、函数里面使用外部变量
+
+#### 代码合并和分离(splitChunks)
+1. 分离部分第三方库（vue、vuex、vue-router）功能，类似于动态链接库DLL
+2. 合并公共代码（common
