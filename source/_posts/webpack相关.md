@@ -34,7 +34,7 @@ tags:
 3. 对不同的模块使用相应的loader
 4. 编译模块，生成抽象语法树AST
 5. 循环遍历AST树，拼接输出js
-> webpack输出的js文件：1. _webpack_require是模块加载函数， 2. 每个模块都有唯一的id(0, 1, 2,...)
+> webpack输出的js文件：1. __webpack_require__是模块加载函数， 2. 每个模块都有唯一的id(0, 1, 2,...)， 3. __webpack_require__.e是异步加载模块函数（Promise实现）， 4. webpackJsonp用于从异步加载的文件中安装模块
 
 ## webpack优化
 ### 打包速度优化
