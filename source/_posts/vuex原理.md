@@ -71,7 +71,7 @@ function applyMixin (Vue) {
 
 function vuexInit () {
     var options = this.$options;
-    // store injection
+    // store injection（store注入到vue中
     if (options.store) {
       this.$store = typeof options.store === 'function'
         ? options.store()
@@ -82,4 +82,52 @@ function vuexInit () {
   }
 }
 Vuex源码：https://github.com/vuejs/vuex/blob/dev/dist/vuex.esm.js
+```
+
+#### Store的实现
+```js
+//传入根组件的Store
+export default new Vuex.Store({
+  modules: {
+    modulesA,
+    modulesB,
+  },
+});
+
+//Store的构造函数
+constructor (options = {}) {
+   
+    ...
+  
+    /* 存放action */
+    this._actions = Object.create(null)
+    /* 存放mutation */
+    this._mutations = Object.create(null)
+    /* 存放getter */
+    this._wrappedGetters = Object.create(null)
+    /* module收集器 */
+    this._modules = new ModuleCollection(options)
+    /* 根据namespace存放module */
+    this._modulesNamespaceMap = Object.create(null)
+    /* 存放订阅者 */
+    this._subscribers = []
+    /* 用以实现Watch的Vue实例 */
+    this._watcherVM = new Vue()
+
+    ...
+
+   /*初始化根module*/
+  installModule(this, state, [], this._modules.root)
+
+  /* 通过vm重设store，新建Vue对象使用Vue内部的响应式实现注册state以及computed */
+  resetStoreVM(this, state)
+  
+  /* 调用插件 */
+  plugins.forEach(plugin => plugin(this))
+
+  /* devtool插件 */
+  if (Vue.config.devtools) {
+    devtoolPlugin(this)
+  }  
+}
 ```
