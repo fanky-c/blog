@@ -98,3 +98,41 @@ Navigator.of(context).pop('这个是要返回给上一个页面的数据')
    1. Navigation.pop(BuildContext context, [ result ])
    2. Navigation.of(context).pop('传给上一个页面消息')
 4. Navigator.replace()
+
+
+
+### 为何选择Flutter
+1. 性能（Rn Web 原生）
+
+2. 跨平台多样性
+
+3. dart语法
+
+4. 综合评比
+    优势： 1. dart语(易用、语法糖)  2. 性能(项目运行性能、崩溃率万分5)  3.  跨平台(开发效率高)
+    劣势： 1. 资源管理    2. 无法热更新    
+
+
+### 工程架构
+1. 技术选型： Flutter为核心，负责界面绘制、数据请求解析。分别嵌入ios和安卓平台发布。
+
+
+
+
+### 项目优化
+1. 控件的创建和绘制
+   1. build()方法耗时
+   2. 避免不参与动画树参与动画
+   3. 重绘区域优化RepaintBoundary
+
+
+2. 其他优化
+   1. flutter单线程优化， 耗时任务放在isolate
+
+
+### 现实遇到问题
+1. 异常报错
+    1. 原生端传 messageChanle
+    2. flutter报错不会引起应用崩溃
+2. flutter版本管理
+3. 平台兼容问题（ui、文件读写路径、网络数据)
