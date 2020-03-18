@@ -8,7 +8,7 @@ tags:
 ---
 
 ### 什么是BFC?
-1. BFC(block formatting context) 块级格式化上下文。
+1. BFC(block formatting context) 块级格式化上下文。 
 2. 也可以理解BFC就是一个作用范围。可以把它理解成是一个独立的容器，并且这个容器的里box的布局，与这个容器外的毫不相干。
 
 ### 如何产生BFC?
