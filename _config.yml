@@ -46,7 +46,8 @@ friends: [
         href: "http://www.fankyc.cn"
     },{
         title: "粤ICP备19149804号",
-        href: "http://www.miitbeian.gov.cn/"
+        target: "_blank",
+        href: "http://www.beian.miit.gov.cn"
     },{
         title: "It helps SEO",
         href: "#"    

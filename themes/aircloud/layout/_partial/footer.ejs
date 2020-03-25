@@ -65,7 +65,11 @@
     <p style="padding-top:10px;">
         <span>/</span>
         <% config.friends.forEach(function(friend){ %>
-        <span><a href="<%= friend.href %>"><%= friend.title %></a></span>
+            <% if(friend.target == "_blank"){ %>
+               <span><a href="<%= friend.href %>" target="_blank"><%= friend.title %></a></span>
+            <% }else{ %>
+               <span><a href="<%= friend.href %>"><%= friend.title %></a></span>
+            <% } %>
         <span>/</span>
         <% }); %>
     </p>
