@@ -22,14 +22,20 @@ HTML5开始提供的一种浏览器与服务器进行全双工通讯的网络技
 2. 对服务器来说开发者要求更高，长连接需要服务业务更加稳定（不能随便把进程和框架crash）。
 
 
-### Websocket协议内容
-#### 握手
+### Websocket协议流程
+#### 握手阶段
 1. WebSocket客户端的握手是一个HTTP Upgrade请求
 2. Sec-WebSocket-Key（请求头）以及Sec-WebSocket-Accept（响应头）。 目的：Websocket协议需要保证客户端发起的Websocket连接请求只会被能理解Websocket协议的服务器所识别。
+```js
+//相比传统的http多了这个2个值
+Upgrade: websocket
+Connection: Upgrade
+```
 
 
-#### 数据传输
-客户端与服务器之间互相传输数据的的基本单位根据规格说明书里我们称为“Messages”。在实际网络中，这些Message由一个或多个Frames组成。
+
+#### 数据传输阶段
+客户端与服务器之间互相传输数据的的基本单位根据规格说明书里我们称为“Messages”。在实际网络中，这些Message由一个或多个Frames组成。解决了http的被动性、无状态性。
 
 
 ### Websocket使用
