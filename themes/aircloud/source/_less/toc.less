@@ -46,10 +46,31 @@
   }
 }
 
-.toc-fixed{
+.toc-fixed {
   position: fixed;
-  top:10px;
+  top: 10px;
+  bottom: 10px;
   width: 240px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;  
+}
+
+.toc-fixed::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: transparent
+}
+
+.toc-fixed::-webkit-scrollbar-thumb {
+    background: transparent
+}
+
+.toc-fixed::-webkit-scrollbar-thumb {
+    background: rgba(51, 51, 51, 0.2)
+}
+
+.toc-fixed:hover::-webkit-scrollbar-thumb:hover {
+    background: rgba(51, 51, 51, 0.3)
 }
 
 @media screen and (max-width: 1180px){
