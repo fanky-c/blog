@@ -43,16 +43,24 @@ Connection: Upgrade
 ```js
 const ws = new WebSocket("wss://127.0.0.1"); //ws默认端口:80， wss默认端口:443
 
+//建立连接
 ws.onopen = function(evt) { 
   console.log("Connection open ..."); 
   ws.send("Hello WebSockets!");
 };
 
+//接受服务器信息调用
 ws.onmessage = function(evt) {
   console.log( "Received Message: " + evt.data);
   ws.close();
 };
 
+//连接出错时候调用
+ws.onerror = function(){
+
+}
+
+//连接终止是调用
 ws.onclose = function(evt) {
   console.log("Connection closed.");
 };
@@ -65,7 +73,8 @@ ws.onclose = function(evt) {
 #### 检测心跳
 1. 在使用websocket的过程中，有时候会遇到客户端网络关闭的情况，而这时候在服务端并没有触发onclose事件。这样会：
    1. 多余的连接
-   2. 服务端会继续给客户端发数据.
+   2. 服务端会继续给客户端发数据
+
 
 #### 身份认证
 1. 大体上Websocket的身份认证都是发生在握手阶段，通过请求中的内容来认证。一个常见的例子是在url中附带参数token。
