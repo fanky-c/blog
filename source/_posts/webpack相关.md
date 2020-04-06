@@ -60,3 +60,11 @@ tags:
 #### 代码合并和分离(splitChunks)
 1. 分离部分第三方库（vue、vuex、vue-router）功能，类似于动态链接库DLL
 2. 合并公共代码（common
+
+## webpack插件
+### 插件创建流程
+1. 创建一个javascript构造函数
+2. 在他的原型定义apply方法
+3. 指定触发webpack的事件钩子
+4. 在钩子里面实现自己的业务逻辑
+5. 功能实现完成，调用webpack提供的callback

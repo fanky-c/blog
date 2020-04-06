@@ -3,6 +3,8 @@ title: javascript类型检测
 date: 2019-05-22 16:21:03
 tags:
     - js类型检测
+    - typeof
+    - instanceof
 ---
 
 #### typeof
@@ -13,12 +15,14 @@ typeof 1 //
 typeof '1' //
 typeof true //  
 typeof x // undefined 
-if(typeof x == 'undefined') //
+if(typeof x == 'undefined') // true
 if(x)  //直接报错
 ```
 2. function(函数)
 ```js
-typeof function(){} //
+typeof function(){}
+typeof class C {}
+typeof Math.sin 
 ```
 
 3. object
