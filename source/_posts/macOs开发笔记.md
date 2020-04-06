@@ -117,10 +117,10 @@ setupWebViewJavascriptBridge(function(bridge) {
 ```
 
 #### 原理
-1. 在windows下面添加webviewJsbridge对象
-2. 然后动态的在webview中创建一个Iframe
-3. oc内部通过iframe的src惊喜通信，每次注册方法和调用方法动态的改变src
-4. 调用 js 中的方法_handleMessageFromObjC 进行数据交互
+1. 分别在OC环境和javascript环境都保存一个bridge对象，里面维持着requestId,callbackId,以及每个id对应的具体实现。
+2. OC通过javascript环境的window.WebViewJavascriptBridge对象来找到具体的方法，然后执行。
+3. javascript通过改变iframe的src来出发webview的代理方法，从而实现把javascript消息发送给OC这个功能。
+
 
 #### 工作流
 1. JS 端加入 src 为 https://__bridge_loaded__ 的 iframe
