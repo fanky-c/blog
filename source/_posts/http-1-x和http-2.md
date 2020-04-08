@@ -9,12 +9,13 @@ tags:
 
 #### 基本介绍
 
-##### A:报文
-  1. 起始⾏ 
-  2. ⾸部（header）
-  3. 主体
+##### A:请求报文
+  1. 请求⾏ 
+  2. 请求头
+  3. 请求体
 
-![报文](/blog/img/http_content.png)  
+![报文](/blog/img/http_request.png)  
+![报文](/blog/img/http_request1.png)  
 
 ##### B:方法
   1. get 
@@ -36,7 +37,16 @@ tags:
   5. options
      * 查词可以服务器上执行那些方法,检查服务器性能（跨域请求用的多）
 
-##### C：状态码
+##### C:响应报文
+  1. 响应行
+  2. 响应头
+  3. 响应体  
+
+
+![报文](/blog/img/http_respond.png)  
+![报文](/blog/img/http_respond1.png)  
+
+##### D：状态码
   1. 1xx 信息性状态
   2. 2xx 成功
      * 206：Partial Content 分块内容
