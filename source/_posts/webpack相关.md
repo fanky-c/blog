@@ -62,6 +62,11 @@ tags:
 2. 合并公共代码（common
 
 ## webpack插件
+### 插件相关概念
+1. Tapable: webpack自己写的基础类Tapable, Compiler、Compilation等都是继承于Tabable类
+2. Compiler: Webpack 环境所有的的配置信息，包含 options，loaders，plugins 这些信息
+3. Compilation: 包含了当前的模块资源、编译生成资源、变化的文件等
+
 ### 插件创建流程
 1. 创建一个javascript构造函数
 2. 在他的原型定义apply方法
