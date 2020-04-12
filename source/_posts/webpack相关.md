@@ -73,3 +73,29 @@ tags:
 3. 指定触发webpack的事件钩子
 4. 在钩子里面实现自己的业务逻辑
 5. 功能实现完成，调用webpack提供的callback
+
+### 使用案例
+```js
+//webpack1
+
+function AddHeadTextPlugin(options) {
+  this.options = options;
+}
+
+AddHeadTextPlugin.prototype.apply = function (compiler) {
+  const self = this;
+  compiler.plugin('emit', function(compilation, callback){
+      let outputfile = compilation.options.output;
+      let assets = compilation.assets;
+      let keys = Object.keys(assets);
+
+      callback();
+  });
+
+  compiler.plugin('done', function (compilation) {
+
+  });
+
+}
+
+```
