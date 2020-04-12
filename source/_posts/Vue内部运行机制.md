@@ -192,6 +192,9 @@ with(this){
 ### 数据状态更新时差异diff以及patch机制
 首先说一下 patch 的核心 diff 算法，我们用 diff 算法可以比对出两颗树的「差异」，我们来看一下，假设我们现在有如下两颗树，它们分别是新老 VNode 节点，这时候到了 patch 的过程。
 
+<img src="/blog/img/diff.png" width = "700" height = "auto" alt="" align=center />
+
+
 diff 算法是通过同层的树节点进行比较而非对树进行逐层搜索遍历的方式，所以时间复杂度只有 O(n)，是一种相当高效的算法，如下图。
 
 <img src="/blog/img/path.png" width = "700" height = "auto" alt="" align=center />
