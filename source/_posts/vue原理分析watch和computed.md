@@ -54,16 +54,58 @@ computed: {
 2. 其他的操作依赖当前的值变化，不会产生新的值(data、props)
 
 #### computed
-1. 当模板中某个新的值依赖一个或者多个数据(data、props)时， 计算值会被缓存(依赖的属性值不变就不触发，源码中根据dirty字段判断)
+1. 当模板中某个新的值依赖一个或者多个数据(data、props)时， 计算值会被缓存(依赖的属性值不变就不触发，源码中根据dirty字段判断要读取缓存)
 2. computed函数不接受参数
 
 
-### 实现原理
+### computed实现原理
+#### 流程
+对data的set操作  ==> Dep.notfiy()通知  ===> watcher ===> update更新视图。
 
-#### computed
-1. computed初始化
-2. 当data、props改变computed如何计算
-3. computed为啥可以被缓存
+#### 案例
+```js
 
+//因为other值的改变引起视图的变化，视图的变化肯定会读取sum的值。
+//我们希望每次other的半会不会重新计算sum的值
 
-#### watch
+<div id="app">
+  <span @click="sumAdd">{{sum}}</span>
+  <span @click="change">{{other}}</span>
+</div>
+<script>
+  new Vue({
+    el: "#app",
+    data() {
+      return {
+        count: 1,
+        other: 'Hello World'
+      }
+    },
+    methods: {
+      sumAdd() {
+        this.count = 2;
+      },
+      change() {
+        this.other = 'wtf'
+      }
+    },
+    computed: {
+      // 非常耗时的计算属性
+      sum() {
+        let i = 9999999999999999
+        while(i > 0) {
+            i--;
+        }
+        return this.count + 1
+      },
+    },
+  })
+</script>
+```
+
+#### 总结
+##### 不缓存
+1. 更新count的值就会重新算sum的值
+
+##### 缓存
+1. 更改other的值不会重新计算sum的值
