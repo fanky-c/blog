@@ -81,3 +81,8 @@ ws.onclose = function(evt) {
 
 #### 解决ws与wss共存
 1. nginx配置
+
+
+#### websocket和http2服务器推送的区别
+1. websocket是全双工同学， 消息可以直接推送给webapp, 也就是说webapp有API来获取服务器推送的数据
+2. http2虽然也支持server push，但是服务器只会主动把资源推送到客户端缓存，并不直接推送到webapp本身。 也可以说webapp本身没有直接响应这些数据的API接口。
