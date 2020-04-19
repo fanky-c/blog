@@ -36,7 +36,10 @@ tags:
 * commonjs是值的拷贝， 注意浅拷贝基本数据类型和对象数据类型区别
 ```js
 // dep.js
-export let a = 1
+let a = 1
+module.exports = {
+    a: a
+}
 setTimeout(() => a += 1, 500)
 
 // app.js
