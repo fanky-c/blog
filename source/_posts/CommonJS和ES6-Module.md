@@ -43,7 +43,7 @@ module.exports = {
 setTimeout(() => a += 1, 500)
 
 // app.js
-import { a } from 'dep'
+let a = require('dep');
 setTimeout(function () {
   console.log(a) // 输出：1
 }, 1000)
