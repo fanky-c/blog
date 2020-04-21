@@ -3,6 +3,7 @@ title: 构建高性能web应用
 date: 2019-02-17 14:55:53
 tags:
     - 性能
+    - async、defer
 ---
 
 ####  什么是高性能web前端应用？
