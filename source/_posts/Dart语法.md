@@ -387,27 +387,68 @@ try {
 Dart 是一个面向对象编程语言，同时支持基于 mixin 的继承机制。 每个对象都是一个类的实例，所有的类都继承于 Object.。 基于 Mixin 的继承 意味着每个类（Object 除外） 都只有一个超类，一个类的代码可以在其他 多个类继承中重复使用
 
 #### 语法
+A: 含义： 定义一个和类名字一样的方法就定义了一个构造函数
+```dart
+// dart中类的基本使用
+
+class Person{
+  //公共属性
+  String name = 'chao';
+  int age = 10;
+  
+  //私有属性
+  String _sex = '男';
+
+  //默认构造方法
+  //初始化属性
+  Person(String name, int age):name='超',age=10{
+     this.name = name;
+     this.age = age;
+  }
+  
+  //默认构造方法简写
+  //Person(this.name, this.age);
+
+  //命名构造函数
+  Person.eat(){
+    print('我是命名构造函数');
+  }
+  
+  //公共方法
+  String say(){
+     return '我叫${this.name}, 我今年${this.age}';
+  }
+  
+
+  get myName{
+    return this.name;
+  }
+
+  set myAge(int age){
+    this.age = age;
+  }
+  
+  //私有方法
+  void _think(){
+     print('我是私有方法， ${this.name}正在思考中....');
+  }
+
+}
+Person a = new Person('chao', 20);
+print(a.myName);
+a.myAge = 300;
+print(a.say());
+print(a.age);
+```
+
+#### 特点
 ##### ?. 来替代 . 
 ```dart
 //?. 来替代 . 可以避免当左边对象为 null 时候 抛出异常
 var p = new Point(2, 2);
 p?.y = 4;
 ```
-##### Constructors(构造函数)
-A: 含义： 定义一个和类名字一样的方法就定义了一个构造函数
-```dart
-class Point {
-  num x;
-  num y;
-
-  Point(num x, num y) {
-    // this 指带当前的实例.
-    this.x = x;
-    this.y = y;
-  }
-}
-```
-B: 特点： 构造函数不会继承。
+##### 构造函数不会继承。
 
 
 
