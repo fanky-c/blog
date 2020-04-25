@@ -231,21 +231,47 @@ main() {
 }
 //nestedFunction() 可以访问所有的变量， 包含顶级变量
 ```
+#### 自执行方法、箭头函数
+```dart
+/**
+  自执行方法
+**/
+((int num){
+   print('我就是自执行方法: $num');
+})(29)
+
+/**
+   箭头函数
+**/
+    List list=[4,1,2,3,4];
+    //匿名函数
+    var newList=list.map((value){
+      if(value>2){
+        return value*2;
+      }
+      return value;
+    });
+    print(newList.toList());
+
+    //箭头函数
+    var newList=list.map((value)=>value>2?value*2:value);
+```
+
 #### 闭包（closures）
 一个 闭包 是一个方法对象，不管该对象在何处被调用， 该对象都可以访问其作用域内 的变量
-```
+```dart
+/**
+ 闭包的特点：
+  1. 常驻内存
+  2. 内部变量，不污染全局
+*/
 Function makeAdder(num addBy) {
   return (num i) => addBy + i;
 }
 main() {
-  // Create a function that adds 2.
   var add2 = makeAdder(2);
-
-  // Create a function that adds 4.
-  var add4 = makeAdder(4);
-
-  assert(add2(3) == 5);
-  assert(add4(3) == 7);
+  add2(2);  // 4
+  add2(2);  // 6
 }
 ```
 
