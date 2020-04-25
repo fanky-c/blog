@@ -161,6 +161,7 @@ final constantMap = const {
 ##### symbol
 
 ### Function
+#### 介绍
 1. Dart 是一个真正的面向对象语言，方法也是对象并且具有一种 类型， Function。 这意味着，方法可以赋值给变量，也可以当做其他方法的参数。 也可以把 Dart 类的实例当做方法来调用。
 ```
 bool isNoble(int atomicNumber) {
@@ -172,9 +173,13 @@ isNoble(atomicNumber) {
   return _nobleGases[atomicNumber] != null;
 }
 ```
-2. 必须参数和可选参数
+#### 可选参数、默认参数、命名参数
+1. 使用
 ```dart
-//参数放到 [] 中就变成可选
+ /**
+  * 方法的可选参数 []
+  * 方法的形参默认值 sex = '男'
+  */
 String say(String from = 'china', String msg, [String device]) {
   var result = '$from says $msg';
   if (device != null) {
@@ -182,8 +187,20 @@ String say(String from = 'china', String msg, [String device]) {
   }
   return result;
 }
+
+
+/**
+* 定义一个命名参数的方法
+*/
+String printUserInfoByObject(String username, {int age = 10, String sex = '女'}){
+   if(sex == '女'){
+      return '我是非常可爱，姓名：$username --- 性别：$sex --- 年龄：$age';
+   }
+   return '我是非常帅气，姓名：$username --- 性别：$sex --- 年龄：$age';
+}
+print(printUserInfoByObject('超超', age: 10, sex: '男'));
 ```
-3. main() 入口函数
+#### main() 入口函数
 ```
 void main() {
   querySelector("#sample_text_id")
@@ -194,7 +211,7 @@ void main() {
 ```
 
 
-4. 静态作用域（scope）
+#### 静态作用域（scope）
 ```
 var topLevel = true;
 main() {
@@ -214,7 +231,7 @@ main() {
 }
 //nestedFunction() 可以访问所有的变量， 包含顶级变量
 ```
-5. 闭包（closures）
+#### 闭包（closures）
 一个 闭包 是一个方法对象，不管该对象在何处被调用， 该对象都可以访问其作用域内 的变量
 ```
 Function makeAdder(num addBy) {
@@ -232,7 +249,7 @@ main() {
 }
 ```
 
-6. 返回值
+#### 返回值
 所有的函数都返回一个值。如果没有指定返回值，则 默认把语句 return null; 作为函数的最后一个语句执行。
 
 
