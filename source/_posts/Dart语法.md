@@ -386,7 +386,7 @@ try {
 #### 介绍
 Dart 是一个面向对象编程语言，同时支持基于 mixin 的继承机制。 每个对象都是一个类的实例，所有的类都继承于 Object.。 基于 Mixin 的继承 意味着每个类（Object 除外） 都只有一个超类，一个类的代码可以在其他 多个类继承中重复使用
 
-#### 语法
+#### 基本语法
 A: 含义： 定义一个和类名字一样的方法就定义了一个构造函数
 ```dart
 // dart中类的基本使用
@@ -441,6 +441,63 @@ print(a.say());
 print(a.age);
 ```
 
+#### 继承
+```dart
+class Person {
+  String name;
+  int age;
+  String myWork;
+  Person(this.name, this.age, this.myWork);
+  void work(){
+    print('我来父类 ---- 我的工作是: ${this.myWork}');
+  }
+  void say(){
+    print('我的名字是:${this.name}, 我今年:${this.age}');
+  }
+}
+
+/**
+ * 1. extends 继承关键词
+ * 2. 子类会继承父类里面可见的属性和方法 但是不会继承构造函数
+ * **/
+class Stundent extends Person {
+  String sex;
+  /*
+      1. 构造方法无法继承
+      2. 可以通过super调用父类构造方法
+  */
+  Stundent(String name, int age, String myWork, String sex) : super(name, age, myWork){
+    this.sex = sex;
+  }
+
+  void run(){
+    //调用父类的方法
+    super.say();
+  }
+  
+  /**
+   *  1. 静态方法和静态属性通过类名方法，不能实例化访问
+   *  2. 静态方法不能访非静态属性和方法
+   *  3. 非静态方法可以方法静态属性和方法
+  */
+  static int score = 10;
+
+  static void cry(){
+    print('我好伤心的哭了, 因为我的分数是：$score');
+  }
+  
+  //重写父类的方法
+  @override
+  void work(){
+     print('我来子类 ---- 我的工作是: ${this.myWork}');
+  }
+}
+
+Stundent s = new Stundent('chao', 10, '写代码', '男');
+s.run();
+Stundent.cry();
+```
+
 #### 特点
 ##### ?. 来替代 . 
 ```dart
@@ -448,8 +505,15 @@ print(a.age);
 var p = new Point(2, 2);
 p?.y = 4;
 ```
-##### 构造函数不会继承。
-
+#####  级联操作..
+```dart
+var p = new Point(2, 2);
+p.y = 4
+ ..printInfo()
+ ..x = 5;
+```
+##### is 类型判断
+##### as 类型转换
 
 
 ### 泛型
