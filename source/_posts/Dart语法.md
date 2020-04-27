@@ -520,6 +520,59 @@ p.y = 4
 ##### is 类型判断
 ##### as 类型转换
 
+### 抽象类、接口
+#### 定义
+1. 抽象类主要是定义标准，子类可以继承抽象类，也可以实现抽象类接口。
+2. 抽象类通过abstract关键字来定义，定义没有方法体的方法我们称为抽象方法
+3. 抽象类不能被实例化，只有继承它的子类可以
+4. 如果子类继承抽象类必须得实现里面的抽象方法
+
+
+#### 使用
+##### extends和implements区别
+1. 如果要复用抽象类里面的方法，并且要用抽象方法约束自类的话我们就用extends继承抽象类
+2. 如果只是把抽象类当做标准的话我们就用implements实现抽象类
+
+##### 代码实现
+```dart
+// Db.dart
+abstract class Db{   //当做接口   接口：就是约定 、规范
+    String URL;      //数据库的链接地址
+    add(String data);
+    save();
+    delete();
+    printInfo(){
+      print('我是Db类的打印方法');
+    }
+}
+
+//NoSql.dart
+class NoSql extends Db{
+  @override
+  String URL;
+
+  @override
+  add(String data) {
+    print('这是NoSql的add方法'+data);
+  }
+
+  @override
+  delete() {
+    // TODO: implement delete
+    return null;
+  }
+
+  @override
+  save() {
+    // TODO: implement save
+    return null;
+  }  
+}
+
+NoSql nosql=new NoSql('xxxxxx');
+nosql.add('1243214');
+nosql.printInfo();  //只有在extends才会继承父类的这个方法
+```
 
 ### 泛型
 #### 为什么使用？
