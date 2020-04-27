@@ -546,10 +546,38 @@ abstract class Db{   //当做接口   接口：就是约定 、规范
     }
 }
 
+//MySql.dart
+//如果只是把抽象类当做标准的话我们就用implements实现抽象类， 无法继承父类printInfo方法
+class Mysql implements Db{
+  
+  @override
+  String URL;
+
+  Mysql(this.URL);
+
+  @override
+  add(data) {   
+    print('这是mysql的add方法'+data);
+  }
+
+  @override
+  delete() {   
+    return null;
+  }
+
+  @override
+  save() {   
+    return null;
+  }  
+}
+
 //NoSql.dart
+//只有在extends才会继承父类的这个方法
 class NoSql extends Db{
   @override
   String URL;
+
+  NoSql(this.url);
 
   @override
   add(String data) {
@@ -571,7 +599,7 @@ class NoSql extends Db{
 
 NoSql nosql=new NoSql('xxxxxx');
 nosql.add('1243214');
-nosql.printInfo();  //只有在extends才会继承父类的这个方法
+nosql.printInfo(); 
 ```
 
 ### 泛型
