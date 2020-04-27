@@ -419,6 +419,11 @@ class Person{
      return '我叫${this.name}, 我今年${this.age}';
   }
   
+  //私有方法
+  void _cry(){
+    print('我是私有方法')
+  }
+  
 
   get myName{
     return this.name;
