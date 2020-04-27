@@ -572,7 +572,7 @@ class Mysql implements Db{
 }
 
 //NoSql.dart
-//只有在extends才会继承父类的这个方法
+//只有在extends才会继承父类的printInfo方法
 class NoSql extends Db{
   @override
   String URL;
