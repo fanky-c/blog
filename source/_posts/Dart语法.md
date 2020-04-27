@@ -13,8 +13,6 @@ tags:
 5. 同样，Dart 还支持顶级变量，以及 在类中定义变量（静态变量和实例变量）。 实例变量有时候被称之为域（Fields）或者属性（Properties）。
 6. 和 Java 不同的是，Dart 没有 public、 protected、 和 private 关键字。如果一个标识符以 (_) 开头，则该标识符 在库内是私有的
 
-### 关键词(keywords)
-
 ### 变量（variables）
 #### 变量赋值 
 ```
