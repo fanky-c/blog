@@ -524,11 +524,12 @@ p.y = 4
 2. 抽象类通过abstract关键字来定义，定义没有方法体的方法我们称为抽象方法
 3. 抽象类不能被实例化，只有继承它的子类可以
 4. 如果子类继承抽象类必须得实现里面的抽象方法
+5. 子类可以实现多个接口（class C implements A,B{}）
 
 
 #### 使用
 ##### extends和implements区别
-1. 如果要复用抽象类里面的方法，并且要用抽象方法约束自类的话我们就用extends继承抽象类
+1. 如果要复用抽象类里面可见的方法和属性，并且要用抽象方法约束自类的话我们就用extends继承抽象类
 2. 如果只是把抽象类当做标准的话我们就用implements实现抽象类
 
 ##### 代码实现
@@ -598,6 +599,61 @@ class NoSql extends Db{
 NoSql nosql=new NoSql('xxxxxx');
 nosql.add('1243214');
 nosql.printInfo(); 
+```
+
+### mixins
+#### 介绍
+##### 用途
+1. 可以实现类似extends的功能，但是不是继承
+2. 可以mixins多个类
+
+##### 使用条件
+1. 作为mixins的类只能继承自Object，不能继承其他类
+2. 作为mixins的类不能有构造函数
+3. mixins的实例类型就是超类的子类型
+4. with为mixins的关键字
+
+
+#### 使用
+```dart
+
+class Person{
+  String name;
+  num age;
+  Person(this.name,this.age);
+  printInfo(){
+    print('${this.name}----${this.age}');
+  }
+  void run(){
+    print("Person Run");
+  }
+}
+
+//B和A不能有构造函数， 也不能继承其他的类
+class A {
+  String info="this is A";
+  void printA(){
+    print("A");
+  }
+  void run(){
+    print("A Run");
+  }
+}
+
+class B {  
+  void printB(){
+    print("B");
+  }
+  void run(){
+    print("B Run");
+  }
+}
+
+// C继承Person(可有构造方法)，但是Mixins了B、A
+// 每个类中有同样的方法和属性， 后面一个会覆盖前面， 也就是A会覆盖前面的B和Person
+class C extends Person with B,A{
+  C(String name, num age) : super(name, age);
+}
 ```
 
 ### 泛型
