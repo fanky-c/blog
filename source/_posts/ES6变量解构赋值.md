@@ -42,9 +42,46 @@ log('hello') // hello
 ```
 
 ### 字符串的解构赋值
+```js
+let [a, b, c, d, e] = 'world';
 
+//字符串有length属性
+let {length : len} = 'hello';
+len  // 5
+```
 ### 函数参数的解构赋值
 
 ### 圆括号的解构赋值
 
 ### 数值和布尔值解构赋值
+
+
+### 用途
+#### 从函数返回多个值
+```js
+function example() {
+  return {
+    foo: 1,
+    bar: 2
+  };
+}
+let { foo, bar } = example();
+```
+
+#### 提取 JSON 数据
+```js
+let jsonData = {
+  id: 42,
+  status: "OK",
+  data: [867, 5309]
+};
+let { id, status, data: number } = jsonData;
+console.log(id, status, number);
+// 42, "OK", [867, 5309]
+```
+
+#### 输入模块的指定方法
+```js
+//require加载方法
+const { SourceMapConsumer, SourceNode } = require("source-map");
+```
