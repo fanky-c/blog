@@ -76,7 +76,11 @@ let jsonData = {
   data: [867, 5309]
 };
 let { id, status, data: number } = jsonData;
+let { id, status, data } = jsonData;
 console.log(id, status, number);
+// 42, "OK", [867, 5309]
+let { id, status, data } = jsonData;
+console.log(id, status, data);
 // 42, "OK", [867, 5309]
 ```
 
