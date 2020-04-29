@@ -657,52 +657,70 @@ class C extends Person with B,A{
 ```
 
 ### 泛型
-#### 为什么使用？
+#### 泛型作用
 在Dart中类型是可选的，你可以选择不用泛型，使用泛型有下面几个好处：
 1. 有些情况下你可能想使用类型来表明你的意图，不管是使用泛型还是具体类型。
 2. 可以使用检查模式和静态分析工具提供的代码分析功能，提高代码健壮和安全性。
 3. 减少重复的代码。一个方法可以实现多种不同类型的作用。
+
+
+#### 泛型具体使用
+##### 方法
 ```dart
-//String
-abstract class StringCache {
-  String getByKey(String key);
-  setByKey(String key, String value);
+T getRawData<T>(T value){
+  return value;
+}
+getRawData<num>(111);
+```
+##### 类
+```dart
+class GetClass<T>{
+  List list = new List<T>();
+  add(T value){
+    this.list.add(value);
+  }
+  printClass(){
+    for(var i=0; i<this.list.length; i++){
+        print(this.list[i]);
+    }
+  }
+}
+```
+##### 接口
+```dart
+abstract class Cache<T>{
+   void getByKey(String key);
+   T setByKey(String key, T val);
 }
 
-//Object
-abstract class ObjectCache {
-  Object getByKey(String key);
-  setByKey(String key, Object value);
+class FileCache<T> implements Cache<T>{
+  @override
+  void getByKey(String key) {
+     print('我是FileCache接口  key --- $key'); 
+  }
+
+  @override
+  T setByKey(String key, T val) {
+    print('我是FileCache接口  key --- $key; val --- $val'); 
+    return val;
+  }
+  
 }
 
-//泛型实现
-abstract class Cache<T> {
-  T getByKey(String key);
-  setByKey(String key, T value);
+class MemoryCache<T> implements Cache<T>{
+  @override
+  void getByKey(String key) {
+    print('我是MemoryCache接口  key --- $key'); 
+  }
+
+  @override
+  T setByKey(String key, T val) {
+    print('我是MemoryCache接口  key --- $key; val --- $val'); 
+    return val;
+  }
 }
 ```
 
-#### 泛型使用
-1. 限制泛型类型
-```dart
-// T must be SomeBaseClass or one of its descendants.
-class Foo<T extends SomeBaseClass> {...}
-
-class Extender extends SomeBaseClass {...}
-
-void main() {
-  // It's OK to use SomeBaseClass or any of its subclasses inside <>.
-  var someBaseClassFoo = new Foo<SomeBaseClass>();
-  var extenderFoo = new Foo<Extender>();
-
-  // It's also OK to use no <> at all.
-  var foo = new Foo();
-
-  // Specifying any non-SomeBaseClass type results in a warning and, in
-  // checked mode, a runtime error.
-  // var objectFoo = new Foo<Object>();
-}
-```
 
 ### 库
 1. 内置库和包管理器提供的库pub
