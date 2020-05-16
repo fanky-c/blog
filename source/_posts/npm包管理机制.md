@@ -103,3 +103,6 @@ semver.valid(semver.coerce('42.6.7.9.3-alpha')) // '42.6.7'
 
 ### 文件的完整性
 1. 下载npm包之后本地计算文件hash值， 和下载之前拿到的文件hash对比（npm info）
+
+
+[本文参考](https://mp.weixin.qq.com/s/gtsnxFOYRZ4i-Id_9Gr6Aw)
