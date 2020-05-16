@@ -10,7 +10,8 @@ tags:
 ### 目录、文件
 1. 程序入口
 ```js
-//package.json文件 
+// package.json文件 
+// 例如： import { notification } from 'antd'; 实际上引入的就是./index.js中暴露出去的模块
 {
     "main": "./index.js"
 }
@@ -24,6 +25,44 @@ tags:
  * ...
 
 ## npm版本管理
+###  SemVer规范
+#### 标准版本
+SemVer规范的标准版本号采用 X.Y.Z 的格式，其中 X、Y 和 Z 为非负的整数，且禁止在数字前方补零。X 是主版本号、Y 是次版本号、而 Z 为修订号
+1. 主版本号(major)：当你做了不兼容的API 修改
+2. 次版本号(minor)：当你做了向下兼容的功能性新增
+3. 修订号(patch)：当你做了向下兼容的问题修正。
+
+#### 先行版本
+当某个版本改动比较大、并非稳定而且可能无法满足预期的兼容性需求时，你可能要先发布一个先行版本。
+1. 内部版本(alpha):
+2. 公测版本(beta):
+3. 正式版本的候选版本rc: 即 Release candiate
+```js
+  npm view vue versions  //查看vue发布的所以版本记录
+```
+
+
+### 版本工具使用
+```js
+//下载
+npm i semver
+
+//判断版本号是否合法
+semver.valid('1.2.3') // '1.2.3'
+
+//强制转化成semver版本号
+semver.valid(semver.coerce('v2')) // '2.0.0'
+semver.valid(semver.coerce('42.6.7.9.3-alpha')) // '42.6.7'
+```
+
+### 锁定版本依赖
+#### lock文件
+#### 定期更新依赖
+使用 npm outdated 可以帮助我们列出有哪些还没有升级到最新版本的依赖：
+1. 黄色表示不符合我们指定的语意化版本范围 - 不需要升级
+2. 红色表示符合指定的语意化版本范围 - 需要升级
+
+执行 npm update 会升级所有的红色依赖。
 
 ## npm原理
 
