@@ -34,6 +34,11 @@ tags:
 1. Jenkins上装一个插件Publish Over SSH，我们将通过这个工具实现服务器部署功能。
 2. 增加构建后操作步骤，选择send build artificial over SSH
 3. 自己新增构建后自动化脚本
+```bash
+cd /usr/local/src/myspace/myVue
+tar -zxvf dist.tar.gz
+rm -rf dist.tar.gz
+```
 
 
 
