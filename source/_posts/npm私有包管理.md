@@ -22,9 +22,20 @@ tags:
 
 
 ### 使用
-1. 添加用户
-2. 发布本地包
-3. 安装
+```js
+//1. 添加用户
+npm adduser --registry http://localhost:4873
+
+
+//2. 发布本地包
+进入包目录  ==> npm publish --registry http://localhost:4873
+
+//3. 安装已发布的包
+npm install <包名>  npm publish --registry http://localhost:4873
+
+//4. 删除已发布的包
+npm unpublish <包名> --force --registry http://fankyc.cn:4873
+```
 
 
 ### 配置
