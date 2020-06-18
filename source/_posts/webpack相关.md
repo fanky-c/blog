@@ -36,6 +36,60 @@ tags:
 5. 循环遍历AST树，拼接输出js
 > webpack输出的js文件：1. __webpack_require__是模块加载函数， 2. 每个模块都有唯一的id(0, 1, 2,...)， 3. __webpack_require__.e是异步加载模块函数（Promise实现）， 4. webpackJsonp用于从异步加载的文件中安装模块
 
+## webpack模块打包原理
+### webpack打包出来的代码为啥能在浏览器上运行
+1. webpack对于ES模块/CommonJS模块的实现，是基于自己实现的webpack_require，所以代码能跑在浏览器中。
+2. 从 webpack2 开始，已经内置了对 ES6、CommonJS、AMD 模块化语句的支持。但不包括新的ES6语法转为ES5代码，这部分工作还是留给了babel及其插件。
+3. 在webpack中可以同时使用ES6模块和CommonJS模块。 因为 module.exports很像export default，所以ES6模块可以很方便兼容 CommonJS：import XXX from 'commonjs-module'。反过来CommonJS兼容ES6模块，需要额外加上default：require('es-module').default。
+
+### webpack最终精简代码
+```js
+(function(modules) { 
+    /**
+     *  主要实现功能：
+     *  1. 定义模块缓存
+     *  2. 实现浏览器支持的require方法
+     *     1. 根据moduleId判断是否已缓存模块， 如果有缓存就返回缓存模块
+     *     2. 缓存模块相关信息
+     *     3. 调用模块函数
+     *     4. 标记已加载
+     *     5. 返回module.exports
+     *  3. 实现异步加载方法
+     *  4. ...
+     * **/
+     function __webpack_require__(moduleId) {
+        // 判断是否已缓存模块
+        if(installedModules[moduleId]) {
+            return installedModules[moduleId].exports;
+        }
+        //缓存模块
+        var module = installedModules[moduleId] = {
+            i: moduleId,
+            l: false,
+            exports: {}
+        };
+        //调用模块函数
+        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+        //标记模块为已加载
+        module.l = true;
+        // 返回module.exports
+        return module.exports;
+    }
+})({
+    "./src/bar.js":
+    (function(module, exports, __webpack_require__) {
+        //bar.js代码
+    }),
+    "./src/index.js":
+    (function(module, exports, __webpack_require__) {
+        //index.js代码
+    })
+});
+
+```
+
+
+
 ## webpack优化
 ### 打包速度优化
 #### 缩小文件查找范围
