@@ -55,6 +55,8 @@ tags:
      *     4. 标记已加载
      *     5. 返回module.exports
      *  3. 实现异步加载方法
+     *     1. require.ensure() 通过回调函数执行接下来的流程
+     *     2. webpack4 推荐 import(需要配合@babel/plugin-syntax-dynamic-import插件)  通过promise执行接下来的流程
      *  4. ...
      * **/
      function __webpack_require__(moduleId) {
