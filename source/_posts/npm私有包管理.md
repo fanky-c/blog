@@ -39,6 +39,16 @@ npm unpublish <包名> --force --registry http://fankyc.cn:4873
 
 
 ### 配置
+1. 全局配置
+```js
+npm config set @youdao:registry "http://111.11.11.1:4100/"
+```
+
+2. 项目根目录配置
+```js
+//项目根目录中新建文件.npmrc来指定@youdao/xxxx包安装源
+@youdao:registry "http://111.11.11.1:4100/
+```
 
 ### 部署
 1. pm2进程守护
