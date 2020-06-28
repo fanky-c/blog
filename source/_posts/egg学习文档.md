@@ -157,4 +157,4 @@ class UserController extends Controller {
 ######  6. Subscription
 
 
-*文章来源* [https://eggjs.org/zh-cn/basics/objects.html]
+[文章来源于egg中文文档](https://eggjs.org/zh-cn/basics/objects.html)
