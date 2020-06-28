@@ -155,3 +155,6 @@ class UserController extends Controller {
 ######  4. Config
 ######  5. Logger
 ######  6. Subscription
+
+
+*文章来源* [https://eggjs.org/zh-cn/basics/objects.html]
