@@ -50,3 +50,4 @@ tags:
    2. 不用get请求，改用post。
    3. 在http请求参数添加随机token，在服务器建立拦截器，如果请求中无token或者错误的token则拒绝请求。
    4. 添加验证码、滑块验证。
+   5. chrome51版本以上 cookie设置Samesite，直接禁止第三方访问
