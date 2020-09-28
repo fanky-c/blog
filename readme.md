@@ -2,9 +2,9 @@
 
 ### 使用方法：
 
-* 开发服务: hexo server -p 3002;
+* 开发服务:  npm run dev
 
 * 新建模板: hexo new '*****';
 
-* 打包提交到服务器： hexo g -d
+* 打包提交到服务器： npm run deploy
 
