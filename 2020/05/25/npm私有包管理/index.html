@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword"  content="网易">
+    <meta name="keyword" content="网易">
     <link rel="shortcut icon" href="/blog/img/favicon.ico">
 
     <title>
@@ -158,7 +158,7 @@
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 添加用户</span></span><br><span class="line">npm adduser --registry http:<span class="comment">//localhost:4873</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//2. 发布本地包</span></span><br><span class="line">进入包目录  ==&gt; npm publish --registry http:<span class="comment">//localhost:4873</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//3. 安装已发布的包</span></span><br><span class="line">npm install &lt;包名&gt;  npm publish --registry http:<span class="comment">//localhost:4873</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//4. 删除已发布的包</span></span><br><span class="line">npm unpublish &lt;包名&gt; --force --registry http:<span class="comment">//fankyc.cn:4873</span></span><br></pre></td></tr></table></figure>
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><ol>
 <li><p>全局配置</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config set @youdao:registry <span class="string">"http://111.11.11.1:4100/"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="keyword">set</span> @youdao:registry "http://111.11.11.1:4100/"</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>项目根目录配置</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//项目根目录中新建文件.npmrc来指定@youdao/xxxx包安装源</span></span><br><span class="line">@youdao:registry <span class="string">"http://111.11.11.1:4100/</span></span><br></pre></td></tr></table></figure>

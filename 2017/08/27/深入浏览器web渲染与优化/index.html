@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword"  content="网易">
+    <meta name="keyword" content="网易">
     <link rel="shortcut icon" href="/blog/img/favicon.ico">
 
     <title>
@@ -152,7 +152,7 @@
 <p>一个页面的显示，实际上主要经历了下面的四个流程：</p>
 <p>加载 =&gt; 解析 =&gt; 排版 =&gt; 渲染</p>
 <p>实际上，这里的渲染主要是指排版之后到最后的上屏绘制(这个时候内容已经排版好了)，一部分前端工程师通常会把一部分的排版工作理解到“渲染”的流程中(也就是下图中全部工作)，实际上这个理解是不准确的。</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P6.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P6.PNG" alt></p>
 <p>目前，浏览器的渲染采用的是分块渲染的机制，所谓的分块渲染的机制，其实应该这么理解：</p>
 <ul>
 <li>浏览器首先把整个网页分成一些低分辨率的块，再把网页分成高分辨率的块，然后给这些块排列优先级。</li>
@@ -173,7 +173,7 @@
 </li>
 </ul>
 <h3 id="chrome内核架构变迁"><a href="#chrome内核架构变迁" class="headerlink" title="chrome内核架构变迁"></a>chrome内核架构变迁</h3><p>在渲染架构上，chrome也是经历了诸多变迁，早期的Chrome是这样的：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P1.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P1.PNG" alt></p>
 <p>早期的chrome的架构实际上有以下缺点：</p>
 <ul>
 <li>Renderer线程任务繁重</li>
@@ -184,16 +184,16 @@
 </li>
 </ul>
 <p>当然，经过一系列的发展，Chrome现在是这样的：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P2.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P2.PNG" alt></p>
 <p>在安卓上，Android 4.4的 Blink内核架构如下(4.4之前并不支持OpenGL)</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P3.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P3.PNG" alt></p>
 <p>当然，这种架构也有如下缺点：</p>
 <ul>
 <li>UI线程过于繁忙</li>
 <li>无法支持Canvas的硬件加速以及WebGL</li>
 </ul>
 <p>所以，后期发展成了这样：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P4.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P4.PNG" alt></p>
 <p>总结看来，内核发展的趋势是：</p>
 <ul>
 <li>多线程化(可以充分利用多核心CPU)</li>
@@ -204,7 +204,7 @@
 <p>打开Chrome浏览器，打开控制台，找到”Layers”，如果没有，那么在控制台右上角更多的图标-&gt;More tools 找到”Layers”，然后随便找个网页打开即可</p>
 </blockquote>
 <p>网页的分层渲染流程主要是下面这样的：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P7.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P7.PNG" alt></p>
 <p>(<em>注意：多个RenderObject可能又会对应一个或多个RenderLayer</em>)</p>
 <p>既然才用了分层渲染，那么肯定可以来分层处理，分层渲染有如下优点：</p>
 <ul>
@@ -231,11 +231,11 @@
 <p>另外值得一提的是，X5对分层方面做了一定的优化工作，当其检测到分层过多可能会出现显示问题的时候会进行层合并，牺牲显示性能换取显示正确性。</p>
 <p>最后再提出一个小问题：</p>
 <p>以下哪种渲染方式是最优的呢？</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P8.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P8.PNG" alt></p>
 <p>这里实际上后者虽然在分层上满足总体原则，但是之前讲到浏览器的分块渲染机制，是按照到可视区域的距离排序的，考虑到这个因素，实际上后者这种方式可能会对分块渲染造成一定的困扰，并且也不是最优的。</p>
 <h3 id="动画-amp-canvas-amp-WebGl"><a href="#动画-amp-canvas-amp-WebGl" class="headerlink" title="动画 &amp; canvas &amp; WebGl"></a>动画 &amp; canvas &amp; WebGl</h3><p>讲最后一部分开始，首先抛出一个问题：CSS动画 or JS动画?</p>
 <p>对内核来说，实际上就是Renderer线程动画还是Compositor线程动画，二者实际上过程如下：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P9.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P9.PNG" alt></p>
 <p>所以我们可以看出，Renderer线程是比Compositor线程动画性能差的(在中低端尤其明显)</p>
 <p>另外，无论是JS动画还是CSS动画，动画过程中的重绘以及样式变化都会拖慢动画执行以及引起卡顿<br>以下是一些不会触发重绘或者排版的CSS动画属性：</p>
 <ul>
@@ -258,7 +258,7 @@
 <li>在有动画执行时，避免其他动画不相关因素引起排版和重绘</li>
 </ul>
 <h4 id="requestAnimationFrame"><a href="#requestAnimationFrame" class="headerlink" title="requestAnimationFrame"></a>requestAnimationFrame</h4><p>另外当我们在使用动画的时候，为了避免出现掉帧的情况，最好采用requestAnimationFrame这个API，这个API迎合浏览器的流程，并且能够保证在下一帧绘制的时候上一帧一定出现了：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P11.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P11.PNG" alt></p>
 <h3 id="3D-canvas"><a href="#3D-canvas" class="headerlink" title="3D canvas"></a>3D canvas</h3><p>还有值得注意的是，有的时候我们需要涉及大量元素的动画(比如雪花飘落、多个不规则图形变化等)，这个时候如果用CSS动画，Animation动画的元素很多。，导致分层个数非常多，浏览器每帧都需要遍历计算所有分层，导致比较耗时、</p>
 <p>这个时候该怎么办呢？</p>
 <p>2D canvas上场。 </p>
@@ -268,7 +268,7 @@
 <li>渲染流程更优</li>
 </ul>
 <p>其渲染流程如下：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P10.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P10.PNG" alt></p>
 <p>实际上以上流程比较耗时的是JS Call这一部分，执行opengl的这一部分还是挺快的。</p>
 <p>HTML 2D canvas 主要绘制如下三种元素：</p>
 <ul>
@@ -277,9 +277,9 @@
 <li>矢量</li>
 </ul>
 <p>这个过程可以采用硬件加速，硬件加速图片绘制的主要流程：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P12.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P12.PNG" alt></p>
 <p>硬件加速文字绘制的主要流程：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender/P13.PNG" alt=""></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender/P13.PNG" alt></p>
 <p>但对于矢量绘制而言，简单的图形，比如点、直线等可以直接使用OpenGL渲染，复杂的图形，如曲线等，无法采用OpenGL绘制。</p>
 <p>对于绘制效率来说，2D Canvas对绘制图片效率较高，绘制文字和矢量效率较低(<strong>所以建议是，我们如果能使用贴图就尽量使用贴图了</strong>)</p>
 <p>还有，有的时候我们需要先绘制到离屏canvas上面，然后再上屏，这个可以充分利用缓存。</p>
