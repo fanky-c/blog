@@ -10,7 +10,7 @@ tags:
 * 抽象语法树，是源码语法结构的抽象表示。以树状的形式表现编程语言的语法结构。
 
 ### 用途
-1. ESLint、JSLint对代码错和风格的检测
+1. ESLint、JSLint对代码错和风格的检测 
 2. vue模块、jsx模板、typescript转化为原生的javascript
 3. webpack代码打包
 4. babel库es6转化为es5做兼容

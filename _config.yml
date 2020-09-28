@@ -124,13 +124,20 @@ theme: aircloud
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
+# deploy:
+#   type: rsync
+#   host: 106.52.186.77
+#   user: root
+#   root: /usr/local/src/myspace/blog
+#   port: 22
+#   delete: true
+#   verbose: true
+#   ignore_errors: false
+
+
 deploy:
-  type: rsync
-  host: 106.52.186.77
-  user: root
-  root: /usr/local/src/myspace/blog
-  port: 22
-  delete: true
-  verbose: true
-  ignore_errors: false
+  type: git
+  repo: https://github.com/fanky-c/blog.git
+  branch: release/blog
+  message: 提交博客信息
 
