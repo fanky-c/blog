@@ -18,8 +18,8 @@ keyword: "网易"
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://fankyc.cn/blog
-root: /blog/
+url: http://fankyc.cn
+root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
