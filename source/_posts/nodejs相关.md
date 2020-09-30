@@ -2,7 +2,7 @@
 title: nodejs相关
 date: 2020-08-17 21:26:46
 tags:
-    - nodejs平滑重启、
+    - nodejs平滑重启
 ---
 
 ### nodejs平滑重启
