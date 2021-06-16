@@ -107,5 +107,6 @@ alter table table_name add id int auto_increment not null primary key;
 
 
 13. 删除字段
-
-`alter table table_name drop folderName;`
+```mysql
+alter table table_name drop folderName;
+```
