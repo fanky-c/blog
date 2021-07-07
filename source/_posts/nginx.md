@@ -17,13 +17,13 @@ tags:
 * 2,停止命令 kill -QUIT  进程号
 
 ##### B:强制停止
-* pkill -9 nginx
+* kill -9 进程号
 
 #### 重启
-* 进入sbin目录  命令 cd /usr/local/nginx/sbin
-* ./nginx -s reload
+* 步骤一：进入sbin目录  命令 cd /usr/local/nginx/sbin  步骤二：./nginx -s reload
+* 或者 sudo /usr/local/nginx/sbin/nginx -s reload 
 
 
 #### 配置文件校验
-* 进入sbin目录  命令 cd /usr/local/nginx/sbin
-* ./nginx -t
+* 步骤一：进入sbin目录  命令 cd /usr/local/nginx/sbin  步骤二： ./nginx -t
+* 或者 sudo /usr/local/nginx/sbin/nginx -t

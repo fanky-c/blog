@@ -12,10 +12,11 @@ tags:
 ##### A:请求报文
   1. 请求⾏ 
   2. 请求头
-  3. 请求体
+  3. 空行
+  4. 请求体
 
-![报文](/blog/img/http_request.png)  
-![报文](/blog/img/http_request1.png)  
+![报文](/img/http_request.png)  
+![报文](/img/http_request1.png)  
 
 ##### B:方法
   1. get 
@@ -43,8 +44,8 @@ tags:
   3. 响应体  
 
 
-![报文](/blog/img/http_respond.png)  
-![报文](/blog/img/http_respond1.png)  
+![报文](/img/http_respond.png)  
+![报文](/img/http_respond1.png)  
 
 ##### D：状态码
   1. 1xx 信息性状态
@@ -79,7 +80,7 @@ tags:
 * 会话期Cookie: 浏览器关闭之后它会被⾃动删除
 * 持久性Cookie: 指定了cookie过期时间
 
-![cookie](/blog/img/http_cookie.png) 
+![cookie](/img/http_cookie.png) 
 
 #### 连接机制
 ##### 介绍
