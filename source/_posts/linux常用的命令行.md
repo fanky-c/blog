@@ -7,6 +7,8 @@ tags:
 ---
 
 ### 系统信息
+1. df -h  容易阅读的方式显示磁盘分区使用情况
+2. df /etc/dhcp  显示指定文件所在分区的磁盘使用情况
 
 ### 文件和目录
 1. rm -rf dir 删除一个叫做 'dir' 的目录并同时删除其内容 
@@ -43,6 +45,10 @@ tags:
 3. sed 's/stringa1/stringa2/g' example.txt 将example.txt文件中的 "string1" 替换成 "string2"
 4. sed -n '/stringa1/p' 查看只包含词汇 "string1"的行    
 
+### 文件传输
+1. curl https://baidu.com   //curl命令是一个利用URL规则在shell终端命令行下工作的文件传输工具；它支持文件的上传和下载，所以是综合传输工具，但按传统，习惯称curl为下载工具。
+2. tftp 218.28.188.288   //ftp命令用于传输文件
+
 
 ### 打包压缩
 1. zip file1.zip file1 创建一个zip格式的压缩包 
@@ -50,6 +56,10 @@ tags:
 3. unzip file1.zip 解压一个zip格式压缩包 
 
 ### 网络
+1. ssh 202.102.240.88  //安全连接客户端, 可以给予ssh加密协议实现安全的远程登录服务器，实现对服务器的远程管理。
+2. ping baidu.com/202.102.240.88     //测试主机间网络连通性
+3. netstat -a          //显示网络状态
+4. ipconfig            // 显示或设置网络设备
 
 
 
