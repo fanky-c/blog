@@ -26,7 +26,7 @@ Event Loop即事件循环，是指浏览器或Node的一种解决javaScript单�
 
 ### 浏览器中Event Loop
 #### 任务队列图
-![任务队列](/img/eventloop.png)
+<img src="/img/eventloop.png"  alt="任务队列" height = "auto"/>
 
 #### 案例
 ```js

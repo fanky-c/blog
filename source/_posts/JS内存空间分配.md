@@ -15,7 +15,7 @@ tags:
      1. Array、Function、RegExp、Date
 
 #### 内存分布
-  ![内存分别](/blog/img/heap.png)
+  <img src="/img/heap.png"  alt="内存分布" height = "auto"/>
   1. 闭包中变量不会存放在栈。（函数 A 返回了一个函数 B，并且函数 B 中使用了函数 A 的变量，函数 B 就被称为闭包。）
   ```
     function A() {
