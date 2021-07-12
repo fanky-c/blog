@@ -3,6 +3,7 @@ title: nodejs相关
 date: 2020-08-17 21:26:46
 tags:
     - nodejs平滑重启
+    - nodejs runTime架构
 ---
 
 ### nodejs平滑重启
@@ -66,3 +67,22 @@ tags:
             }).listen(8000);
         }
     ```
+
+### nodejs runtime架构
+
+#### 什么是runtime
+1. 程序分为几个状态，编辑时－>编译时->静态时->运行时
+2. 比如有些错误在编译的时候是不会出现的，就是程序在语法上没有问题。但在运行时，因为缺少资源等因素可能出现运行时错误。叫做runtime error!
+   
+#### nodejs runtime架构
+<img src="/img/noderuntime.jpeg"  alt="runtime" height="auto"/>
+
+1. ***用户代码***：由程序员编写的 Javascript 应用程序代码。
+2. ***Node.js API***： Node 提供的内置方法，可以在用户代码中使用（例如 用于使用 HTTP 方法的 HTTP  modules、crypto module、用于文件系统操作的 fs module、用于网络请求的 net 等……）。 有关 Node 提供的方法的完整列表，您可以在此处查看文档。 此外，您可以在此处找到源代码实现。 Node 的 API 是用 Javascript 编写的。
+3. ***Bindings 和 C++扩展插件***： 在阅读 Node 时，您会看到 V8 是用 C++ 编写的，Libuv 是用 C 编写的，等等。 基本上，所有模块都是用 C 或 C++ 编写的，因为这些语言在处理底层任务和使用 OS API 方面非常出色和快速。 但是上层的Javascript代码怎么可能用其他语言去写代码呢？ 这就是 bindings 的作用。 它们充当两层之间的粘合剂，因此 Node 可以顺利使用 C 或 C++ 编写的低级代码。 那么，如果我们想自己添加一个C++模块应该怎么做呢？ 我们首先用 C++ 实现模块，然后为此编写 bindings代码。 我们编写的这段代码称为扩展插件。 更多信息可以在这里找到。
+4. ***Node’s 依赖***: 这一层代表 Node 使用的底层库。 最大的依赖是谷歌的 V8 引擎和 Libuv。 其他库包括 OpenSSL（用于 SSL、TLS 和其他基本加密功能）、HTTP 解析器（用于解析 HTTP 请求和响应）、C-Ares（用于异步 DNS 请求）和 Zlib（用于快速压缩和解压缩）。
+5. ***操作系统***: 这是表示上述库所使用的 OS API（系统调用）的最底层。 由于 OS-es 不同，这些库包括 Windows 和 Unix 变体的实现，这使得 Node 平台独立。
+
+
+
+来源于：https://juejin.cn/post/6979790275879125006
