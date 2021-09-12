@@ -19,16 +19,14 @@ tags:
 ##### B:强制停止
 * kill -9 进程号
 
-#### 重启
-* 步骤一：进入sbin目录  命令 cd /usr/local/nginx/sbin  步骤二：./nginx -s reload
-* 或者 sudo /usr/local/nginx/sbin/nginx -s reload 
-
-
 #### 配置文件校验
 * 步骤一：进入sbin目录  命令 cd /usr/local/nginx/sbin  步骤二： ./nginx -t
 * 或者 sudo /usr/local/nginx/sbin/nginx -t
 
-
+#### 重启
+* 步骤一：进入sbin目录  命令 cd /usr/local/nginx/sbin  步骤二：./nginx -s reload
+* 或者 sudo /usr/local/nginx/sbin/nginx -s reload 
+* 
 ### server_name 和 upstream
 
 #### server_name
