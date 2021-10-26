@@ -8,6 +8,10 @@ tags:
  - fmp
  - tti
 ---
+### 前言
+对于前端页面性能的评估，一般是两种形式：
+1. 一种是使用性能分析工具，在线对网页各项指标进行打分评估, 例如：Lighthouse。
+2. 一种是使用性能监控，通过 performance api 或者自定义的埋点上报用户网络真实的访问情况，然后进行统计分析。
 
 ### 核心指标
 #### 1.FP && FCP
@@ -48,7 +52,11 @@ FCI: 用户第一次可以与页面交互的时间
 ##### time to interactive (TTI)
 TTI: 用户第一次可以持续与页面交互的时间
 
+### 页面性能评分计算公式
+https://googlechrome.github.io/lighthouse/scorecalc/
+
 
 <br/>
 [文章参考1](https://zhuanlan.zhihu.com/p/98880815)
 [文章参考2](https://juejin.cn/post/6844904153869713416)
+[文章参考3](https://segmentfault.com/a/1190000038421305)

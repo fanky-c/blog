@@ -26,4 +26,3 @@ tags:
 5. 大批量更新凌晨操作，避开高峰，零点附近往往定时任务量比较大，如果可以，尽量安排在03:00-07:00.
 6. LIMIT高效分页：传统的方法是select * from t limit 10000, 10，推荐的方法是select * from t where id > 23423 limit 10。LIMIT的偏移量越大则越慢。还有一些高效的方法有：先取id来LIMIT偏移，减少整体的数据偏移；取到需要的id，与原表JOIN；程序取ID，然后用IN来填写。select * from t where id >= (select id from t limit 10000, 1) limit 10 , select * from t INNER JOIN (select id from t limit 10000, 10) USING (id) , select id from t limit 10000, 10; select * from t where id in (123, 456...)
 7. 尽量避免%前缀模糊查询，由于使用的是B+ Tree，前缀模糊使用不了索引，导致全表扫描(后缀模糊速度相对快很多)
-8. 尽量避免负向查找，如NOT、!=等
