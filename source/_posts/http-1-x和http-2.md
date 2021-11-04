@@ -94,7 +94,7 @@ tags:
   2. Connection: close 在当前请求完成后，关闭连接
 
 ##### HTTP/1.x 三种连接⽅式
-![三种连接⽅式](/blog/img/http_live.png) 
+![三种连接⽅式](/img/http_live.png) 
 
 #### 缓存
 

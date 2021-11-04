@@ -189,4 +189,4 @@ vue的nextTick源码存放在src/core/util/next-tick.js（2.5+）
 ## 6，组件更新 
 
 *原理图：*
-![原理图](/blog/img/reactive.png)
+![原理图](/img/reactive.png)

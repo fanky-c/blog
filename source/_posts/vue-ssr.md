@@ -14,7 +14,7 @@ tags:
 * SSR的特点和利弊表
 
 ## 流程图
-![流程图](/blog/img/vue-ssr.png)
+![流程图](/img/vue-ssr.png)
 
 ## 目录结构
 

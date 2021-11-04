@@ -10,7 +10,7 @@ tags:
 ### Virtual DOM 产生背景
 
 Virtual DOM 这个概念相信大部分人都不会陌生，它产生的前提是浏览器中的 DOM 是很“昂贵"的，为了更直观的感受，我们可以简单的把一个简单的 div 元素的属性都打印出来，如图所示：
-![DOM元素](/blog/img/dom.png)
+![DOM元素](/img/dom.png)
 
 而 Virtual DOM 就是用一个原生的 JS 对象去描述一个 DOM 节点，所以它比创建一个 DOM 的代价要小很多。在 Vue.js 中，Virtual DOM 是用 VNode 这么一个 Class 去描述，它是定义在 src/core/vdom/vnode.js 中的*（源码结构目录在上篇文章已经谈到）*。
 
@@ -172,6 +172,6 @@ Vue 的 _update 是实例的一个私有方法，它被调用的时机有 2 个�
 ## 总结
 
 那么至此我们从主线上把模板和数据如何渲染成最终的 DOM 的过程分析完毕了，我们可以通过下图更直观地看到从初始化 Vue 到最终渲染的整个过程。
-![渲染真正的dom流程图](/blog/img/virtualDom.png)
+![渲染真正的dom流程图](/img/virtualDom.png)
 
 

@@ -11,7 +11,7 @@ tags:
 3. 第三次握手；客户端收到服务器的SYN包，向服务器发送确认包ACK，此包发送完毕，客户端和服务器进入ESTABLISHED（TCP连接成功）状态，完成三次握手。
 
 
-![三次握手](/blog/img/tcp_third.png)  
+![三次握手](/img/tcp_third.png)  
 
 
 ### 四次挥手过程理解
@@ -20,7 +20,7 @@ tags:
 3. 如果服务器也想断开连接，发送fin给客户端
 4. 客户端收到fin一样用ack作为应答
 
-![四次挥手](/blog/img/tcp_four.png)  
+![四次挥手](/img/tcp_four.png)  
 
 
 ### 为什么不能用两次握手进行连接？

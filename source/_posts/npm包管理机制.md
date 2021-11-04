@@ -67,7 +67,7 @@ semver.valid(semver.coerce('42.6.7.9.3-alpha')) // '42.6.7'
 ## npm原理
 
 ### npm install 运行流程
-![image](/blog/img/npm.png)
+![image](/img/npm.png)
 1. 检查.npmrc文件，优先级： 项目基本.npmrc文件 > 用户的 > 全局的 > npm内置
 2. 检查项目中有无lock文件
 3. 无lock文件

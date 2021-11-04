@@ -8,7 +8,7 @@ tags:
 
 ### new Vue() 内部流程图
 
-<img src="/blog/img/newVue.png" width = "700" height = "auto" alt="离线日志" align=center />
+<img src="/img/newVue.png" width = "700" height = "auto" alt="离线日志" align=center />
 
 #### 初始化及挂载
 在 new Vue() 之后。 Vue 会调用 _init 函数进行初始化，也就是这里的 init 过程，它会初始化生命周期、事件、 props、 methods、 data、 computed 与 watch 等。其中最重要的是通过 Object.defineProperty 设置 setter 与 getter 函数，用来实现「响应式」以及「依赖收集」。
@@ -192,12 +192,12 @@ with(this){
 ### 数据状态更新时差异diff以及patch机制
 首先说一下 patch 的核心 diff 算法，我们用 diff 算法可以比对出两颗树的「差异」，我们来看一下，假设我们现在有如下两颗树，它们分别是新老 VNode 节点，这时候到了 patch 的过程。
 
-<img src="/blog/img/diff.png" width = "700" height = "auto" alt="" align=center />
+<img src="/img/diff.png" width = "700" height = "auto" alt="" align=center />
 
 
 diff 算法是通过同层的树节点进行比较而非对树进行逐层搜索遍历的方式，所以时间复杂度只有 O(n)，是一种相当高效的算法，如下图。
 
-<img src="/blog/img/path.png" width = "700" height = "auto" alt="" align=center />
+<img src="/img/path.png" width = "700" height = "auto" alt="" align=center />
 
 这张图中的相同颜色的方块中的节点会进行比对，比对得到「差异」后将这些「差异」更新到视图上。因为只进行同层级的比对，所以十分高效。
 
@@ -266,7 +266,7 @@ function patch (oldVnode, vnode, parentElm) {
 
 Vue.js在默认情况下，每次触发某个数据的 setter 方法后，对应的 Watcher 对象其实会被 push 进一个队列 queue 中，在下一个 tick 的时候将这个队列 queue 全部拿出来 run（ Watcher 对象的一个方法，用来触发 patch 操作） 一遍
 
-<img src="/blog/img/vueWatcher.png" style="width:300px; margin:0 auto;display:block;" alt="离线日志" align=center />
+<img src="/img/vueWatcher.png" style="width:300px; margin:0 auto;display:block;" alt="离线日志" align=center />
 
 那么什么是下一个 tick 呢？
 

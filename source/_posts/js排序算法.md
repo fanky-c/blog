@@ -12,10 +12,10 @@ tags:
 * 空间复杂度。 运行完一个程序所需内存的大小
 
 排序对比：
-![排序对比](/blog/img/sort1.webp)
+![排序对比](/img/sort1.webp)
 
 排序分类：
-![排序分类](/blog/img/sort2.webp)
+![排序分类](/img/sort2.webp)
 
 ### 冒泡排序
 

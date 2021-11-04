@@ -47,7 +47,7 @@ DNS查询->tcp连接->http请求->服务器响应->客户端加载渲染
 
   
 ##### 网页生成的过程总结：
-![image](/blog/img/brower.webp)
+![image](/img/brower.webp)
 
 
 #### 性能优化方案
@@ -68,8 +68,8 @@ DNS查询->tcp连接->http请求->服务器响应->客户端加载渲染
       1. 缓存存储：Cache-Control: max-age=31536000
       2. 缓存过期：过期头 (Expires)
       3. 缓存对比：Last-Modified、E-Tag
-      <img src="/blog/img/expires" width="100%" alt="缓存">
-      ![image](/blog/img/expires1.png)
+      <img src="/img/expires" width="100%" alt="缓存">
+      ![image](/img/expires1.png)
       >只有当ctrl+f5才会强制刷新，开发的时候一般建议用文件hash值避免这种修改的文件也被强缓存
    4. 单页面应用可以在webpack打包的时候使用code split和bundle split将代码分离动态加载
    > Bundle splitting: 实际上就是创建多个更小的文件，并行加载，以获得更好的缓存效果；主要的作用就是使浏览器并行下载，提高下载速度。并且运用浏览器缓存，只有代码被修改，文件名中的哈希值改变了才会去再次加载。
