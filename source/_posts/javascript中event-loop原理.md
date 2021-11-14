@@ -3,6 +3,8 @@ title: javascript中event loop原理
 date: 2019-05-02 17:13:21
 tags:
   - event loop
+  - 内存堆
+  - 调用栈
 ---
 
 ### 介绍
@@ -25,6 +27,19 @@ Event Loop即事件循环，是指浏览器或Node的一种解决javaScript单�
    1. Process.nextTick（Node独有）、Promise
 
 ### 浏览器中Event Loop
+
+#### 事件循环
+<img src="/img/eventloop.webp" />
+*** 时间循环 负责执行代码、收集和处理事件以及执行队列中的子任务: ***
+1. Javascript 有一个主线程和执行栈，所有的任务都会被放到调用栈等待主线程执行
+2. 同步任务会被放在调用栈中，按照顺序等待主线程依次执行
+3. 主线程之外存在一个任务队列，所有任务在主线程中以执行栈的方式运行
+4. 同步任务都在主线程上执行，栈中代码在执行的时候会调用 Web API，此时会产生一些异步任务
+5. 异步任务会在有了结果（比如被监听的事件发生时）后，将注册的回调函数放入任务队列中
+6. 执行栈中任务执行完毕后，此时主线程处于空闲状态，会从任务队列中获取任务进行处理
+   
+以上过程会不断重复，这就是浏览器的运行机制，也是Event Loop
+
 #### 任务队列图
 <img src="/img/event_loop.png"  alt="任务队列" height="auto"/>
 
@@ -66,4 +81,9 @@ console.log(10)
    4. 检查event queue队列是否还有任务没执行，所以任务执行完成
 
 ### NodeJS中Event Loop
-1. [参考](https://juejin.im/post/5c3d8956e51d4511dc72c200#heading-25)
+
+
+<br>
+文章来源：
+1. [参考1](https://juejin.im/post/5c3d8956e51d4511dc72c200#heading-25)
+2. [参考2](https://mp.weixin.qq.com/s/omqXH1SxJyvl7N8y-6Zp3Q)
