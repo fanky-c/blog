@@ -4,6 +4,7 @@ date: 2021-11-04 22:03:03
 tags:
  - 原型链
  - 原型
+ - 闭包
 ---
 
 
@@ -130,7 +131,55 @@ console.log(p.m()); // 5
 // 所以，此时的 'this.a' 即 p.a，就是 p 的自身属性 'a'
 ```
 
+### 闭包
+#### 概念
+> 1. 闭包就可以在全局函数里面操作另一个作用域的局部变量
+> 2. 形成步骤： 
+>     a. 外层函数嵌套内层函数 
+>     b.  内层函数使用外层函数的局部变量 
+>     c. 把内层函数作为外层函数的返回值
+#### 作用
+##### 1. 封装私有变量/模拟模块化
+```js
+   function create_counter(initial) {
+        var x = initial || 0;
+        return {
+            inc: function () {
+                x += 1;
+                return x;
+            }
+        }
+   }
+   var c1 = create_counter();
+   c1.inc(); // 1
+   c1.inc(); // 2
+   c1.inc(); // 3
+
+   var c2 = create_counter(10);
+   c2.inc(); // 11
+   c2.inc(); // 12
+   c2.inc(); // 13
+
+```
+##### 2. 做缓存
+数字累加
+##### 3. 实现代码块
+```js
+for (var i = 0; i < 5; i++) {
+    (function(i) {
+        setTimeout(function() {
+            console.log(i)
+        }, 1000);
+    })(i);
+}
+```
+
+#### 性能考量
+##### 1. 常驻内存， 增加内存使用量
+##### 2. 使用不当的话，应用不销户，造成泄漏
+
 <br />
-[文章来源于](https://github.com/mqyqingfeng/blog/issues/2)
+[文章来源于1](https://github.com/mqyqingfeng/blog/issues/2)
+[文章来源于2](https://github.com/YvetteLau/Step-By-Step/issues/24)
 
 
