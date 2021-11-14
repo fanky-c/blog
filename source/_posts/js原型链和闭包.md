@@ -87,6 +87,18 @@ console.log(Object.prototype.__proto__ === null) // true
 <img src="/img/prototype.png"  alt="原型链" height="auto"/>
 ***图中由相互关联的原型组成的链状结构就是原型链，也就是蓝色的这条线***
 
+##### 7. hasOwnProperty
+在原型链上查询属性比较耗时，对性能有影响，试图访问不存在的属性时会遍历整个原型链。
+```js
+const object1 = {};
+object1.property1 = 42;
+console.log(object1.hasOwnProperty('property1'));
+// expected output: true
+
+console.log(object1.hasOwnProperty('toString'));
+// expected output: false
+```
+
 #### 作用
 ##### 继承属性
 ```js
