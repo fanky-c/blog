@@ -1,5 +1,5 @@
 ---
-title: serverless与前端研发模式
+title: serverless与前端研发模式 [转载]
 date: 2021-11-18 21:52:57
 tags:
  - serverless
@@ -81,6 +81,51 @@ BFF: Backend For Frontend (后端服务于前端) ，前后端胶水层。 ***�
 <img src="/img/ci.webp" height = "auto" align=center />
 
 #### 3. 实践
+##### 目标
+1. 无感中ssr、bff开发带来的差异， 和csr开发一样轻松
+2. 支持csr到ssr到bff再到微前端**渐进式开发**
+   
+##### 1. CSR 
+###### a. 开发流程
+<img src="/img/csr1.webp" height = "auto" align=center />
+1. 前端前端开发、云编译、生成静态资源上次到cdn
+2. html入口会生成es5、es6两份，通过部署控制台配置上线， 整个过程用户只关注开发和配置
+
+###### b. 运行流程
+<img src="/img/csr2.webp" height = "auto" align=center />
+1. 静态资源cdn
+2. html入口
+3. 浏览器Polyfill, 按需返回提高性能
+
+##### 2. SSR
+###### a. 开发流程
+<img src="/img/ssr1.webp" height = "auto" align=center />
+1. 编译生成ssr runtime 和 启动文件
+2. 添加redis缓存组件
+3. 启动ssr server
+
+###### b. 运行流程
+<img src="/img/ssr2.webp" height = "auto" align=center />
+1. 访问ssr入口， 到达网关， 然后到达渲染处理
+2. 查看是否有缓存，有就直接方式html; 没有就访问ssr server 
+3. 超时或者异常，会兜底到web server获取csr页面 
+
+##### 3. 一体化BFF
+###### a. 开发流程
+<img src="/img/bff1.webp" height = "auto" align=center />
+1. 项目中添加api目录， 和前端开发一样， 通过import方式引入
+2. 生成bff的runtime, 部署服务会多一个bff  server
+
+###### b. 运行流程
+<img src="/img/bff2.webp" height = "auto" align=center />
+
+##### 4. 微前端
+###### a. 开发流程
+<img src="/img/micFed1.webp" height = "auto" align=center />
+
+###### b. 运行流程
+<img src="/img/micFed2.webp" height = "auto" align=center />
+
 ### serverless监控和运维
 #### 1. 业务监控和指标大盘
 1. grafana报表
