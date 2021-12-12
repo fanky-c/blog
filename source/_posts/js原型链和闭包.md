@@ -77,7 +77,7 @@ let obj = new Object();
 obj.name = 'fanky'
 console.log(obj.name); // fanky
 ```
-> 其实原型对象就是通过 Object 构造函数生成的，结合之前所讲，实例的 __proto__ 指向构造函数的 prototype 
+> 其实原型对象就是通过 Object 构造函数生成的，结合之前所讲，实例的 \__proto\__ 指向构造函数的 prototype 
 
 
 ##### 6. 原型链
