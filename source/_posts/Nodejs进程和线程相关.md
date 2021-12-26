@@ -143,4 +143,5 @@ Node.js 中的进程 Process 是一个全局对象，无需 require 直接使用
 4. 单线程无法利用多核CPU，但是后来Node.js 提供的API以及一些第三方工具相应都得到了解决。
 
 
-[资料来源于](https://mp.weixin.qq.com/s/VzXnnfn4gCBMd5wea3LRIg)
+[资料来源于1](https://mp.weixin.qq.com/s/VzXnnfn4gCBMd5wea3LRIg)
+[资料来源于2](https://www.shengshunyan.xyz/2021/03/31/Node.js%E4%B8%AD%E7%9A%84%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%92%8C%E5%A4%9A%E7%BA%BF%E7%A8%8B/#cluster)
