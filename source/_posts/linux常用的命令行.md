@@ -68,5 +68,39 @@ tags:
 4. lsof -i:端口号  查看端口号被那个进程所占用
 
 
+### 软链接 和 硬链接
+1. Linux 链接分两种，一种被称为硬链接（Hard Link），另一种被称为符号链接（Symbolic Link）。默认情况下，ln 命令产生硬链接
+2. 验证硬链接和软链接关系
+```bash
+touch f1          #创建一个测试文件f1    
+ln f1 f2          #创建f1的一个硬连接文件f2
+ln -s f1 f3       #创建f1的一个符号连接文件f3
+ls -li            # -i参数显示文件的inode节点信息
+total 0
+9797648 -rw-r--r--  2 oracle oinstall 0 Apr 21 08:11 f1
+9797648 -rw-r--r--  2 oracle oinstall 0 Apr 21 08:11 f2
+9797649 lrwxrwxrwx  1 oracle oinstall 2 Apr 21 08:11 f3 -> f1
+
+echo "I am f1 file" >>f1
+cat f1
+I am f1 file
+cat f2
+I am f1 file
+cat f3
+I am f1 file
+rm -f f1
+cat f2
+I am f1 file
+cat f3
+cat: f3: No such file or directory
+```
+3. 结论：
+  1. 当删除原始文件 f1 后，硬连接 f2 不受影响，但是符号连接 f3 文件无效
+  2. 删除符号连接f3,对f1,f2无影响；
+  3. 删除硬连接f2，对f1,f3也无影响；
+  4. 删除原文件f1，对硬连接f2没有影响，导致符号连接f3失效；
+  5. 同时删除原文件f1,硬连接f2，整个文件会真正的被删除。 
+
+
 
 [资料来源于](https://www.cnblogs.com/fnlingnzb-learner/p/5831284.html)
