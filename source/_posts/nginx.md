@@ -26,7 +26,9 @@ tags:
 #### 重启
 * 步骤一：进入sbin目录  命令 cd /usr/local/nginx/sbin  步骤二：./nginx -s reload
 * 或者 sudo /usr/local/nginx/sbin/nginx -s reload 
-* 
+
+
+
 ### server_name 和 upstream
 
 #### server_name
@@ -86,3 +88,40 @@ http {
 ```
 
 ### location 匹配规则
+#### 1. url匹配规则
+```js
+location [=|~|~*|^~|@] /uri/ {
+	...
+}
+```
+* =： 精确匹配后面的url
+* ~： 正则匹配，区分大小写
+* ~*：正则匹配，不区分大小写
+* ^~：普通字符匹配， 如果该选项匹配，只匹配该选项， 一般用来匹配目录
+* @： "@" 定义一个命名的 location，使用在内部定向时，例如 error_page
+
+#### 2. 匹配规则的优先顺序
+* = 前缀的指令严格匹配这个查询。 如果找到则停止搜索
+* 所有剩下的常规字符串，最长的匹配。 如果这个匹配使用^~前缀，搜索停止
+* 正则表达式， 在配置文件中定义的顺序
+* 如果第3条规则产生匹配的话，结果被使用。 否则，使用第2条规则的结果
+
+
+#### 3. alias 和 root 的区别
+##### 1. root: 实际访问文件路径会拼接URL中的路径
+```js
+location ^~ /tea/ {  
+   root /usr/local/nginx/html/;  
+}
+// 请求：http://test.com/tea/tea1.html
+// 实际访问：/usr/local/nginx/html/tea/tea1.html 文件
+```
+##### 2. alias: 实际访问文件路径不会拼接URL中的路径
+```js
+location ^~ /tea/ {  
+   alias /usr/local/nginx/html/;  
+}
+// 请求：http://test.com/tea/tea1.html
+// 实际访问：/usr/local/nginx/html/tea1.html 文件
+```
+
