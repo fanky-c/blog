@@ -3,9 +3,11 @@ title: nginx
 date: 2018-11-14 17:11:06
 tags:
    - nginx
+   - 正向代理和反向代理
+   - 负载均衡
 ---
 
-### 启动、停止、重启、配置文件校验
+### nginx常用操作
 
 #### 开启
 * 第一种方法  格式为： ngin地址 -c nginx配置文件位置
@@ -27,9 +29,12 @@ tags:
 * 步骤一：进入sbin目录  命令 cd /usr/local/nginx/sbin  步骤二：./nginx -s reload
 * 或者 sudo /usr/local/nginx/sbin/nginx -s reload 
 
+### 正向代理和反向代理
+1. 正向代理： 被访问的服务不知道用户真正的地址。 例如vpn访问
+2. 反向代理： 用户不知道访问的服务真正的地址. 例如proxy_pass
 
 
-### server_name 和 upstream
+### server_name 和 upstream 和 proxy_pass
 
 #### server_name
  ***1. 介绍***
@@ -87,6 +92,9 @@ http {
 }
 ```
 
+#### proxy_pass
+***1. 介绍***
+反向代理：proxy_pass说明是动态请求，需要进行转发，比如代理到nodejs、java上
 ### location 匹配规则
 #### 1. url匹配规则
 ```js
