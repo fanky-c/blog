@@ -78,9 +78,8 @@ tags:
    
 ### 2. 原理
 #### 1. 速度快
-**pnpm 的包安装速度还是明显优于yarn PnP的**
-1. yarn PnP： 安装模式(https://classic.yarnpkg.com/en/docs/pnp/)
-2. pnpm： 直接去掉 node_modules，将依赖包内容写在磁盘，节省了 node 文件 I/O 的开销，这样也能提升安装速度。（具体原理见这篇文章(https://loveky.github.io/2019/02/11/yarn-pnp/)）
+**在绝多大数场景下，pnpm包安装的速度都是明显优于npm/yarn，速度会比 npm/yarn快2-3倍**
+1. yarn PnP：直接去掉 node_modules，将依赖包内容写在磁盘，节省了 node 文件 I/O 的开销，这样也能提升安装速度。（具体原理见这篇文章https://loveky.github.io/2019/02/11/yarn-pnp/)
 
 #### 2. 存储管理
 **a. 基于内容寻址的文件系统来存储磁盘上所有的文件** 
