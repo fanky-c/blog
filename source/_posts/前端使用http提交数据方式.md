@@ -18,7 +18,7 @@ http://abc.com/person/chao
 ```
 
 ### query
-通过 url 中 ？后面的用 & 分隔的字符串传递数据。 
+通过 url 中 ？后面的用 & 分隔的字符串传递数据。 需要对数据做 url encode
 
 ```js
 // 这里的 chao 就是路径中的参数（url param）, 获取chao相关信息
@@ -30,7 +30,7 @@ http://abc.com/person?name=chao&age=12
 ```
 
 ### form-urlencoded
-**用 form 表单提交数据就是这种，它和 query 字符串的方式的区别只是放在了 body 里，然后指定下 header头 content-type 是 application/x-www-form-urlencoded**
+**用 form 表单提交数据就是这种，它和 query 字符串的方式的区别只是放在了 body 里，然后指定下 header头 content-type 是 application/x-www-form-urlencoded。 需要对数据做 url encode**
 
 <img src="/img/form-urlencoded.png" />
 
