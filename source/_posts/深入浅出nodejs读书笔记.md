@@ -124,16 +124,16 @@ commonjs规范规定每个模块文件中存在着require、exports、module这3
 
 * 现存轮询技术
   * read: 它是最原始、性能最低的一种，通过重复调用来检查I/O的状态来完成完整数据的读取。在得到最终数据前，CPU一直耗用在等待上。
-  <img src="/img/node5.jpeg" />
+  <img src="/img/node5.jpeg" style="max-width:95%" />
   * select: 它是在read的基础上改进的一种方案，通过对文件描述符上的事件状态来进行判断。
   * poll: 该方案较select有所改进，采用链表的方式避免数组长度的限制，其次它能避免不需要的检查。但是当文件描述符较多的时候，它的性能还是十分低下的。
   * epoll: 该方案是Linux下效率最高的I/O事件通知机制，在进入轮询的时候如果没有检查到I/O事件，将会进行休眠，直到事件发生将它唤醒。它是真实利用了事件通知、执行回调的方式，而不是遍历查询，所以不会浪费CPU，执行效率较高。
-  <img src="/img/node4.jpeg" />
+  <img src="/img/node4.jpeg" style="max-width:95%" />
 
 ### node如何实现异步io
 * 事件循环
   在进程启动时，Node便会创建一个类似于while(true)的循环，每执行一次循环体的过程我们称为Tick。
-  <img src="/img/node1.jpeg" />
+  <img src="/img/node1.jpeg" style="max-width:95%" />
 
 * 观察者
   在每个Tick的过程中，如何判断是否有事件需要处理呢？**这里必须要引入的概念是观察者。每个事件循环中有一个或者多个观察者，而判断是否有事件要处理的过程就是向这些观察者询问是否有要处理的事件。**
@@ -151,12 +151,12 @@ commonjs规范规定每个模块文件中存在着require、exports、module这3
                   callback);
   };
   ```
-  <img src="/img/node2.jpeg" />
+  <img src="/img/node2.jpeg" style="max-width:95%" />
   JavaScript线程可以继续执行当前任务的后续操作。当前的I/O操作在线程池中等待执行，不管它是否阻塞I/O，都不会影响到JavaScript线程的后续执行，如此就达到了异步的目的。
 
 * 执行回调
   **事件循环、观察者、请求对象、I/O线程池这四者共同构成了Node异步I/O模型的基本要素**
-  <img src="/img/node3.jpeg" />
+  <img src="/img/node3.jpeg" style="max-width:95%" />
 
 * 总结
   我们可以提取出异步I/O的几个关键词：单线程、事件循环、观察者和I/O线程池。这里单线程与I/O线程池之间看起来有些悖论的样子。由于我们知道JavaScript是单线程的，所以按常识很容易理解为它不能充分利用多核CPU。事实上，在Node中，除了JavaScript是单线程外，Node自身其实是多线程的，只是I/O线程使用的CPU较少。另一个需要重视的观点则是，除了用户代码无法并行执行外，所有的I/O（磁盘I/O和网络I/O等）则是可以并行起来的。
