@@ -154,7 +154,101 @@ router.get('/download/partial', async (ctx) => {
 
 **实际业务问题：根据请求参数条件读取数据库的某张表的全部记录并导出为表格**
 
+```js
+// Controller.js
+const sequelize = new Sequelize(name, user, password, {
+  dialect: 'mysql',
+  host,
+  port,
+});
+const model = sequelize.import('/path/to/model');
+const { rows } = await model.findAndCountAll({
+  where: conditions,
+  attributes: ['f_user_id'],
+  group: 'f_user_id',
+});
 
+const list = awaitPromise.all(
+  rows.map((item) => {
+    const { f_user_id } = item;
+    const userRows = await model.findAll({
+      where: { ...conditions, f_user_id },
+      // ordering, eager loading, ...
+    });
+
+    // formating userRows -> userData
+
+    return userData;
+  })
+);
+
+const headers = ['ID', /*...*/];
+const sheetData = [headers, ...list];
+
+ctx.attachment(`${sheetName}.xlsx`);
+ctx.body = await exportXlsx(sheetName, sheetData);
+```
+
+```js
+// xlsx.js
+const ExcelJS = require('exceljs');
+const fs = require('fs');
+
+module.exports = {
+  exportXlsx: async (name = 'sheet', data) => {
+    const tempFilePath = `./xlsx/${Date.now()}.xlsx`;
+    const workbook = new ExcelJS.stream.xlsx.WorkbookWriter({ 
+      filename: tempFilePath 
+    }); // 创建一个流式写入器
+    const sheet = workbook.addWorksheet('My Sheet'); // 添加工作表
+    const { length } = data;
+    for (let i = 0; i < length; i++) {
+      sheet.addRow(data[i]);
+    }
+    sheet.commit(); // 提交工作表
+    await workbook.commit(); // 交工作簿，即写入文件
+    return fs.createReadStream(tempFilePath);
+  },
+};
+```
+**待优化：**
+1. 没考虑数据量的问题，当时数据超过几万条时候，nodejs的内存就会爆掉，进而退出进程
+2. 数据查询逻辑不考虑性能，没考虑sql查询并发数问题
+3. 没有考虑内存限制, exceljs提供了流api
+
+**优化措施：**
+1. **分段处理:** 最简单的策略就是将几 w 条数据库数据按每组 1w 条分组，分批次处理。 利用流程控制库async
+```js
+let total = await model.count(/* ... */)
+let page = 0;
+const tasks = [];
+const size = 10000;
+while (total > 0) {
+  tasks.push(() => queryModel({
+    limit: size,
+    offset: size * page
+  }))
+  page++;
+  total -= size;
+}
+await async.series(tasks);
+```
+2. **减少sql查询数:** 源码中出现先 group by 查询出去重的 f_user_id 后，再来并发查询某一用户的所有记录。这里应该用 SQL 中的 IN 先查完再匹配处理: 
+```js
+model.findAll({
+  where: {
+    ...conditions,
+    f_user_id: rows.map(x =>`${x.f_user_id}`)
+  }
+})
+```
+3. **流处理:** 在上面的xlsx.js文件中，是先输出一个文件再使用fs.createReadStream流输出
+```js
+const workbook = new Excel.stream.xlsx.WorkbookWriter(options);
+const sheet = workbook.addWorksheet('My Sheet');
+// ...
+ctx.body = workbook.stream;
+```   
 
 <br >
 [文章来源](https://mp.weixin.qq.com/s/Jz_Xu6Np38TpdwFVUGNGdA)

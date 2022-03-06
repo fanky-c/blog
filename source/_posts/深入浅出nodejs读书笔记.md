@@ -183,6 +183,247 @@ commonjs规范规定每个模块文件中存在着require、exports、module这3
   * **事件驱动：Node通过事件驱动的方式处理请求，无须为每一个请求创建额外的对应线程，可以省掉创建线程和销毁线程的开销，同时操作系统在调度任务时因为线程较少，上下文切换的代价很低。（node、nginx）**
 
 ## 异步编程
+### 函数数编程
+
+**高阶函数则是可以把函数作为参数，或是将函数作为返回值的函数。**高阶函数在JavaScript中比比皆是，其中ECMAScript5中提供的一些数组方法（forEach()、map()、reduce()、reduceRight()、filter()、every()、some()）十分典型。
+
+**偏函数用法是指创建一个调用另外一个部分——参数或变量已经预置的函数——的函数的用法。**
+```js
+// 这种通过指定部分参数来产生一个新的定制函数的形式就是偏函数
+let isType = function (type) {
+  return function (obj) {
+    return toString.call(obj) == '[object ' + type + ']';
+  };
+};
+
+let isString = isType('String');
+let isFunction = isType('Function');
+```
+
+### 异步编程优势和难点
+#### A、优势
+**Node带来的最大特性莫过于基于事件驱动的非阻塞I/O模型，这是它的灵魂所在。非阻塞I/O可以使CPU与I/O并不相互依赖等待，让资源得到更好的利用**
+
+<img src="/img/node6.jpeg" style="max-width:95%" />
+
+利用事件循环的方式，**JavaScript线程像一个分配任务和处理结果的大管家，I/O线程池里的各个I/O线程都是小二，负责兢兢业业地完成分配来的任务，小二与管家之间互不依赖，所以可以保持整体的高效率。**这个利用事件循环的经典调度方式在很多地方都存在应用，最典型的是UI编程，如iOS应用开发等。
+
+Node是为了解决编程模型中阻塞I/O的性能问题的，采用了单线程模型，**这导致Node更像一个处理I/O密集问题的能手，而CPU密集型则取决于管家的能耐如何**
+
+由于事件循环模型需要应对海量请求，海量请求同时作用在单线程上，就需要防止任何一个计算耗费过多的CPU时间片。**至于是计算密集型，还是I/O密集型，只要计算不影响异步I/O的调度，那就不构成问题。**
+
+#### B、缺点
+1. 异常处理（最大缺点）
+   > 异步I/O的实现主要包含两个阶段：**提交请求和处理结果。这两个阶段中间有事件循环的调度，两者彼此不关联。异步方法则通常在第一个阶段提交请求后立即返回，因为异常并不一定发生在这个阶段，try/catch的功效在此处不会发挥任何作用**
+   
+   ```js
+     // callback被存放起来，直到下一个事件循环（Tick）才会取出来执行
+     var async = function (callback) {
+       process.nextTick(callback);
+     };
+
+     try {
+       async(callback);
+     } catch (e) {
+       // TODO
+     }     
+   ```
+
+2. 函数嵌套过深, 目前node较高版本已支持async/await模式解决了函数嵌套问题
+3. 多线程编程
+   > 浏览器提出了Web Workers，它通过将JavaScript执行与UI渲染分离，可以很好地利用多核CPU为大量计算服务。同时前端Web Workers也是一个利用消息机制合理使用多核CPU的理想模型
+   <img src="/img/node7.jpeg" style="max-width:95%" />
+
+   Node借鉴了浏览器web workers这个模式，**child_process是其基础API, cluster模块是更深层次的应用。**借助Web Workers的模式，开发人员要更多地去面临跨线程的编程，这对于以往的JavaScript编程经验是较少考虑的。
+
+
+4. 异步转同步， 目前node较高版本已支持async/await模式
+
+### 异步编程解决方案
+#### 1. 事件发布/订阅模式
+> 事件侦听器模式也是一种钩子（hook）机制，利用钩子导出内部数据或状态给外部的调用者
+
+#### 2. Promise/Deferred模式
+
+#### 3. async/await模式
+
+#### 4. 流程控制库
+1. 尾触发和next(Connect中间件)
+   > 除了事件和Promise外，还有一类方法是需要手工调用才能持续执行后续调用的，我们将此类方法叫做尾触发，常见的关键词是next
+
+   ```js
+     var app = connect();
+     // Middleware
+     app.use(connect.staticCache());
+     app.use(connect.static(__dirname + '/public'));
+     app.use(connect.cookieParser());
+     app.use(connect.session());
+     app.use(connect.query());
+     app.use(connect.bodyParser());
+     app.use(connect.csrf());
+     app.listen(3001);
+   ```
+
+   **connect核心代码**
+```js
+function app(req, res){ app.handle(req, res); }
+
+// use方法
+app.use = function(route, fn){
+ // some code
+ this.stack.push({ route: route, handle: fn });
+ return this;
+};
+
+function createServer() {
+ function app(req, res){ app.handle(req, res); }
+ utils.merge(app, proto);
+ utils.merge(app, EventEmitter.prototype);
+ app.route = '/';
+ app.stack = [];
+ for (var i = 0; i < arguments.length; ++i) {
+   app.use(arguments[i]);
+ }
+ return app;
+};
+
+app.listen = function(){
+ var server = http.createServer(this);
+ return server.listen.apply(server, arguments);
+};
+
+app.handle = function(req, res, out) {
+ // some code
+ next();
+};
+
+// 原始的next()方法较为复杂，下面是简化后的内容，
+// 其原理十分简单，取出队列中的中间件并执行，同时传入当前方法以实现递归调用，达到持续触发的目的
+function next(err){
+  // some code
+  // next callback
+  layer = stack[index++];
+  layer.hander(req, res, next);
+}
+
+```
+
+
+1. async流程库： 异步的串行执行
+   ```js
+     async.series([
+       function (callback) {
+         fs.readFile('file1.txt', 'utf-8', callback);
+       },
+       function (callback) {
+         fs.readFile('file2.txt', 'utf-8', callback);
+       }
+     ], function (err, results) {
+       // results => [file1.txt, file2.txt]
+     });
+   ```
+
+### 异步并发控制
+> 目前社区中有bigpipe、async异步流程库解决方案    
+
+bigpipe核心实现
+
+  ```js
+        /**
+         * 推入方法，参数。最后一个参数为回调函数
+         * @param {Function} method异步方法
+         * @param {Mix} args参数列表，最后一个参数为回调函数
+         */
+        Bagpipe.prototype.push = function (method) {
+          var args = [].slice.call(arguments, 1);
+          var callback = args[args.length -1];
+          if (typeof callback ! == 'function') {
+            args.push(function () {});
+          }
+          if (this.options.disabled || this.limit < 1) {
+            method.apply(null, args);
+            return this;
+          }
+
+          // 队列长度也超过限制值时
+          if (this.queue.length < this.queueLength || ! this.options.refuse) {
+            this.queue.push({
+              method: method,
+              args: args
+            });
+          } else {
+            var err = new Error('Too much async call in queue');
+            err.name = 'TooMuchAsyncCallError';
+            callback(err);
+          }
+
+          if (this.queue.length > 1) {
+            this.emit('full', this.queue.length);
+          }
+          this.next();
+          return this;
+        };
+
+        /*
+         * 继续执行队列中的后续动作
+         */
+        Bagpipe.prototype.next = function () {
+          var that = this;
+          if (that.active < that.limit && that.queue.length) {
+            var req = that.queue.shift();
+            that.run(req.method, req.args);
+          }
+        };  
+        
+        /*
+         * 执行队列中的方法
+         */
+        Bagpipe.prototype.run = function (method, args) {
+          var that = this;
+          that.active++;
+          var callback = args[args.length -1];
+          var timer = null;
+          var called = false;
+
+          // inject logic
+          args[args.length -1] = function (err) {
+            // anyway, clear the timer
+            if (timer) {
+              clearTimeout(timer);
+              timer = null;
+            }
+            // if timeout, don't execute
+            if (! called) {
+              that._next();
+              callback.apply(null, arguments);
+            } else {
+              // pass the outdated error
+              if (err) {
+              that.emit('outdated', err);
+              }
+            }
+          };
+
+          var timeout = that.options.timeout;
+          if (timeout) {
+            timer = setTimeout(function () {
+              // set called as true
+              called = true;
+              that._next();
+              // pass the exception
+              var err = new Error(timeout + 'ms timeout');
+              err.name = 'BagpipeTimeoutError';
+              err.data = {
+                name: method.name,
+                method: method.toString(),
+                args: args.slice(0, -1)
+              };
+              callback(err);
+            }, timeout);
+          }
+          method.apply(null, args);
+        };
+  ```
 
 ## 内存控制
 
