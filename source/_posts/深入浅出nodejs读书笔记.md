@@ -684,9 +684,41 @@ rs.on("end", function () {
 });
 ```
 2. 中文乱码原因
+   1. 模拟出现乱码：
+   ```js
+   // 将文件可读流的每次读取的Buffer长度限制为11
+   var rs = fs.createReadStream('test.md', {highWaterMark: 11});
+   ```
+   <img src="/img/node14.jpeg" style="max-width:95%" />
+   1. 上面的诗歌中，“月”、“是”、“望”、“低”4个字没有被正常输出，取而代之的是3个?。产生这个输出结果的原因在于文件可读流在读取时会逐个读取Buffer；
+   2. 由于我们限定了Buffer对象的长度为11，因此只读流需要读取7次才能完成完整的读取；
+   3. 上文提到的buf.toString()方法默认以UTF-8为编码，中文字在UTF-8下占3个字节。所以第一个Buffer对象在输出时，只能显示3个字符，Buffer中剩下的2个字节（e6 9c）将会以乱码的形式显示。第二个Buffer对象的第一个字节也不能形成文字，只能显示乱码。于是形成一些文字无法正常显示的问题；
+
+
+   2. 临时解决方案
+   ```js
+    var rs = fs.createReadStream('test.md', { highWaterMark: 11});
+    //该方法的作用是让data事件中传递的不再是一个Buffer对象，而是编码后的字符串
+    fs.setEncoding('utf8');
+   ```
+   虽然string_decoder模块很奇妙，但是它也并非万能药，它目前只能处理UTF-8、Base64和UCS-2/UTF-16LE这3种编码。所以，通过setEncoding()的方式不可否认能解决大部分的乱码问题，但并不能从根本上解决该问题
    
 3. 正确拼接buffer
-
+   1. 通过iconv模块来转码
+   2. 修改+=改成Buffer.concat()生成一个合并的Buffer对象
+```js
+var chunks = [];
+var size = 0;
+res.on('data', function (chunk) {
+ chunks.push(chunk);
+ size += chunk.length;
+});
+res.on('end', function () {
+ var buf = Buffer.concat(chunks, size);
+ var str = iconv.decode(buf, 'utf8');
+ console.log(str);
+});
+```
 ### Buffer的性能
 
 ## 网络编程
