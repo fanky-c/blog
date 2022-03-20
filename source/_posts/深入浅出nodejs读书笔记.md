@@ -503,12 +503,191 @@ $ node
    2. 通过在Node启动时使用--prof参数，可以得到V8执行时的性能分析数据，其中包含了垃圾回收执行时占用的时间 
 
 ### 查看内存指标
+>应用中存在一些全局性的对象是正常的，而且在正常的使用中，变量都会自动释放回收。但是也会存在一些我们认为会回收但是却没有被回收的对象，这会导致内存占用无限增长。一旦增长达到V8的内存限制，将会得到内存溢出错误，进而导致进程退出
 
-### 内存泄漏和排查
+#### 查看内存使用情况
+1. a、查看进程内存占用：**process.memoryUsage()可以看到Node进程的内存占用情况**
+  ```js
+    var showMem = function () {
+    var mem = process.memoryUsage();
+    var format = function (bytes) {
+      return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+    };
+    // heapTotal：堆中总申请的内存量；heapUsed：堆中使用中内存量
+    console.log('Process: heapTotal ' + format(mem.heapTotal) +
+      ' heapUsed ' + format(mem.heapUsed) + ' rss ' + format(mem.rss));
+  };
+  ```
+
+2. b、查看系统的内存占用
+ os模块中的totalmem()和freemem()这两个方法用于查看操作系统的内存使用情况
+
+#### 堆外内存
+>通过process.memoryUsage()的结果可以看到，堆中的内存用量总是小于进程的常驻内存用量，这意味着Node中的内存使用并非都是通过V8进行分配的。我们将那些不是通过V8分配的内存称为堆外内存
+
+```js
+var useMem = function () {
+ var size = 200 * 1024 * 1024;
+ var buffer = new Buffer(size);
+ for (var i = 0; i < size; i++) {
+   buffer[i] = 0;
+ }
+ return buffer;
+};
+```
+heapTotal与heapUsed的变化极小，唯一变化的是rss的值，并且该值已经远远超过V8的限制值。**这其中的原因是Buffer对象不同于其他对象，它不经过V8的内存分配机制，所以也不会有堆内存的大小限制。**
+
+>为何Buffer对象并非通过V8分配？这在于Node并不同于浏览器的应用场景。在浏览器中，JavaScript直接处理字符串即可满足绝大多数的业务需求，而Node则需要处理网络流和文件I/O流，操作字符串远远不能满足传输的性能需求。
+
+#### 总结
+**node的内存构成主要由通过V8进行分配的部分和node自行分配部分，受V8的垃圾回收机制限制主要是V8的堆内存**
+
+### 内存泄漏
+>造成内存泄漏的原因有如下几个: **1、缓存 2、队列消费不及时 3、作用域未释放**
+
+#### 1. 慎将内存当缓存使用
+>一旦一个对象被当做缓存来使用，那就意味着它将会常驻在老生代中。缓存中存储的键越多，长期存活的对象也就越多，这将导致垃圾回收在进行扫描和整理时，对这些对象做无用功。**所以在Node中，任何试图拿内存当缓存的行为都应当被限制。当然，这种限制并不是不允许使用的意思，而是要小心为之**
+
+1. a、缓存限制策略
+   需要加入一种策略来限制缓存无限制增长，**例如LRU算法的缓存算法**
+   ```js
+        var LimitableMap = function (limit) {
+          this.limit = limit || 10;
+          this.map = {};
+          this.keys = [];
+        };
+
+        var hasOwnProperty = Object.prototype.hasOwnProperty;
+
+        LimitableMap.prototype.set = function (key, value) {
+          var map = this.map;
+          var keys = this.keys;
+          if (! hasOwnProperty.call(map, key)) {
+            if (keys.length === this.limit) {
+              var firstKey = keys.shift();
+              delete map[firstKey];
+            }
+            keys.push(key);
+          }
+          map[key] = value;
+        };
+
+        LimitableMap.prototype.get = function (key) {
+          return this.map[key];
+        };
+
+        module.exports = LimitableMap;
+   ```
+
+2. b、缓存的解决方案
+   1. 将缓存转移到外部，减少常驻内存的对象的数量，让垃圾回收更高效
+   2. 进程之间可以共享缓存： 例如redis
+
+
+#### 2. 关注队列状态
+在大多数应用场景下，消费的速度远远大于生产的速度，内存泄漏不易产生。但是一旦消费速度低于生产速度，将会形成堆积。
+
+**例子：**有的应用会收集日志。如果欠缺考虑，也许会采用数据库来记录日志。日志通常会是海量的，数据库构建在文件系统之上，写入效率远远低于文件直接写入，于是会形成数据库写入操作的堆积，而JavaScript中相关的作用域也不会得到释放，内存占用不会回落，从而出现内存泄漏
+
+**解决方案：**
+ 1. 通过监控系统产生报警并通知相关人员
+ 2. 任意异步调用都应该包含超时机制，一旦在限定的时间内未完成响应，通过回调函数传达超时异常，启动拒绝模式
+
+
+### 内存排查
+1. 常见的内存排查工具
+   1. v8-profiler：它可以用于对V8堆内存抓取快照和对CPU进行分析
+   2. node-heapdump：它允许对V8堆内存抓取快照，用于事后分析。
+   3. node-memwatch：
+
+2. 总结
+   **排查内存泄漏的原因主要通过对堆内存进行分析而找到**
 
 ### 大内存应用 
+>在Node中，不可避免地还是会存在操作大文件的场景。由于Node的内存限制，操作大文件也需要小心，好在Node提供了stream模块用于处理大文件；Node中的大多数模块都有stream的应用，比如fs的createReadStream()和createWriteStream()方法可以分别用于创建文件的可读流和可写流，process模块中的stdin和stdout则分别是可读流和可写流的示例。
+
+1. fs.createReadStream 和 fs.createWriteStream 使用
+
+```js
+var reader = fs.createReadStream('in.txt');
+var writer = fs.createWriteStream('out.txt');
+reader.on('data', function (chunk) {
+ writer.write(chunk);
+});
+reader.on('end', function () {
+ writer.end();
+});
+
+// 另外一种写法
+var reader = fs.createReadStream('in.txt');
+var writer = fs.createWriteStream('out.txt');
+reader.pipe(writer);
+```
+可读流提供了管道方法pipe()，封装了data事件和写入操作。通过流的方式，上述代码不会受到V8内存限制的影响，有效地提高了程序的健壮性。
 
 ## 理解buffer
+>由于应用场景不同，在Node中，应用需要处理网络协议、操作数据库、处理图片、接收上传文件等，在网络流和文件的操作中，还要处理大量二进制数据，JavaScript自有的字符串远远不能满足这些需求，于是Buffer对象应运而生
+
+### Buffer的结构
+1. a、介绍
+ 1. 1、由于Buffer太过常见，Node在进程启动时就已经加载了它，并将其放在全局对象（global）上。所以在使用Buffer时，无须通过require()即可直接使用；
+ 2. 2、Buffer是一个典型的JavaScript与C++结合的模块，它将性能相关部分用C++实现，将非性能相关的部分用JavaScript实现。
+ 3. 3、Buffer所占用的内存不是通过V8分配的，属于堆外内存。
+
+2. b、buffer对象
+Buffer对象类似于数组，它的元素为16进制的两位数，即0到255的数值。
+```js
+var str = "深入浅出node.js";
+var buf = new Buffer(str, 'utf-8');
+console.log(buf); // <Buffer e6 b7 b1 e5 85 a5 e6 b5 85 e5 87 ba 6e 6f 64 65 2e 6a 73>
+
+// 
+var buf = new Buffer(100);
+console.log(buf.length); //  100
+buf[10] = 123;
+console.log(buf[10]); //  123
+```
+
+3. c、buffer的内存分配
+  * Buffer对象的内存分配不是在V8的堆内存中，而是在Node的C++层面实现内存的申请的。因为处理大量的字节数据不能采用需要一点内存就向操作系统申请一点内存的方式，这可能造成大量的内存申请的系统调用，对操作系统有一定压力。为此Node在内存的使用上应用的是在C++层面申请内存、在JavaScript中分配内存的策略
+  * slab机制介绍：xxxxx
+
+
+4. d、总结
+真正的内存是在Node的C++层面提供的，JavaScript层面只是使用它。当进行小而频繁的Buffer操作时，采用slab的机制进行**预先申请和事后分配，**使得JavaScript到操作系统之间不必有过多的内存申请方面的系统调用。对于大块的Buffer而言，则直接使用C++层面提供的内存，而无需细腻的分配操作。
+
+### Buffer的转换
+1. a、字符串转buffer
+```js
+//默认按UTF-8编码进行转码和存储
+new Buffer(str, [encoding]);
+
+buf.write(string, [offset], [length], [encoding]);
+```
+
+2. b、buffer转字符串
+```js
+buf.toString([encoding], [start], [end]);
+```
+
+### Buffer的拼接
+1. buffer拼接
+```js
+var fs = require('fs');
+var rs = fs.createReadStream('test.md');
+var data = '';
+rs.on("data", function (chunk){
+ data += chunk; // data = data.toString() + chunk.toString();
+});
+rs.on("end", function () {
+ console.log(data);
+});
+```
+2. 中文乱码原因
+   
+3. 正确拼接buffer
+
+### Buffer的性能
 
 ## 网络编程
 
