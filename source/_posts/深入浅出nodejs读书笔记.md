@@ -720,9 +720,201 @@ res.on('end', function () {
 });
 ```
 ### Buffer的性能
+#### 1. 介绍
+Buffer在文件I/O和网络I/O中运用广泛，尤其在网络传输中，它的性能举足轻重。在应用中，我们通常会操作字符串，但一旦在网络中传输，都需要转换为Buffer，以进行二进制数据传输。
+```js
+var http = require('http');
+var helloworld = "";
+for (var i = 0; i < 1024 * 10; i++) {
+ helloworld += "a";
+}
+
+// 使向客户端输出的是一个Buffer对象，无须在每次响应时进行转换
+// helloworld = new Buffer(helloworld);
+
+http.createServer(function (req, res) {
+ res.writeHead(200);
+ res.end(helloworld);
+}).listen(8001);
+```
+#### 2. 读取文件(fs.createReadStream)
+fs.createReadStream()的工作方式是在内存中准备一段Buffer，然后在fs.read()读取时逐步从磁盘中将字节复制到Buffer中。完成一次读取时，则从这个Buffer中通过slice()方法取出部分数据作为一个小Buffer对象，再通过data事件传递给调用方。如果Buffer用完，则重新分配一个；如果还有剩余，则继续使用。
+
+**读取一个相同的大文件时，highWaterMark值的大小与读取速度的关系：该值越大，读取速度越快**
 
 ## 网络编程
+>在Web领域，大多数的编程语言需要专门的Web服务器作为容器，如ASP、ASP.NET需要IIS作为服务器，PHP需要搭载Apache或Nginx环境等，JSP需要Tomcat服务器等。
+**Node提供了net、dgram、http、https这4个模块，分别用于处理TCP、UDP、HTTP、HTTPS。**
+### 构建TCP服务
+#### 1. tcp介绍
+1. TCP属于传输层协议， http属于应用层
+2. TCP是面向连接的协议，最显著的特征是传输之前要3次握手
+   
+
+#### 2. 创建tcp
+```js
+/*
+server.js
+*/
+var net = require('net');
+var server = net.createServer(function (socket) {
+ // 新的连接
+ socket.on('data', function (data) {
+   socket.write("你好");
+ });
+ socket.on('end', function () {
+   console.log("连接断开");
+ });
+ socket.write("欢迎光临《深入浅出Node.js》示例：\n");
+});
+
+server.listen(8124, function () {
+ console.log('server bound');
+});
+```
+
+```js
+/*
+ client.js
+*/
+var net = require('net');
+//'connect' listener
+var client = net.connect({port: 8124}, function () { 
+ console.log('client connected');
+ client.write('world! \r\n');
+});
+
+client.on('data', function (data) {
+ console.log(data.toString());
+ client.end();
+});
+
+client.on('end', function () {
+ console.log('client disconnected');
+});
+```
+#### 3. tcp事件
+1. 服务器事件，对于通过net.createServer()创建的服务器而言，它是一个EventEmitter实例。
+   1. listening：在调用server.listen()绑定端口或者Domain Socket后触发，简洁写法为server.listen(port, listeningListener)，
+   2. connection：每个客户端套接字连接到服务器端时触发
+   3. close：当服务器关闭时触发，在调用server.close()后，服务器将停止接受新的套接字连接，但保持当前存在的连接，等待所有连接都断开后，会触发该事件。
+   
+2. 连接事件，服务器可以同时与多个客户端保持连接，对于每个连接而言是典型的可写可读Stream对象。
+   1. data：当一端调用write()发送数据时，另一端会触发data事件，事件传递的数据即是write()发送的数据
+
+#### 4. 可读可写的stream流使用pipe()管道操作
+由于TCP套接字是可写可读的Stream对象，可以利用pipe()方法巧妙地实现管道操作
+```js
+var net = require('net');
+
+var server = net.createServer(function (socket) {
+ socket.write('Echo server\r\n');
+ socket.pipe(socket);
+});
+
+server.listen(1337, '127.0.0.1');
+```
+
+### 构建UDP服务
+#### 1. UDP和TCP区别
+UDP和TCP都是处在传输层；UDP与TCP最大的不同是UDP不是面向连接的，由于UDP无须连接，资源消耗低，处理快速且灵活，所以常常应用在那种偶尔丢一两个数据包也不会产生重大影响的场景，比如音频、视频等。UDP目前应用很广泛，DNS服务即是基于它实现的。 
+
+
+#### 2. 创建UDP套接字
+UDP套接字一旦创建，既可以作为客户端发送数据，也可以作为服务器端接收数据
+```js
+var dgram = require('dgram');
+var socket = dgram.createSocket("udp4");
+```
+
+#### 3. 创建UDP服务端
+若想让UDP套接字接收网络消息，只要调用dgram.bind(port,[address])方法对网卡和端口进行绑定即可
+```js
+var dgram = require("dgram");
+var server = dgram.createSocket("udp4");
+
+server.on("message", function (msg, rinfo) {
+ console.log("server got: " + msg + " from " +
+   rinfo.address + ":" + rinfo.port);
+});
+
+server.on("listening", function () {
+ var address = server.address();
+ console.log("server listening " +
+     address.address + ":" + address.port);
+});
+
+server.bind(41234);
+```
+
+#### 4. 创建UDP客户端
+```js
+// client.js
+var dgram = require('dgram');
+
+var message = new Buffer("深入浅出Node.js");
+var client = dgram.createSocket("udp4");
+client.send(message, 0, message.length, 41234, "localhost", function(err, bytes) {
+ client.close();
+});
+```
+
+
+### 构建HTTP服务
+#### 1. 构建http服务
+TCP与UDP都属于网络传输层协议，如果要构造高效的网络应用，就应该从传输层进行着手。但是对于经典的应用场景，则无须从传输层协议入手构造自己的应用，比如HTTP或SMTP等，这些经典的应用层协议对于普通应用而言绰绰有余。
+```js
+var http = require('http');
+http.createServer(function (req, res) {
+ res.writeHead(200, {'Content-Type': 'text/plain'});
+ res.end('Hello World\n');
+}).listen(1337, '127.0.0.1');
+console.log('Server running at http://127.0.0.1:1337/');
+```
+
+#### 2. http报文
+1. curl -v  127.0.0.1:5001看http原理
+   1. 第一部分内容为经典的TCP的3次握手过程
+   ```js
+    * Trying 127.0.0.1:5001...
+    * Connected to 127.0.0.1 (127.0.0.1) port 5001 (#0)
+   ```
+   2. 第二部分是在完成握手之后，客户端向服务器端发送请求报文
+   ```js
+    > GET / HTTP/1.1
+    > Host: 127.0.0.1:5001
+    > User-Agent: curl/7.77.0
+    > Accept: */*
+    >
+   ```
+   3. 第三部分是服务器端完成处理后，向客户端发送响应内容，包括响应头和响应体
+   ```js
+   < HTTP/1.1 200 OK
+   < X-Powered-By: Hexo
+   < Content-Type: text/html
+   < Date: Sat, 26 Mar 2022 08:48:21 GMT
+   < Connection: keep-alive
+   < Transfer-Encoding: chunked
+   <
+   <!DOCTYPE html>
+   <html lang="en">
+   <head><meta name="generator" content="Hexo 3.9.0">
+   ...
+   ...
+   ...
+   ```
+   4. 结束回话
+   ```js
+   * Connection #0 to host 127.0.0.1 left intact
+   ```
+
+2. 从协议的角度来说，现在的应用，如浏览器，其实是一个HTTP的代理，用户的行为将会通过它转化为HTTP请求报文发送给服务器端，服务器端在处理请求后，发送响应报文给代理，代理在解析报文后，将用户需要的内容呈现在界面上。
+3. 以浏览器打开一张图片地址为例：首先，浏览器构造HTTP报文发向图片服务器端；然后，服务器端判断报文中的要请求的地址，将磁盘中的图片文件以报文的形式发送给浏览器；浏览器接收完图片后，调用渲染引擎将其显示给用户。
+#### 3. http模块
+
+### 构建websocket服务
 
 ## 进程
+
 
 ## 构建web应用
