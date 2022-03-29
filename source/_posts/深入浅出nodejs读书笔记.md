@@ -913,8 +913,128 @@ console.log('Server running at http://127.0.0.1:1337/');
    
    
 #### 3. http模块
+> 在Node中，HTTP服务继承自TCP服务器（net模块），它能够与多个客户端保持连接，由于其采用事件驱动的形式，并不为每一个连接创建额外的线程或进程，保持很低的内存占用，所以能实现高并发。HTTP服务与TCP服务模型有区别的地方在于，在开启keepalive后，一个TCP会话可以用于多次请求和响应。TCP服务以connection为单位进行服务，HTTP服务以request为单位进行服务。http模块即是将connection到request的过程进行了封装
+
+1. **http请求**
+   对于TCP连接的读操作，http模块将其封装为ServerRequest对象。让我们再次查看前面的请求报文，报文头部将会通过http_parser进行解析
+   ```js
+    headers:
+    { 'user-agent': 'curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5',
+      host: '127.0.0.1:1337',
+      accept: '*/*' },
+   ```
+   
+2. **http响应**
+   1. 我们可以调用setHeader进行多次设置，但只有调用writeHead后，报头才会写入到连接中
+   2. 报文体部分则是调用res.write()和res.end()方法实现，后者与前者的差别在于res.end()会先调用write()发送数据，然后发送信号告知服务器这次响应结束
+   3. 报头是在报文体发送前发送的，一旦开始了数据的发送，writeHead()和setHeader()将不再生效。这由协议的特性决定。
+   
+3. **http事件：**如同TCP服务一样，HTTP服务器也抽象了一些事件，以供应用层使用，同样典型的是，服务器也是一个EventEmitter实例
+   1. connection事件：在开始HTTP请求和响应前，客户端与服务器端需要建立底层的TCP连接，这个连接可能因为开启了keep-alive，可以在多次请求响应之间使用；当这个连接建立时，服务器触发一次connection事件
+   2. request事件：建立TCP连接后，http模块底层将在数据流中抽象出HTTP请求和HTTP响应，当请求数据发送到服务器端，在解析出HTTP请求头后，将会触发该事件；在res.end()后，TCP连接可能将用于下一次请求响应
+   3. checkContinue事件：某些客户端在发送较大的数据时，并不会将数据直接发送，而是先发送一个头部带Expect: 100-continue的请求到服务器，服务器将会触发checkContinue事件
+   4. upgrade事件：当客户端要求升级连接的协议时，需要和服务器端协商，客户端会在请求头中带上Upgrade字段，服务器端会在接收到这样的请求时触发该事件。这在后文的WebSocket部分有详细流程的介绍。如果不监听该事件，发起该请求的连接将会关闭。
 
 ### 构建websocket服务
+#### 1. node与websocket
+WebSocket实现了客户端与服务器端之间的长连接，而Node事件驱动的方式十分擅长与大量的客户端保持高并发连接
+
+#### 2. websocket与http
+1. 客户端与服务器端只建立一个TCP连接，可以使用更少的连接。
+2. WebSocket服务器端可以推送数据到客户端，这远比HTTP请求响应模式更灵活、更高效。
+3. 有更轻量级的协议头，减少数据传送量 
+4. 相比HTTP, WebSocket更接近于传输层协议，它并没有在HTTP的基础上模拟服务器端的推送，而是在TCP上定义独立的协议。让人迷惑的部分在于WebSocket的握手部分是由HTTP完成的，使人觉得它可能是基于HTTP实现的。
+  
+#### 3. websocket握手阶段
+1. 和普通的http请求报文多这2个协议头， 表示升级到websocket协议
+```js
+...
+...
+Upgrade: websocket
+Connection: Upgrade
+```
+2. 服务端实现websocket
+```js
+var server = http.createServer(function (req, res) {
+res.writeHead(200, {'Content-Type': 'text/plain'});
+res.end('Hello World\n');
+});
+server.listen(12010);
+
+// 在收到upgrade请求后，告之客户端允许切换协议
+server.on('upgrade', function (req, socket, upgradeHead) {
+var head = new Buffer(upgradeHead.length);
+upgradeHead.copy(head);
+var key = req.headers['sec-websocket-key'];
+var shasum = crypto.createHash('sha1');
+key = shasum.update(key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").digest('base64');
+var headers = [
+  'HTTP/1.1101 Switching Protocols',
+  'Upgrade: websocket',
+  'Connection: Upgrade',
+  'Sec-WebSocket-Accept: ' + key,
+  'Sec-WebSocket-Protocol: ' + protocol
+];
+// 让数据立即发送
+socket.setNoDelay(true);
+socket.write(headers.concat('', '').join('\r\n'));
+// 建立服务器端WebSocket连接
+var websocket = new WebSocket();
+websocket.setSocket(socket);
+});
+```
+3. 客户端代码
+```js
+var WebSocket = function (url) {
+ // 伪代码，解析ws://127.0.0.1:12010/updates，用于请求
+ this.options = parseUrl(url);
+ this.connect();
+};
+WebSocket.prototype.onopen = function () {
+ // TODO
+};
+
+WebSocket.prototype.setSocket = function (socket) {
+ this.socket = socket;
+};
+
+WebSocket.prototype.connect = function () {
+ var that = this;
+ var key = new Buffer(this.options.protocolVersion + '-' + Date.now()).toString('base64');
+ var shasum = crypto.createHash('sha1');
+var expected = shasum.update(key + '258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest('base64');
+
+var options = {
+port: this.options.port, //12010
+host: this.options.hostname, // 127.0.0.1
+headers: {
+ 'Connection': 'Upgrade',
+ 'Upgrade': 'websocket',
+ 'Sec-WebSocket-Version': this.options.protocolVersion,
+ 'Sec-WebSocket-Key': key
+}
+};
+var req = http.request(options);
+req.end();
+
+req.on('upgrade', function(res, socket, upgradeHead) {
+// 连接成功
+that.setSocket(socket);
+// 触发open事件
+that.onopen();
+});
+};
+```
+
+#### 4. websocket传输数据阶段
+websocket协议升级的过程
+<img src="/img/node15.jpeg" style="max-width:95%" />
+
+#### 5. 总结
+>尽管Node没有内置WebSocket的库，但是社区的ws模块封装了WebSocket的底层实现。socket.io即是在它的基础上构建实现
+
+1. Node基于事件驱动的方式使得它应对WebSocket这类长连接的应用场景可以轻松地处理大量并发请求
+2. 基于JavaScript，以封装良好的WebSocket实现，API与客户端可以高度相似。
 
 ## 进程
 
