@@ -1037,6 +1037,67 @@ websocket协议升级的过程
 2. 基于JavaScript，以封装良好的WebSocket实现，API与客户端可以高度相似。
 
 ## 进程
+### 1. 服务模型变迁
+1. 石器时代：**同步**
+   它的服务模式是一次只为一个请求服务，所有请求都得按次序等待服务。
+2. 青铜时代：**复制进程**
+   为了解决同步架构的并发问题，一个简单的改进是通过进程的复制同时服务更多的请求和用户。这样每个连接都需要一个进程来服务，即100个连接需要启动100个进程来进行服务，这是非常昂贵的代价。
+3. 白银时代：**多线程**
+   为了解决进程复制中的浪费问题，多线程被引入服务模型，让一个线程服务一个请求。线程相对进程的开销要小许多，并且线程之间可以共享数据，内存浪费的问题可以得到解决，并且利用线程池可以减少创建和销毁线程的开销。
+4. 黄金时代：**事件驱动**
+   **node多进程目的：CPU的利用率和进程的健壮性**
+   所有处理都在单线程上进行，影响事件驱动服务模型性能的点在于CPU的计算能力，它的上限决定这类服务模型的性能上限，但它不受多进程或多线程模式中资源上限的影响，可伸缩性远比前两者高。如果解决掉多核CPU的利用问题，带来的性能上提升是可观的
+
+
+### 2. 多进程架构
+1. 介绍
+面对单进程单线程对多核使用不足的问题，前人的经验是启动多进程即可。理想状态下每个进程各自利用一个CPU，以此实现多核CPU的利用。所幸，Node提供了child_process模块，并且也提供了child_process.fork()函数供我们实现进程的复制。
+```js
+// worker.js
+var http = require('http');
+http.createServer(function (req, res) {
+ res.writeHead(200, {'Content-Type': 'text/plain'});
+ res.end('Hello World\n');
+}).listen(Math.round((1 + Math.random()) * 1000), '127.0.0.1');
+
+//master.js
+var fork = require('child_process').fork;
+var cpus = require('os').cpus();
+for (var i = 0; i < cpus.length; i++) {
+ fork('./worker.js');
+}
+```
+
+2. 主从模式（master-worker）
+主进程和工作进程。这是典型的分布式架构中用于并行处理业务的模式，具备较好的可伸缩性和稳定性。主进程不负责具体的业务处理，而是负责调度或管理工作进程，它是趋向于稳定的。工作进程负责具体的业务处理.
+<img src="/img/node16.jpeg" style="max-width:95%" />
+
+3. 创建子进程
+> 1. spawn()：启动一个子进程来执行命令。
+> 2. exec()：启动一个子进程来执行命令，与spawn()不同的是其接口不同，它有一个回调函数获知子进程的状况。
+> 3. execFile()：启动一个子进程来执行可执行文件。
+> 4. fork()：与spawn()类似，不同点在于它创建Node的子进程只需指定要执行的JavaScript文件模块即可。
+
+<img src="/img/node17.jpeg" style="max-width:95%" />
+```js
+var cp = require('child_process');
+cp.spawn('node', ['worker.js']);
+
+cp.exec('node worker.js', function (err, stdout, stderr) {
+ // some code
+});
+
+// 如果是JavaScript文件通过execFile()运行，它的首行内容必须添加如下代码: #! /usr/bin/env node
+cp.execFile('worker.js', function (err, stdout, stderr) {
+ // some code
+});
+
+cp.fork('./worker.js');
+```
+4. 进程之间通信
 
 
 ## 构建web应用
+
+
+## node产品化和工程化
