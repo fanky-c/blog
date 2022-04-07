@@ -1087,7 +1087,8 @@ cp.exec('node worker.js', function (err, stdout, stderr) {
  // some code
 });
 
-// 如果是JavaScript文件通过execFile()运行，它的首行内容必须添加如下代码: #! /usr/bin/env node
+// 如果是JavaScript文件通过execFile()运行，
+// 它的首行内容必须添加如下代码: #! /usr/bin/env node
 cp.execFile('worker.js', function (err, stdout, stderr) {
  // some code
 });
@@ -1095,7 +1096,42 @@ cp.execFile('worker.js', function (err, stdout, stderr) {
 cp.fork('./worker.js');
 ```
 4. 进程之间通信
+通过fork()或者其他API，创建子进程之后，为了实现父子进程之间的通信，父进程与子进程之间将会创建IPC通道。通过IPC通道，父子进程之间才能通过message和send()传递消息。
+```js
+// parent.js
+var cp = require('child_process');
+var n = cp.fork(__dirname + '/sub.js');
+n.on('message', function (m) {
+ console.log('PARENT got message:', m);
+});
+n.send({hello: 'world'});
 
+// sub.js
+process.on('message', function (m) {
+ console.log('CHILD got message:', m);
+});
+process.send({foo: 'bar'});
+```
+
+5. 进程间通信原理
+IPC的全称是Inter-Process Communication，即进程间通信。进程间通信的目的是为了让不同的进程能够互相访问资源并进行协调工作。实现进程间通信的技术有很多，如命名管道、匿名管道、socket、信号量、共享内存、消息队列、DomainSocket等。Node中实现IPC通道的是管道（pipe）技术。
+表现在应用层上的进程间通信只有简单的message事件和send()方法，接口十分简洁和消息化。图为IPC创建和实现的示意图。
+<img src="/img/node18.jpeg" style="max-width:95%" />
+
+
+父进程在实际创建子进程之前，会创建IPC通道并监听它，然后才真正创建出子进程，并通过环境变量（NODE_CHANNEL_FD）告诉子进程这个IPC通道的文件描述符。子进程在启动的过程中，根据文件描述符去连接这个已存在的IPC通道，从而完成父子进程之间的连接。
+<img src="/img/node19.jpeg" style="max-width:95%" />
+
+> 只有启动的子进程是Node进程时，子进程才会根据环境变量去连接IPC通道，对于其他类型的子进程则无法实现进程间通信，除非其他进程也按约定去连接这个已经创建好的IPC通道
+
+
+6. 句柄传递
+   1. 端口被占用早期解决方案
+    在监听的过程中都抛出了EADDRINUSE异常，这是端口被占用的情况，新的进程不能继续监听该端口了。这个问题破坏了我们将多个进程监听同一个端口的想法。要解决这个问题，通常的做法是让每个进程监听不同的端口，其中主进程监听主端口（如80），主进程对外接收所有的网络请求，再将这些请求分别代理到不同的端口的进程上。
+    <img src="/img/node20.jpeg" style="max-width:95%" />
+
+    2. 只用一个端口的解决方案
+    **句柄是一种可以用来标识资源的引用，它的内部包含了指向对象的文件描述符。**比如句柄可以用来标识一个服务器端socket对象、一个客户端socket对象、一个UDP套接字、一个管道等。
 
 ## 构建web应用
 
