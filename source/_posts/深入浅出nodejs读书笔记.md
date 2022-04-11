@@ -1126,14 +1126,74 @@ IPC的全称是Inter-Process Communication，即进程间通信。进程间通�
 
 
 6. 句柄传递
-   1. 端口被占用早期解决方案
+  1. 端口被占用早期解决方案
     在监听的过程中都抛出了EADDRINUSE异常，这是端口被占用的情况，新的进程不能继续监听该端口了。这个问题破坏了我们将多个进程监听同一个端口的想法。要解决这个问题，通常的做法是让每个进程监听不同的端口，其中主进程监听主端口（如80），主进程对外接收所有的网络请求，再将这些请求分别代理到不同的端口的进程上。
     <img src="/img/node20.jpeg" style="max-width:95%" />
 
-    2. 只用一个端口的解决方案
-    **句柄是一种可以用来标识资源的引用，它的内部包含了指向对象的文件描述符。**比如句柄可以用来标识一个服务器端socket对象、一个客户端socket对象、一个UDP套接字、一个管道等。
+  2. 只用一个端口的解决方案(多个子进程可以同时监听相同端口)
+    **句柄是一种可以用来标识资源的引用，它的内部包含了指向对象的文件描述符。**比如句柄可以用来标识一个服务器端socket对象、一个客户端socket对象、一个UDP套接字、一个管道等。发送句柄意味着什么？在前一个问题中，我们可以去掉代理这种方案，使主进程接收到socket请求后，将这个socket直接发送给工作进程，而不是重新与工作进程之间建立新的socket连接来转发数据。
+    ```js
+        // parent.js
+        var cp = require('child_process');
+        var child1 = cp.fork('child.js');
+        var child2 = cp.fork('child.js');
+
+        // Open up the server object and send the handle
+        var server = require('net').createServer();
+       
+       // server.on('connection', function (socket) {
+       //   socket.end('handled by parent\n');
+       // });        
+        
+        server.listen(1337, function () {
+          child1.send('server', server);
+          child2.send('server', server);
+          // 对于主进程而言，我们甚至想要它更轻量一点，
+          // 那么是否将服务器句柄发送给子进程之后，就可以关掉服务器的监听，让子进程来处理请求呢
+          server.close();
+        });
+        
+        // child.js
+        var http = require('http');
+        var server = http.createServer(function (req, res) {
+          res.writeHead(200, {'Content-Type': 'text/plain'});
+          res.end('handled by child, pid is ' + process.pid + '\n');
+        });
+
+        process.on('message', function (m, tcp) {
+          if (m === 'server') {
+            tcp.on('connection', function (socket) {
+              server.emit('connection', socket);
+            });
+          }
+        });        
+    ```
+    <img src="/img/node21.jpeg" style="max-width:95%" />
+    <img src="/img/node22.jpeg" style="max-width:95%" />
+  
+  3. 句柄传送和还原
+     发送到IPC管道中的实际上是我们要发送的句柄文件描述符，文件描述符实际上是一个整数值。这个message对象在写入到IPC管道时也会通过JSON.stringify()进行序列化。所以最终发送到IPC通道中的信息都是字符串，send()方法能发送消息和句柄并不意味着它能发送任意对象。
+     连接了IPC通道的子进程可以读取到父进程发来的消息，将字符串通过JSON.parse()解析还原为对象后，才触发message事件将消息体传递给应用层使用。
+   <img src="/img/node23.jpeg" style="max-width:95%" />
+
+  4. 端口共同监听
+     多个进程可以监听到相同的端口而不引起EADDRINUSE异常。其答案也很简单，我们独立启动的进程中，TCP服务器端socket套接字的文件描述符并不相同，导致监听到相同的端口时会抛出异常。
+     Node底层对每个端口监听都设置了SO_REUSEADDR选项，这个选项的涵义是不同进程可以就相同的网卡和端口进行监听，这个服务器端套接字可以被不同的进程复用。
+     ```js
+     setsockopt(tcp->io_watcher.fd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on))
+     ```
+     由于独立启动的进程互相之间并不知道文件描述符，所以监听相同端口时就会失败。但对于send()发送的句柄还原出来的服务而言，它们的文件描述符是相同的，所以监听相同端口不会引起异常。
+
+
+
+
 
 ## 构建web应用
 
 
 ## node产品化和工程化
+
+
+## 测试
+### 单元测试
+### 性能测试
