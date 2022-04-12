@@ -1184,6 +1184,162 @@ IPC的全称是Inter-Process Communication，即进程间通信。进程间通�
      ```
      由于独立启动的进程互相之间并不知道文件描述符，所以监听相同端口时就会失败。但对于send()发送的句柄还原出来的服务而言，它们的文件描述符是相同的，所以监听相同端口不会引起异常。
 
+### 3. 集群稳定
+>搭建好了集群，充分利用了多核CPU资源，似乎就可以迎接客户端大量的请求了。 但是会出现以后几个需要主要的：**多个工作进程的存活状态管理、工作进程的平滑重启、配置或者静态数据的动态重新载入**
+
+#### 进程事件
+1. error：当子进程无法被复制创建、无法被杀死、无法发送消息时会触发该事件
+2. exit：子进程退出时触发该事件，子进程如果是正常退出，这个事件的第一个参数为退出码，否则为null。如果进程是通过kill()方法被杀死的，会得到第二个参数，它表示杀死进程时的信号。
+3. close：在子进程的标准输入输出流中止时触发该事件，参数与exit相同
+4. disconnect：在父进程或子进程中调用disconnect()方法时触发该事件，在调用该方法时将关闭监听IPC通道。
+```js
+/*
+ 如SIGTERM是软件终止信号，进程收到该信号时应当退出
+*/
+process.on('SIGTERM', function() {
+ console.log('Got a SIGTERM, exiting...');
+ process.exit(1);
+});
+
+console.log('server running with PID:', process.pid);
+process.kill(process.pid, 'SIGTERM');
+```
+
+#### 自动重启
+1. 主进程加入子进程管理机制
+>我们能够通过监听子进程的exit事件来获知其退出的信息，接着前文的多进程架构，我们在主进程上要加入一些子进程管理的机制，比如重新启动一个工作进程来继续服务。
+
+<img src="/img/node24.jpeg" alt="主进程加入子进程管理机制" style="max-width:95%" />
+
+```js
+// master.js
+var fork = require('child_process').fork;
+var cpus = require('os').cpus();
+
+var server = require('net').createServer();
+server.listen(1337);
+
+var workers = {};
+var createWorker = function () {
+ var worker = fork(__dirname + '/worker.js');
+ // 退出时重新启动新的进程
+ worker.on('exit', function () {
+   console.log('Worker ' + worker.pid + ' exited.');
+   delete workers[worker.pid];
+   createWorker();
+ });
+ // 句柄转发
+ worker.send('server', server);
+ workers[worker.pid] = worker;
+ console.log('Create worker. pid: ' + worker.pid);
+};
+
+for (var i = 0; i < cpus.length; i++) {
+ createWorker();
+}
+
+// 进程自己退出时，让所有工作进程退出
+process.on('exit', function () {
+ for (var pid in workers) {
+   workers[pid].kill();
+ }
+});
+
+// worker.js
+var http = require('http');
+var server = http.createServer(function (req, res) {
+ res.writeHead(200, {'Content-Type': 'text/plain'});
+ res.end('handled by child, pid is ' + process.pid + '\n');
+});
+
+var worker;
+process.on('message', function (m, tcp) {
+ if (m === 'server') {
+   worker = tcp;
+   worker.on('connection', function (socket) {
+       server.emit('connection', socket);
+     });
+   }
+ });
+
+ process.on('uncaughtException', function () {
+   // 停止接收新的连接
+   worker.close(function () {
+     // 所有已有连接断开后，退出进程
+     process.exit(1);
+   });
+ });
+```
+
+1. 自杀信号(平滑重启)
+>在极端的情况下，所有工作进程都停止接收新的连接，全处在等待退出的状态。但在等到进程完全退出才重启的过程中，所有新来的请求可能存在没有工作进程为新用户服务的情景，这会丢掉大部分请求。
+为此需要改进这个过程，不能等到工作进程退出后才重启新的工作进程。当然也不能暴力退出进程，因为这样会导致已连接的用户直接断开。于是我们在退出的流程中增加一个自杀（suicide）信号。工作进程在得知要退出时，向主进程发送一个自杀信号，然后才停止接收新的连接，当所有连接断开后才退出。主进程在接收到自杀信号后，立即创建新的工作进程服务。
+
+<img src="/img/node25.jpeg" alt="进程的自杀和重启" style="max-width:95%" />
+
+```js
+// master.js
+ var createWorker = function () {
+   var worker = fork(__dirname + '/worker.js');
+   // 启动新的进程
+   worker.on('message', function (message) {
+     if (message.act === 'suicide') {
+       createWorker();
+     }
+   });
+   worker.on('exit', function () {
+     console.log('Worker ' + worker.pid + ' exited.');
+   delete workers[worker.pid];
+ });
+ worker.send('server', server);
+ workers[worker.pid] = worker;
+ console.log('Create worker. pid: ' + worker.pid);
+};
+
+
+// worker.js
+var server = http.createServer(function (req, res) {
+ res.writeHead(200, {'Content-Type': 'text/plain'});
+ res.end('handled by child, pid is ' + process.pid + '\n');
+ // 为了模拟未捕获的异常，我们将工作进程的处理代码改为抛出异常
+ throw new Error('throw exception');
+});
+
+process.on('uncaughtException', function (err) {
+ process.send({act: 'suicide'});
+ // 停止接收新的连接
+ worker.close(function () {
+   // 所有已有连接断开后，退出进程
+   process.exit(1);
+ });
+});
+```
+**优点：与前一种方案相比，创建新工作进程在前，退出异常进程在后。至此我们完成了进程的平滑重启，一旦有异常出现，主进程会创建新的工作进程来为用户服务，旧的进程一旦处理完已有连接就自动断开。整个过程使得我们的应用的稳定性和健壮性大大提高。**
+
+1. 限量重启
+>通过自杀信号告知主进程可以使得新连接总是有进程服务，但是依然还是有极端的情况。工作进程不能无限制地被重启，如果启动的过程中就发生了错误，或者启动后接到连接就收到错误，会导致工作进程被频繁重启。
+
+
+#### 负载均衡
+1. 在多进程之间监听相同的端口，使得用户请求能够分散到多个进程上进行处理，这带来的好处是可以将CPU资源都调用起来；
+2. Node默认提供的机制是采用操作系统的抢占式策略。所谓的抢占式就是在一堆工作进程中，闲着的进程对到来的请求进行争抢，谁抢到谁服务；
+3. 这种抢占式策略对大家是公平的，各个进程可以根据自己的繁忙度来进行抢占。但是对于Node而言，需要分清的是它的繁忙是由CPU、I/O两个部分构成的，影响抢占的是CPU的繁忙度。对不同的业务，可能存在I/O繁忙，而CPU较为空闲的情况，这可能造成某个进程能够抢到较多请求，形成负载不均衡的情况；
+4. 为此Node在v0.11中提供了一种新的策略使得负载均衡更合理，**这种新的策略叫Round-Robin，又叫轮叫调度。**轮叫调度的工作方式是由主进程接受连接，将其依次分发给工作进程。分发的策略是在N个工作进程中，每次选择第i = (i + 1) mod n个进程来发送连接。
+
+#### 状态共享
+我们知道在Node进程中不宜存放太多数据，因为它会加重垃圾回收的负担，进而影响性能。同时，Node也不允许在多个进程之间共享数据。但在实际的业务中，往往需要共享一些数据，譬如配置数据，这在多个进程中应当是一致的。为此，在不允许共享数据的情况下，我们需要一种方案和机制来实现数据在多个进程之间的共享。
+
+1. 第三方存储数据
+>解决数据共享最直接、简单的方式就是通过第三方来进行数据存储，比如将数据存放到数据库、磁盘文件、缓存服务（如Redis）中，所有工作进程启动时将其读取进内存中。但这种方式存在的问题是如果数据发生改变，还需要一种机制通知到各个子进程，使得它们的内部状态也得到更新。
+
+2. 主动通知
+>一种改进的方式是当数据发生更新时，主动通知子进程。当然，即使是主动通知，也需要一种机制来及时获取数据的改变。这个过程仍然不能脱离轮询，但我们可以减少轮询的进程数量，我们将这种用来发送通知和查询状态是否更改的进程叫做通知进程。为了不混合业务逻辑，可以将这个进程设计为只进行轮询和通知，不处理任何业务逻辑。
+这种推送机制如果按进程间信号传递，在跨多台服务器时会无效，是故可以考虑采用TCP或UDP的方案。进程在启动时从通知服务处除了读取第一次数据外，还将进程信息注册到通知服务处。一旦通过轮询发现有数据更新后，根据注册信息，将更新后的数据发送给工作进程
+
+<img src="/img/node26.jpeg" alt="主动通知进程" style="max-width:95%" />
+
+
+### 4. cluster模块
 
 
 
