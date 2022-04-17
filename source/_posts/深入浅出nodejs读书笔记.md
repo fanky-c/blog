@@ -1187,7 +1187,7 @@ IPC的全称是Inter-Process Communication，即进程间通信。进程间通�
 ### 3. 集群稳定
 >搭建好了集群，充分利用了多核CPU资源，似乎就可以迎接客户端大量的请求了。 但是会出现以后几个需要主要的：**多个工作进程的存活状态管理、工作进程的平滑重启、配置或者静态数据的动态重新载入**
 
-#### 进程事件
+#### a、进程事件
 1. error：当子进程无法被复制创建、无法被杀死、无法发送消息时会触发该事件
 2. exit：子进程退出时触发该事件，子进程如果是正常退出，这个事件的第一个参数为退出码，否则为null。如果进程是通过kill()方法被杀死的，会得到第二个参数，它表示杀死进程时的信号。
 3. close：在子进程的标准输入输出流中止时触发该事件，参数与exit相同
@@ -1205,7 +1205,7 @@ console.log('server running with PID:', process.pid);
 process.kill(process.pid, 'SIGTERM');
 ```
 
-#### 自动重启
+#### b、自动重启
 1. 主进程加入子进程管理机制
 >我们能够通过监听子进程的exit事件来获知其退出的信息，接着前文的多进程架构，我们在主进程上要加入一些子进程管理的机制，比如重新启动一个工作进程来继续服务。
 
@@ -1320,13 +1320,13 @@ process.on('uncaughtException', function (err) {
 >通过自杀信号告知主进程可以使得新连接总是有进程服务，但是依然还是有极端的情况。工作进程不能无限制地被重启，如果启动的过程中就发生了错误，或者启动后接到连接就收到错误，会导致工作进程被频繁重启。
 
 
-#### 负载均衡
+#### c、负载均衡
 1. 在多进程之间监听相同的端口，使得用户请求能够分散到多个进程上进行处理，这带来的好处是可以将CPU资源都调用起来；
 2. Node默认提供的机制是采用操作系统的抢占式策略。所谓的抢占式就是在一堆工作进程中，闲着的进程对到来的请求进行争抢，谁抢到谁服务；
 3. 这种抢占式策略对大家是公平的，各个进程可以根据自己的繁忙度来进行抢占。但是对于Node而言，需要分清的是它的繁忙是由CPU、I/O两个部分构成的，影响抢占的是CPU的繁忙度。对不同的业务，可能存在I/O繁忙，而CPU较为空闲的情况，这可能造成某个进程能够抢到较多请求，形成负载不均衡的情况；
 4. 为此Node在v0.11中提供了一种新的策略使得负载均衡更合理，**这种新的策略叫Round-Robin，又叫轮叫调度。**轮叫调度的工作方式是由主进程接受连接，将其依次分发给工作进程。分发的策略是在N个工作进程中，每次选择第i = (i + 1) mod n个进程来发送连接。
 
-#### 状态共享
+#### d、状态共享
 我们知道在Node进程中不宜存放太多数据，因为它会加重垃圾回收的负担，进而影响性能。同时，Node也不允许在多个进程之间共享数据。但在实际的业务中，往往需要共享一些数据，譬如配置数据，这在多个进程中应当是一致的。为此，在不允许共享数据的情况下，我们需要一种方案和机制来实现数据在多个进程之间的共享。
 
 1. 第三方存储数据
@@ -1340,16 +1340,322 @@ process.on('uncaughtException', function (err) {
 
 
 ### 4. cluster模块
+#### a. 使用方式
+```js
+// 官方推荐
+var cluster = require('cluster');
+var http = require('http');
+var numCPUs = require('os').cpus().length;
 
+if (cluster.isMaster) {
+ // Fork workers
+ for (var i = 0; i < numCPUs; i++) {
+   cluster.fork();
+ }
+
+ cluster.on('exit', function(worker, code, signal) {
+   console.log('worker ' + worker.process.pid + ' died');
+ });
+} else {
+ // Workers can share any TCP connection
+ // In this case its a HTTP server
+ http.createServer(function(req, res) {
+   res.writeHead(200);
+   res.end("hello world\n");
+ }).listen(8000);
+}
+
+/*
+ 自己优化的 cluster.js
+*/
+var cluster = require('cluster');
+
+// 通过cluster.setupMaster()创建子进程而不是使用cluster.fork()，程序结构不再凌乱，逻辑分明，代码的可读性和可维护性较好。
+cluster.setupMaster({
+ exec: "worker.js"
+});
+
+var cpus = require('os').cpus();
+for (var i = 0; i < cpus.length; i++) {
+ cluster.fork();
+}
+```
+
+在进程中判断是主进程还是工作进程，主要取决于环境变量中是否有NODE_UNIQUE_ID
+```js
+cluster.isWorker = ('NODE_UNIQUE_ID' in process.env);
+cluster.isMaster = (cluster.isWorker === false);
+```
+
+#### b. cluster工作原理
+cluster模块就是child_process和net模块的组合应用。cluster启动时，它会在内部启动TCP服务器，在cluster.fork()子进程时，将这个TCP服务器端socket的文件描述符发送给工作进程。如果进程是通过cluster.fork()复制出来的，那么它的环境变量里就存在NODE_UNIQUE_ID，如果工作进程中存在listen()侦听网络端口的调用，它将拿到该文件描述符，通过SO_REUSEADDR端口重用，从而实现多个子进程共享端口。对于普通方式启动的进程，则不存在文件描述符传递共享等事情。
+
+#### c. cluster事件
+1. fork：复制一个工作进程后触发该事件
+2. online：复制好一个工作进程后，工作进程主动发送一条online消息给主进程，主进程收到消息后，触发该事件。
+3. listening：工作进程中调用listen()（共享了服务器端Socket）后，发送一条listening消息给主进程，主进程收到消息后，触发该事件
+4. disconnect：主进程和工作进程之间IPC通道断开后会触发该事件。
+5. exit：有工作进程退出时触发该事件。
+6. setup:cluster.setupMaster()执行后触发该事件
 
 
 
 ## 构建web应用
+### 1、基础功能
+### 2、数据上传
+### 3、路由解析
+### 4、中间件
+### 5、页面渲染
+
+## node产品化
+### 项目工程化
+1. 目录结构
+2. 构建工具: shell
+3. 编码规范：lint和typescript
+4. 代码审查
+
+### 部署流程
+#### a、部署环境
+预发布环境与普通的测试环境的差别在于它的数据较为接近线上真实的数据， 也就是所谓的灰度环境。
+
+#### b、部署操作
+1. 以 nohup 和 & 后台方式启动服务 
+```sh
+nohup node app.js &
+```
+
+```bash
+#! /bin/bash
+DIR=`pwd`
+NODE=`which node`
+# get action
+ACTION=$1
+
+# help
+usage() {
+ echo "Usage: ./appctl.sh {start|stop|restart}"
+ exit 1;
+}
+
+get_pid() {
+ if [ -f ./run/app.pid ]; then
+   echo `cat ./run/app.pid`
+ fi
+}
+
+# start app
+start() {
+ pid=`get_pid`
+
+ if [ ! -z $pid ]; then
+   echo 'server is already running'
+ else
+   $NODE $DIR/app.js 2>&1 &
+   echo 'server is running'
+ fi
+}
+
+# stop app
+stop() {
+ pid=`get_pid`
+ if [ -z $pid ]; then
+   echo 'server not running'
+ else
+   echo "server is stopping ..."
+   kill -15 $pid
+   echo "server stopped ! "
+ fi
+}
+restart() {
+ stop
+ sleep 0.5
+ echo =====
+ start
+}
+
+case "$ACTION" in
+ start)
+   start
+ ;;
+ stop)
+   stop
+ ;;
+ restart)
+   restart
+ ;;
+ *)
+   usage
+ ;;
+esac
+```
+
+部署的过程只要执行下面bash脚本：
+./appctl.sh start
+./appctl.sh stop
+./appctl.sh restart
 
 
-## node产品化和工程化
+2. pm2方式操作进程
 
+### 性能
+#### a、动静分离
+Node尽管也能通过中间件实现静态文件服务，但是Node处理静态文件的能力并不算突出。将图片、脚本、样式表和多媒体等静态文件都引导到专业的静态文件服务器上，让Node只处理动态请求即可。这个过程可以用Nginx或者专业的CDN来处理。静态文件请求分离后，对静态请求使用不同的域名或多个域名还能消除掉不必要的Cookie传输和浏览器对下载线程数的限制
+<img src="/img/node27.jpeg" alt="动静分离" style="max-width:95%" />
+
+#### b、启用缓存
+提升性能其实差不多只有两个途经，一是提升服务的速度，二是避免不必要的计算。前者提升的性能在海量流量面前终有瓶颈，但后者却能够在访问量越大时收益越多。避免不必要的计算，应用场景最多的就是缓存
+
+
+#### c、多进程架构
+通过多进程架构，不仅可以充分利用多核CPU，更是可以建立机制让Node进程更加健壮，以保障Web应用持续服务。由于Node是通过自有模块构建HTTP服务器的，不像大多数服务器端技术那样有专有的Web容器，所以需要开发者自己处理多进程的管理。不过好在官方已经有cluster模块，在社区也有pm、forever、pm2这样的模块用于进程管理
+
+#### d、读写分离
+就任意数据库而言，读取的速度远远高于写入的速度。而某些数据库在写入时为了保证数据一致性，会进行锁表操作，这同时会影响到读取的速度。某些系统为了提升性能，通常会进行数据库的读写分离，将数据库进行主从设计，这样读数据操作不再受到写入的影响，降低了性能的影响
+
+#### e、分布式部署
+通过多机器集群化分布式部署，可以加强应用的健壮性
+
+### 日志
+#### a、访问日志
+中间件框架Connect在其众多中间件中提供了一个日志中间件，通过它可以将关键数据按一定格式输出到日志文件中
+
+#### b、异常日志
+
+❑ console.log：普通日志
+
+❑ console.info：普通信息
+
+❑ console.warn：警告信息
+
+❑ console.error：错误信息
+
+```js
+/**
+ * console模块在具体实现时，log与info方法都将信息输出给标准输出process.stdout, warn与error方法则* 将信息输出到标准错误process.stderr，而info和error分别是log和warn的别名。
+ */
+
+Console.prototype.log = function() {
+ this._stdout.write(util.format.apply(this, arguments) + '\n');
+};
+
+Console.prototype.info = Console.prototype.log;
+
+Console.prototype.warn = function() {
+ this._stderr.write(util.format.apply(this, arguments) + '\n');
+};
+
+Console.prototype.error = Console.prototype.warn;
+
+
+// 格式化方法
+var format = function (msg) {
+ var ret = '';
+ if (! msg) {
+   return ret;
+ }
+
+ var date = moment();
+ var time = date.format('YYYY-MM-DD HH:mm:ss.SSS');
+ if (msg instanceof Error) {
+   var err = {
+     name: msg.name,
+     data: msg.data
+   };
+
+   err.stack = msg.stack;
+   ret = util.format('%s %s: %s\nHost: %s\nData: %j\n%s\n\n',
+     time,
+     err.name,
+     err.stack,
+     os.hostname(),
+     err.data,
+     time
+   );
+   console.log(ret);
+ } else {
+   ret = time + ' ' + util.format.apply(util, arguments) + '\n';
+ }
+ return ret;
+};
+```
+
+#### c、日志和数据库
+有的开发者对日志可能不太了解，会选择将一些日志写入到数据库中。数据库比日志文件好的地方在于它是结构化数据，可以直接编写SQL语句进行分析，日志文件则需要再加工之后才能分析。
+
+但是日志文件与数据库写入在性能上处于两个级别，数据库在写入过程中要经历一系列处理，比如锁表、日志等操作。写日志文件则是直接将数据写到磁盘上。为此，如果有大量的访问，可能会存在写入操作大量排队的状况，数据库的消费速度严重低于生产速度，进而导致内存泄漏等。
+
+相比之下，写日志是轻量的方法，将日志分析和日志记录这两个步骤分离开来是较好的选择。日志记录可以在线写，日志分析则可以借助一些工具同步到数据库中，通过离线分析的方式反馈出来
+#### d、分隔日志
+线上业务可能访问量巨大，产生的日志也可能是大量的，上述示例只是简单地将普通日志和异常日志分开放在两个文件中，日志过多时也不便直接查看。为此，将产生的日志按日期分割是一个不错的主意。
+
+
+### 监控告警
+> 应用的监控主要有两类，一种是业务逻辑型的监控，一种是硬件型的监控。监控主要通过定时采样来进行记录。除此之外，还要对监控的信息设置上限，一旦出现大的波动，就需要发出警报提醒开发者。
+#### a、监控
+1. **日志监控：**从访问日志中也能实现PV和UV的监控。同QPS值一样，通过对PV/UV的监控，可以很好地知道应用的使用者们的习惯、预知访问高峰
+2. **响应时间：**响应时间可以在Nginx一类的反向代理上监控，也可以通过应用自行产生的访问日志来监控
+3. **进程监控：**监控进程一般是检查操作系统中运行的应用进程数，比如对于采用多进程架构的Web应用，就需要检查工作进程的数量，如果低于预估值，就应当发出报警声
+4. **磁盘监控：**
+5. **内存监控：**如果内存只升不降，那么铁定存在内存泄漏问题。健康的内存使用应当是有升有降，在访问量大的时候上升，在访问量回落的时候，占用量也随之回落
+6. **cpu监控：**CPU的使用分为用户态、内核态、IOWait等。如果用户态CPU使用率较高，说明服务器上的应用需要大量的CPU开销；如果内核态CPU使用率较高，说明服务器花费大量时间进行进程调度或者系统调用；IOWait使用率则反应的是CPU等待磁盘I/O操作
+7. **cpu负载：**CPU load过高说明进程数量过多，这在Node中可能体现在用子进程模块反复启动新的进程
+8. **I/O负载：**I/O负载指的主要是磁盘I/O。反应的是磁盘上的读写情况，对于Node编写的应用，主要是面向网络服务，是故不太可能出现I/O负载过高的情况，大多数的I/O压力来自于数据库
+9. **网络监控：**流入流量和流出流量
+
+#### b、告警
+1. 邮件或企业微信告警
+2. 电话告警
+
+
+### 稳定性
+#### a、多机器
+但是一旦出现分布式，就需要考虑负载均衡、状态共享和数据一致性等问题。
+#### b、多机房
+#### c、容灾备份
 
 ## 测试
-### 单元测试
-### 性能测试
+### 1、单元测试
+>单元测试主要用于检测代码的行为是否符合预期
+
+### 2、性能测试
+>在完成代码的行为检测后，还需要对已有代码的性能作出评估，检测已有功能是否能满足生产环境的性能要求，能否承担实际业务带来的压力。换句话说，性能也是功能
+
+1. **基准测试**
+基准测试要统计的就是在多少时间内执行了多少次某个方法。为了增强可比性，一般会以次数作为参照物，然后比较时间，以此来判别性能的差距
+```js
+// Array.prototype.map
+var nativeMap = function (arr, callback) {
+ return arr.map(callback);
+};
+// 自定义循环提值
+var customMap = function (arr, callback) {
+ var ret = [];
+ for (var i = 0; i < arr.length; i++) {
+   ret.push(callback(arr[i], i, arr));
+ }
+ return ret;
+};
+
+// 性能对比方法
+var run = function (name, times, fn, arr, callback) {
+ var start = (new Date()).getTime();
+ for (var i = 0; i < times; i++) {
+   fn(arr, callback);
+ }
+ var end = (new Date()).getTime();
+ console.log('Running %s %d times cost %d ms', name, times, end - start);
+};
+
+// 调用示例
+var callback = function (item) {
+ return item;
+};
+
+run('nativeMap', 1000000, nativeMap, [0, 1, 2, 3, 5, 6], callback);
+run('customMap', 1000000, customMap, [0, 1, 2, 3, 5, 6], callback);
+```
+*为了得到更规范和更好的输出结果，这里介绍benchmark这个模块是如何组织基准测试的。*
+
+
+2. **压力测试**
+对网络接口做压力测试需要考查的几个指标有**吞吐率、响应时间和并发数，**这些指标反映了服务器的并发处理能力。最常用的工具是ab、siege、http_load等
