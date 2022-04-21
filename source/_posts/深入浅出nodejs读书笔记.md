@@ -1402,6 +1402,155 @@ cluster模块就是child_process和net模块的组合应用。cluster启动时�
 
 ## 构建web应用
 ### 1、基础功能
+1. 请求方法
+```js
+function (req, res) {
+ switch (req.method) {
+    case 'POST':
+      update(req, res);
+      break;
+    case 'DELETE':
+      remove(req, res);
+      break;
+    case 'PUT':
+      create(req, res);
+      break;
+    case 'GET':
+    default:
+      get(req, res);
+ }
+}
+```
+2. 路径解析
+```js
+function (req, res) {
+ var pathname = url.parse(req.url).pathname;
+ var paths = pathname.split('/');
+ var controller = paths[1] || 'index';
+ var action = paths[2] || 'index';
+ var args = paths.slice(3);
+ if (handles[controller] && handles[controller][action]) {
+   handles[controller][action].apply(null, [req, res].concat(args));
+ } else {
+   res.writeHead(500);
+   res.end('找不到响应控制器');
+ }
+}
+
+handles.index = {};
+handles.index.index = function (req, res, foo, bar) {
+ res.writeHead(200);
+ res.end(foo);
+};
+```
+   **http://user:pass@host.com:8080/p/a/t/h?query=string#hash    hash部分会被丢弃，不会存在于报文的任何地方**
+  
+3. 查询字符串
+```js
+function (req, res) {
+ req.query = url.parse(req.url, true).query;
+ hande(req, res);
+}
+// 如果查询字符串中的键出现多次，那么它的值会是一个数组
+// 业务的判断一定要检查值是数组还是字符串，否则可能出现TypeError异常的情况
+// foo=bar&foo=baz
+// var query = url.parse(req.url, true).query;
+// {
+//   foo: ['bar', 'baz']
+// }
+```
+4. cookie
+```js
+var parseCookie = function (cookie) {
+ var cookies = {};
+ if (! cookie) {
+   return cookies;
+ }
+ var list = cookie.split('; ');
+ for (var i = 0; i < list.length; i++) {
+   var pair = list[i].split('=');
+   cookies[pair[0].trim()] = pair[1];
+ }
+ return cookies;
+};
+
+var serialize = function (name, val, opt) {
+ var pairs = [name + '=' + encode(val)];
+ opt = opt || {};
+
+ if (opt.maxAge) pairs.push('Max-Age=' + opt.maxAge);
+ if (opt.domain) pairs.push('Domain=' + opt.domain);
+ if (opt.path) pairs.push('Path=' + opt.path);
+ if (opt.expires) pairs.push('Expires=' + opt.expires.toUTCString());
+ if (opt.httpOnly) pairs.push('HttpOnly');
+ if (opt.secure) pairs.push('Secure');
+
+ return pairs.join('; ');
+};
+
+var handle = function (req, res) {
+ res.writeHead(200);
+ if (! req.cookies.isVisit) {
+   res.setHeader('Set-Cookie', serialize('isVisit', '1'));
+   res.end(’欢迎第一次来到动物园’);
+ } else {
+   // TODO
+ }
+};
+
+function (req, res) {
+ req.cookies = parseCookie(req.headers.cookie);
+ hande(req, res);
+};
+```
+5. session
+6. 缓存
+```js
+// 文件的时间戳改动但内容并不一定改动。
+// 时间戳只能精确到秒级别，更新频繁的内容将无法生效
+var getHash = function (str) {
+ var shasum = crypto.createHash('sha1');
+ return shasum.update(str).digest('base64');
+};
+
+var handle = function (req, res) {
+ fs.readFile(filename, function(err, file) {
+   var hash = getHash(file);
+   var noneMatch = req.headers['if-none-match'];
+   if (hash === noneMatch) {
+     res.writeHead(304, "Not Modified");
+     res.end();
+   } else {
+     res.setHeader("ETag", hash);
+     res.writeHead(200, "Ok");
+     res.end(file);
+   }
+ });
+};
+```
+尽管条件请求可以在文件内容没有修改的情况下节省带宽，但是它依然会发起一个HTTP请求，使得客户端依然会花一定时间来等待响应。可见最好的方案就是连条件请求都不用发起
+```js
+var handle = function (req, res) {
+ fs.readFile(filename, function(err, file) {
+   var expires = new Date();
+   expires.setTime(expires.getTime() + 10 * 365 * 24 * 60 * 60 * 1000);
+   res.setHeader("Expires", expires.toUTCString());
+   res.writeHead(200, "Ok");
+   res.end(file);
+ });
+};
+
+//但是Expires的缺陷在于浏览器与服务器之间的时间可能不一致，
+// 这可能会带来一些问题，比如文件提前过期，或者到期后并没有被删除
+var handle = function (req, res) {
+ fs.readFile(filename, function(err, file) {
+   res.setHeader("Cache-Control", "max-age=" + 10 * 365 * 24 * 60 * 60 * 1000);
+   res.writeHead(200, "Ok");
+   res.end(file);
+ });
+};
+```
+
 ### 2、数据上传
 ### 3、路由解析
 ### 4、中间件
