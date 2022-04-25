@@ -1492,7 +1492,7 @@ var handle = function (req, res) {
  res.writeHead(200);
  if (! req.cookies.isVisit) {
    res.setHeader('Set-Cookie', serialize('isVisit', '1'));
-   res.end(’欢迎第一次来到动物园’);
+   res.end('欢迎第一次来到动物园');
  } else {
    // TODO
  }
@@ -1552,8 +1552,136 @@ var handle = function (req, res) {
 ```
 
 ### 2、数据上传
+通过报头的Transfer-Encoding或Content-Length即可判断请求中是否带有内容。
+```js
+var hasBody = function(req) {
+ return ('transfer-encoding' in req.headers) || ('content-length' in req.headers);
+};
+
+function (req, res) {
+ if (hasBody(req)) {
+   var buffers = [];
+   req.on('data', function (chunk) {
+     buffers.push(chunk);
+   });
+   req.on('end', function () {
+     req.rawBody = Buffer.concat(buffers).toString();
+     handle(req, res);
+   });
+ } else {
+   handle(req, res);
+ }
+}
+```
+
+#### 表单提交
+```js
+// 表单格式
+var handle = function (req, res) {
+ if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+   req.body = querystring.parse(req.rawBody);
+ }
+ todo(req, res);
+};
+
+// json格式
+var handle = function (req, res) {
+ if (mime(req) === 'application/json') {
+   try {
+     req.body = JSON.parse(req.rawBody);
+   } catch (e) {
+     // 异常内容，响应Bad request
+     res.writeHead(400);
+     res.end('Invalid JSON');
+     return;
+   }
+ }
+ todo(req, res);
+};
+```
+#### 文件提交
+值得注意的一点是，由于是文件上传，那么像普通表单、JSON或XML那样先接收内容再解析的方式将变得不可接受。接收大小未知的数据量时，我们需要十分谨慎。
+```js
+/**
+   文件提交的报文头
+   Content-Type: multipart/form-data; boundary=AaB03x
+   Content-Length: 18231
+*/
+// 处理文件格式
+var formidable = require('formidable');
+function (req, res) {
+ if (hasBody(req)) {
+   if (mime(req) === 'multipart/form-data') {
+     var form = new formidable.IncomingForm();
+     form.parse(req, function(err, fields, files) {
+        req.body = fields;
+        req.files = files;
+        handle(req, res);
+     });
+   }
+ } else {
+   handle(req, res);
+ }
+}
+
+// 处理各种格式
+function (req, res) {
+ if (hasBody(req)) {
+   var done = function () {
+     handle(req, res);
+   };
+   if (mime(req) === 'application/json') {
+     parseJSON(req, done);
+   } else if (mime(req) === 'application/xml') {
+     parseXML(req, done);
+   } else if (mime(req) === 'multipart/form-data') {
+     parseMultipart(req, done);
+   }
+ } else {
+   handle(req, res);
+ }
+}
+```
+#### 数据上传的安全
+1. 内存限制
+❑ 限制上传内容的大小，一旦超过限制，停止接收数据，并响应400状态码。
+❑ 通过流式解析，将数据流导向到磁盘中，Node只保留文件路径等小数据。
+```js
+var bytes = 1024;
+function (req, res) {
+ var received = 0,
+ var len = req.headers['content-length'] ? parseInt(req.headers['content-length'], 10) : null;
+
+ // 如果内容超过长度限制，返回请求实体过长的状态码
+ if (len && len > bytes) {
+   res.writeHead(413);
+   res.end();
+   return;
+ }
+ // limit
+ req.on('data', function (chunk) {
+   received += chunk.length;
+   if (received > bytes) {
+     // 停止接收数据，触发end()
+     req.destroy();
+   }
+ });
+
+ handle(req, res);
+};
+```
+
+2. CSRF（跨站请求伪造）
+解决CSRF攻击的方案有添加随机值的方式。 为每个请求的用户，在Session中赋予一个随机值；在做页面渲染的过程中，将这个_csrf值告之前端；所以我们只需要在接收端做一次校验就能轻易地识别出该请求是否为伪造的
+
 ### 3、路由解析
+
 ### 4、中间件
+>对于Web应用而言，我们希望不用接触到这么多细节性的处理，为此我们引入中间件（middleware）来简化和隔离这些基础设施与业务逻辑之间的细节，让开发者能够关注在业务的开发上，以达到提升开发效率的目的。
+
+#### 实现中间件
+#### 异常处理
+#### 中间件与性能
 ### 5、页面渲染
 
 ## node产品化
