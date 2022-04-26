@@ -1680,8 +1680,168 @@ function (req, res) {
 >对于Web应用而言，我们希望不用接触到这么多细节性的处理，为此我们引入中间件（middleware）来简化和隔离这些基础设施与业务逻辑之间的细节，让开发者能够关注在业务的开发上，以达到提升开发效率的目的。
 
 #### 实现中间件
+中间件的上下文也就是请求对象和响应对象：req和res。有一点区别的是，由于Node异步的原因，我们需要提供一种机制，在当前中间件处理完成后，通知下一个中间件执行。
+```js
+var match = function (pathname, routes) {
+ var stacks = [];
+ for (var i = 0; i < routes.length; i++) {
+   var route = routes[i];
+   // 正则匹配
+   var reg = route.path.regexp;
+   var matched = reg.exec(pathname);
+   if (matched) {
+     // 抽取具体值
+     // 代码省略
+     // 将中间件都保存起来
+     stacks = stacks.concat(route.stack);
+   }
+ }
+ return stacks;
+};
+
+var handle = function (req, res, stack) {
+ var next = function () {
+   // 从stack数组中取出中间件并执行
+   var middleware = stack.shift();
+   if (middleware) {
+     // 传入next()函数自身，使中间件能够执行结束后递归
+     middleware(req, res, next);
+   }
+ };
+ // 启动执行
+ next();
+};
+
+app.use = function (path) {
+ var handle;
+ if (typeof path === 'string') {
+   handle = {
+     // 第一个参数作为路径
+     path: pathRegexp(path),
+     // 其他的都是处理单元
+     stack: Array.prototype.slice.call(arguments, 1)
+   };
+ } else {
+   handle = {
+     // 第一个参数作为路径
+     path: pathRegexp('/'),
+     // 其他的都是处理单元
+     stack: Array.prototype.slice.call(arguments, 0)
+   };
+ }
+ routes.all.push(handle);
+ };
+
+function (req, res) {
+ var pathname = url.parse(req.url).pathname;
+ // 将请求方法变为小写
+ var method = req.method.toLowerCase();
+ // 获取all()方法里的中间件
+ var stacks = match(pathname, routes.all);
+ if (routes.hasOwnPerperty(method)) {
+   // 根据请求方法分发，获取相关的中间件
+   stacks.concat(match(pathname, routes[method]));
+ }
+
+ if (stacks.length) {
+   handle(req, res, stacks);
+ } else {
+   // 处理404请求
+   handle404(req, res);
+ }
+}
+
+
+// querystring解析中间件
+var querystring = function (req, res, next) {
+ req.query = url.parse(req.url, true).query;
+ next();
+};
+// cookie解析中间件
+var cookie = function (req, res, next) {
+ var cookie = req.headers.cookie;
+ var cookies = {};
+ if (cookie) {
+   var list = cookie.split('; ');
+   for (var i = 0; i < list.length; i++) {
+     var pair = list[i].split('=');
+     cookies[pair[0].trim()] = pair[1];
+   }
+ }
+
+ req.cookies = cookies;
+ next();
+};
+
+// 使用中间件
+app.use(querystring);
+app.use(cookie);
+app.use(session);
+app.get('/user/:username', getUser);
+app.put('/user/:username', authorize, updateUser);
+```
+
 #### 异常处理
+如果某个中间件出现错误该怎么办？我们需要为自己构建的Web应用的稳定性和健壮性负责。于是我们为next()方法添加err参数，并捕获中间件直接抛出的同步异常
+```js
+var handle500 = function (err, req, res, stack) {
+ // 选取异常处理中间件
+ stack = stack.filter(function (middleware) {
+   return middleware.length === 4;
+ });
+
+ var next = function () {
+   // 从stack数组中取出中间件并执行
+   var middleware = stack.shift();
+   if (middleware) {
+     // 传递异常对象
+     middleware(err, req, res, next);
+   }
+ };
+ // 启动执行
+ next();
+};
+
+var handle = function (req, res, stack) {
+ var next = function (err) {
+   if (err) {
+     return handle500(err, req, res, stack);
+   }
+   // 从stack数组中取出中间件并执行
+   var middleware = stack.shift();
+   if (middleware) {
+     // 传入next()函数自身，使中间件能够执行结束后递归
+     try {
+     middleware(req, res, next);
+     } catch (ex) {
+     next(err);
+     }
+   }
+ };
+ // 启动执行
+ next();
+};
+
+var session = function (req, res, next) {
+ var id = req.cookies.sessionid;
+ store.get(id, function (err, session) {
+   if (err) {
+     // 将异常通过next()传递
+     return next(err);
+   }
+   req.session = session;
+   next();
+ });
+};
+```
+
+
+
 #### 中间件与性能
+1. 编写高效的中间件: 缓存需要重复计算的结果、避免不必要的计算。比如HTTP报文体的解析，对于GET方法完全不需要。
+2. 合理利用路由，避免不必要的中间件执行: 例如静态文件中间件 app.use('/public',staticFile);
+
+
 ### 5、页面渲染
 
 ## node产品化
