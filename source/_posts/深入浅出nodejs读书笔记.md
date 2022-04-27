@@ -1843,6 +1843,145 @@ var session = function (req, res, next) {
 
 
 ### 5、页面渲染
+#### 内容响应
+客户端在接收到这个报文后，正确的处理过程是通过gzip来解码报文体中的内容，用长度校验报文体内容是否正确，然后再以字符集UTF-8将解码后的脚本插入到文档节点中
+```js
+Content-Encoding: gzip
+Content-Length: 21170
+Content-Type: text/javascript; charset=utf-8
+```
+1. mime
+浏览器正是通过不同的Content-Type的值来决定采用不同的渲染方式，这个值我们简称为MIME值。
+2. 附件下载
+Content-Disposition字段影响的行为是客户端会根据它的值判断是应该将报文数据当做即时浏览的内容，还是可下载的附件。当内容只需即时查看时，它的值为inline，当数据可以存为附件时，它的值为attachment。另外，Content-Disposition字段还能通过参数指定保存时应该使用的文件名。示例如下
+```js
+Content-Disposition: attachment; filename="filename.ext"
+```
+附件下载示例：
+```js
+res.sendfile = function (filepath) {
+ fs.stat(filepath, function(err, stat) {
+   var stream = fs.createReadStream(filepath);
+   // 设置内容
+   res.setHeader('Content-Type', mime.lookup(filepath));
+   // 设置长度
+   res.setHeader('Content-Length', stat.size);
+   // 设置为附件
+   res.setHeader('Content-Disposition' 'attachment; filename="' + path.basename(filepath) + '"');
+   res.writeHead(200);
+   stream.pipe(res);
+ });
+};
+```
+3. 响应json
+```js
+res.json = function (json) {
+ res.setHeader('Content-Type', 'application/json');
+ res.writeHead(200);
+ res.end(JSON.stringify(json));
+};
+```
+4. 重定向
+```js
+res.redirect = function (url) {
+ res.setHeader('Location', url);
+ res.writeHead(302);
+ res.end('Redirect to ' + url);
+};
+```
+#### 视图渲染
+```js
+res.render = function (view, data) {
+ res.setHeader('Content-Type', 'text/html');
+ res.writeHead(200);
+ // 实际渲染
+ var html = render(view, data);
+ res.end(html);
+};
+```
+
+#### 模板
+这个模板引擎会将Hello <%= username%>转换为"Hello " + obj.username。该过程进行以下几个步骤。
+❑ 语法分解。提取出普通字符串和表达式，这个过程通常用正则表达式匹配出来，<% =%>的正则表达式为/<%=([\s\S]+?)%>/g。
+❑ 处理表达式。将标签表达式转换成普通的语言表达式。
+❑ 生成待执行的语句。
+❑ 与数据一起执行，生成最终字符串。
+```js
+var render = function (str, data) {
+ // 模板技术呢，就是替换特殊标签的技术
+ var tpl = str.replace(/<%=([\s\S]+? )%>/g, function(match, code) {
+   return "' + obj." + code + "+ '";
+ });
+
+ tpl = "var tpl = '" + tpl + "'\nreturn tpl; ";
+ var complied = new Function('obj', tpl);
+ return complied(data);
+};
+```
+**模板编译**
+为了能够最终与数据一起执行生成字符串，我们需要将原始的模板字符串转换成一个函数对象。比如Hello<%=username%>这句模板字符串，最终会生成如下的代码：
+```js
+function (obj) {
+ var tpl = 'Hello ' + obj.username + '.';
+ return tpl;
+}
+```
+这个过程称为模板编译，生成的中间函数只与模板字符串相关，与具体的数据无关。如果每次都生成这个中间函数，就会浪费CPU。为了提升模板渲染的性能速度，我们通常会采用模板预编译的方式。
+```js
+var complie = function (str) {
+ var tpl = str.replace(/<%=([\s\S]+? )%>/g, function(match, code) {
+   return "' + obj." + code + "+ '";
+ });
+
+ tpl = "var tpl = '" + tpl + "'\nreturn tpl; ";
+ return new Function('obj, escape', tpl);
+};
+var render = function (complied, data) {
+ return complied(data);
+};
+```
+通过预编译缓存模板编译后的结果，实际应用中就可以实现一次编译，多次执行，而原始的方式每次执行过程中都要进行一次编译和执行。
+
+**模板性能**
+ ❑ 缓存模板文件。
+ ❑ 缓存模板文件编译后的函数。
+```js
+res.render = function (viewname, data) {
+ var layout = data.layout;
+ if (layout) {
+   if (! cache[layout]) {
+     try {
+     cache[layout] = fs.readFileSync(path.join(VIEW_FOLDER, layout), 'utf8');
+     } catch (e) {
+     res.writeHead(500, {'Content-Type': 'text/html'});
+     res.end(’布局文件错误’);
+     return;
+     }
+   }
+ }
+ var layoutContent = cache[layout] || '<%-body%>';
+
+ var replaced;
+ try {
+   replaced = renderLayout(layoutContent, viewname);
+ } catch (e) {
+   res.writeHead(500, {'Content-Type': 'text/html'});
+   res.end(’模板文件错误’);
+   return;
+ }
+ // 将模板和布局文件名做key缓存
+ var key = viewname + ':' + (layout || '');
+ if (! cache[key]) {
+   // 编译模板
+   cache[key] = compile(replaced);
+ }
+ res.writeHead(200, {'Content-Type': 'text/html'});
+ var html = cache[key](data);
+ res.end(html);
+};
+```
+
+
 
 ## node产品化
 ### 项目工程化
