@@ -61,6 +61,47 @@ sayColor.call(o);          // blue
 
 ```
 
+##### [].slice.call(arguments) 和 Array.prototype.slice.call(arguments)
+```js
+// 类数组: 可以通过索引访问元素，并且拥有 length 属性; 没有数组的其他方法，例如 push ， forEach ， indexOf 等.
+const likeArr =  {
+    0: "test",
+    1: "测试",
+    length: 2
+}
+
+// 转换
+[].slice.call(likeArr);
+
+// 
+var args = []; 
+for (var i = 0; i < likeArr.length; i++) { 
+    args.push(likeArr[i]);
+}
+console.log(args); // ["test", "测试"];
+
+/**
+ * 原理
+ */
+// [].slice()
+console.log([1,2,3].slice(0,1)) // [1]
+console.log([1,2,3].slice()) // [1,2,3]
+
+// Function.call()
+function func(name, price) {
+  this.name = name;
+  this.price = price;
+}
+var food = {name:"apple",price:10};
+func.call(food,"orange",15);
+console.log(food); // {name: "orange", price: 15}
+
+
+//为了提高性能，减少一层对原型链的追溯，一般我们会采用以下的写法
+[].slice.call(arguments) --> Array.prototype.slice.call(arguments)
+```
+
+
 
 #### bind
 ##### 介绍 
