@@ -184,3 +184,176 @@ HOME=/
 ```
 
 ## linux文件管理
+### 文件和目录管理
+#### 文件的相关操作
+Linux遵循一切皆文件的规则，对Linux进行配置时，在很大程度上就是处理文件的过程，所以掌握文件的相关操作是非常有必要的
+1. 创建文件：touch
+2. 删除文件：rm
+3. 移动或重命名文件： mv，后面需要跟两个参数，**第一个参数是要被移动的文件，第二个参数是移动到的目录**
+```sh
+# 把test.log文件移动到/mnt中
+mv test.log /mnt/ 
+# 把test.log重命名为test1.log
+mv test.log test1.log
+# 移动文件的同时重命名文件
+mv test.log /mnt/test2.log
+```
+4. 查看文件：cat
+5. 查看文件头： head
+```sh
+# 默认情况下，head将显示该文件前10行的内容;也可以使用-n参数指定显示的行数
+head -n 20 /text.log
+```
+6. 查看文件尾: tail
+```sh
+# 要动态地查看文件，使用-f参数就可以做到
+tail -f /text.log
+```
+7. 文件格式转换：dos2unix, 当把Windows下的文本文件移动到Linux下时，会由于系统之间文本文件的换行符不同而造成文件在Linux下的读写操作有问题
+
+#### 目录的相关操作
+1. 创建目录：mkdir
+```sh
+# 可以使用-p参数一次性创建所有目录，这样就不用费力地一个个创建了，命令如下所示
+mkdir -p dir2/dir3
+```
+2. 删除目录：rmdir和rm
+```sh
+# rmdir 用来删除目录。但是需要注意的是，它只能删除空目录，如果目录不为空（存在文件或者子目录），那么该命令将拒绝删除指定的目录
+rmdir dir1 #提示dir1为非空目录
+
+# rm
+rm -rf dir1
+```
+3. 文件和目录复制：cp
+```sh
+# 复制文件且重命名
+cp a.txt /tmp/b.txt
+
+# 复制文件不重命名
+cp a.txt /tmp/
+
+# 复制目录所有文件
+cp -rf /dir1/* /dir2/ 
+```
+
+#### 文件时间戳
+通过touch可以创建新文件。如果文件已经存在，那么touch命令仅仅会更新文件的创建时间而不会修改文件内容。请记住，在Linux下目录也是一种文件，所以如果touch一个目录，这个目录的创建时间也会被更新
+
+### 文件和目录权限
+#### 查看文件或者目录权限: ls -al
+```sh
+# -l参数表示要求ls命令列出每个文件的详细信息，
+# -a参数则要求ls命令还要同时列出隐藏文件
+ls -al 
+[root@localhost ~]# ls-al
+total 112
+drwxr-x---  3 root root  4096 Oct  1 10:43 .
+drwxr-xr-x 24 root root  4096 Oct  1 07:42 ..
+-rw-------  1 root root  5659 Sep 24 02:07 .bash_history
+-rw-r--r--  1 root root    24 Jan  6  2007 .bash_logout
+-rw-------  1 root root    72 Oct  1 08:45 .lesshst
+drwx------  2 root root  4096 Oct  1 08:48 .ssh
+
+#第一列：是文件类别和权限，这列由10个字符组成，第一个字符表明该文件的类型
+#第二列：代表“连接数”，除了目录文件之外，其他所有文件的连接数都是1，目录文件的连接数是该目录中包含其他目录的总个数+2，也就是说，如果目录A中包含目录B和C，则目录A的连接数为4
+#第三列：代表该文件的所有人
+#第四列：代表该文件的所有组
+#第五列：是该文件的大小
+#第六列：是该文件的创建时间或最近的修改时间
+#第七列：是文件名
+```
+
+第一列含义：
+<img src="/img/linux1.jpeg" style="max-width:95%" />
+
+#### 改变文件权限：chmod
+Linux下的每个文件都定义了文件拥有者（user）、拥有组（group）、其他人（others）的权限，我们使用字母u、g、o来分别代表拥有者、拥有组、其他人，而对应的具体权限则使用rwx的组合来定义，增加权限使用+号，删除权限使用-号，详细权限使用=号。图中用一些例子说明了如何使用chmod来改变文件的权限。
+<img src="/img/linux2.jpeg" style="max-width:95%" />
+如果要给用户组或其他人添加或删除相关权限，只需要将上面的u相应地更换成g或o即可。但是正如大家看到的，这种方式同一时刻只能给文件拥有者、文件拥有组或是其他所有人设置权限，如果要想同时设置所有人的权限就需要使用数字表示法了，我们定义r=4，w=2，x=1，如果权限是rwx，则数字表示为7，如果权限是r-x，则数字表示为5。假设想设置一个文件的权限是：拥有者的权限是读、写、执行（rwx），拥有组的权限是读、执行（r-x），其他人的权限是只读（r--），那么可以使用命令chmod 754 somefile来设置
+
+```sh
+# 修改某个目录权限
+chmod -R 754 somedir
+```
+#### 改变文件的拥有者：chown
+```sh
+# 修改文件拥有者
+chown chao a.txt
+
+# 修改文件拥有组
+chown :chao a.txt
+
+# 同时修改文件拥有者和拥有组
+chown chao:chao a.txt
+
+# 同时修改目录拥有者和拥有组
+chown -R chao:chao somedir
+```
+#### 改变文件的拥有者：chown
+```sh
+chgrp -R chao somedir
+```
+
+#### 查看文件类型：file
+使用ls-l令可以通过查看第一个字符判断文件类型。字母d代表目录、字母l代表连接文件，字母b代表块文件，字母c代表字符文件，字母s代表socket文件，字符-代表普通文件，字母p代表管道文件
+
+### 查找文件
+#### 一般查找 find
+```sh
+# 从根目录开始寻找名为httpd.conf的文件
+find / -name httpd.conf
+
+# 从etc目录开始寻找名为httpd.conf的文件
+find /etc -name httpd.conf
+
+# 查找系统所有以conf结尾的文件
+find / -name *.conf
+
+# 查找系统所有以http开头文件
+find / -name httpd*
+```
+<img src="/img/linux3.jpeg" style="max-width:95%" />
+
+
+#### 数据库查找 locate
+与find不同，locate命令依赖于一个数据库文件，Linux系统默认每天会检索一下系统中的所有文件，然后将检索到的文件记录到数据库中，所以使用locate命令要比find命令反馈更为迅速。
+```sh
+# 更新数据库 --> 查找文件
+updatedb
+find /etc -name httpd.conf
+```
+
+#### 查找执行文件 which/whereis
+which用于从系统的PATH变量所定义的目录中查找可执行文件的绝对路径。比如说想查找node这个命令在系统中的绝对路径
+```sh
+which node
+
+# 使用whereis也能查到其路径，但是和which不同的是，
+# 它不但能找出其二进制文件，还能找出相关的man文件：
+whereis node
+```
+
+### 文件压缩和打包
+
+## linux文件系统
+
+
+## 字符处理
+
+## 网络管理
+
+## 进程管理
+
+
+## shell编程概述和编程基础
+
+## 测试和判断
+
+## 循环
+
+## 函数
+
+## 重定向
+
+## shell脚本范例

@@ -10,6 +10,7 @@ tags:
 
 ```js
 mysql -h主机地址 -P端口 -u用户名 -p用户密码
+mysql -h127.0.0.1 -P1234 -u"myname" -p"test123"
 ```
 
 

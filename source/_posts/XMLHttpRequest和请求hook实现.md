@@ -85,5 +85,7 @@ return xhr;
 }
 ```
 
+## hook
+
 <br >
 [来源于](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest)
