@@ -86,6 +86,39 @@ return xhr;
 ```
 
 ## hook
+### 重写xhr.open原型方法, 替换url
+```js
+function fill(source: object, key: string, replacementFactory: Function) {
+  if (!(key in source)) {
+    return;
+  }
 
+  const original = source[key];
+  const wrapped = replacementFactory(original);
+
+  if (typeof wrapped === 'function') {
+    try {
+      wrapped.prototype = wrapped.prototype || {};
+    } catch (err) {
+      console.warn('This can throw if multiple fill happens on a global object like XMLHttpRequest', err);
+    }
+  }
+
+  source[key] = wrapped;
+}
+
+if (('XMLHttpRequest' in window)) {
+  fill(XMLHttpRequest.prototype, 'open', originalOpen => function replacementFactory(...args) {
+    const { url } = xhrHostReplace(args[1]);
+    args[1] = url;
+    return originalOpen.apply(this, args);
+  });
+}
+```
+
+### 生成xhr代理对象，覆盖全局xhr对象
+Ajax-hook实现的整体思路是实现一个XMLHttpRequest的代理对象，然后覆盖全局的XMLHttpRequest，这样一但上层调用 new XMLHttpRequest这样的代码时，其实创建的是Ajax-hook的代理对象实例
+
+参考文档：https://www.jianshu.com/p/7337ac624b8e
 <br >
 [来源于](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest)
