@@ -540,8 +540,105 @@ cat /ect/passwd | cuf -f1,6-7 -d':'
 # 假设想要打印出每行第1～5个字符，以及第7～10个字符的内容
 cat /ect/passwd | cuf -c1-5,7-10
 ```
-## 网络管理
 
+### 使用tr做文本转换
+tr命令比较简单，其主要作用在于文本转换或删除。这里假设要把文件/etc/passwd中的小写字母转换为大写字母，然后再尝试删除文本中的冒号
+```sh
+cat /etc/passwd | tr '[a-z]' '[A-Z]'
+
+cat /etc/passwd | tr -d ':'
+```
+
+### 使用paste做文本合并
+paste的作用在于将文件按照行进行合并，中间使用tab隔开。假设有两个文件分别为a.txt、b.txt，下面使用paste命令来合并文件
+```sh
+# cat a.txt
+1
+2
+3
+
+# cat b.txt
+a
+b
+c
+
+# past a.txt b.txt
+1 a
+2 b
+3 c
+
+# past -d: a.txt b.txt
+1:a
+2:b
+3:c
+```
+
+### 使用split分割大文件
+在Linux下使用split命令来实现文件的分割，支持按照行数分割和按照大小分割这两种模式。要说明的是，二进制文件因为没有“行”的概念，所以二进制文件无法使用行分割，而只能按照文件大小进行分割。
+```sh
+# -l参数：指定每500行为一个文件 
+# 分割完成后，当前目录下会产生很多小文件
+split -l 500 big_file.txt small_file_
+
+# 如果是二进制文件， 只能按照文件大小分割
+# 分割完成后，当前目录下会产生很多大小为6m的小文件
+split -b 64m big_bin small_bin_
+```
+
+## 网络管理
+### 网络接口
+#### ifconfig检查和配置网卡
+如果不使用任何参数，输入ifconfig命令时将会输出当前系统中所有处于活动状态的网络接口。
+<img src="/img/linux4.jpeg" style="max-width:95%" />
+图中的eth0表示的是以太网的第一块网卡。其中eth是Ethernet的前三个字母，代表以太网，0代表是第一块网卡，第二块以太网网卡则是eth1，以此类推。Linkencap是指封装方式为以太网；HWaddr是指网卡的硬件地址（MAC地址）；inetaddr是指该网卡当前的IP地址；Broadcast是广播地址（这部分是由系统根据IP和掩码算出来的，一般不需要手工设置）；Mask是指掩码；UP说明了该网卡目前处于活动状态；MTU代表最大存储单元，即此网卡一次所能传输的最大分包；RX和TX分别代表接收和发送的包；collision代表发生的冲突数，如果发现值不为0则很可能网络存在故障；txqueuelen代表传输缓冲区长度大小；第二个设备是lo，表示主机的环回地址，这个地址是用于本地通信的。
+
+**手动设置etho的ip地址**
+```sh
+ifconfig etho 192.168.159.130 netmask 255.255.255.0
+
+# 有时候需要手工断开/启用网卡，以eth0为例，使用方法如下：
+ifconfig eth0 down #断开
+ifconfig etho up #启用
+```
+
+#### 将ip配置信息写入配置文件
+上一小节讲到的ifconfig命令可以直接配置网卡IP，但是这属于一种动态的配置，所配置的信息只是保存在当前运行的内核中。一旦系统重启，这些信息将丢失。为了能在重启后依然生效，可以在相关的配置文件中保存这些信息，这样，系统重启后将从这些配置文件中读取出来。RedHat和CentOS系统的网络配置文件所处的目录为/etc/sysconfig/network-scripts/，eth0的配置文件为ifcfg-eth0，如果有第二块物理网卡，则配置文件为ifcfg-eth1，以此类推
+```sh
+cat ifcfg-eth0
+
+# Advanced Micro Devices [AMD] 79c970 [PCnet32 LANCE]
+DEVICE=eth0 # DEVICE变量定义了设备的名称
+BOOTPROTO=static # 系统在启用这块网卡时，IP将会通过dhcp的方式获得；还有个可选的值是static，表示静态设置的IP
+ONBOOT=yes # ONBOOT变量定义了启动时是否激活使用该设备，yes表示激活，no表示不激活
+IPADDR=192.168.159.129
+NETMASK=255.255.255.0
+
+# 生效操作
+ifconfig eth0 down
+ifconfig eth0 up
+# 或者
+service network restart
+```
+
+### 路由和网关
+Linux主机之间是使用IP进行通信的，假设A主机和B主机同在一个网段内且网卡都处于激活状态，则A具备和B直接通信的能力（通过交换机或简易HUB）。但是如果A主机和B主机处于两个不同的网段，则A必须通过路由器才能和B通信。一般来说，路由器属于IT设备的基础设施，每一个网段都应该有至少一个网关。在Linux中可使用route命令添加默认网关。假设添加的网关是192.168.159.2，添加方式如下
+```sh
+# 添加
+route add default gw 192.168.159.2
+
+# 删除
+route del default gw 192.168.159.2
+```
+
+如果只使用route命令添加网关，一旦系统重启，配置信息就不存在了，必须将这种配置信息写到相关的配置文件中才能永久保存。可以在网卡配置文件中使用GATEWAY变量来定义网关，只需要添加如下部分到ifcfg-eth0中即可，当然别忘了重启网络服务使配置生效
+```sh
+GATEWAY=192.168.159.2
+```
+另外，在配置文件/etc/sysconfig/network中添加这段配置也能达到同样的效果。
+
+### DNS客户端配置
+
+### 网络测试工具
 ## 进程管理
 
 
