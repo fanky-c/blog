@@ -354,6 +354,9 @@ tar不但可以打包文件，还可以将整个目录中的全部文件整合�
 # -f是指使用文件名，也就是这里的boot.tgz文件
 tar -zcvf boot.tgz /boot
 
+# 压缩命令 讲zain目录 压缩为dist.tar.gz
+tar -czf dist.tar.gz zain/
+
 
 # 解压命令: 直接将boot.tgz在当前目录中解压成boot目录
 tar -zxvf boot.tgz
@@ -900,6 +903,165 @@ echo 'helloworld' | grep '\bhello\b' # 无匹配
 18. “ \t”符号
 匹配一个制表符。
 
+19. 扩展正则表达式（需要使用egrep命令）
+```sh
+# “?”符号用于匹配前一个字符0次或1次，所以“ro?t”仅能匹配rot或rt。
+# “+”符号用于匹配前一个字符1次以上，所以“ro+t”就可以匹配rot、root等。
+# “|”符号是“或”的意思，即多种可能的罗列，彼此间是一种分支关系
+# “()”符号通常需要和“|”符号联合使用，用于枚举一系列可替换的字符
+```
+20. 通配符
+```sh
+# * 符号: 这里的“*”就是提到的第一个通配符，代表0个或多个字符。那么之前的*.doc就是指所有以.doc结尾的文件
+ls -l *.doc 
+ls -l A*.doc # 找doc文档是以字母A开头
+
+# ？符号： 如果要列出以字母A开头、但是只有两个字母的文件名、以.doc结尾的文件，就需要使用“?”了
+ls -l A?.doc
+
+# {} 符号: “{}”可拥有匹配所有括号内包含的以逗号隔开的字符
+ls -l {A, B, C}.doc  # 相等于 ls -l [A-C].doc
+
+
+# ^和！符号： 这两个符号往往和“[]”一起使用，当出现在“[]”中的时候，代表取反。所以[^A]（或[!A]）代表不是A。
+
+```
+
+### 正则表达式示例
+#### grep
+grep的英文是Global search Regular Expression and print out the line，即全面搜索正则表达式并打印出匹配行
+```sh
+# 使用“^”匹配行首
+grep '^good' regexp.txt # good morning teacher
+
+# 使用“^$”组合，匹配空行
+grep -c '^$' regexp.txt # 2
+
+# 使用“.”号匹配任意字符
+grep 'g..d' regexp.txt # good gold golden
+grep '[Gg]..d' regexp.txt # good Good g12d
+
+# 使用精确匹配
+grep 'gold' regexp.txt # gold golden
+grep '\<gold\>' regexp.txt # gold
+grep '\bgold\b' regexp.txt # gold
+
+# 使用“-”号
+grep 'g[1-9]d' regexp.txt # g1d g2d
+
+# 使用“*”号
+grep 'go*d' regexp.txt # gd god good goood
+
+# 使用“.*”号
+grep 'g.*d' regexp.txt # gd gad good goood
+
+# 使用“\”做字符转义, 下面.符号解析成正则任意字符
+grep 'www.helloworld.com' regexp.txt 
+grep 'www\.helloworld\.com' regexp.txt 
+```
+
+### 文本处理工具sed
+#### sed介绍
+sed（stream editor）是一种非交互式的流编辑器，通过多种转换修改流经它的文本。但是请注意，默认情况下，sed并不会改变原文件本身，而只是对流经sed命令的文本进行修改，并将修改后的结果打印到标准输出中（也就是屏幕）。所以本节讲的所有的sed操作都只是对“流”的操作，并不会改变原文件。sed处理文本时是以行为单位的，每处理完一行就立即打印出来，然后再处理下一行，直至全文处理结束。sed可做的编辑动作包括删除、查找替换、添加、插入、从其他文件中读入数据等。
+**使用场景：常规编辑器编辑困难的文本；sed默认不更改源文件，如果想直接修改源文件本身则需要使用“-i”参数**
+#### 删除
+```sh
+# 删除第一行然后输出到屏幕
+sed '1d' sed.txt
+
+# 删除第一行, 保存修改后的文件
+sed '1d' sed.txt > save_file
+
+# 删除第一行. 直接修改文件使用i参数；这里不会有任何输出， 而是直接修改了源文件
+sed -i '1d' sed.txt
+
+# 删除指定范围的行
+sed '1, 3d' sed.txt
+sed '1, $d' sed.txt # 删除1到最后一行
+
+# 删除空行
+sed '/^$/d' sed.txt
+
+# 删除包含empty的行
+sed '/empty/d' sed.txt
+```
+
+#### 查找替换
+使用s命令可将查找到的匹配文本内容替换为新的文本
+```sh
+# 默认情况下每行只替换第一个line
+sed 's/line/LINE/' sed.txt # this is LINE 1, this is First line, line
+
+# 想要每行替换2个line
+sed 's/line/LINE/2' sed.txt # this is LINE 1, this is First LINE, line
+
+# 利用g选项， 完成所欲匹配值的替换
+sed 's/line/LINE/g' sed.txt # this is LINE 1, this is First LINE, LINE
+
+# 只替换开头的this为that
+sed 's/^this/that/' sed.txt # that is line 1, this is First line, line
+```
+
+#### 字符转换
+使用y命令可进行字符转换，其作用为将一系列字符逐个地变换为另外一系列字符
+```sh
+# 将file文件的O替换N, L替换E, D替换成W
+sed 'y/OLD/NEW' file 
+
+sed 'y/12345/ABCD' sed.txt
+# this is line A, this is First line
+# this is line N, this is Second line
+# this is line C, this is Third line
+```
+#### 插入文本
+使用i或a命令插入文本，其中i代表在匹配行之前插入，而a代表在匹配行之后插入
+```sh
+# 使用i在第二行前插入文本
+sed '2 i Insert' sed.txt
+# this is line 1, this is First line
+# Insert
+# this is line 2, this is Second line
+
+# 使用a在第二行后插入文本
+sed '2 a Insert' sed.txt
+# this is line 1, this is First line
+# this is line 2, this is Second line
+# Insert
+
+
+# 在匹配行的上一行插入文本
+sed '/Second/i\Insert' sed.txt
+# this is line 1, this is First line
+# Insert
+# this is line 2, this is Second line
+```
+
+#### 读入文本
+使用r命令可从其他文件中读取文本，并插入匹配行之后
+```sh
+# 将/etc/passwd中的内容读出来放到sed.txt空行之后
+sed '/^$/r /etc/passwd' sed.txt
+```
+
+#### 打印
+使用p命令可进行打印，这里使用sed命令时一定要加-n参数，表示不打印没关系的行
+```sh
+# 使用p命令， 则只打印实际处理过的行，简化了输出（-n）
+sed -n 's/the/THE/p' sed.txt
+```
+#### sed脚本
+工作往往有一定“标准化”的操作，比如说先去除文件中所有的空行，然后再全部替换某些字符等，这种过程类似于生产线上程式化的流水作业；可以把这些动作静态化地写到某个文件中，然后调用sed命令并使用-f参数指定该文件，这样就可以将这一系列动作“装载”并应用于指定文件中，这无疑加快了工作效率，这种文件就是sed脚本。
+```sh
+# this替换THAT, 然后删除空行
+# cat sed.rules
+s/this/THAT/g
+/^$/d
+
+# 使用-f参数指定该脚本并应用到sed.txt
+sed -f sed.rules sed.txt
+```
+
+### 文本处理工具awk
 ## shell编程概述和编程基础
 
 ## 测试和判断
