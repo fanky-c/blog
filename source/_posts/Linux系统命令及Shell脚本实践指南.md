@@ -1156,7 +1156,9 @@ type ifconfig
 # 执行成功
 
 source test.sh
-# 执行成功， 同时返回脚本中最后一个命令的返回状态； 如果没有返回值则返回0，代表执行成功； 如果未找到指定的脚本则返回false
+# 执行成功， 同时返回脚本中最后一个命令的返回状态；
+# 如果没有返回值则返回0，代表执行成功； 
+# 如果未找到指定的脚本则返回false
 ```
 #### 别名：alias
 alias可用于创建命令的别名，若直接输入该命令且不带任何参数，则列出当前用户使用了别名的命令。现在你应该能理解类似ll这样的命令为什么与ls-l的效果是一样的吧
@@ -1168,7 +1170,94 @@ alias myShutdown='shutdown -h now'
 ```
 #### 任务前后台切换：bg、fg、jobs
 该命令用于将任务放置后台运行，一般会与Ctrl+z、fg、&符号联合使用。典型的使用场景是运行比较耗时的任务。比如打包某个占用较大空间的目录，若在前台执行，在任务完成前将会一直占用当前的终端，而导致无法执行其他任务，此时就应该将这类任务放置后台
+```sh
+tar -zcf user.tgz /user
+# 发现压缩很耗时， ctrl+z组合键暂停任务， jobs命令查看暂停任务为编号1
+bg 1 # 把tar任务放置后台
+fg 1 # 把后台tar任务调至前台
 
+# 如果已知某个任务非常耗时，可以在一开始就在命令行后面加上 &
+tar -zcf user.tgz /user &
+```
+
+#### 声明变量：declare、typeset
+```sh
+# i_num的值为1
+i_num=1
+# str的值为helloworld
+str="helloworld"
+
+# 使用declare声明只读变量
+declare -r readonly=10
+
+# 使用declare声明整型i_num1
+declare -i i_num1=1
+```
+#### 打印字符：echo
+echo用于打印字符，典型用法是使用echo命令并跟上使用双引号括起的内容
+```sh
+echo "hello world"
+
+echo -n "hello world" # 不换行
+```
+#### 跳出循环：break
+从一个循环（for、while、until或者select）中退出。break后可以跟一个数字n，代表跳出n层循环，n必须大于1，如果n比当前循环层数还要大，则跳出所有循环。
+
+#### 循环控制：continue
+停止当前循环，并执行外层循环（for、while、until或者select）的下一次循环。continue后可以跟上一个数字n，代表跳至外部第n层循环。n必须大于1，如果n比当前循环层数还要大，将跳至最外层的循环
+
+#### 退出Shell：exit
+在Shell脚本中使用exit代表退出当前脚本。该命令可以接受的参数是一个状态值n，代表退出的状态，下面的脚本什么都不会做，一旦运行就以状态值为5退出。如果不指定，默认状态值是0。
+
+#### 发送信号给指定PID或进程：kill
+> Linux操作系统包括3种不同类型的进程，第一种是交互进程，这是由一个Shell启动的进程，既可以在前台运行，也可以在后台运行；第二种是批处理进程，与终端没有联系，是一个进程序列；第三种是监控进程，也称系统守护进程，它们往往在系统启动时启动，并保持在后台运行
+
+kill命令用来终止进程，其工作的原理是向系统的内核发送一个系统操作信号和某个程序的进程标识号，然后系统内核就可以对进程标识号指定的进程进行操作。
+
+#### 声明局部变量：local
+该命令用于在脚本中声明局部变量，典型的用法是用于函数体内，其作用域也在声明该变量的函数体中
+
+#### 从标准输入读取一行到变量：read
+有时候我们开发的脚本必须具有交互性，也就是在运行过程中依赖人工输入才能继续
+```sh
+#根据输入的箱数计算一共有多少瓶啤酒
+[root@localhost ~]# cat read.sh
+#!/bin/bash
+declare N
+
+echo "12 bottles of beer in a box"
+echo -n "How many box do you want:"
+read N
+
+echo "$((N*12)) bottle in total"
+
+#运行效果
+[root@localhost ~]# bash read.sh
+12 bottles of beer in a box
+How many box do you want:10  #这里输入数字
+120 bottle in total
+```
+如果不指定变量，read命令会将读取到的值放入环境变量REPLY中。另外要记住，read是按行读取的，用回车符区分一行，你可以输入任意文字，它们都会保存在变量REPLY中。
+```sh
+read 
+# 输入read命令 helloworld 
+echo $REPLY
+# 输出 helloworld
+```
+#### 定义函数返回值：return
+```sh
+# cat return.sh
+
+#!/bin/bash
+#定义了一个函数fun_01，该函数简单地返回1
+function fun_01 {
+        return 1
+}
+#调用该函数
+fun_01
+#查看之前函数的返回值
+echo $?
+```
 ## 测试和判断
 
 ## 循环
