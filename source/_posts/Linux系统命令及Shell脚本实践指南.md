@@ -1368,6 +1368,7 @@ Shell中的数组对元素个数没有限制，但只支持一维数组，这一
 declare -a Array
 Array[0]=0
 Array[1]=1
+Array[2]="Helloworld"
 
 #方法二
 declare -a Name=('john' 'sue')
@@ -1381,6 +1382,33 @@ Score=([3]=3 [5]=5 [7]=7)
 ```
 **2. 数组操作**
 ```sh
+# 1.取某个值
+echo ${Array[0]}
+
+# 2.取出所有的值
+echo ${Array[@]}
+0 1 Helloworld
+echo ${Array[*]}
+0 1 Helloworld
+
+# 3.数组长度
+echo ${#Array[@]}
+3
+echo ${#Arraty[*]}
+3
+echo ${#Array[2]} # 查找某个元素的长度
+10
+
+# 4.数组截取
+echo ${Array[@]:1:2} # 取出数组的第一、第二元素
+1 Helloworld
+echo ${Array[2]:0:5} # 取出第二个元素从弟0个字符开始联系5个字符
+
+# 5.连接数组
+Conn=(${Array[@]} ${Name[@]})
+echo ${Conn[@]}
+
+# 6.替换元素
 
 ```
 
