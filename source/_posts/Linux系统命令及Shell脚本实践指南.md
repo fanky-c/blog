@@ -1549,7 +1549,268 @@ $!：最后一个后台进程的ID号。
 ```
 ## 测试和判断
 ### 测试
+```sh
+# ls一个存在的文件
+ls /var/log/messages
+echo $? # 0
+
+
+# ls一个不存在的文件
+ls /var/log/messages11
+echo $? # 2 非0代表文件不存在
+```
+**判断为真则返回0，为假则返回非0值。这种判断行为被称作“测试”**
+
+#### 测试结构
+测试方式是使用“[”启动一个测试，再写expression，再以“]”结束测试。需要注意的是，左边的括号“[”后有个空格，右括号“]”前面也有个空格，如果任意一边少了空格都会造成Shell报错
+```sh
+[ expression ]
+```
+
+#### 文件测试
+其中file_operator是文件测试符（具体参考下表），FILE是文件、目录（可以是文件或目录的全路径）
+```sh
+# 文件测试写法一
+test file_operator FILE
+
+test -e /var/log/messages
+echo $?  # 1
+
+# 文件测试写法二
+[ file_operator FILE ]
+
+[-e /var/log/messages ]
+echo $? # 1
+```
+<img src="/img/linux8.jpeg" style="max-width:95%" />
+
+```sh
+#!/bin/bash
+read -p "What file do you want to test?" filename
+if [ !-e "$filename" ]; then
+   echo "The file does not exist."
+   exit 1
+fi
+
+
+if [ -r "$filename" ]; then
+  echo "$filename is readable."
+fi
+if [ -w "$filename" ]; then
+  echo "$filename is writeable"
+fi
+if [ -x "$filename" ]; then
+  echo "$filename is executable"
+fi
+```
+
+#### 字符串测试
+Shell中的字符串比较主要有等于、不等于、大于、小于、是否为空等测试
+<img src="/img/linux9.jpeg" style="max-width:95%" />
+
+```sh
+#定义空字符串str1
+[root@localhost ~]# str1=""
+#测试str1是否为空，为空则返回0
+[root@localhost ~]# test-z "$str1"
+[root@localhost ~]# echo $?
+0
+#测试str1是否非空，非空则返回0，为空返回非0，此处返回1
+[root@localhost ~]# test-n "$str1"
+[root@localhost ~]# echo $?
+1
+
+
+#定义非空字符串str2，值为hello
+[root@localhost ~]# str2="hello"
+#测试str2是否为空，为空返回0，不为空返回非0，此处返回1
+[root@localhost ~]# [ -z "$str2" ]
+[root@localhost ~]# echo $?
+1
+#测试str2是否非空，非空返回0
+[root@localhost ~]# [ -n "$str2" ]
+[root@localhost ~]# echo $?
+0
+
+
+#比较str1和str2是否相同，相同则返回0，否则返回非0，此处返回1
+[root@localhost ~]# [ "$str1" = "$str2" ]
+[root@localhost ~]# echo $?
+1
+#比较str1和str2是否不同，不同则返回0
+[root@localhost ~]# [ "$str1" != "$str2" ]
+[root@localhost ~]# echo $?
+0
+
+
+#比较str1和str1的大小，需要注意的是，>和<都需要进行转义
+[root@localhost ~]# [ "$str1" \> "$str2" ]
+[root@localhost ~]# echo $?
+1
+[root@localhost ~]# [ "$str1" \< "$str2" ]
+[root@localhost ~]# echo $?
+0
+
+
+#如果不想用转义符，则可以用[[]]括起表达式
+[root@localhost ~]# [[ "$str1" > "$str2" ]]
+[root@localhost ~]# echo $?
+1
+[root@localhost ~]# [[ "$str1" < "$str2" ]]
+[root@localhost ~]# echo $?
+0
+```
+
+#### 整数比较
+整数测试是一种简单的算术运算，作用在于比较两个整数的大小关系，测试成立则返回0，否则返回非0值
+```sh
+[root@localhost ~]# num1=10
+[root@localhost ~]# num2=10
+[root@localhost ~]# num3=9
+[root@localhost ~]# num4=11
+[root@localhost ~]# [ "$num1" -eq "$num2" ]
+[root@localhost ~]# echo $?
+0
+[root@localhost ~]# [ "$num1" -gt "$num3" ]
+[root@localhost ~]# echo $?
+0
+[root@localhost ~]# [ "$num1" -lt "$num4" ]
+[root@localhost ~]# echo $?
+0
+[root@localhost ~]# [ "$num1" -ge "$num2" ]
+[root@localhost ~]# echo $?
+0
+[root@localhost ~]# [ "$num1" -le "$num2" ]
+[root@localhost ~]# echo $?
+0
+[root@localhost ~]# [ "$num1" -ne "$num3" ]
+[root@localhost ~]# echo $?
+0
+```
+
+#### 逻辑测试符和逻辑运算符
+逻辑测试用于连接多个测试条件，并返回整个表达式的值。逻辑测试主要有逻辑非、逻辑与、逻辑或3种
+<img src="/img/linux10.jpeg" style="max-width:95%" />
+
+```sh
+#例一：逻辑非的使用
+#测试值为真的表达式在使用逻辑非后，表达式变为假，反之亦然
+[root@localhost ~]# [ !-e /var/log/messages ]
+[root@localhost ~]# echo $?
+1
+
+
+#例二：逻辑与的使用
+#表达式都为真，整个表达式才返回真，否则返回假
+[root@localhost ~]# [ -e /var/log/messages -a -e /var/log/messages01 ]
+[root@localhost ~]# echo $?
+1
+
+
+#例三：逻辑或的使用
+#测试表达式中只要有真，则整个表达式返回真
+[root@localhost ~]# [ -e /var/log/messages -o -e /var/log/messages01 ]
+[root@localhost ~]# echo $?
+0
+```
+
+**如果读者曾经学过其他的编程语言，一定知道“逻辑运算符”也有逻辑非、逻辑与、逻辑或3种判断符号(! && || )**
+```sh
+[root@localhost ~]# ! [ -e /var/log/messages ]
+[root@localhost ~]# echo $?
+1
+[root@localhost ~]# [ -e /var/log/messages ] && [ -e /var/log/messages01 ]
+[root@localhost ~]# echo $?
+1
+[root@localhost ~]# [ -e /var/log/messages ] || [ -e /var/log/messages01 ]
+[root@localhost ~]# echo $?
+0
+```
+
 ### 判断
+在Shell中，流程控制分为两大类，一类是“循环”，一类是“判断选择”。属于“循环”的有for、while、until，这将会在下一章中介绍，本节介绍“判断选择”，关键字是if、case。
+#### if判断结构
+```sh
+#如果expression测试返回真，则执行command
+if expression; then
+    command
+fi    
+```
+例子：
+```sh
+#!/bin/bash
+echo -n "Please input a score:"
+read SCORE
+if [ "$SCORE" -lt 60 ]; then
+        echo "C"
+fi
+if [ "$SCORE" -lt 80 -a "$SCORE" -ge 60 ]; then
+        echo "B"
+fi
+if [ "$SCORE" -ge 80 ]; then
+        echo "A"
+fi
+#脚本运行结果，依次输入95、75、45时，脚本分别打印了正确的成绩等级
+[root@localhost ~]# bash score01.sh
+Please input a score:95
+A
+[root@localhost ~]# bash score01.sh
+Please input a score:75
+B
+[root@localhost ~]# bash score01.sh
+Please input a score:45
+C
+```
+
+#### if/else判断结构
+```sh
+if expression; then
+   command
+elif
+   command
+fi      
+```
+
+#### if/elif/else判断结构
+```sh
+if expression; then
+   command
+elif
+   if expression2; then
+      command2
+   else
+      command3
+   fi      
+fi      
+```
+
+#### case判断结构
+```sh
+# case判断结构中的var1、var2、var3等这些值只能是常量或正则表达式
+case VAR in
+var1) command1 ;;
+var2) command2 ;;
+var3) command3 ;;
+...
+*) command ;;
+esac
+```
+
+例子：
+```sh
+#!/bin/bash
+OS='uname-s'
+case “$OS” in
+FreeBSD) echo "This is FreeBSD" ;;
+CYGWIN_NT-5.1) echo "This is Cygwin" ;;
+SunOS) echo "This is Solaris" ;;
+Darwin) echo "This is Mac OSX" ;;
+AIX) echo "This is AIX" ;;
+Minix) echo "This is Minix" ;;
+Linux) echo "This is Linux" ;;
+*) echo "Failed to identify this OS" ;;
+esac
+```
 ## 循环
 
 ## 函数
