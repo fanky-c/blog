@@ -42,13 +42,42 @@ DNS（Domain Name System）服务是和HTTP协议一样位于应用层的协议�
 
 *通常，报文主体等于实体主体。只有当传输中进行编码操作时，实体主体的内容发生变化，才导致它和报文主体产生差异*
 
-#### 压缩传输的内容编码
+#### 压缩传输的内容编码（Content-Encoding）
 内容编码指明应用在实体内容上的编码格式，并保持实体信息原样压缩。内容编码后的实体由客户端接收并负责解码。常用的内容编码有：gzip、deflate
 <img src="/img/http4.jpeg" alt="" style="max-width:95%" />
 
-#### 分割发送的分块传输编码
+#### 分割发送的分块传输编码（Transfer-Encoding）
 在HTTP通信过程中，请求的编码实体资源尚未全部传输完成之前，浏览器无法显示请求页面。在传输大容量数据时，通过把数据分割成多块，能够让浏览器逐步显示页面。这种把实体主体分块的功能称为分块传输编码（Chunked Transfer Coding）
 <img src="/img/http5.jpeg" alt="" style="max-width:95%" />
+
+**优点:**
+1. 分块编码有利于一边进行压缩一边发送数据，而不是先完成压缩过程以得知压缩后数据的大小
+2. 分块传输编码允许服务器在最后发送消息头字段，利于WEB性能优化的TTFB指标；(不依赖头部的长度content-length信息，也能知道实体的边界)
+3. HTTP分块传输编码允许服务器为动态生成的内容维持HTTP持久链接。通常，持久链接需要服务器在开始发送消息体前发送Content-Length消息头字段，但是对于动态生成的内容来说，在内容创建完之前是不可知的。
+
+#### Content-Encoding 和 Transfer-Encoding: chunked
+在头部加入 Transfer-Encoding: chunked 之后，就代表这个报文采用了分块编码。这时，报文中的实体需要改为用一系列分块来传输。每个分块包含十六进制的长度值和数据，长度值独占一行，长度不包括它结尾的 CRLF（\r\n），也不包括分块数据结尾的 CRLF。最后一个分块长度值必须为 0，对应的分块数据没有内容，表示实体结束。
+Content-Encoding 和 Transfer-Encoding 二者经常会结合来用，其实就是针对进行了内容编码（压缩）的内容再进行传输编码（分块）
+```js
+telnet 106.187.88.156 80
+
+GET /test.php HTTP/1.1
+Host: qgy18.com
+Accept-Encoding: gzip
+
+HTTP/1.1 200 OK
+Server: nginx
+Date: Sun, 03 May 2015 17:25:23 GMT
+Content-Type: text/html
+Transfer-Encoding: chunked
+Connection: keep-alive
+Content-Encoding: gzip
+
+1f
+�H���W(�/�I�J
+
+0
+```
 
 ####  发送多种数据的多部分对象集合
 HTTP协议中也采纳了多部分对象集合，发送的一份报文主体内可含有多类型实体。通常是在图片或文本文件等上传时使用。

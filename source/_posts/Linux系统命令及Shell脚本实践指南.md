@@ -1812,6 +1812,219 @@ Linux) echo "This is Linux" ;;
 esac
 ```
 ## 循环
+### for循环
+#### 带列表的for循环
+```sh
+fruits="apple orange banana pear"
+for FRUITS in ${fruits}
+do
+   echo "#{FRUITS} is franky's favorite"
+done
+
+# Shell提供了用于计数的方式，比如说上例中1到5可以用{1..5}表示
+for VAR in {1..5}
+do
+   echo "Loop $VAR times"
+done
+
+# 下面是利用seq命令的“步长”计算1到100内的奇数和
+sum=0
+for VAR in $(seq 1 2 100)
+do
+   let "sum+VAR"
+done
+echo "Total: $sum" # 2500
+
+# 列表for循环中in后面的内容可以是任意命令的标准输出
+for VAR in $(ls)
+do
+  ls -l $VAR
+done  
+```
+#### 不带列表的for循环
+```sh
+for VARIBLE in $@
+do
+  echo -n $VARIBLE
+done
+
+bash test.sh 1 2 3 4 # 1 2 3 4
+```
+#### 类C的for循环
+```sh
+# 类C的for循环语法结果
+for ((expression1; expression2; expression3))
+do
+       command
+done
+```
+
+例子
+```sh
+for((i=0; i<=10; i++))
+do
+  echo -n "$i "
+done
+
+# 在该示例中同时计算了1到100的和以及1到100的奇数和
+sum01=0
+sum02=0
+for ((i=1,j=1; i<=100; i++,j+=2))
+do
+ let "sum01+=i"
+ if [ $j -lt 100 ]; then
+    let "sum02+=j"
+ fi   
+done
+echo "sum01=$sum01"
+echo "sum02=$sum02"
+```
+#### for的无限循环
+```sh
+for((;1;))
+do
+ echo "infinite loop"
+done
+```
+### while循环
+#### while循环的语法
+```sh
+CONTER=5
+while [[ $CONTER -gt 0 ]]
+do
+ echi -n "$CONTER"
+ let "CONTER-=1"
+done
+
+# 是利用while做猜数字游戏，
+# 只有当输入的数字和预设的数字一致时，才会停止循环
+PRE_SET_NUM=8
+echo "Input a number between 1 and 10"
+while read GUESS
+do
+  if [[ $GUESS -eg $PRE_SET_NUM ]]; then
+     echo "You get the right number"
+     exit
+  else 
+     echo "Wrong, Try again"
+  fi
+done
+```
+
+#### 使用while按行读取文件
+```sh
+# cat while04.sh
+#!/bin/bash
+while read LINE
+do
+        NAME=`echo $LINE | awk '{print $1}'`
+        AGE=`echo $LINE | awk '{print $2}'`
+        Sex=`echo $LINE | awk '{print $3}'`
+        echo "My name is $NAME,I'm $AGE years old,I'm a $Sex"
+done < student_info.txt
+#运行结果
+[root@localhost ~]# bash while04.sh
+My name is John,I'm 30 years old,I'm a Boy
+My name is Sue,I'm 28 years old,I'm a Girl
+My name is Wang,I'm 25 years old,I'm a Boy
+My name is Xu,I'm 23 years old,I'm a Girl
+
+
+#while使用管道的按行读取
+#cat while04.sh
+#!/bin/bash
+cat student_info.txt | while read LINE
+do
+       NAME=`echo $LINE | awk '{print $1}'`
+       AGE=`echo $LINE | awk '{print $2}'`
+       Sex=`echo $LINE | awk '{print $3}'`
+       echo "My name is $NAME,I'm $AGE years old,I'm a $Sex"
+done
+```
+#### while的无限循环
+```sh
+# 我们可以利用while的无限循环实时的监测系统进程，
+# 以保证系统中的关键应用一直处于运行状态。
+#!/bin/bash
+while true
+do
+    HTTPD_STATUS=`service httpd status | grep running`
+    if [-z "$HTTPD_STATUS" ]; then
+           echo "HTTPD is stopped,try to restart"
+           service httpd restart
+    else
+           echo "HTTPD is running,wait 5 sec until next check"
+    fi
+    sleep 5
+done
+```
+### until循环
+待续...
+### select循环
+select是一种菜单扩展循环方式，其语法和带列表的for循环非常类似，基本结构如下
+```sh
+select MENU in (list)
+do
+   command
+done
+```
+例子：
+```sh
+# cat select01.sh
+#!/bin/bash
+echo "Which car do you prefer?"
+select CAR in Benz Audi VolksWagen
+do
+        break #这里用到了没有讲过的break语句
+done
+echo "You chose $CAR"
+
+#运行结果
+# bash select01.sh
+Which car do you prefer?
+1) Benz
+2) Audi
+3) VolksWagen
+#?  #此处尝试直接回车，结果select再次生成了列表等待输入
+1) Benz
+2) Audi
+3) VolksWagen
+#? 2#此处选择2，程序会退出select并继续执行后面的语句
+You chose Audi
+```
+
+### 嵌套循环
+```sh
+# for循环嵌套
+for ((i=1; i<9; i++))
+do
+  for ((j=1; j<=9; j++))
+  do
+    let "multi=$i*$j"
+    echo -n "$i*$j=$multi "
+  done
+done
+
+# while循环嵌套
+i=1
+while [[ "$i" -le "9" ]]
+do
+ j=1
+ while [[ "$j" -le "9" ]]
+ do
+    let "multi=$i*$j"
+    echo -n "$i*$j=$multi "
+    let "j+=1"   
+ done
+ echo 
+ let "i+=1"
+done
+```
+### 循环控制
+#### break语句
+break用于终止当前整个循环体。一般情况下，break都是和if判断语句一起使用的，当if条件满足时使用break终止循环。
+#### continue语句
+continue并不会终止当前的整个循环体，它只是提前结束本次循环，而循环体还将继续执行；而break则会结束整个循环体。
 
 ## 函数
 
