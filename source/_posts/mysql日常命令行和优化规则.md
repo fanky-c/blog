@@ -3,6 +3,8 @@ title: mysql日常命令行和优化规则
 date: 2021-06-16 10:23:20
 tags:
    - mysql
+   - mysql命令
+   - mysql优化
 ---
 
 ## 日常命令
@@ -136,3 +138,18 @@ alter table table_name drop folderName;
 5. 大批量更新凌晨操作，避开高峰，零点附近往往定时任务量比较大，如果可以，尽量安排在03:00-07:00.
 6. LIMIT高效分页：传统的方法是select * from t limit 10000, 10，推荐的方法是select * from t where id > 23423 limit 10。LIMIT的偏移量越大则越慢。还有一些高效的方法有：先取id来LIMIT偏移，减少整体的数据偏移；取到需要的id，与原表JOIN；程序取ID，然后用IN来填写。select * from t where id >= (select id from t limit 10000, 1) limit 10 , select * from t INNER JOIN (select id from t limit 10000, 10) USING (id) , select id from t limit 10000, 10; select * from t where id in (123, 456...)
 7. 尽量避免%前缀模糊查询，由于使用的是B+ Tree，前缀模糊使用不了索引，导致全表扫描(后缀模糊速度相对快很多)
+
+### 优化总结
+1. SQL语句优化，尽量精简，去除非必要语句
+2. 索引优化，让所有SQL都能够走索引
+3. 如果是表的瓶颈问题，则分表，单表数据量维持在1000W以内
+4. 如果是单库瓶颈问题，则分库，读写分离
+5. 如果是物理机器性能问题，则分多个数据库节点
+
+## mysql执行过程
+<img src="/img/mysql.png" alt="" />  
+绿色部分为SQL实际执行部分，主要分为两步：
+
+解析：词法解析->语法解析->逻辑计划->查询优化->物理执行计划，过程中会检查缓存是否可用，如果没有可用缓存则进入下一步mysql_execute_command执行
+
+执行：检查用户、表权限->表加上共享读锁->取数据到query_cache->取消共享读锁
