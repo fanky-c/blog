@@ -2027,7 +2027,110 @@ break用于终止当前整个循环体。一般情况下，break都是和if判�
 continue并不会终止当前的整个循环体，它只是提前结束本次循环，而循环体还将继续执行；而break则会结束整个循环体。
 
 ## 函数
+### 函数基本使用
+```sh
+# cat checkFileExist.sh
+#!/bin/bash
+FILE=/etc/notExistFile  #定义一个不存在的文件
 
+function checkFileExist(){              #定义checkFileExist函数
+    if [ -f $FILE ]; then
+           return 0
+    else
+           return 1
+    fi
+}
+
+echo "Call function checkFileExist"     #提示函数调用
+checkFileExist                          #调用函数
+if [ $? -eq 0 ]; then
+       echo "$FILE exist"
+else
+       echo "$FILE not exist"
+fi
+
+#执行结果
+# bash checkFileExist.sh
+Call function checkFileExist
+/etc/notExistFile not exist             #这里是调用函数的输出内容
+```
+### 带参数的函数($1, $2, $N...)
+```sh
+# cat power.sh
+#!/bin/bash
+function power(){
+    RESULT=1
+    LOOP=0
+    while [[ "$LOOP" -lt $2 ]]
+    do
+           let "RESULT=RESULT*$1"
+           let "LOOP=LOOP+1"
+    done
+    echo $RESULT
+}
+
+echo "Call function power with parameters"
+power $1 $2
+
+#计算2的2次方
+# bash power.sh 2 2
+Call function power with parameters
+4
+
+#计算3的3次方
+# bash power.sh 3 3
+Call function power with parameters
+27
+```
+
+### 函数库
+#### 自定义函数库
+```sh
+# cat lib01.sh
+checkFileExists(){
+   if [ -f $1 ]; then
+          echo "File:$1 exists"
+   else
+          echo "File:$1 not exist"
+   fi
+}
+
+# cat callLib01.sh （函数库）
+#!/bin/bash
+source ./lib01.sh    #引用当前目录下的lib01.sh函数库
+_checkFileExists /etc/notExistFile #调用函数库中的函数
+_checkFileExists /etc/passwd
+
+
+#执行结果
+# bash callLib01.sh
+File:/etc/notExistFile not exist
+File:/etc/passwd exists
+```
+
+#### 函数库/etc/init.d/functions
+很多Linux发行版中都有/etc/init.d目录，这是系统中放置所有开机启动脚本的目录，这些开机脚本在脚本开始运行时都会加载/etc/init.d/functions或/etc/rc.d/init.d/functions函数库（实际上这两个函数库的内容是完全一样的）
+```sh
+# cat callFunctions01.sh
+#!/bin/bash
+source /etc/init.d/functions
+confirm ITEM
+if [[ $? -eq 0 ]]; then
+       echo "ITEM confirmed"
+else
+       echo "ITEM not confirmed"
+fi
+
+
+#运行结果
+# bash callFunctions01.sh
+Start service ITEM (Y)es/(N)o/(C)ontinue? [Y] Y
+ITEM confirmed
+
+# bash callFunctions01.sh
+Start service ITEM (Y)es/(N)o/(C)ontinue? [Y] N
+ITEM not confirmed
+```
 ## 重定向
 I/O重定向是重定向中的一个重要部分，在Shell编程中会有很多机会用到这个功能。简单来说，I/O重定向可以将任何文件、命令、脚本、程序或脚本的输出重定向到另外一个文件、命令、程序或脚本。
 
