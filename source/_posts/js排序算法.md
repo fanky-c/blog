@@ -28,6 +28,9 @@ tags:
 <3>.针对所有的元素重复以上的步骤，除了最后一个；
 <4>.重复步骤1~3，直到排序完成。
 
+#### 动态展示
+<img src="//www.runoob.com/wp-content/uploads/2019/03/bubbleSort.gif" max-width="95%">
+
 #### 代码实现
 ```js
 function bubbleSort(arr) {
@@ -76,6 +79,14 @@ console.log(bubbleSort2(arr));//[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47,
 #### 介绍
 选择排序(Selection-sort)是一种简单直观的排序算法。它的工作原理：首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。
 
+#### 算法描述
+<1>. 首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置。
+<2>. 再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
+<3>. 重复第二步，直到所有元素均排序完毕。
+
+#### 动态展示
+<img src="//www.runoob.com/wp-content/uploads/2019/03/selectionSort.gif" max-width="95%">
+
 #### 代码实现
 ```js
 function selectionSort(arr) {
@@ -115,6 +126,9 @@ console.log(selectionSort(arr));//[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 4
 <4>.重复步骤3，直到找到已排序的元素小于或者等于新元素的位置；
 <5>.将新元素插入到该位置后；
 <6>.重复步骤2~5。
+
+#### 动态展示
+<img src="//www.runoob.com/wp-content/uploads/2019/03/insertionSort.gif" max-width="95%">
 
 #### 代码实现
 ```js
@@ -182,6 +196,8 @@ console.log(binaryInsertionSort(arr));//[2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44,
 <2>.重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；
 <3>.递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。
 
+#### 动态展示
+<img src="//www.runoob.com/wp-content/uploads/2019/03/quickSort.gif" max-width="95%">
 
 #### 代码实现
 ```js
@@ -345,4 +361,6 @@ function isBalanced(expression) {
 }
 isBalanced('{}{')
 ```
-来源于：https://juejin.im/post/57dcd394a22b9d00610c5ec8
+<br />
+来源于1：https://juejin.im/post/57dcd394a22b9d00610c5ec8
+来源于2：https://www.runoob.com/w3cnote/ten-sorting-algorithm.html
