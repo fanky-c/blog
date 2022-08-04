@@ -84,6 +84,21 @@ insert into table_name (name, path, count, firstName, firstMD5, secondName, seco
   select * from table_name order by id limit 0,2;
 ```
 
+9. where、group by和having区别
+
+```mysql
+// 1) 在SQL语句中，where子句并不是必须出现的
+// 2) where子句是对检索记录中每一行记录的过滤
+// 3) having子句出现在group by子句后面
+// 4) 如果在一句SQL语句中，where子句和group by……having子句同时都有的话，必须where子句在前，group by……having子句在后。（where先执行，再groupby分组；groupby先分组，having再执行）
+// 5) group by子句是对检索记录的分组，后面跟随的字段名是分组的依据。根据语法，在select子句中，除聚合函数语句外，SELECT子句中的每个列名称都必须在GROUP BY子句中作为分组的依据。
+
+
+select vend_id, count(*) , sales from products group by vend_id;
+这个语句，其中sales字段，在group by中没有，所以查询的结果，sales的值是错误的！
+
+```
+
 
 
 10. 更新表中某一行数据
