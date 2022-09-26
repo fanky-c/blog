@@ -144,3 +144,59 @@ location ^~ /tea/ {
 // 实际访问：/usr/local/nginx/html/tea1.html 文件
 ```
 
+### rewrite使用
+#### rewrite 介绍
+1. 从功能看 rewrite 和 location 似乎有点像，都能实现跳转，主要区别在于 rewrite是在同一域名内更改获取资源的路径，而 location 是对一类路径做控制访问或反向代理，还可以proxy_pass（代理转发）到其他机器。
+
+2. rewrite只能放在server{ }，location{ }，if{ }中，并且默认只能对域名后边的除去传递的参数外的字符串起作用
+
+3. 例如http：//www.benet.com/abc/bbs/index.php?a=1&b=2 只对 /abc/bbs/index.php 重写
+
+#### rewrite使用
+##### 1、语法 
+rewrite <regex> <replacement> [flag]
+
+**flag不同参数：**
+
+last ∶本条规则匹配完成后，继续向下匹配新的location URL规则，一般用在 server和if中。
+
+break ∶本条规则匹配完成即终止，不再匹配后面的任何规则，一般使用在 location 中。
+
+redirect ∶返回302临时重定向，浏览器地址会显示跳转后的URL地址。
+
+permanent ∶返回301永久重定向，浏览器地址栏会显示跳转后的URL地址。
+
+
+##### 2、案例
+```sh
+location / {
+    # 顺序执行如下两条rewrite指令 
+    rewrite ^/test1 /test2;
+    rewrite ^/test2 /test3;  # 此处发起新一轮 location 匹配 URI为/test3
+}
+
+location / {
+    rewrite ^/test1 /test2;
+    rewrite ^/test2 /test3 last;  # 此处发起新一轮location匹配 uri为/test3
+    rewrite ^/test3 /test4;
+    proxy_pass http://www.baidu.com;
+}
+
+
+location / {
+    rewrite ^/test1 /test2;
+    # 此处不会发起新一轮location匹配；当是会终止执行后续rewrite模块指令重写后的 URI 为 /more/index.html
+    rewrite ^/test2 /more/index.html break;  
+    rewrite /more/index\.html /test4; # 这条指令会被忽略
+
+    # 因为 proxy_pass 不是rewrite模块的指令 所以它不会被 break终止
+    proxy_pass https://www.baidu.com;
+}
+
+
+# 由于最后加了个 ?，原来的请求参数将不会被追加到 rewrite 之后的 URI 后面*
+rewrite ^/users/(.*)$ /show?user=$1? last;
+
+```
+
+
