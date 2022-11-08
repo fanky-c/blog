@@ -142,9 +142,269 @@ const newArr = [...arr]  //[1, 2, 3]
 
 
 ### 5. 增强对象
+在 ES6 中，对象的使用变得更加方便了，可以在定义对象时通过属性简写、遍历作为属性名或省略对象函数属性的书写等方式来提高编码的效率：
+```js
+const name = 'xixi'
+const people = {
+    name,
+    [getKey('family')]: 'zhang',
+    sayHi() {
+        console.log(`Hello ${this.name} ${this.family}`)
+    }
+}
+
+people.sayHi() // Hello xixi zhang
+
+function getKey(key) {
+    return key
+}
+```
+
+### 6. 函数参数
+ES6 对函数参数进行了新的设计，主要添加了默认参数、不定参数和扩展参数：
+```js
+// 默认参数
+function sayHi(name = 'xixi') {
+    console.log(`Hello ${name}`)
+}
+sayHi() // Hello xixi
+
+// 不定参数
+function sayHi(...name) {
+    console.log(name.reduce((a, b) => `Hello ${a} ${b}`))
+}
+sayHi('xixi', 'zhang') // Hello xixi zhang
+
+// 扩展参数
+let name = ['xixi', 'zhang']
+function sayHi(name1, name2) {
+    console.log(`Hello ${name1} ${name2}`)
+}
+sayHi(...name) // Hello xixi zhang
+``` 
+**不定参数和扩展参数可以认为恰好是相反的两个模式，不定参数是使用数组来表示多个参数，扩展参数则是将多个参数映射到一个数组。**
+
+需要注意：不定参数的 ... 和数组复制的 ... 是有区别的，不定参数可以使用函数的形参来表示所有的参数组成的列表。以前的 arguments 变量也有类似的作用，但是 arguments 不是真正的数组，除了存放参数的列表外，arguments 还有 length 属性，严格来说 arguments 是一个类数组对象，而不定参数则是一个完全的数组，这也是不定参数相对于 arguments 的优势，更加方便我们使用，所以建议使用不定参数来代替 arguments。
+
+### 6. 箭头函数
+```js
+// 箭头函数
+[1, 2, 3].forEach(x => x*x)
+
+(() => {
+    console.log('Hello xixi')
+})()
+```
+箭头函数没有完整的执行上下文，因此其 this 和外层的 this 相同，可以理解为它的执行上下文只有变量对象和作用域链，没有 this 值。
+
+在 JavaScript 中，代码的执行上下文由变量对象、作用域链和 this 值组成，但箭头函数与外层执行上下文共享 this 值，如果需要创建具有独立上下文的函数，就不要使用箭头函数。
+
+### 7. class
+基本上，ES6 中的 class 可以看做是一个语法糖，它的绝大部分功能，ES5 都可以做到，新的 class 写法只是让对象原型的写法更加清晰，更像面向对象变成的语法而已。
+
+```js
+class Animal {
+    constructor() {
+
+    }
+}
+
+class People extends Animal {
+    constructor(contents = {}) {
+        super()
+        this.name = contents.name
+        this.family = contents.family
+    }
+    sayHi() {
+        console.log(`Hello ${this.name} ${this.family}`)
+    }
+}
+
+let me = new People({
+    name: 'xixi',
+    family: 'zhang'
+})
+
+me.sayHi() //Hello xixi zhang
+```
+
+### 9. 模块 module
+ES6 引入了模块引用规范，这也是之前语言标准上没有的，这样现有的 JavaScript 模块化规范又多了一种选择：import/export
+
+```js
+import { sayHi } from './people'
+export sayHi
+```
+
+### 10. 集合类型 Map + Set + WeakMap + WeakSet
+#### Set
+Set 本身是一个构造函数 ，用来生成 Set 数据结构，Set 类似于数组（但它不是数组），Set 的成员的值都是唯一的，没有重复的值，也常用它来去重（不可以传递对象）。像 Set 加入值的时候，不会发生类型转换，所以 5 和 “5” 是两个不同的值。
+```js
+const arr = new Set([1, 2, 3, 4, 5, 5, 5, 5])
+
+console.log(arr)  //[1, 2, 3, 4, 5]
+console.log(arr.size)  //5 
+```
+
+#### WeakSet
+WeakSet 结构与 Set 类似，也是不重复的值的集合，但是，它与 Set 有两个区别：
+1. 第一，WeakSet 的成员只能是对象，而不能是其他类型的值。
+2. 第二，WeakSet 中的对象都是弱引用，即垃圾回收机制 不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不在引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象是否还存在于 WeakSet 中。因此 ES6 规定 WeakSet 不可遍历。
+
+#### Map
+传统的 JavaScript 的对象（Object），本质上是键值对的集合（Hash 结构），但是只能用字符串当做键，这给它的使用带来了很大的限制，而 ES6 提供了 Map 数据结构，它类似于对象，也是键值对的集合，但是“键” 的范围不限于字符串，各种类型的值（包括对象）都可以当做键。也就是说，Object 结构提供了“字符串-值”的对应，Map 结构提供了“值-值”的对应，是一种更完善的 Hash 结构实现。Map 的键实际上是跟内存地址绑定的，只要内存地址不一样，就视为两个键。
+
+操作方法：
+1. set(key, value)，设置 key 所对应的键值，返回整个 Map 结构 ，如果 key 已经有值，则键值会被更新，否则就生成该键
+2. get(key)，读取 key 对应的键值，如果在好不到 key，则返回 undefined
+
+遍历方法：
+1. keys()，返回键名的遍历器
+2. values()，返回键值的遍历器
+3. entries()，返回所有成员的遍历器
+4. forEach()，遍历 Map 的所有成员
+
+#### WeakMap
+WeakMap 结构与 Map 结构类似，也用于生成键值对的集合，但 WeakMap 与 Map 有两个个区别：
+
+1. WeakMap 只接受对象作为键名（null 除外），不接受其他类型的值作为键名
+2. WeakMap 的键名所指向的对象不计入垃圾回收机制。它的键名所引用的对象都是弱引用，即垃圾回收机制不将该引用考虑在内，因此，只要所引用的对象的其他引用被清除了，垃圾回收机制就会释放该对象所占用的内存。也就是说， 一旦不再需要，WeakMap 里面的键名对象和所对应的键值对会自动消失，不用手动删除引用。基本上，如果要想对象中添加数据又不想干扰垃圾回收机制，便可以使用 WeakMap。一个典型的应用场景是，在网页的 DOM 元素上添加数据时就可以使用 WeakMap 结构，当该 DOM 元素被清除，其对应的 WeakMap 记录就会自动被移除。
+
+
+注意：WeakMap 的专用场景就是它的键所对应的对象可能会在将来消失，WeakMap 结构有助于防止内存泄露。但是，WeakMap 弱引用的只是键名而不是键值，键值依然是正常引用的。
+
+### 11. Symbol 类型
+ES6 引入了一种新的原始数据类型 Symbol，表示独一无二的值，它是 JavaScript 语言的第 7 种数据类型，前 6 种分别是：Undefined、Null、Boolean、String、Number 和 Object。
+
+Symbol 值通过 Symbol 函数生成，一般作为属性键值，并且能避免对象属性键的命名冲突。也就是说，对象的属性名现在可以有两种类型：一种是原来就有的字符串，另一种就是新增的 Symbol 类型。只要属性名属于 Symbol 类型，就是独一无二的，可以保证不会与其他属性名产生冲突。
+```js
+let s = Symbol('foo')
+typeof s  //"symbol"
+```
+
+Symbol 函数前不能使用 new 命令，否则会报错，这是因为生产的 Symbol 是一个原始类型的值，不是对象。也就是说，由于 Symbol 值不是对象，所以不能添加属性。基本上，它是一种类似于字符串的数据类型。
+
+**Symbol 函数的参数只表示对当前 Symbol 值的描述，因此相同参数的 Symbol 函数的返回值是不相等的。**
+
+Symbol 值作为对象属性名时不能使用点运算符：
+```js
+let s = Symbol()
+
+let obj = {
+    [s]: function() {
+        console.log('Hello')
+    }
+}
+
+obj[s]()  // 'Hello'
+```
+
+### 12. Promise
+Promise 代表一个异步操作的执行返回状态，这个执行返回状态在 Promise 对象创建时是未知的，它允许为异步操作的成功或失败指定处理方法。
+
+####  Promise 的状态有三种：
+1. Fulfilled，表示 Promise 执行成功
+2. Rejected，表示 Promise 执行失败
+3. Pending，表示 Promise 正在执行中
+
+####  Promise 对象有两个特点：
+1. 对象的状态不受外界影响
+2. 一旦状态改变就不会再变，任何时候都可以得到这个结果
+
+#### 缺点：
+1. 无法取消 Promise，一旦新建它就会立即执行，无法中途取消
+2. 如果不设置回调函数，Promise 内部抛出的错误不会反应到外部
+3. 当处于 Pending 状态时，无法得知目前进展到哪一个阶段（刚开始还是即将完成）
+   
+
+#### 用法：
+```js
+var promise = new Promise(function(resolve, reject) {
+    // ... some code
+
+    if ( /*异步操作成功*/ ) {
+        resolve(value)
+    } else {
+        reject(error)
+    }
+})
+
+promise.then(function(value) {
+    // success
+}, function(error) {
+    // failure
+})
+```
+
+#### 实例方法：
+1. Promise.prototype.then()，为 Promise 实例添加状态改变时的回调函数，返回一个新的 Promise 实例
+2. Promise.prototype.catch()，用于指定发生错误时的回调函数，返回一个新的 Promise 实例
+3. Promise.prototype.done()，总是处于回调链的尾端，保证捕捉到任何可能出现的错误
+4. Promise.prototype.finally()，用于指定不管 Promise 对象最后状态如何都会执行的操作。
+
+finally 与 done 的最大区别在于：finally 接受一个普通的回调函数作为参数，该函数不管怎样都必须执行。
+
+####  Promise 对象方法：
+1. Promise.all()，将多个 Promise 实例包装成一个新的 Promise 实例。
+   1. 第一，只有 p1，p2，p3 的状态都编程 Fulfilled，p 的状态才会变成 Fulfilled，此时p1，p2，p3 的返回值组成一个数组，传递给 p 的回调函数。
+   2. 第二，只要 p1，p2，p3 中有一个被 Rejected，p 的状态就变成 Rejected，此时第一个被 Rejected 的实例的返回值会传递给 p 的回调函数
+2. Promise.race()，将多个 Promise 实例包装成一个新的 Promise 实例。
+   1. 只要 p1，p2，p3 中有一个实例率先改变状态，p 的状态就跟着改变，那个率先改变的 Promise 实例的返回值就传递给 p 的回调函数。
+3. Promise.resolve()，将现有对象转为 Promise 对象，状态为 Resolved
+4. Promise.reject()，将现有对象转为 Promise 对象，状态为 Rejected
+
+
+### 13. Proxy
+Proxy 用于修改某些操作的默认行为，可以用来拦截某个对象的属性访问方法，然后重载对象的 “ . ” 运算符。
+
+Proxy 可以理解成在目标对象前架设一个“拦截”层，外界对该对象的访问都必须先通过这层拦截，因此提供了一种机制可以对外界的访问进行过滤和改写。
+```js
+let object = new Proxy({}, {
+    get: function(target, key, receiver) {
+        console.log(`getting ${key}`)
+        return Reflect.get(target, key, receiver)
+    },
+    set: function(target, key, value, receiver) {
+        console.log(`setting ${key}`)
+        return Reflect.set(target, key, value, receiver)
+    }
+})
+
+// 对比 Object.defineProperty
+let object = {},
+    value
+
+Object.defineProperty(object, 'value', {
+    get: function() {
+        console.log('getting value')
+        return value
+    },
+    set: function(newValue) {
+        value = newValue
+        console.log('setting: ' + newValue)
+    },
+    enumerable: true,
+    configurable: true
+})
+```
+
+### 14. Reflect
+Reflect 对象的设计目的有以下几个：
+
+第一，将 Object 对象的一些明显属于语言内部的方法（如 Object.defineProperty）放到 Reflect 对象上，现阶段，某些方法同时在 Object 和 Reflect 对象上部署，未来新的方法只在 Reflect 对象上部署。也就是说，从 Reflect 对象上可以获得语言内部的方法。
+
+第二，修改某些 Object 方法的返回结果，让其变得更加合理。
+
+第三，让 Object 操作都编程函数行为，某些 Object 操作是命令式，比如 name in obj 和 delete obj [name]，而 Reflect.has(obj, name) 和 Reflect.deleteProperty(obj, name) 让它们变成了函数行为。
+
+第四，Reflect 对象的方法与 Proxy 对象的方法一一对应，只要是 Proxy 对象的方法，就能在 Reflect 对象上找到对应的方法，这就是 Proxy 对象可以方便的调用对应的 Reflect 方法来完成默认行为，作为修改行为的基础。也就是说，无论 Proxy 怎么修改默认行为，我们总可以在 Reflect 上获取到默认行为。
 
 ## 三、ES7+
 2016 年，ECMAScript 7（或称为 ECMAScript 2016） 正式发布，整体来说，在 ES6 的版本逐渐稳定后，后期版本添加的主要内容已经不是太多了。
+
+### 1. Array.prototype.includes
+
+### 2. 异步函数 async/await
 
 
 
