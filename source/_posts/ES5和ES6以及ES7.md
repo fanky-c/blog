@@ -403,10 +403,65 @@ Reflect 对象的设计目的有以下几个：
 2016 年，ECMAScript 7（或称为 ECMAScript 2016） 正式发布，整体来说，在 ES6 的版本逐渐稳定后，后期版本添加的主要内容已经不是太多了。
 
 ### 1. Array.prototype.includes
+这个数组方法主要用来判断数组中是否包含某个元素
+```js
+let num = [1, 2, 3, 4, 5]
+
+console.log(num.includes(1))  // true
+```
 
 ### 2. 异步函数 async/await
+async 函数返回一个 Promise 对象，可以使用 then 方法添加回调函数。当函数执行的时候，一旦遇到 await 就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。
+
+#### 基本用法
+```js
+function timeout(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms)
+    })
+}
+
+async function asyncPrint(value, ms) {
+    await timeout(ms)
+    console.log(value)
+}
+
+asyncPrint('Hello', 300)
+```
 
 
+async 函数返回一个 Promise 对象，async 函数内部 return 语句返回的值，会成为 then 方法回调函数的参数：
+```js
+async function f() {
+    return 'Hello'
+}
+f().then(v => console.log(v))  // 'Hello'
+```
+
+
+async 函数内部抛出错误会导致返回的 Promise 对象变成 rejected 状态，抛出的错误对象会被 catch 方法回调函数接受到：
+```js
+async function f() {
+    throw new Error('出错了')
+}
+
+f().then(
+    v => console.log(v),
+    e => console.log(1+e)
+)   // ‘1Error: 出错了’
+```
+正常情况下，await 命令后面是一个 Promise 对象，如果不是，会被转为一个立即 resolve 的 Promise 对象。
+
+await 命令后面的 Promise 对象如果变成 rejected 状态，则 reject 的参数会被 catch 方法的回调函数接收到。
+
+只要一个 await 语句后面的 Promise 变成 rejected，那么整个 async 函数都会被中断执行。
+
+#### 注意
+await 命令后面的 Promise 对象的运行结果可能是 rejected，最好把 await 命令放在 try...catch 中。
+
+多个 await 命令后面的异步操作如果不存在继发关系，最好让它们同时触发。
+
+await 命令只能用在 async 函数中，如果用在普通函数中就会报错。
 
 <br/>
 [文章来源](https://zhuanlan.zhihu.com/p/531959101)
