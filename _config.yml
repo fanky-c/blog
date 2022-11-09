@@ -11,7 +11,8 @@ keywords: js、nodejs、css、nginx、vue、react
 author: fanky_c
 language: zh
 timezone:
-SEOTitle: fanky_c的博客 | fanky_c's Blog
+# SEOTitle: fanky_c的博客 | fanky_c's Blog
+SEOTitle: 我的个人测试
 header-img: img/home-bg.jpg
 email: 396850524@qq.com
 keyword: "网易"  
