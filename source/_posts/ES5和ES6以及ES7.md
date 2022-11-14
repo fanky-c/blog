@@ -302,22 +302,22 @@ obj[s]()  // 'Hello'
 ### 12. Promise
 Promise 代表一个异步操作的执行返回状态，这个执行返回状态在 Promise 对象创建时是未知的，它允许为异步操作的成功或失败指定处理方法。
 
-####  Promise 的状态有三种：
+####  Promise 的状态有三种
 1. Fulfilled，表示 Promise 执行成功
 2. Rejected，表示 Promise 执行失败
 3. Pending，表示 Promise 正在执行中
 
-####  Promise 对象有两个特点：
+####  Promise 对象有两个特点
 1. 对象的状态不受外界影响
 2. 一旦状态改变就不会再变，任何时候都可以得到这个结果
 
-#### 缺点：
+#### 缺点
 1. 无法取消 Promise，一旦新建它就会立即执行，无法中途取消
 2. 如果不设置回调函数，Promise 内部抛出的错误不会反应到外部
 3. 当处于 Pending 状态时，无法得知目前进展到哪一个阶段（刚开始还是即将完成）
    
 
-#### 用法：
+#### 用法
 ```js
 var promise = new Promise(function(resolve, reject) {
     // ... some code
@@ -336,7 +336,7 @@ promise.then(function(value) {
 })
 ```
 
-#### 实例方法：
+#### 实例方法
 1. Promise.prototype.then()，为 Promise 实例添加状态改变时的回调函数，返回一个新的 Promise 实例
 2. Promise.prototype.catch()，用于指定发生错误时的回调函数，返回一个新的 Promise 实例
 3. Promise.prototype.done()，总是处于回调链的尾端，保证捕捉到任何可能出现的错误
@@ -344,7 +344,7 @@ promise.then(function(value) {
 
 finally 与 done 的最大区别在于：finally 接受一个普通的回调函数作为参数，该函数不管怎样都必须执行。
 
-####  Promise 对象方法：
+####  Promise 对象方法
 1. Promise.all()，将多个 Promise 实例包装成一个新的 Promise 实例。
    1. 第一，只有 p1，p2，p3 的状态都编程 Fulfilled，p 的状态才会变成 Fulfilled，此时p1，p2，p3 的返回值组成一个数组，传递给 p 的回调函数。
    2. 第二，只要 p1，p2，p3 中有一个被 Rejected，p 的状态就变成 Rejected，此时第一个被 Rejected 的实例的返回值会传递给 p 的回调函数
