@@ -463,5 +463,77 @@ await 命令后面的 Promise 对象的运行结果可能是 rejected，最好�
 
 await 命令只能用在 async 函数中，如果用在普通函数中就会报错。
 
+
+### 3. Object.values()
+
+### 4. Object.entries()
+```js
+const exampleObj = {a: 1, b: 2, c: 3, d:4};
+console.log(Object.entries(exampleObj)); 
+// [["a", 1], ["b", 2], ["c", 3], ["d", 4]];
+
+// Usually used with for
+for (const [key, value] of Object.entries(exampleObj)) {
+  console.log(`key: ${key}, value: ${value}`);
+}
+// key: a, value: 1
+// key: b, value: 2
+// key: c, value: 3
+// key: d, value: 4
+```
+
+### 5. Array.prototype.flat() & Array.prototype.flatMap()
+```js
+const arr2 = [1, 2, [3, 4, [5, 6]]];
+arr2.flat(); // [1, 2, 3, 4, [5, 6]]
+arr2.flat(2); // [1, 2, 3, 4, 5, 6]
+
+
+let arr = ["早安", "", "今天天氣不錯"]
+arr.map(s => s.split('')) 
+// [["早", "安"], [""], ["今", "天", "天", "氣", "不", "錯"]]
+
+arr.flatMap(s => s.split('')); 
+// ["早", "安", "", "今", "天", "天", "氣", "不", "錯"]
+
+```
+
+### 6. Promise.allSettled()
+
+### 7. 可选链接？
+```js
+const username = user?.info?.name;
+
+const username = user?.name || 'guest';
+```
+
+### 8. 循环等待 
+```js
+async function process(array) {
+  for (const i of array) {
+    await doSomething(i);
+  }
+}
+
+async function process(array) {
+  array.forEach(async i => {
+    await doSomething(i);
+  });
+}
+```
+上面的代码不会像预期的那样输出期望的结果。
+
+**for循环本身还是同步的，会在循环中的异步函数完成之前执行整个for循环，然后将里面的异步函数逐一执行。**
+
+
+ES9 增加了异步迭代器，允许 await 与 for 循环一起使用，逐步执行异步操作。
+```js
+async function process(array) {
+  for await (const i of array) {
+    doSomething(i);
+  }
+}
+```
+
 <br/>
 [文章来源](https://zhuanlan.zhihu.com/p/531959101)
