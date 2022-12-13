@@ -175,7 +175,7 @@ class Axios {
 export default Axios;
 ```
 
-### 拦截器实现
+### 4. 拦截器实现
 ```js
 class InterceptorManager {
   constructor() {
@@ -217,6 +217,97 @@ class InterceptorManager {
 
 export default InterceptorManager;
 ```
+
+<img src="/img/axios1.png" width="90%" />
+
+**由于请求的发送需要在请求拦截器之后，在响应拦截器之前，所以数组先放入request，接着在数组的前后分别加入请求和响应拦截器，由于加入请求拦截器的方法是unshift，所以最后通过promise进行请求的链式调用的时候，我们可以看到执行顺序是从左往右的，所以最后注册的请求拦截器会最先执行，而响应拦截的执行顺序和注册顺序是一样的。**
+
+### 5、dispatchRequest
+
+我们进入到核心请求方法dispatchRequest中
+
+```js
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+
+  if (config.signal && config.signal.aborted) {
+    throw new CanceledError(null, config);
+  }
+}
+
+
+export default function dispatchRequest(config) {
+  // 请求取消请求
+  throwIfCancellationRequested(config);
+  
+  // 请求头
+  config.headers = AxiosHeaders.from(config.headers);
+
+  // 转换数据
+  config.data = transformData.call(
+    config,
+    config.transformRequest
+  );
+
+  if (['post', 'put', 'patch'].indexOf(config.method) !== -1) {
+    config.headers.setContentType('application/x-www-form-urlencoded', false);
+  }
+   
+  // 适配器
+  const adapter = adapters.getAdapter(config.adapter || defaults.adapter);
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // 转换响应头数据
+    response.data = transformData.call(
+      config,
+      config.transformResponse,
+      response
+    );
+
+    response.headers = AxiosHeaders.from(response.headers);
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+       // 转换响应头数据
+      if (reason && reason.response) {
+        reason.response.data = transformData.call(
+          config,
+          config.transformResponse,
+          reason.response
+        );
+        reason.response.headers = AxiosHeaders.from(reason.response.headers);
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+}
+```
+
+### 6、适配器adapter
+```js
+function getDefaultAdapter() {
+  var adapter;
+  // 判断XMLHttpRequest对象是否存在 存在则代表为浏览器环境
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = require('./adapters/xhr');
+    // node环境 使用原生http发起请求
+  } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
+    adapter = require('./adapters/http');
+  }
+  return adapter;
+}
+```
+
+### 7、axios主动取消请求
 
 <br />
 
