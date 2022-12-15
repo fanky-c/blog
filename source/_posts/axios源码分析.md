@@ -308,7 +308,158 @@ function getDefaultAdapter() {
 ```
 
 ### 7、axios主动取消请求
+1、使用axios
+
+```js
+import { CancelToken } from axios;
+
+// source为一个对象 结构为 { token, cancel }
+// token用来表示某个请求，是个promise
+// cancel是一个函数，当被调用时，则取消token注入的那个请求
+const source = CancelToken.source();
+
+axios
+    .get('/user', {
+        // 将token注入此次请求
+        cancelToken: source.token, 
+    })
+    .catch(function (thrown) {
+        // 判断是否是因为主动取消而导致的
+        if (axios.isCancel(thrown)) {
+            console.log('主动取消', thrown.message);
+        } else {
+            console.error(thrown);
+        }
+    });
+
+// 这里调用cancel方法，则会中断该请求 无论请求是否成功返回
+source.cancel('我主动取消请求')
+```
+
+
+2、CancelToken构造函数
+
+```js
+class CancelToken {
+  constructor(executor) {
+    if (typeof executor !== 'function') {
+      throw new TypeError('executor must be a function.');
+    }
+
+    let resolvePromise;
+
+    this.promise = new Promise(function promiseExecutor(resolve) {
+     // 把resolve方法提出来 当resolvePromise执行时，this.promise状态会变为fulfilled
+      resolvePromise = resolve;
+    });
+
+    const token = this;
+
+   
+    this.promise.then(cancel => {
+      if (!token._listeners) return;
+
+      let i = token._listeners.length;
+
+      while (i-- > 0) {
+        token._listeners[i](cancel);
+      }
+      token._listeners = null;
+    });
+
+    
+    this.promise.then = onfulfilled => {
+      let _resolve;
+      const promise = new Promise(resolve => {
+        token.subscribe(resolve);
+        _resolve = resolve;
+      }).then(onfulfilled);
+
+      promise.cancel = function reject() {
+        token.unsubscribe(_resolve);
+      };
+
+      return promise;
+    };
+
+    executor(function cancel(message, config, request) {
+      if (token.reason) {
+        // Cancellation has already been requested
+        return;
+      }
+
+      token.reason = new CanceledError(message, config, request);
+      resolvePromise(token.reason);
+    });
+  }
+
+  /**
+   * Throws a `CanceledError` if cancellation has been requested.
+   */
+  throwIfRequested() {
+    if (this.reason) {
+      throw this.reason;
+    }
+  }
+
+  /**
+   * Subscribe to the cancel signal
+   */
+
+  subscribe(listener) {
+    if (this.reason) {
+      listener(this.reason);
+      return;
+    }
+
+    if (this._listeners) {
+      this._listeners.push(listener);
+    } else {
+      this._listeners = [listener];
+    }
+  }
+
+  /**
+   * Unsubscribe from the cancel signal
+   */
+
+  unsubscribe(listener) {
+    if (!this._listeners) {
+      return;
+    }
+    const index = this._listeners.indexOf(listener);
+    if (index !== -1) {
+      this._listeners.splice(index, 1);
+    }
+  }
+
+  /**
+   * Returns an object that contains a new `CancelToken` and a function that, when called,
+   * cancels the `CancelToken`.
+   */
+  static source() {
+    let cancel;
+    const token = new CancelToken(function executor(c) {
+      cancel = c;
+    });
+    return {
+      token,
+      cancel
+    };
+  }
+}
+
+export default CancelToken;
+```
+
+
+3、请求中是如何处理的cancel
+
+
+<img src="/img/axios2.png" width="90%" />
 
 <br />
 
 [文章来源于](https://juejin.cn/post/7016255507392364557)
+
+[class static静态方法](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes/static)
