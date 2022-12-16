@@ -308,6 +308,9 @@ function getDefaultAdapter() {
 ```
 
 ### 7、axios主动取消请求
+
+**终止一个尚未完成的网络请求, status状态为canceled**
+
 1、使用axios
 
 ```js
@@ -334,6 +337,19 @@ axios
 
 // 这里调用cancel方法，则会中断该请求 无论请求是否成功返回
 source.cancel('我主动取消请求')
+
+
+/**
+ * 方法二
+ * let cancel = null;
+ * axios
+    .get('/user', {
+        cancelToken: new CancelToken(function executor(c){
+            cancel = c;
+        }) 
+    })
+ * cancel('我主动取消请求')
+ * /
 ```
 
 
@@ -454,6 +470,41 @@ export default CancelToken;
 
 
 3、请求中是如何处理的cancel
+```js
+// 订阅
+if (config.cancelToken || config.signal) {
+  // Handle cancellation
+  // eslint-disable-next-line func-names
+  onCanceled = cancel => {
+    if (!request) {
+      return;
+    }
+    reject(!cancel || cancel.type ? new CanceledError(null, config, request) : cancel);
+    request.abort();
+    request = null;
+  };
+
+  config.cancelToken && config.cancelToken.subscribe(onCanceled);
+  if (config.signal) {
+    config.signal.aborted 
+           ? onCanceled() 
+           : config.signal.addEventListener('abort', onCanceled);
+  }
+}
+
+
+// 取消订阅
+let onCanceled;
+function done() {
+  if (config.cancelToken) {
+    config.cancelToken.unsubscribe(onCanceled);
+  }
+
+  if (config.signal) {
+    config.signal.removeEventListener('abort', onCanceled);
+  }
+}
+```
 
 
 <img src="/img/axios2.png" width="90%" />
