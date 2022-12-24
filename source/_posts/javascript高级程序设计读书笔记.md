@@ -23,6 +23,8 @@ ECMAScript中的语句以一个分号结尾；如果省略分号，则由解析�
 ### 2、数据类型
 **JS基本数据类型：String、Number、Boolean、Undefined、Null、Symbol、BigInt；Object本质上是由一组无序的名值对组成的**
 
+**ECMAScript中也有一种复杂的数据类型，即Object类型，该类型是这门语言中所有对象的基础类型。**
+
 #### 2.1 typeof操作符
 对一个值使用typeof操作符可能返回下列某个字符串：
 
@@ -245,10 +247,181 @@ with语句的代码块内部，每个变量首先被认为是一个局部变量�
 
 switch语句在比较值时使用的是全等操作符，因此不会发生类型转换（例如，字符串"10"不等于数值10）。
 
+```js
+switch ("hello"){
+  case "hello":
+   alert('hello');
+   break;
+  case "good":
+   alert("good");
+   break;
+   default:
+      alert("wtf");  
+}
+
+// 另外
+let num = 1;
+switch (true){
+  case num < 0:
+   alert('less than 0');
+   break;
+  case num >= 0 && num <= 10:
+   alert("between 0 and 10");
+   break;
+   default:
+      alert("more than 10");  
+}
+```
+
 ### 5、函数
+
+#### 5.1 参数
+ECMAScript函数不介意传递进来多少个参数，也不在乎传进来参数是什么数据类型。也就是说，即便你定义的函数只接收两个参数，在调用这个函数时也未必一定要传递两个参数。可以传递一个、三个甚至不传递参数，而解析器永远不会有什么怨言。之所以会这样，原因是ECMAScript中的参数在内部是用一个数组来表示的。函数接收到的始终都是这个数组，而不关心数组中包含哪些参数（如果有参数的话）。如果这个数组中不包含任何元素，无所谓；如果包含多个元素，也没有问题。实际上，在函数体内可以通过arguments对象来访问这个参数数组，从而获取传递给函数的每一个参数。
+
+**arguments对象只是与数组类似（它并不是Array的实例），因为可以使用方括号语法访问它的每一个元素（即第一个元素是arguments[0]，第二个元素是arguments[1]，以此类推），使用length属性来确定传递进来多少个参数。**
+
+
+```js
+function doNum(num1, num2){
+   arguments[1] = 10;
+   return arguments[0] + num2;
+}
+
+doNum(1, 2)  // 11
+```
+每次执行这个doAdd()函数都会重写第二个参数，将第二个参数的值修改为10。因为arguments对象中的值会自动反映到对应的命名参数，所以修改arguments[1]，也就修改了num2，结果它们的值都会变成10。不过，这并不是说读取这两个值会访问相同的内存空间；它们的内存空间是独立的，但它们的值会同步。
+
+
+没有传递值的命名参数将自动被赋予undefined值。这就跟定义了变量但又没有初始化一样。例如，如果只给doAdd()函数传递了一个参数，则num2中就会保存undefined值。
+
+**重点：ECMAScript中的所有参数传递的都是值，不可能通过引用传递参数。**
+
+#### 5.2 没有重载
+ECMAScript函数不能像传统意义上那样实现重载。而在其他语言（如Java）中，可以为一个函数编写两个定义，只要这两个定义的签名（接受的参数的类型和数量）不同即可。如前所述，ECMAScirpt函数没有签名，因为其参数是由包含零或多个值的数组来表示的。而没有函数签名，真正的重载是不可能做到的。
 
 
 ## 变量、作用域和内存问题
+JavaScript的变量与其他语言的变量有很大区别。JavaScript变量松散类型的本质，决定了它只是在特定时间用于保存特定值的一个名字而已。由于不存在定义某个变量必须要保存何种数据类型值的规则，变量的值及其数据类型可以在脚本的生命周期内改变。尽管从某种角度看，这可能是一个既有趣又强大，同时又容易出问题的特性，
+
+
+### 1. 基本类型和引用类型的值
+#### 1.1 基本类型和引用类型的值
+
+基本类型值指的是简单的数据段，而引用类型值指那些可能由多个值构成的对象。
+
+引用类型的值是保存在内存中的对象。与其他语言不同，JavaScript不允许直接访问内存中的位置，也就是说不能直接操作对象的内存空间。在操作对象时，实际上是在操作对象的引用而不是实际的对象。为此，引用类型的值是按引用访问的。
+
+##### 1.1.1 动态的属性
+
+我们不能给基本类型的值添加属性，尽管这样做不会导致任何错误； 
+
+```js
+let name = 'cha';
+name.age = 12;
+console.log(name.age) // undefined
+```
+
+##### 1.1.2 复制变量值
+当从一个变量向另一个变量复制引用类型的值时，同样也会将存储在变量对象中的值复制一份放到为新变量分配的空间中。不同的是，这个值的副本实际上是一个指针，而这个指针指向存储在堆中的一个对象。复制操作结束后，两个变量实际上将引用同一个对象。因此，改变其中一个变量，就会影响另一个变量，
+
+```js
+var obj1=new Object();
+var obj2=obj1;
+obj1.name="Nicholas";
+alert(obj2.name);   //"Nicholas"
+```
+
+<img src="/img/heap.jpeg" width="95%" height="auto">
+
+
+##### 1.1.3 传递参数
+ECMAScript中所有函数的参数都是按值传递的。也就是说，把函数外部的值复制给函数内部的参数，就和把值从一个变量复制到另一个变量一样。
+
+```js
+// 基本类型
+function addTen(num){
+  num += 10;
+  return num;
+}
+var count = 20;
+var result = addTen(count);
+console.log(count); // 20
+console.log(result); // 30
+
+/**
+ * 在这个函数内部，obj和person引用的是同一个对象
+ */
+
+// 引用类型
+function setName(obj) {
+   obj.name = 'nick';
+}
+let person = new Object();
+setName(person);
+console.log(person.name) // nick
+
+
+
+/**
+ *  这说明即使在函数内部修改了参数的值，但原始的引用仍然保持未变。
+ *  实际上，当在函数内部重写obj时，这个变量引用的就是一个局部对象了。
+ *  而这个局部对象会在函数执行完毕后立即被销毁。
+ **/
+
+// 引用类型
+function setName(obj){
+  obj.name = 'nick';
+  obj = new Object();
+  obj.name = 'greg';
+}
+
+let person = new Object();
+setName(person);
+console.log(person.name); // nick
+```
+
+关于引用类型错误的理解：
+
+因为person指向的对象在堆内存中只有一个，而且是全局对象。有很多开发人员错误地认为：在局部作用域中修改的对象会在全局作用域中反映出来，就说明参数是按引用传递的。
+
+关于引用类型正确理解：
+
+在把person传递给setName()后，其name属性被设置为"Nicholas"。然后，又将一个新对象赋给变量obj，同时将其name属性设置为"Greg"。如果person是按引用传递的，那么person就会自动被修改为指向其name属性值为"Greg"的新对象。但是，当接下来再访问person.name时，显示的值仍然是"Nicholas"
+
+
+##### 1.1.4 检测类型
+
+typeof操作符是确定一个变量是字符串、数值、布尔值，还是undefined的最佳工具。如果变量的值是一个对象或null，则typeof操作符会像下面例子中所示的那样返回"object"。
+
+所有引用类型的值都是Object的实例。因此，在检测一个引用类型值和Object构造函数时，instanceof操作符始终会返回true。
+
+```js
+// 无法区分Object 和 其他类型
+{} instanceof Object // true
+[] instanceof Object // true
+[] instanceof Array // true
+new RegExp() instanceof Object // true
+new RegExp() instanceof RegExp // true
+```
+
+
+### 2. 执行环境和作用域
+执行环境（execution context，为简单起见，有时也称为“环境”）是JavaScript中最为重要的一个概念。执行环境定义了变量或函数有权访问的其他数据，决定了它们各自的行为。
+
+#### 2.1 延长作用域链
+
+
+#### 2.2 没有块级作用域（es6 let实现）
+这里是在一个if语句中定义了变量color。如果是在C、C++或Java中，color会在if语句执行完毕后被销毁。但在JavaScript中，if语句中的变量声明会将变量添加到当前的执行环境（在这里是全局环境）中。在使用for语句时尤其要牢记这一差异
+
+```js
+for (var i=0; i < 10; i++){
+   doSomething(i);
+}
+alert(i);        //10
+```
+
+### 3. 垃圾回收
 
 ## 引用类型
 
