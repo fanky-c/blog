@@ -553,16 +553,44 @@ let color6 = color5.splice(1,1,'a'); // color5:[ 1, 'a', 3, 4 ] color6: [2]
 **迭代方法**
 
 1.  every()：对数组中的每一项运行给定函数，如果该函数对每一项都返回true，则返回true。
-2.  filter()：对数组中的每一项运行给定函数，返回该函数会返回true的项组成的数组。
-3.  forEach()：对数组中的每一项运行给定函数。这个方法没有返回值
-4.  map()：对数组中的每一项运行给定函数，返回每次函数调用的结果组成的数组。
-5.  some()：对数组中的每一项运行给定函数，如果该函数对任一项返回true，则返回true。 
+2.  some()： 对数组中的每一项运行给定函数，如果该函数对任一项返回true，则返回true。 
+3.  filter()：对数组中的每一项运行给定函数，返回该函数会返回true的项组成的数组。
+4.  forEach()：对数组中的每一项运行给定函数。这个方法没有返回值
+5.  map()：对数组中的每一项运行给定函数，返回每次函数调用的结果组成的数组。
+
+
+```js
+// filter
+let num = [1, 2, 3, 4, 5];
+num.filter((item. index, array)=>{
+   return item > 2;
+});
+console.log(num) // [3, 4, 5]
+
+// map
+let num1 = [1, 2, 3, 4, 5];
+num1.map((item. index, array)=>{
+   return item *2;
+});
+console.log(num1) // [2, 4, 6, 8, 10]
+```
 
 
 **归并方法**
 
 reduce()和reduceRight()。这两个方法都会迭代数组的所有项，然后构建一个最终返回的值。
 
+```js
+// 数组之和
+let values = [1, 2, 3, 4, 5];
+// 参数：前一个值、当前值、项的索引和数组对象
+let sum = values.reduce((prev, cur, index, array)=>{
+   console.log(prev, cur, index, array); // prev ==> 1 3 6 10
+   return prev += cur;
+});
+
+console.log(sum) // 15
+```
 
 ### 3、Date类型
 
