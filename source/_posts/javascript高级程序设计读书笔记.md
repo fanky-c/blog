@@ -593,11 +593,174 @@ console.log(sum) // 15
 ```
 
 ### 3、Date类型
+ECMAScript中的Date类型是在早期Java中的java.util.Date类基础上构建的。为此，Date类型使用自UTC（Coordinated Universal Time，国际协调时间）1970年1月1日午夜（零时）开始经过的毫秒数来保存日期。在使用这种数据存储格式的条件下，Date类型保存的日期能够精确到1970年1月1日之前或之后的100000000年。
+
+#### 3.1 Date.now()
+ECMAScript 5添加了Date.now()方法，返回表示调用这个方法时的日期和时间的毫秒数。
+
+```js
+//取得开始时间
+var start=Date.now();
+
+
+//调用函数
+doSomething();
+
+
+//取得停止时间
+var stop=Date.now(),
+    result=stop - start;
+```
+
+支持Date.now()方法的浏览器包括IE9+、Firefox 3+、Safari 3+、Opera 10.5和Chrome。在不支持它的浏览器中，使用+操作符获取Date对象的时间戳，也可以达到同样的目的。
+
+```js
+//取得开始时间
+var start=+new Date();
+
+
+//调用函数
+doSomething();
+//取得停止时间
+var stop=+new Date(),
+    result=stop - start;
+```
+
+#### 3.2 继承
+与其他引用类型一样，Date类型也重写了**toLocaleString()、toString()和valueOf()**方法；但这些方法返回的值与其他类型中的方法不同。Date类型的toLocaleString()方法会按照与浏览器设置的地区相适应的格式返回日期和时间。这大致意味着时间格式中会包含AM或PM，但不会包含时区信息（当然，具体的格式会因浏览器而异）。而toString()方法则通常返回带有时区信息的日期和时间，其中时间一般以军用时间（即小时的范围是0到23）表示。下面给出了在不同浏览器中调用toLocaleString()和toString()方法，输出PST（Pacific Standard Time，太平洋标准时间）时间2007年2月1日午夜零时的结果。
 
 ### 4、RegExp类型
+#### 4.1 RegExp类型
+
+```js
+let expression = /pattern/flags;
+```
+
+其中的模式（pattern）部分可以是任何简单或复杂的正则表达式，可以包含字符类、限定符、分组、向前查找以及反向引用。每个正则表达式都可带有一或多个标志（flags），用以标明正则表达式的行为。正则表达式的匹配模式支持下列3个标志。
+
+g：表示全局（global）模式，即模式将被应用于所有字符串，而非在发现第一个匹配项时立即停止；
+
+i：表示不区分大小写（case-insensitive）模式，即在确定匹配项时忽略模式与字符串的大小写；
+
+m：表示多行（multiline）模式，即在到达一行文本末尾时还会继续查找下一行中是否存在与模式匹配的项。
+
+
+**与其他语言中的正则表达式类似，模式中使用的所有元字符都必须转义。正则表达式中的元字符包括：**
+
+```js
+( [ { \ ^ $ | ) ? * + . ] } 
+```
+
+#### 4.2 RegExp实例属性
+
+global：布尔值，表示是否设置了g标志。
+
+ignoreCase：布尔值，表示是否设置了i标志。
+
+lastIndex：整数，表示开始搜索下一个匹配项的字符位置，从0算起。
+
+multiline：布尔值，表示是否设置了m标志。
+
+source：正则表达式的字符串表示，按照字面量形式而非传入构造函数中的字符串模式返回。
+
+```js
+let pattern1 = /\[bc\]at/i
+console.log(pattern1.global); // false
+console.log(pattern1.ignoreCase); // true
+
+
+let pattern2 = new RegExp("\\[bc\\]at", "i");
+console.log(pattern2.global); // false
+console.log(pattern2.ignoreCase); // true
+```
+
+#### 4.3 RegExp实例方法
+
+exec()
+
+```js
+// 待补充
+```
+
+test()
+
+```js
+let text = "000-00-0000";
+let pattern = /\d{3}-\d{2}-\d{4}/;
+pattern.test(text) // true
+```
+
 
 ### 5、Function类型
+函数实际上是对象。每个函数都是Function类型的实例，而且都与其他引用类型一样具有属性和方法。由于函数是对象，因此函数名实际上也是一个指向函数对象的指针，不会与某个函数绑定。
 
+```js
+// 创建函数方法一
+function sum (num1, num2){
+   return num1 + num2;
+}
+
+// 创建函数方法二
+let sum = function (num1, num2) {
+    return num1 + num2;  
+}
+
+/**
+ *
+ * 从技术角度讲，这是一个函数表达式。但是，我们不推荐读者使用这种方法定义函数，
+ * 因为这种语法会导致解析两次代码（第一次是解析常规ECMAScript代码，第二次是解析传入构造函数中的字符串），
+ * 从而影响性能。不过，这种语法对于理解“函数是对象，函数名是指针”的概念倒是非常直观的。
+ * */
+
+// 创建函数方法三，不推荐
+let sum = new Function("num1", "num2", "return num1 + num2"); 
+```
+
+#### 5.1 没有重载
+这个例子中声明了两个同名函数，而结果则是后面的函数覆盖了前面的函数。**在创建第二个函数时，实际上覆盖了引用第一个函数的变量addSomeNumber。**
+
+```js
+function addSomeNumber(num){
+    return num+100;
+}
+
+function addSomeNumber(num) {
+    return num+200;
+}
+
+var result=addSomeNumber(100); //300
+```
+
+#### 5.2 函数声明和函数表达式
+解析器在向执行环境中加载数据时，对函数声明和函数表达式并非一视同仁。**解析器会率先读取函数声明，并使其在执行任何代码之前可用（可以访问）；至于函数表达式，则必须等到解析器执行到它所在的代码行，才会真正被解释执行。**
+
+```js
+/**
+ * 因为在代码开始执行之前，解析器就已经通过一个名为函数声明提升
+ * （function declaration hoisting）的过程，读取并将函数声明添加到执行环境中。
+ */
+
+alert(sum(10, 10));
+function sum (num1, num2){
+   return num1 + num2;
+}
+```
+
+```js
+/**
+ * 在执行到函数所在的语句之前，变量sum中不会保存有对函数的引用；
+ */ 
+alert(sum(10, 10));
+let sum = function (num1, num2){
+   return num1 + num2;
+}
+```
+
+#### 5.3 作为值的函数
+
+#### 5.4 函数内部属性
+
+#### 5.5 函数的属性和方法
 ### 6、基本包装类型
 
 ## 面向对象程序设计
