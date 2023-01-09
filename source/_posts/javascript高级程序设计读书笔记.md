@@ -792,10 +792,136 @@ ECMAScript中的函数是对象，因此函数也有属性和方法。每个函�
 
 **在ECMAScript核心所定义的全部属性中，最耐人寻味的就要数prototype属性了。对于ECMAScript中的引用类型而言，prototype是保存它们所有实例方法的真正所在。换句话说，诸如toString()和valueOf()等方法实际上都保存在prototype名下，只不过是通过各自对象的实例访问罢了。在创建自定义引用类型以及实现继承时，prototype属性的作用是极为重要的（第6章将详细介绍）。在ECMAScript 5中，prototype属性是不可枚举的，因此使用for-in无法发现。**
 
+
 ##### 5.1.1 call 和 apply
 
+每个函数都包含两个非继承而来的方法：apply()和call()。这两个方法的用途都是在特定的作用域中调用函数，实际上等于设置函数体内this对象的值。
+
+```js
+// apply
+function sum(num1, num2){
+   return num1 + num2;
+}
+
+/**
+ *  callSum1()在执行sum()函数时传入了this作为this值
+   （因为是在全局作用域中调用的，所以传入的就是window对象）和arguments对象
+ */ 
+function callSum1(num1, num2){
+   return sum.apply(this, arguments);
+}
+
+function callSum2(num1, num2){
+   return sum.apply(this, [num1, num2]);
+}
+
+callSum1(10, 10);  // 20
+callSum2(10, 10);  // 20
+
+
+/**
+ * 除了参数传递，最主要的是对象冒充（扩充函数作用域）
+ */ 
+window.color = 'red';
+let o = {
+   color: 'blue'
+}
+
+function sayColor(){
+   console.log(this.color);
+}
+
+sayColor(); // red
+
+sayColor.call(window) // red
+sayColor.call(o) // blue
+```
+
 ##### 5.1.2 bind
+ECMAScript 5还定义了一个方法：bind()。这个方法会创建一个函数的实例，其this值会被绑定到传给bind()函数的值。
+
+```js
+window.color = 'red';
+let o = {
+   color: 'blue'
+}
+function sayColor(){
+   console.log(this.color);
+}
+let a = sayColor.bind(o);
+a() // blue
+```
+
 ### 6、基本包装类型
+为了便于操作基本类型值，ECMAScript还提供了3个特殊的引用类型：Boolean、Number和String。这些类型与本章介绍的其他引用类型相似，但同时也具有与各自的基本类型相应的特殊行为。实际上，每当读取一个基本类型值的时候，后台就会创建一个对应的基本包装类型的对象，从而让我们能够调用一些方法来操作这些数据。
+
+```js
+let s1 = 'some text';
+let s2 = s1.subString(2);
+```
+我们知道，基本类型值不是对象，因而从逻辑上讲它们不应该有方法（尽管如我们所愿，它们确实有方法）。
+其实，为了让我们实现这种直观的操作，后台已经自动完成了一系列的处理。**当第二行代码访问s1时，访问过程处于一种读取模式，也就是要从内存中读取这个字符串的值。而在读取模式中访问字符串时，后台都会自动完成下列处理：**
+
+(1) 创建String类型的一个实例；
+
+(2) 在实例上调用指定的方法；
+
+(3) 销毁这个实例。
+
+```js
+var s1=new String("some text");
+var s2=s1.substring(2);
+s1=null;
+```
+
+**引用类型与基本包装类型的主要区别就是对象的生存期。使用new操作符创建的引用类型的实例，在执行流离开当前作用域之前都一直保存在内存中。而自动创建的基本包装类型的对象，则只存在于一行代码的执行瞬间，然后立即被销毁。这意味着我们不能在运行时为基本类型值添加属性和方法。**
+
+```js
+var s1="some text";
+s1.color="red";
+alert(s1.color);    //undefined
+```
+
+Object构造函数也会像工厂方法一样，根据传入值的类型返回相应基本包装类型的实例。
+
+```js
+var obj=new Object("some text");
+alert(obj instanceof String);    //true
+alert(obj instanceof Object);    //true
+```
+
+使用new调用基本包装类型的构造函数，与直接调用同名的转型函数是不一样的。 
+在下面例子中，变量number中保存的是基本类型的值25，而变量obj中保存的是Number的实例。
+
+```js
+var value="25";
+var number=Number(value);   //转型函数
+alert(typeof number);          //"number"
+
+
+var obj=new Number(value); //构造函数
+alert(typeof obj);              //"object"
+```
+#### 6.1 Boolean类型
+
+#### 6.2 Number类型
+具体来讲，就是在使用typeof和instanceof操作符测试基本类型数值与引用类型数值时，得到的结果完全不同。
+
+```js
+var numberObject=new Number(10);
+var numberValue=10;
+alert(typeof numberObject);    //"object"
+alert(typeof numberValue);     //"number"
+alert(numberObject instanceof Number);   //true
+alert(numberValue instanceof Number);    //false
+```
+
+#### 6.3 String类型
+
+### 7、单体内置对象
+由ECMAScript实现提供的、不依赖于宿主环境的对象，这些对象在ECMAScript程序执行之前就已经存在了。
+意思就是说，开发人员不必显式地实例化内置对象，因为它们已经实例化了。前面我们已经介绍了大多数内置对象，例如Object、Array和String。ECMA-262还定义了两个单体内置对象：Global和Math。
+
 
 ## 面向对象程序设计
 
