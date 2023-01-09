@@ -759,8 +759,42 @@ let sum = function (num1, num2){
 #### 5.3 作为值的函数
 
 #### 5.4 函数内部属性
+在函数内部，有两个特殊的对象：arguments和this。其中，arguments在第3章曾经介绍过，它是一个类数组对象，包含着传入函数中的所有参数。虽然arguments的主要用途是保存函数参数，但这个对象还有一个名叫callee的属性，该属性是一个指针，指向拥有这个arguments对象的函数。请看下面这个非常经典的阶乘函数。
+
+```js
+function factorial(num){
+  if(num <= 1){
+   return 1;
+  }else {
+   return num * arguments.callee(num - 1);
+  }
+}
+```
+
+this的指向：由于在调用函数之前，this的值并不确定，因此this可能会在代码执行过程中引用不同的对象。
+
+```js
+window.color = 'red';
+let o = {color: 'blue'};
+
+function sayColor(){
+   console.log(this.color);
+}
+sayColor(); // red
+
+
+o.sayColor = sayColor;
+o.sayColor(); // blue
+```
 
 #### 5.5 函数的属性和方法
+ECMAScript中的函数是对象，因此函数也有属性和方法。每个函数都包含两个属性：length和prototype。其中，length属性表示函数希望接收的命名参数的个数。
+
+**在ECMAScript核心所定义的全部属性中，最耐人寻味的就要数prototype属性了。对于ECMAScript中的引用类型而言，prototype是保存它们所有实例方法的真正所在。换句话说，诸如toString()和valueOf()等方法实际上都保存在prototype名下，只不过是通过各自对象的实例访问罢了。在创建自定义引用类型以及实现继承时，prototype属性的作用是极为重要的（第6章将详细介绍）。在ECMAScript 5中，prototype属性是不可枚举的，因此使用for-in无法发现。**
+
+##### 5.1.1 call 和 apply
+
+##### 5.1.2 bind
 ### 6、基本包装类型
 
 ## 面向对象程序设计
