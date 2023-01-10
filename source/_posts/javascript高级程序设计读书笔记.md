@@ -922,6 +922,45 @@ alert(numberValue instanceof Number);    //false
 由ECMAScript实现提供的、不依赖于宿主环境的对象，这些对象在ECMAScript程序执行之前就已经存在了。
 意思就是说，开发人员不必显式地实例化内置对象，因为它们已经实例化了。前面我们已经介绍了大多数内置对象，例如Object、Array和String。ECMA-262还定义了两个单体内置对象：Global和Math。
 
+#### 7.1 Global对象
+所有在全局作用域中定义的属性和函数，都是Global对象的属性。本书前面介绍过的那些函数，诸如isNaN()、isFinite()、parseInt()以及parseFloat()，实际上全都是Global对象的方法。除此之外，Global对象还包含其他一些方法：
+
+1. URI编码方法：encodeURI()和encodeURIComponent()
+
+**encodeURI()不会对本身属于URI的特殊字符进行编码，例如冒号、正斜杠、问号和井字号；而encodeURIComponent()则会对它发现的任何非标准字符进行编码。**
+
+**一般来说，我们使用encodeURIComponent()方法的时候要比使用encodeURI()更多，因为在实践中更常见的是对查询字符串参数而不是对基础URI进行编码。**
+
+1. eval()方法
+
+2. Global对象的属性
+   
+3. window对象
+ECMAScript虽然没有指出如何直接访问Global对象，但Web浏览器都是将这个全局对象作为window对象的一部分加以实现的。因此，在全局作用域中声明的所有变量和函数，就都成为了window对象的属性
+
+JavaScript中的window对象除了扮演ECMAScript规定的Global对象的角色外，还承担了很多别的任务。第8章在讨论浏览器对象模型时将详细介绍window对象.
+
+#### 7.2 Math对象
+1. min()和max()方法
+
+```js
+var values=[1, 2, 3, 4, 5, 6, 7, 8];
+var max=Math.max.apply(Math, values);
+```
+
+2.  Math.ceil()执行向上舍入
+3.  Math.floor()执行向下舍入
+4.  Math.round()执行标准舍入
+
+
+### 8、总结
+**Object是一个基础类型，其他所有类型都从Object继承了基本的行为**
+
+**函数实际上是Function类型的实例，因此函数也是对象；而这一点正是JavaScript最有特色的地方。由于函数是对象，所以函数也拥有方法，可以用来增强其行为。**
+
+在所有代码执行之前，作用域中就已经存在两个内置对象：Global和Math。在大多数ECMAScript实现中都不能直接访问Global对象；不过，Web浏览器实现了承担该角色的window对象。
+
+
 
 ## 面向对象程序设计
 
