@@ -962,7 +962,227 @@ var max=Math.max.apply(Math, values);
 
 
 
-## 面向对象程序设计
+## 面向对象程序设计（重要知识点）
+### 1、理解对象
+早期的JavaScript开发人员经常使用这个模式创建新对象。几年后，对象字面量成为创建这种对象的首选模式。
+
+```js
+ let person = new Object();
+ person.name = 'fc';
+ person.sayName = function (){};
+
+// 字面量
+let person={
+    name: "fc",
+    sayName: function(){}
+};
+```
+
+#### 1.1 属性类型
+
+1. 数据属性
+要修改属性默认的特性，必须使用ECMAScript 5的Object.defineProperty()方法。这个方法接收三个参数：属性所在的对象、属性的名字和一个描述符对象。
+
+```js
+let person = {};
+Object.defineProperty(person, 'name', { 
+    configurable: false, // 无法删除对象属性
+    value: 'fc',
+    writable: false, // 无法修改对象属性的值
+    enumerable: true, // 表示能通过for-in循环返回属性
+})
+```
+
+2. 访问器属性
+访问器属性不包含数据值；它们包含一对儿getter和setter函数（不过，这两个函数都不是必需的）。在读取访问器属性时，会调用getter函数，这个函数负责返回有效的值；在写入访问器属性时，会调用setter函数并传入新值，这个函数负责决定如何处理数据。
+
+不一定非要同时指定getter和setter。只指定getter意味着属性是不能写，尝试写入属性会被忽略。在严格模式下，尝试写入只指定了getter函数的属性会抛出错误。类似地，只指定setter函数的属性也不能读，否则在非严格模式下会返回undefined，而在严格模式下会抛出错误。
+
+
+#### 1.2 Object.definePropert
+```js
+let person = {
+   name: 'fc',
+   say: 1
+};
+Object.defineProperty(person, 'year', { 
+    get: function() {
+       return this.name;
+    },
+    set: function(newValue) {
+        if(newValue > 38){
+          this.say = 2;
+          this.name = 'fc1';
+        }
+    }
+})
+person.year = 39;
+```
+
+#### 1.3 Object.getOwnPropertyDescriptor
+这个方法接收两个参数：属性所在的对象和要读取其描述符的属性名称。返回值是一个对象，如果是访问器属性，这个对象的属性有configurable、enumerable、get和set；如果是数据属性，这个对象的属性有configurable、enumerable、writable和value。
+
+
+
+### 2、创建对象
+虽然Object构造函数或对象字面量都可以用来创建单个对象，**但这些方式有个明显的缺点：使用同一个接口创建很多对象，会产生大量的重复代码。**为解决这个问题，人们开始使用工厂模式的一种变体。
+
+#### 2.1 工厂模式
+
+```js
+function createPerson(name, age, job){
+   let o = new Object();
+   o.name = name;
+   o.age = age;
+   o.job = job;
+   o.sayName = function (){
+      return this.name;
+   }
+   return o;
+}
+
+let p1 = createPerson('f', 12, 'sf');
+let p2 = createPerson('a', 13, 'sf');
+```
+
+可以无数次地调用这个函数，而每次它都会返回一个包含三个属性一个方法的对象。**工厂模式虽然解决了创建多个相似对象的问题，但却没有解决对象识别的问题（即怎样知道一个对象的类型）**
+
+
+#### 2.2 构建函数模式
+
+```js
+// 按照惯例，构造函数始终都应该以一个大写字母开头
+function Person(name, age, job){
+   this.name = name;
+   this.age = age;
+   this.job = job;
+   this.sayName = function (){
+      console.log(this.name);
+   }
+}
+
+let p1 = new Person('f', 12, 'sf');
+let p2 = new Person('fc', 13, 'sf')
+```
+
+##### 2.2.1 构造函数模式和工厂模式区别
+
+1. 没显示地创建对象
+2. 直接将属性和方法赋给this对象
+3. 没有return语句
+
+
+**创建Person新实例，必须使用new操作符。调用构造函数会经历一下4个步骤：**
+
+1. 创建一个新对象
+2. 将构造函数的作用域赋给新对象（因此this就指向了这个新对象）
+3. 执行构造函数的代码（为这个新对象添加属性）
+4. 返回新对象
+
+##### 2.2.2 constructor
+
+```js
+// p1和p2分别保存着Person的一个不同的实例。这两个对象都有一个constructor（构造函数）属性，该属性指向Person
+p1.constructor == Person // true
+p2.constructor == Person // true
+```
+
+##### 2.2.3 instanceof
+```js
+alert(p1 instanceof Object);   //true
+alert(p2 instanceof Person);   //true
+alert(p1 instanceof Object);   //true
+alert(p2 instanceof Person);   //true
+```
+
+创建自定义的构造函数意味着将来可以将它的实例标识为一种特定的类型；而这正是构造函数模式胜过工厂模式的地方。在这个例子中，p1和p2之所以同时是Object的实例，是因为所有对象均继承自Object。
+
+
+##### 2.2.4 将构造函数当作函数
+构造函数与其他函数的唯一区别，就在于调用它们的方式不同。不过，构造函数毕竟也是函数，不存在定义构造函数的特殊语法。任何函数，只要通过new操作符来调用，那它就可以作为构造函数；而任何函数，如果不通过new操作符来调用，那它跟普通函数也不会有什么两样。
+
+```js
+// 当做构造函数使用
+let p1 = new Person('f', 12, 'sf');
+p1.sayName(); // f
+
+// 当做普通函数使用
+Person('Greg', 12, 'sf'); // 添加到window
+window.sayName() // Greg
+
+// 在另一个对象作用域调用(call/apply)
+let o = {};
+Person.call(o, 'frany', 24, 'sf');
+o.sayName(); // frany
+```
+
+##### 2.2.5 构造函数的问题
+1. 每个方法都要在每个实例上重新创建一遍。在前面的例子中，p1和p2都有一个名为sayName()方法。
+
+```js
+function Person(name, age, job){
+   this.name=name;
+   this.age=age;
+   this.job=job;
+   this.sayName=new Function("alert(this.name)"); // 与声明函数在逻辑上是等价的
+}
+
+console.log(p1.sayName == p2.sayName) // false, 不同实例上的同名函数是不相等的
+```
+
+```js
+function Person(name, age, job){
+   this.name=name;
+   this.age=age;
+   this.job=job;
+   this.sayName=sayName;
+}
+
+function sayName(){
+  this.name = name;
+}
+
+console.log(p1.sayName == p2.sayName) // true, 但是多了全局对象，没有封装性
+```
+#### 2.3 原型模式
+我们创建的每个函数都有一个prototype（原型）属性，这个属性是一个指针，指向一个对象，而这个对象的用途是**包含可以由特定类型的所有实例共享的属性和方法。使用原型对象的好处是可以让所有对象实例共享它所包含的属性和方法。**
+
+```js
+function Person() {
+
+}
+Person.prototype.name = 'Greg';
+Person.prototype.age = 24;
+Person.prototype.job = 'software engineer';
+Person.prototype.sayName = function (){
+   console.log(this.name);
+}
+
+let p1 = new Person();
+p1.sayName(); // Greg 
+
+let p2 = new Person();
+p2.sayName(); //Greg
+
+// 但与构造函数模式不同的是，新对象的这些属性和方法是由所有实例共享的。
+// 换句话说，p1和p2访问的都是同一组属性和同一个sayName()函数。
+console.log(p1.sayName == p2.sayName) //true
+```
+
+##### 2.3.1 理解原型对象
+##### 2.3.2 原型与in操作符
+
+##### 2.3.3 更简单的原型语法
+
+##### 2.3.4 原型的动态性
+
+##### 2.3.5 原生对象的原型
+
+##### 2.3.6 原型对象的问题
+
+### 3、继承
+
+### 4、总结
 
 ## 函数表达式
 
