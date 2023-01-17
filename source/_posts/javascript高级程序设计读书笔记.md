@@ -1170,8 +1170,70 @@ console.log(p1.sayName == p2.sayName) //true
 ```
 
 ##### 2.3.1 理解原型对象
-##### 2.3.2 原型与in操作符
+在默认情况下，所有原型对象都会自动获得一个constructor（构造函数）属性，这个属性是一个指向prototype属性所在函数的指针。就拿前面的例子来说，Person.prototype.constructor指向Person。而通过这个构造函数，我们还可继续为原型对象添加其他属性和方法。
 
+使用hasOwnProperty()方法可以检测一个属性是存在于实例中，还是存在于原型中。
+
+```js
+function Person() {
+
+}
+Person.prototype.name = 'Greg';
+Person.prototype.age = 24;
+Person.prototype.job = 'software engineer';
+Person.prototype.sayName = function (){
+   console.log(this.name);
+}
+
+let p1 = new Person();
+
+console.log(p1.hasOwnProperty('name')); // false
+
+p1.name = 'fr'; 
+console.log(p1.hasOwnProperty('name')); // true
+
+delete p1.name;
+console.log(p1.name); // Greg
+console.log(p1.hasOwnProperty('name')); // false
+```
+
+<img src="/img/prototype.jpeg" width="95%">
+
+
+##### 2.3.2 原型与in操作符
+有两种方式使用in操作符：单独使用和在for-in循环中使用。在单独使用时，in操作符会在通过对象能够访问给定属性时返回true，**无论该属性存在于实例中还是原型中。**
+
+```js
+// 判断属性是否在原型中
+function hasPrototypeProperty(object, name) {
+   return !(object.hasOwnProperty(name)) && (name in object);
+}
+```
+
+要取得对象上**所有可枚举的实例属性**，可以使用ECMAScript 5的Object.keys()方法。
+
+```js
+function Person() {
+
+}
+Person.prototype.name = 'Greg';
+Person.prototype.age = 24;
+Person.prototype.job = 'software engineer';
+Person.prototype.sayName = function (){
+   console.log(this.name);
+}
+
+Object.keys(Person.prototype); // name, age, job, sayName
+
+// 如果你想要得到所有实例属性，无论它是否可枚举，都可以使用Object.getOwnPropertyNames()方法。
+Object.getOwnPropertyNames(Person.prototype); // constructor, name, age, job, sayName
+
+let p1 = new Person(); 
+p1.name = 'f';
+p1.age = 12;
+
+Object.keys(p1); // 只显示实例属性 name, age 
+```
 ##### 2.3.3 更简单的原型语法
 
 ##### 2.3.4 原型的动态性
