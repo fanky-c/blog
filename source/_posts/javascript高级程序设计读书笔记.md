@@ -1236,13 +1236,134 @@ Object.keys(p1); // 只显示实例属性 name, age
 ```
 ##### 2.3.3 更简单的原型语法
 
+constructor属性不再指向Person了。前面曾经介绍过，每创建一个函数，就会同时创建它的prototype对象，这个对象也会自动获得constructor属性。而我们在这里使用的语法，**本质上完全重写了默认的prototype对象，因此constructor属性也就变成了新对象的constructor属性（指向Object构造函数），不再指向Person函数。** 此时，尽管instanceof操作符还能返回正确的结果，但通过constructor已经无法确定对象的类型了。
+
+```js
+function Person(name, age, job){
+    this.name = name;
+    this.age = age;
+    this.job = job;
+}
+// 注意：重写了prototype对象
+Person.prototype = {
+   // constructor: Person,  重新设置constructor指向，但是有个问题？
+   say: function(){
+      console.log(`name:${this.name}; age:${this.age}; job: ${this.job}`);
+   }
+}
+
+let p1 = new Person('fc', 12, 'SE');
+
+p1 instanceof Person // true
+p1 instanceof Object // true
+p1.constructor == Person // false
+p1.constructor == Object // true
+```
+
+以这种方式重设constructor属性会导致它的[[Enumerable]]特性被设置为true。默认情况下，原生的constructor属性是不可枚举的，因此如果你使用兼容ECMAScript 5的JavaScript引擎，可以试一试Object.defineProperty()。
+
+```js
+//重设构造函数，只适用于ECMAScript 5兼容的浏览器
+Object.defineProperty(Person.prototype, "constructor", {
+   enumerable: false,
+   value: Person
+});
+```
+
 ##### 2.3.4 原型的动态性
+由于在原型中查找值的过程是一次搜索，因此我们对原型对象所做的任何修改都能够立即从实例上反映出来——即使是先创建了实例后修改原型也照样如此。
+
+原因可以归结为实例与原型之间的松散连接关系。当我们调用p1.say()时，首先会在实例中搜索名为say的属性，在没找到的情况下，会继续搜索原型。因为实例与原型之间的连接只不过是一个指针，而非一个副本，因此就可以在原型中找到新的say属性并返回保存在那里的函数。
+
+```js
+function Person(){}
+
+let p1 = new Person();
+
+Person.prototype.say(){
+   console.log('hi');
+}
+
+p1.say(); // hi
+```
+
+如果重写原型对象呢？
+
+```js
+function Person(){
+
+}
+
+let p1 = new Person();
+
+// 注意， 这里是重写了Person.prototype对象!!
+Person.prototype = {
+   constructor: Person,
+   name: 'fc',
+   age: 12,
+   job: 'se',
+   sayName: function(){
+      console.log(this.name);
+   }
+}
+/**
+ * Error原因是重写了原型对象。 
+ * 实例中的指针仅指向原型(Person.prototype)，
+ * 而不在指向构造函数（Person）
+ */
+p1.sayName() // Error
+```
+
+调用构造函数时会为实例添加一个指向最初原型的[[Prototype]]指针，而把原型修改为另外一个对象就等于切断了构造函数与最初原型之间的联系。请记住：实例中的指针仅指向原型，而不指向构造函数。
+
+<img src="/img/prototype1.jpeg" width="95%">
+
+从上图可见，重写原型对象切断了现有原型与任何之前已经存在的对象实例之间的联系；它们引用的仍然是最初的原型。
+
+
 
 ##### 2.3.5 原生对象的原型
+原型模式的重要性不仅体现在创建自定义类型方面，就连所有原生的引用类型，都是采用这种模式创建的。所有原生引用类型（Object、Array、String，等等）都在其构造函数的原型上定义了方法。例如，在Array.prototype中可以找到sort()方法，而在String.prototype中可以找到substring()方法。
+
+通过原生对象的原型，不仅可以取得所有默认方法的引用，而且也可以定义新方法。可以像修改自定义对象的原型一样修改原生对象的原型，因此可以随时添加方法。
+
+尽管可以这样做，但我们不推荐在产品化的程序中修改原生对象的原型。如果因某个实现中缺少某个方法，就在原生对象的原型中添加这个方法，那么当在另一个支持该方法的实现中运行代码时，就可能会导致命名冲突。而且，这样做也可能会意外地重写原生方法。
 
 ##### 2.3.6 原型对象的问题
+原型模式的最大问题是由其共享的本性所导致的。
+
+原型中所有属性是被很多实例共享的，这种共享对于函数非常合适。对于那些包含基本值的属性倒也说得过去，毕竟（如前面的例子所示），通过在实例上添加一个同名属性，可以隐藏原型中的对应属性。然而，对于包含引用类型值的属性来说，问题就比较突出了。
+
+```js
+function Person(){
+
+}
+
+Person.prototype = {
+   constructor: Person,
+   name: 'fc',
+   age: 12,
+   friends: ['Greg', 'simon'],
+   sayName: function(){
+      console.log(this.name);
+   }
+}
+
+let p1 = new Person();
+let p2 = new Person();
+
+p1.friends.push('Franky');
+
+p1.friends // ['Greg', 'simon', 'Franky']
+p2.friends // ['Greg', 'simon', 'Franky']
+p1.friends === p2.friends // true
+```
+
+**由于friends数组存在于Person.prototype而非p1中，所以刚刚提到的修改也会通过p2.friends（与p1.friends指向同一个数组）反映出来。**
 
 ### 3、继承
+许多OO语言都支持两种继承方式：接口继承和实现继承。接口继承只继承方法签名，而实现继承则继承实际的方法。如前所述，由于函数没有签名，在ECMAScript中无法实现接口继承。ECMAScript只支持实现继承，而且其实现继承主要是依靠原型链来实现的。
+
 
 ### 4、总结
 
