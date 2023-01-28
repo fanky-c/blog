@@ -117,7 +117,7 @@ let o = new Object; // 有效，但是不推荐
 ```
 
 ##### 2.6.2 Object每个实例具有以下属性和方法
-1. constructor: 保存着用于创建当前对象函数， 对应当前的例子，构造函数（constructor）就是Object();
+1. constructor: 保存着用于创建当前对象函数， 对应当前的例子，构造函数（constructor）就是Object;
 2. hasOwnProperty(propertyName)： 用于检查给定的属性在当前对象实例中（而不是在实例原型中）是否存在；
 3. isPrototypeOf(object): 用于检查传入的对象是否是当前对象的原型；
 4. propertyIsEnumerable(propertyName): 用于检查给定的属性是否能够使用for-in语句来枚举;
@@ -1280,7 +1280,7 @@ function Person(){}
 
 let p1 = new Person();
 
-Person.prototype.say(){
+Person.prototype.say = function(){
    console.log('hi');
 }
 
@@ -1362,8 +1362,144 @@ p1.friends === p2.friends // true
 **由于friends数组存在于Person.prototype而非p1中，所以刚刚提到的修改也会通过p2.friends（与p1.friends指向同一个数组）反映出来。**
 
 ### 3、继承
-许多OO语言都支持两种继承方式：接口继承和实现继承。接口继承只继承方法签名，而实现继承则继承实际的方法。如前所述，由于函数没有签名，在ECMAScript中无法实现接口继承。ECMAScript只支持实现继承，而且其实现继承主要是依靠原型链来实现的。
+许多OO语言都支持两种继承方式：接口继承和实现继承。接口继承只继承方法签名，而实现继承则继承实际的方法。如前所述，由于函数没有签名，在ECMAScript中无法实现接口继承。**ECMAScript只支持实现继承，而且其实现继承主要是依靠原型链来实现的。**
 
+#### 3.1 原型链继承
+ECMAScript中描述了原型链的概念，并将原型链作为实现继承的主要方法。**其基本思想是利用原型让一个引用类型继承另一个引用类型的属性和方法。**
+
+构造函数、原型、实例的关系：每个构造函数都有一个原型对象，原型对象都包含一个指向构造函数的指针，而实例都包含一个指向原型对象的内部指针
+
+```js
+// 原型链继承模型如下：
+
+// 父类
+function SuperType(){
+   this.property = true;
+}
+
+SuperType.prototype.getSuperValue = function (){
+   return this.property;
+}
+
+// 子类
+function SubType(){
+  this.subproperty = false;
+}
+
+/**
+ * 继承是通过创建SuperType的实例,
+ * 并将该实例赋给SubType.prototype实现的
+ */
+SubType.prototype = new SuperType(); 
+
+SubType.prototype.getSubValue = function (){
+   return this.subproperty;
+}
+
+// 实例
+let instance = new SubType();
+console.log(instance.getSuperValue());  // true  继承父类方法
+console.log(instance.getSubValue());   // false
+```
+
+**原型链继承实现的本质是重写原型对象，代之以一个新类型的实例。**换句话说，原来存在于SuperType的实例中的所有属性和方法，现在也存在于SubType.prototype中了。
+
+原型链继承实现的本质是重写原型对象，代之以一个新类型的实例。换句话说，原来存在于SuperType的实例中的所有属性和方法，现在也存在于SubType.prototype中了。
+
+<img src="/img/prototype2.jpeg" width="95%" height="auto">
+
+调用instance.getSuperValue()会经历三个搜索步骤：1）搜索实例；2）搜索SubType.prototype;3）搜索SuperType.prototype，最后一步才会找到该方法。在找不到属性或方法的情况下，搜索过程总是要一环一环地前行到原型链末端才会停下来。
+
+
+##### 3.1.1 对象默认的原型
+**我们知道，所有引用类型默认都继承了Object，而这个继承也是通过原型链实现的。**
+所有函数的默认原型都是Object的实例，因此默认原型都会包含一个内部指针，指向Object.prototype。这也正是所有自定义类型都会继承toString()、valueOf()等默认方法的根本原因。
+
+<img src="/img/prototype3.jpeg" width="95%" height="auto">
+
+SubType继承了SuperType，而SuperType继承了Object。当调用instance.toString()时，实际上调用的是保存在Object.prototype中的那个方法
+
+##### 3.1.2 原型和实例的关系
+```js
+// 1、instanceof
+instance instanceof Object // true
+instance instanceof SuperType // true
+instance instanceof SubType // true
+
+
+// 2、isPrototypeOf()
+Object.prototype.isPrototypeOf(instance) // true
+SuperType.prototype.isPrototypeOf(instance) // true
+SubType.prototype.isPrototypeOf(instance) // true
+```
+
+##### 3.1.3 谨慎地定义方法
+```js
+// 1、覆盖父类的方法和属性
+// todo
+
+
+// 2、使用字面量穿件原型链，会重写原型链
+function SuperType(){
+   this.property = true;
+}
+SuperType.prototype.getSuperValue = function (){
+   return this.property;
+}
+
+
+function SubType(){
+  this.subproperty = false;
+}
+SubType.prototype = {
+   getSubValue: function (){
+      return this.subproperty;
+   },
+   otherMethod: function(){
+      return false;
+   }
+}
+
+let instance = new SubType();
+console.log(instance.getSuperValue()); // error
+```
+
+以上代码展示了刚刚把SuperType的实例赋值给原型，紧接着又将原型替换成一个对象字面量而导致的问题。由于现在的原型包含的是一个Object的实例，而非SuperType的实例，因此我们设想中的原型链已经被切断——SubType和SuperType之间已经没有关系了。
+
+##### 3.1.4 原型链的问题
+问题一：原型中包含引用类型值（数组）的原型属性会被所有实例共享。想必大家还记得，我们前面介绍过包含引用类型值的原型属性会被所有实例共享；而这也正是为什么要在构造函数中，而不是在原型对象中定义属性的原因。在通过原型来实现继承时，原型实际上会变成另一个类型的实例。**于是，原先的实例属性也就顺理成章地变成了现在的原型属性了。** （这里需要仔细思考下）
+
+问题二：在创建子类型的实例时，不能向超类型的构造函数中传递参数。实际上，应该说是没有办法在不影响所有对象实例的情况下，给超类型的构造函数传递参数。
+
+```js
+function SuperType(){
+  this.colors = ['red', 'green'];
+}
+
+function SubType(){
+
+}
+
+// SubType原型属性 继承 SuperType实例属性 （这是重点)
+SubType.prototype = new SuperType();
+
+let instance1 = new SubType();
+instance1.colors.push('blue');
+console.log(instance1.colors); // ['red', 'green', 'blue']
+
+let instance2 = new SubType();
+console.log(instance2.colors); // ['red', 'green', 'blue']
+```
+
+#### 3.2 借用构造函数继承
+
+#### 3.3 组合继承
+
+#### 3.4 原型式继承
+
+#### 3.4 寄生式继承
+
+#### 3.4 寄生组合继承
 
 ### 4、总结
 
