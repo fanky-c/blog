@@ -1491,11 +1491,84 @@ let instance2 = new SubType();
 console.log(instance2.colors); // ['red', 'green', 'blue']
 ```
 
-#### 3.2 借用构造函数继承
+#### 3.2 借用构造函数继承（call/apply）
+**在解决原型中包含引用类型值所带来问题的过程中**，开发人员开始使用一种叫做借用构造函数的技术（有时候也叫做伪造对象或经典继承）。这种技术的基本思想相当简单，即在子类型构造函数的内部调用超类型构造函数。
 
-#### 3.3 组合继承
+```js
+function SuperType(){
+   this.colors = ['red', 'green', 'yellow'];
+}
 
-#### 3.4 原型式继承
+function SubType(){
+   // SubType 继承 SuperType
+   SuperType.call(this);
+}
+
+let instance1 = new SubType();
+instance1.colors.push('black'); //['red', 'green', 'yellow', 'black']
+
+let instance2 = new SubType();
+instance1.colors // ['red', 'green', 'yellow']
+```
+
+我们实际上是在（未来将要）新创建的SubType实例的环境下调用了SuperType构造函数。这样一来，就会在新SubType对象上执行SuperType()函数中定义的所有对象初始化代码。结果，SubType的每个实例就都会具有自己的colors属性的副本了。
+
+###### 3.2.1 好处（相对于原型支持传参）
+```js
+function SuperType(colors){
+   this.colors = colors;
+}
+
+function SubType(){
+   // SubType 继承 SuperType, 同时还传参
+   SuperType.call(this, ['red', 'green']);
+
+   // 实例属性
+   this.name = 'fc';
+}
+```
+
+###### 3.2.2 问题
+如果仅仅是借用构造函数，那么也将无法避免构造函数模式存在的问题——方法都在构造函数中定义，因此函数复用就无从谈起了。而且，在超类型的原型中定义的方法，对子类型而言也是不可见的，结果所有类型都只能使用构造函数模式
+
+#### 3.3 组合继承 (最常见)
+组合继承，有时候也叫做伪经典继承，指的是将原型链和借用构造函数的技术组合到一块，从而发挥二者之长的一种继承模式。其背后的思路是使用原型链实现对原型属性和方法的继承，而通过借用构造函数来实现对实例属性的继承。这样，**既通过在原型上定义方法实现了函数复用，又能够保证每个实例都有它自己的属性。**
+
+```js
+function SuperType(name, colors){
+   this.name = name;
+   this.colors = colors;
+}
+SuperType.prototype.sayName = function (){
+   console.log(this.name);
+}
+
+function SubType(name, colors, age){
+   SuperType.call(this, name, colors);
+   this.age = age;
+}
+SubType.prototype = new SuperType();
+SubType.prototype.constructor = SubType;
+SubType.prototype.sayAge = function () {
+  console.log(this.age);
+}
+
+let instance1 = new SubType('f1', ['red', 'yellow'], 12);
+instance1.colors.push('black');
+console.log(instance1.colors); //  ['red', 'yellow', 'black']
+instance1.sayName(); // f1
+instance1.sayAge(); // 12
+
+
+let instance2 = new SubType('f2', ['red', 'yellow'], 13);
+console.log(instance2.colors);   // ['red', 'yellow']
+instance2.sayName(); // f2
+instance2.sayAge(); // 13
+```
+
+组合继承避免了原型链和借用构造函数的缺陷，融合了它们的优点，成为JavaScript中最常用的继承模式。而且，instanceof和isPrototypeOf()也能够用于识别基于组合继承创建的对象。
+
+#### 3.4 原型式继承（es6实现Object.create()）
 
 #### 3.4 寄生式继承
 
