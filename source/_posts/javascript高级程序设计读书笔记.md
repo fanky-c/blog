@@ -1570,11 +1570,97 @@ instance2.sayAge(); // 13
 
 #### 3.4 原型式继承（es6实现Object.create()）
 
+```js
+function myObject(o){
+   function F(){};
+   F.prototype = o;
+   return new F();
+}
+
+let person = {
+   name: 'fc',
+   friends: ['A', 'B', 'C']
+}
+
+// myObject(person) 可以用Object.create(person)代替
+let aPerson = myObject(person);
+aPerson.name = 'fr';
+aPerson.friends.push('D');
+
+let bPerson = myObject(person);
+bPerson.name = 'fd';
+bPerson.friends.push('E');
+
+console.log(person.friends); // ['A', 'B', 'C', 'D', 'E']
+```
+
+在没有必要兴师动众地创建构造函数，而只想让一个对象与另一个对象保持类似的情况下，原型式继承是完全可以胜任的。**不过别忘了，包含引用类型值的属性始终都会共享相应的值，就像使用原型模式一样。**
+
 #### 3.4 寄生式继承
+待补充...
 
 #### 3.4 寄生组合继承
+前面说过，组合继承是JavaScript最常用的继承模式；不过，它也有自己的不足。组合继承最大的问题就是无论什么情况下，都会调用两次超类型构造函数：一次是在创建子类型原型的时候，另一次是在子类型构造函数内部。没错，子类型最终会包含超类型对象的全部实例属性，但我们不得不在调用子类型构造函数时重写这些属性。
+
+```js
+function SuperType(name){
+   this.name = name;
+   this.colors = ['red', 'green', 'yellow'];
+}
+SuperType.prototype.sayName = function (){
+   console.log(this.name);
+}
+
+
+function SubType(name, age){
+   SuperType.call(this, name); // 第一次调用构造函数
+   this.age = age;
+}
+SubType.prototype = new SuperType(); // 第二次调用构造函数
+SubType.prototype.constructor = SubType;
+SubType.prototype.sayAge = function (){
+   console.log(this.name);
+}
+```
+寄生组合继承:
+
+```js
+function inheritPrototype(subType, superType){
+   let prototype = Object.create(superType.prototype); // 创建对象
+   prototype.constructor = subType;  // 增强对象
+   subType.prototype = prototype;   // 制定对象
+}
+
+function SuperType(name){
+   this.name = name;
+   this.colors = ['red', 'green', 'yellow'];
+}
+SuperType.prototype.sayName = function (){
+   console.log(this.name);
+}
+
+function subType(name, age){
+   SuperType.call(this, name);
+   this.age = age; 
+}
+inheritPrototype(subType, SuperType);
+SubType.prototype.sayAge = function (){
+   console.log(this.name);
+}
+```
+
+这个例子的高效率体现在它只调用了一次SuperType构造函数，并且因此避免了在SubType.prototype上面创建不必要的、多余的属性。与此同时，原型链还能保持不变；因此，还能够正常使用instanceof和isPrototypeOf()。开发人员普遍认为寄生组合式继承是引用类型最理想的继承范式。
 
 ### 4、总结
+ECMAScript支持面向对象（OO）编程，但不使用类或者接口。对象可以在代码执行过程中创建和增强，因此具有动态性而非严格定义的实体。
+
+1. 工厂模式，使用简单的函数创建对象，为对象添加属性和方法，然后返回对象。这个模式后来被构造函数模式所取代。
+2. 构造函数模式，可以创建自定义引用类型，可以像创建内置对象实例一样使用new操作符。不过，构造函数模式也有缺点，即它的每个成员都无法得到复用，包括函数。由于函数可以不局限于任何对象（即与对象具有松散耦合的特点），因此没有理由不在多个对象间共享函数。
+3. 原型模式，使用构造函数的prototype属性来指定那些应该共享的属性和方法。组合使用构造函数模式和原型模式时，使用构造函数定义实例属性，而使用原型定义共享的属性和方法。
+
+**JavaScript主要通过原型链实现继承。原型链的构建是通过将一个类型的实例赋值给另一个构造函数的原型实现的。这样，子类型就能够访问超类型的所有属性和方法，这一点与基于类的继承很相似。**
+
+原型链的问题是对象实例共享所有继承的属性和方法，因此不适宜单独使用。解决这个问题的技术是借用构造函数，即在子类型构造函数的内部调用超类型构造函数。这样就可以做到每个实例都具有自己的属性，同时还能保证只使用构造函数模式来定义类型。
 
 ## 函数表达式
 
