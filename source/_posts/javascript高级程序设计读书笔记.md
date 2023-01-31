@@ -1048,7 +1048,7 @@ let p2 = createPerson('a', 13, 'sf');
 可以无数次地调用这个函数，而每次它都会返回一个包含三个属性一个方法的对象。**工厂模式虽然解决了创建多个相似对象的问题，但却没有解决对象识别的问题（即怎样知道一个对象的类型）**
 
 
-#### 2.2 构建函数模式
+#### 2.2 构造函数模式
 
 ```js
 // 按照惯例，构造函数始终都应该以一个大写字母开头
@@ -1663,7 +1663,157 @@ ECMAScript支持面向对象（OO）编程，但不使用类或者接口。对�
 原型链的问题是对象实例共享所有继承的属性和方法，因此不适宜单独使用。解决这个问题的技术是借用构造函数，即在子类型构造函数的内部调用超类型构造函数。这样就可以做到每个实例都具有自己的属性，同时还能保证只使用构造函数模式来定义类型。
 
 ## 函数表达式
+### 1、函数创建
+定义函数的方式有两种：一种是函数声明，另一种就是函数表达式。
 
+**关于函数声明，它的一个重要特征就是函数声明提升（function declaration hoisting），意思是在执行代码之前会先读取函数声明。**这就意味着可以把函数声明放在调用它的语句后面。
+
+理解函数提升的关键，就是理解函数声明与函数表达式之间的区别。
+
+```js
+// 1、函数声明
+function functionName(arg0, arg1, arg2) {
+   //函数体
+}
+
+// 2、函数表达式
+let functionName = function (){
+
+}
+```
+
+### 2、递归
+
+arguments.callee是一个指向正在执行的函数的指针
+
+```js
+function factorial(num){
+   if(num <= 1){
+      return 1;
+   }else{
+      return num * arguments.callee(num-1);
+   }
+}
+```
+但在严格模式下，不能通过脚本访问arguments.callee，访问这个属性会导致错误。
+
+```js
+var factorial=(function f(num){
+   if (num <=1){
+       return 1;
+   } else {
+       return num ＊ f(num-1);
+   }
+});
+```
+
+### 3、闭包
+**有不少开发人员总是搞不清匿名函数和闭包这两个概念，因此经常混用。闭包是指有权访问另一个函数作用域中的变量的函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数。**
+
+当createComparisonFunction()函数返回后，其执行环境的作用域链会被销毁，但它的活动对象仍然会留在内存中；直到匿名函数被销毁后，createComparisonFunction()的活动对象才会被销毁。 如下：
+
+```js
+function createComparisonFunction(propertyName) {
+   return function(object1, object2){
+       var value1=object1[propertyName];
+       var value2=object2[propertyName];
+       if (value1 < value2){
+           return -1;
+       } else if (value1 > value2){
+           return 1;
+       } else {
+           return 0;
+       }
+   };
+}
+
+var compare = createComparisonFunction("name");
+var result = compare({ name: "Nicholas" }, { name: "Greg" });
+
+compare = null; // 解除匿名函数引用，释放内存
+```
+
+由于闭包会携带包含它的函数的作用域，因此会比其他函数占用更多的内存。过度使用闭包可能会导致内存占用过多
+
+#### 3.1 闭包与变量
+作用域链的这种配置机制引出了一个值得注意的副作用，**即闭包只能取得包含函数中任何变量的最后一个值**
+
+```js
+function createFunctions(){
+   let result = [];
+   for (var i=0; i<10; i++){
+      result[i] = function(){
+         return i;
+      } 
+   }
+   return result;
+}
+
+createFunctions()[0](); // 10
+createFunctions()[9](); // 10
+```
+上面函数实际上，每个函数都返回10。因为每个函数的作用域链中都保存着createFunctions()函数的活动对象，所以它们引用的都是同一个变量i。当createFunctions()函数返回后，变量i的值是10，此时每个函数都引用着保存变量i的同一个变量对象，所以在每个函数内部i的值都是10
+
+```js
+function createFunctions(){
+   let result = [];
+   for (var i=0; i<10; i++){
+      result[i] = function(num){
+         return function(){
+             return num;
+         };
+      }(i) 
+   }
+   return result;
+}
+```
+在这个版本中，我们没有直接把闭包赋值给数组，而是定义了一个匿名函数，并将立即执行该匿名函数的结果赋给数组。这里的匿名函数有一个参数num，也就是最终的函数要返回的值。在调用每个匿名函数时，我们传入了变量i。**由于函数参数是按值传递的，所以就会将变量i的当前值复制给参数num。而在这个匿名函数内部，又创建并返回了一个访问num的闭包。这样一来，result数组中的每个函数都有自己num变量的一个副本，因此就可以返回各自不同的数值了**
+
+#### 3.2 this对象
+，this对象是在运行时基于函数的执行环境绑定的：在全局函数中，this等于window，而当函数被作为某个对象的方法调用时，this等于那个对象。不过，匿名函数的执行环境具有全局性，因此其this对象通常指向window（但call/apply指向其他对象）。但有时候由于编写闭包的方式不同，这一点可能不会那么明显。
+
+```js
+let name = 'this window';
+let object = {
+   name: 'my object',
+   getNameFunc: function(){
+      // let that = this; 解决方法一：保存副本
+      return function() {
+         return this.name;
+      }
+   }
+}
+object.getNameFunc()(); // this window  非严格模式下
+```
+
+#### 3.3 内存泄露
+如果闭包的作用域链中保存着一个HTML元素，那么就意味着该元素将无法被销毁。
+
+```js
+function assignHandler(){
+   var element=document.getElementById("someElement");
+   element.onclick=function(){
+       alert(element.id);
+   };
+}
+```
+以上代码创建了一个作为element元素事件处理程序的闭包，而这个闭包则又创建了一个循环引用。由于匿名函数保存了一个对assignHandler()的活动对象的引用，因此就会导致无法减少element的引用数。只要匿名函数存在，element的引用数至少也是1，因此它所占用的内存就永远不会被回收
+
+```js
+function assignHandler(){
+   var element=document.getElementById("someElement");
+   var id=element.id;
+   element.onclick=function(){
+       alert(id);
+   };
+   element=null;
+}
+```
+把element.id的一个副本保存在一个变量中，并且在闭包中引用该变量消除了循环引用。但仅仅做到这一步，还是不能解决内存泄漏的问题。**必须要记住：闭包会引用包含函数的整个活动对象，而其中包含着element。即使闭包不直接引用element，包含函数的活动对象中也仍然会保存一个引用。因此，有必要把element变量设置为null**
+
+### 4、模仿块级作用域
+### 5、私有变量
+### 6、总结
 ## DOM
 
 ## 事件
