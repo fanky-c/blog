@@ -1812,7 +1812,132 @@ function assignHandler(){
 把element.id的一个副本保存在一个变量中，并且在闭包中引用该变量消除了循环引用。但仅仅做到这一步，还是不能解决内存泄漏的问题。**必须要记住：闭包会引用包含函数的整个活动对象，而其中包含着element。即使闭包不直接引用element，包含函数的活动对象中也仍然会保存一个引用。因此，有必要把element变量设置为null**
 
 ### 4、模仿块级作用域
+匿名函数可以用来模仿块级作用域并避免这个问题。
+
+```js
+/**
+ * 下面这种做法可以减少闭包占用的内存问题，因为没有指向匿名函数的引用。
+   只要函数执行完毕，就可以立即销毁其作用域链了。 
+ */
+
+(function(){
+   //这里是块级作用域
+})();
+```
+
+```js
+function(){
+   //这里是块级作用域
+}();     //出错！
+```
+这段代码会导致语法错误，是因为JavaScript将function关键字当作一个函数声明的开始，**而函数声明后面不能跟圆括号。然而，函数表达式的后面可以跟圆括号。**要将函数声明转换成函数表达式，只要像下面这样给它加上一对圆括号即可。
+
+
 ### 5、私有变量
+严格来讲，JavaScript中没有私有成员的概念；所有对象属性都是公有的。不过，倒是有一个私有变量的概念。任何在函数中定义的变量，都可以认为是私有变量，因为不能在函数的外部访问这些变量。**私有变量包括函数的参数、局部变量和在函数内部定义的其他函数。**
+
+我们把有权访问私有变量和私有函数的公有方法称为特权方法（privileged method）
+
+```js
+function MyObject(){
+    //私有变量和私有函数
+    var privateVariable=10;
+
+    function privateFunction(){
+        return false;
+    }
+
+
+    //特权方法
+    this.publicMethod=function (){
+        privateVariable++;
+        return privateFunction();
+    };
+}
+```
+
+#### 5.1 静态私有变量
+
+初始化未经声明的变量，总是会创建一个全局变量。因此，MyObject就成了一个全局变量，能够在私有作用域之外被访问到。但也要知道，在严格模式下给未经声明的变量赋值会导致错误。
+
+```js
+(function(){
+    //私有变量和私有函数
+    var privateVariable=10;
+
+    function privateFunction(){
+        return false;
+    }
+    //构造函数 
+    MyObject=function(){
+
+    };
+
+
+    //公有/特权方法
+    MyObject.prototype.publicMethod=function(){
+        privateVariable++;
+        return privateFunction();
+    };
+})();
+
+let a = new MyObject();
+a.publicMethod();
+```
+#### 5.2 模块模式
+前面的模式是用于为自定义类型创建私有变量和特权方法的。而道格拉斯所说的模块模式（module pattern）则是为单例创建私有变量和特权方法。所谓单例（singleton），指的就是只有一个实例的对象。
+
+由于这个对象是在匿名函数内部定义的，因此它的公有方法有权访问私有变量和函数。从本质上来讲，这个对象字面量定义的是单例的公共接口。这种模式在需要对单例进行某些初始化，同时又需要维护其私有变量时是非常有用的。
+
+```js
+var singleton=function(){
+    //私有变量和私有函数
+    var privateVariable=10;
+    function privateFunction(){
+        return false;
+    }
+    
+    //特权/公有方法和属性
+      return {
+          publicProperty: true,
+          publicMethod : function(){
+              privateVariable++;
+              return privateFunction();
+          }
+      };
+  }(); // 函数表达式后面支持带（）。 如果函数声明function a(){}()就报错 ---> (function a(){})()
+```
+
+#### 5.3 增强的模块模式
+
+有人进一步改进了模块模式，即在返回对象之前加入对其增强的代码。这种增强的模块模式适合那些单例必须是某种类型的实例，同时还必须添加某些属性和（或）方法对其加以增强的情况。
+
+```js
+var singleton=function(){
+
+    //私有变量和私有函数
+    var privateVariable=10;
+    function privateFunction(){
+        return false;
+    }
+
+    //创建对象
+    var object=new CustomType();
+
+    //添加特权/公有属性和方法
+    object.publicProperty=true;
+    object.publicMethod=function(){
+        privateVariable++;
+        return privateFunction();
+    };
+
+    //返回这个对象
+    return object;
+}();
+```
+
+
+
 ### 6、总结
 ## DOM
 
