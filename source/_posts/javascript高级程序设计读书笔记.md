@@ -1906,6 +1906,24 @@ var singleton=function(){
           }
       };
   }(); // 函数表达式后面支持带（）。 如果函数声明function a(){}()就报错 ---> (function a(){})()
+
+
+// 使用
+let applicaton = function(){
+    let components = new Array();
+    components.push(new BaseComponent());
+
+    return {
+      getComponents: function(){
+         return components;
+      },
+      registerComponents: function(components){
+          if(typeof components === 'object'){
+             components.push(new BaseComponent());
+          }
+      }
+    }
+}()  
 ```
 
 #### 5.3 增强的模块模式
@@ -1934,11 +1952,47 @@ var singleton=function(){
     //返回这个对象
     return object;
 }();
+
+// 使用
+let applicaton = function(){
+    let components = new Array();
+    components.push(new BaseComponent());
+    
+    // 创建applicaton副本
+    let app = new BaseComponent(); 
+
+    app.getComponents=function(){
+       return components;
+    }
+    app.registerComponents=function(components){
+        if(typeof components === 'object'){
+           components.push(new BaseComponent());
+        }
+    }
+
+    return app;
+}() 
 ```
 
-
-
 ### 6、总结
+**匿名函数，也称为拉姆达函数，是一种使用JavaScript函数的强大方式。** 以下总结了函数表达式的特点：
+1. 函数表达式不同于函数声明。函数声明要求有名字，但函数表达式不需要。没有名字的函数表达式也叫做匿名函数。
+2. 递归函数应该始终使用arguments.callee来递归地调用自身，不要使用函数名——函数名可能会发生变化。
+
+**当在函数内部定义了其他函数时，就创建了闭包。闭包有权访问包含函数内部的所有变量，**原理如下：
+1. 在后台执行环境中，闭包的作用域链包含着它自己的作用域、包含函数的作用域和全局作用域。
+2. 通常，函数的作用域及其所有变量都会在函数执行结束后被销毁。
+3. 但是，当函数返回了一个闭包时，这个函数的作用域将会一直在内存中保存到闭包不存在为止。
+
+
+**使用闭包可以在JavaScript中模仿块级作用域**（JavaScript本身没有块级作用域的概念），要点如下:
+1. 创建并立即调用一个函数，这样既可以执行其中的代码，又不会在内存中留下对该函数的引用。
+2. 结果就是函数内部的所有变量都会被立即销毁——除非将某些变量赋值给了包含作用域（即外部作用域）中的变量。
+
+**因为创建闭包必须维护额外的作用域，所以过度使用它们可能会占用大量内存。**
+
+
 ## DOM
+
 
 ## 事件
