@@ -1993,6 +1993,58 @@ let applicaton = function(){
 
 
 ## DOM
+### 1、DOM节点和操作
+#### 1.1 节点类型
+每个节点都有一个nodeType属性，用于表明节点的类型。
 
+```js
+if (someNode.nodeType==1){     //适用于所有浏览器
+   alert("Node is an element.");
+}
+```
+
+#### 1.2 节点关系
+每个节点都有一个childNodes属性，其中保存着一个NodeList对象。NodeList是一种类数组对象，用于保存一组有序的节点，可以通过位置来访问这些节点。
+
+```js
+var firstChild=someNode.childNodes[0];
+var secondChild=someNode.childNodes.item(1);
+var count=someNode.childNodes.length;
+```
+
+我们在本书前面介绍过，对arguments对象使用Array.prototype.slice()方法可以将其转换为数组。而采用同样的方法，也可以将NodeList对象转换为数组。
+
+```js
+//在IE8及之前版本中无效
+var arrayOfNodes=Array.prototype.slice.call(someNode.childNodes,0);
+```
+
+DOM节点关系图：
+
+<img src="/img/dom_node.jpeg" width="95%" height="auto">
+
+```js
+if(someNode.nextSibling === null){
+   console.log('我是最后一个节点');
+}else if(someNode.previousSibling === null){
+   console.log('我是第一个节点');
+}
+```
+
+#### 1.3 操作节点 
+
+如果传入到appendChild()中的节点已经是文档的一部分了，那结果就是将该节点从原来的位置转移到新位置。
+
+```js
+var returnedNode=someNode.appendChild(newNode);
+alert(returnedNode==newNode);           //true
+alert(someNode.lastChild==newNode);   //true
+```
+
+#### 1.4 其他方法
+
+### 2、DOM扩展
+
+### 3、DOM2和DOM3
 
 ## 事件
