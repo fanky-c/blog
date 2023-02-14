@@ -2128,6 +2128,56 @@ IE的事件流叫做事件冒泡（event bubbling），即事件开始时由最�
 在DOM事件流中，实际的目标（div元素）在捕获阶段不会接收到事件。这意味着在捕获阶段，事件从document到html再到body后就停止了。下一个阶段是“处于目标”阶段，于是事件在div上发生，并在事件处理（后面将会讨论这个概念）中被看成冒泡阶段的一部分。然后，冒泡阶段发生，事件又传播回文档。
 
 ### 2、事件处理程序
+事件就是用户或浏览器自身执行的某种动作。诸如click、load和mouseover，都是事件的名字。而响应某个事件的函数就叫做事件处理程序（或事件侦听器）。事件处理程序的名字以"on"开头，因此click事件的事件处理程序就是onclick, load事件的事件处理程序就是onload
+
+#### 2.1 html事件处理程序
+
+```js
+// 在这个函数内部，this值等于事件的目标元素，例如：
+<input type="button" value="123" onclick="alert(this.value);" />
+```
+
+#### 2.2 DOM0级事件处理程序
+
+使用DOM0级方法指定的事件处理程序被认为是元素的方法。因此，这时候的事件处理程序是在元素的作用域中运行；换句话说，程序中的this引用当前元素。来看一个例子。
+
+```js
+var btn=document.getElementById("myBtn");
+btn.onclick=function(){
+   alert(this.id);
+};
+
+// 也可以删除通过DOM0级方法指定的事件处理程序，
+// 只要像下面这样将事件处理程序属性的值设置为null即可：
+btn.onclick=null;
+```
+
+#### 2.3 DOM2级事件处理程序
+“DOM2级事件”定义了两个方法，用于处理指定和删除事件处理程序的操作：addEventListener()和removeEventListener()。所有DOM节点中都包含这两个方法，并且它们都接受3个参数：要处理的事件名、作为事件处理程序的函数和一个布尔值。最后这个布尔值参数如果是true，表示在捕获阶段调用事件处理程序；如果是false，表示在冒泡阶段调用事件处理程序。
+
+通过addEventListener()添加的事件处理程序只能使用removeEventListener()来移除；移除时传入的参数与添加处理程序时使用的参数相同。这也意味着通过addEventListener()添加的匿名函数将无法移除，如下面的例子所示：
+
+```js
+var btn=document.getElementById("myBtn");
+btn.addEventListener("click", function(){
+   alert(this.id);
+}, false);
+
+// 无法移除事件
+btn.removeEventListener("click", function(){
+  alert(this.id); 
+}, false);
+
+// 下面可以移除事件
+btn.addEventListener("click", hander, false);
+btn.removeEventListener("click", hander, false);
+function hander(){
+   alert(this.id); // 没有用
+}
+```
+
+**大多数情况下，都是将事件处理程序添加到事件流的冒泡阶段，这样可以最大限度地兼容各种浏览器。**最好只在需要在事件到达目标之前截获它的时候将事件处理程序添加到捕获阶段。如果不是特别需要，我们不建议在事件捕获阶段注册事件处理程序。
+
 
 ### 3、事件对象
 
