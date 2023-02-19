@@ -2180,11 +2180,102 @@ function hander(){
 
 
 ### 3、事件对象
+在触发DOM上的某个事件时，会产生一个事件对象event，这个对象中包含着所有与事件有关的信息。包括导致事件的元素、事件的类型以及其他与特定事件相关的信息。例如，鼠标操作导致的事件对象中，会包含鼠标位置的信息，而键盘操作导致的事件对象中，会包含与按下的键有关的信息
 
+#### 3.1 DOM中的事件对象
+
+```js
+let btn = document.getElementById('btn');
+btn.addEventListener('click', function(event){
+   console.log(event.type); // 'click'
+}, false)
+```
+
+**event对象包含与创建它的特定事件有关的属性和方法**。触发的事件类型不一样，可用的属性和方法也不一样：
+
+<img src="/img/domEvent.jpeg" width="95%" height="auto">
+
+下面例子检测了currentTarget和target与this的值。由于click事件的目标是按钮，因此这三个值是相等的
+
+```js
+document.body.onclick = function(event){
+   console.log(event.currentTarget === document.body); // true
+   console.log(this === document.body); //true
+   console.log(event.target === document.getElementById('myBody')); //true
+}
+```
+
+要阻止特定事件的默认行为，可以使用preventDefault()方法。例如，链接的默认行为就是在被单击时会导航到其href特性指定的URL。如果你想阻止链接导航这一默认行为，那么通过链接的onclick事件处理程序可以取消它。
+
+```js
+let link = document.getElementById('myLink');
+link.onclick = function(event) {
+  event.preventDefault(); 
+}
+```
+
+stopPropagation()方法用于立即停止事件在DOM层次中的传播，即取消进一步的事件捕获或冒泡。例如，直接添加到一个按钮的事件处理程序可以调用stopPropagation()，从而避免触发注册在document.body上面的事件处理程序。
+
+```js
+let btn = document.getElementById('myBtn');
+btn.onclick = function() {
+   console.log('click');
+   event.stopPropagation();
+}
+
+document.body.onclick = function(){
+   console.log('body clicked'); // 由于btn阻止冒泡stopPropagation(), 所以body不会有事件注册
+}
+```
+
+事件对象的eventPhase属性，可以用来确定事件当前正位于事件流的哪个阶段。
+如果是在捕获阶段调用的事件处理程序，那么eventPhase等于1；
+如果事件处理程序处于目标对象上，则eventPhase等于2；
+如果是在冒泡阶段调用的事件处理程序，eventPhase等于3。
+这里要注意的是，尽管“处于目标”发生在冒泡阶段，但eventPhase仍然一直等于2。
+
+```js
+let btn = document.getElementById('btn');
+btn.onclick = function(event){
+   console.log(event.eventPhase); // 2, 如果事件处理程序处于目标对象上
+}
+document.body.addEventListener('click', function(event){
+   console.log(event.eventPhase); // 1, 如果是在捕获阶段调用的事件处理程序
+}, true)
+document.body.onclick = function(event){
+   consooe.log(event.eventPhase); // 3, 如果是在冒泡阶段调用的事件处理程序
+}
+```
 ### 4、事件类型
 
+#### 4.1 UI事件
+1. load：当页面完全加载后在window上面触发，当所有框架都加载完毕时在框架集上面触发，当图像加载完毕时在img元素上面触发，或者当嵌入的内容加载完毕时在object元素上面触发。
+2. error：当发生JavaScript错误时在window上面触发，当无法加载图像时在img元素上面触发，当无法加载嵌入内容时在object元素上面触发，或者当有一或多个框架无法加载时在框架集上面触发。
+3. unload：与load事件对应的是unload事件，这个事件在文档被完全卸载后触发。只要用户从一个页面切换到另一个页面，就会发生unload事件。而利用这个事件最多的情况是清除引用，以避免内存泄漏。
+
+#### 4.2 焦点事件
+焦点事件会在页面元素获得或失去焦点时触发。利用这些事件并与document.hasFocus()方法及document.activeElement属性配合。
+
+focus和blur，它们都是JavaScript早期就得到所有浏览器支持的事件。这些事件的最大问题是它们不冒泡。
+
+#### 4.3 鼠标事件
+页面上的所有元素都支持鼠标事件。除了mouseenter和mouseleave，所有鼠标事件都会冒泡，也可以被取消，而取消鼠标事件将会影响浏览器的默认行为。取消鼠标事件的默认行为还会影响其他事件，因为鼠标事件与其他事件是密不可分的关系。
+
+#### 4.4 滚轮事件
+#### 4.5 文本事件
+#### 4.6 键盘事件
+#### 4.7 合成事件
+#### 4.8 变动事件
+
 ### 5、内存和性能
+可是在JavaScript中，添加到页面上的事件处理程序数量将直接关系到页面的整体运行性能。导致这一问题的原因是多方面的。首先，每个函数都是对象，都会占用内存；内存中的对象越多，性能就越差。其次，必须事先指定所有事件处理程序而导致的DOM访问次数，会延迟整个页面的交互就绪时间。
+
+#### 5.1 事件委托
+
+#### 5.2 移除事件处理程序
 
 ### 6、模拟事件
+#### 6.1 DOM中事件模拟
+
 
 ### 7、总结
