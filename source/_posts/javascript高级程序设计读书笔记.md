@@ -2079,8 +2079,55 @@ var formerLastChild=someNode.removeChild(someNode.lastChild);
 ```
 
 #### 1.4 其他方法
+cloneNode()方法接受一个布尔值参数，表示是否执行深复制。在参数为true的情况下，执行深复制，也就是复制节点及其整个子节点树；在参数为false的情况下，执行浅复制，即只复制节点本身。
+
+cloneNode()方法不会复制添加到DOM节点中的JavaScript属性，例如事件处理程序等。这个方法只复制特性、（在明确指定的情况下也复制）子节点，其他一切都不会复制。
+
+#### 1.5 Document类型
+document对象还有一个body属性，直接指向body。
+
+当页面中包含来自其他子域的框架或内嵌框架时，能够设置document.domain就非常方便了。由于跨域安全限制，来自不同子域的页面无法通过JavaScript通信。而通过将每个页面的document.domain设置为相同的值，这些页面就可以互相访问对方包含的JavaScript对象了。
+
+例如，假设有一个页面加载自www.wrox.com，其中包含一个内嵌框架，框架内的页面加载自p2p.wrox.com。由于document.domain字符串不一样，内外两个页面之间无法相互访问对方的JavaScript对象。但如果将这两个页面的document.domain值都设置为"wrox.com"，它们之间就可以通信了。
+
+```js
+//假设页面来自p2p.wrox.com域
+
+document.domain="wrox.com";             // 成功
+document.domain="nczonline.net";       // 出错！
+```
+
+#### 1.6 DOM操作技术
+
+```js
+// 动态加载js
+function loadScript(url){
+   let script = document.createElement("script");
+   script.type = "text/javascript";
+   script.src = url || '';
+   document.body.appendChild(script);
+}
+
+// 动态加载css
+function loadStyle(url){
+  let head = document.getElementsByTagName("head")[0];
+  let link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = url;
+  head.appendChild(link);
+}
+```
+
+#### 1.7 总结
+DOM操作往往是JavaScript程序中开销最大的部分，而因访问NodeList导致的问题为最多。NodeList对象都是“动态的”，这就意味着每次访问NodeList对象，都会运行一次查询。有鉴于此，最好的办法就是尽量减少DOM操作。 
 
 ### 2、DOM扩展
+#### 2.1 选择符
+
+#### 2.2 遍历元素
+
+#### 2.3 HTML5
 
 ### 3、DOM2和DOM3
 
@@ -2271,11 +2318,61 @@ focus和blur，它们都是JavaScript早期就得到所有浏览器支持的事�
 可是在JavaScript中，添加到页面上的事件处理程序数量将直接关系到页面的整体运行性能。导致这一问题的原因是多方面的。首先，每个函数都是对象，都会占用内存；内存中的对象越多，性能就越差。其次，必须事先指定所有事件处理程序而导致的DOM访问次数，会延迟整个页面的交互就绪时间。
 
 #### 5.1 事件委托
+**对“事件处理程序过多”问题的解决方案就是事件委托。事件委托利用了事件冒泡，只指定一个事件处理程序，就可以管理某一类型的所有事件。**例如，click事件会一直冒泡到document层次。也就是说，我们可以为整个页面指定一个onclick事件处理程序，而不必给每个可单击的元素分别添加事件处理程序。
+
+事件委派的优点：
+
+1. document对象很快就可以访问，而且可以在页面生命周期的任何时点上为它添加事件处理程序（无需等待DOMContentLoaded或load事件）。换句话说，只要可单击的元素呈现在页面上，就可以立即具备适当的功能。
+2. 整个页面占用的内存空间更少，能够提升整体性能
+3. 在页面中设置事件处理程序所需的时间更少。只添加一个事件处理程序所需的DOM引用更少，所花的时间也更少。
+
+
+最适合采用事件委托技术的事件包括click、mousedown、mouseup、keydown、keyup和keypress。虽然mouseover和mouseout事件也冒泡，但要适当处理它们并不容易，而且经常需要计算元素的位置。
 
 #### 5.2 移除事件处理程序
 
-### 6、模拟事件
-#### 6.1 DOM中事件模拟
+```js
+<div id="myDiv">
+  <input type="button" value="Click Me" id="myBtn">
+</div>
+<script type="text/javascript">
+  var btn=document.getElementById("myBtn");
+  btn.onclick=function(){
+      //先执行某些操作
 
+      // 移除事件处理程序
+      // btn.onclick=null;
+
+      document.getElementById("myDiv").innerHTML="Processing..."; //麻烦了！
+  };
+</script>
+```
+
+采用事件委托也有助于解决这个问题。如果事先知道将来有可能使用innerHTML替换掉页面中的某一部分，那么就可以不直接把事件处理程序添加到该部分的元素中。而通过把事件处理程序指定给较高层次的元素，同样能够处理该区域中的事件。
+### 6、模拟事件
+#### 6.1 DOM中的事件模拟
+##### 6.1.1 模拟鼠标事件
+##### 6.1.2 模拟键盘事件
+##### 6.1.3 模拟其他事件
+```js
+// 模拟了DOMNodeInserted事件
+var event=document.createEvent("MutationEvents");
+event.initMutationEvent("DOMNodeInserted", true, false, someNode, "", "", "",0);
+target.dispatchEvent(event);
+
+// 模拟HTML事件
+var event=document.createEvent("HTMLEvents");
+event.initEvent("focus", true, false);
+target.dispatchEvent(event);
+```
+
+##### 6.1.4 自定义事件
+DOM3级还定义了“自定义事件”。自定义事件不是由DOM原生触发的，它的目的是让开发人员创建自己的事件。要创建新的自定义事件，可以调用createEvent("CustomEvent")。
+#### 6.2 IE中的事件模拟
+待梳理，todo
 
 ### 7、总结
+在使用事件时，需要考虑如下一些内存与性能方面的问题：
+1. 有必要限制一个页面中事件处理程序的数量，数量太多会导致占用大量内存，而且也会让用户感觉页面反应不够灵敏。
+2. 建立在事件冒泡机制之上的事件委托技术，可以有效地减少事件处理程序的数量。
+3. 建议在浏览器卸载页面之前移除页面中的所有事件处理程序。 
