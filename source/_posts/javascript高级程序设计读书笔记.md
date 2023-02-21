@@ -2124,9 +2124,69 @@ DOM操作往往是JavaScript程序中开销最大的部分，而因访问NodeLis
 
 ### 2、DOM扩展
 #### 2.1 选择符
+众多JavaScript库中最常用的一项功能，就是根据CSS选择符选择与某个模式匹配的DOM元素。实际上，jQuery的核心就是通过CSS选择符查询DOM文档取得元素的引用，从而抛开了getElementById()和getElementsByTagName()。
+
+##### 2.1.1 querySelector()方法
+querySelector()方法接收一个CSS选择符，返回与该模式匹配的第一个元素，如果没有找到匹配的元素，返回null。
+
+```js
+// body元素
+document.querySelector('body');
+
+// id
+document.querySelector('#myDiv');
+
+// 取得class为selected第一个元素
+document.querySelector('.selected');
+
+// 取得class为button的第一个图像元素
+document.querySelector('img.button');
+```
+通过Document类型调用querySelector()方法时，会在文档元素的范围内查找匹配的元素。而通过Element类型调用querySelector()方法时，只会在该元素后代元素的范围内查找匹配的元素。如果传入了不被支持的选择符，querySelector()会抛出错误。
+##### 2.1.2 querySelectorAll()方法
+querySelectorAll()方法接收的参数与querySelector()方法一样，都是一个CSS选择符，但返回的是所有匹配的元素而不仅仅是一个元素。这个方法返回的是一个NodeList的实例。
+
+具体来说，返回的值实际上是带有所有属性和方法的NodeList，而其底层实现则类似于一组元素的快照，而非不断对文档进行搜索的动态查询。这样实现可以避免使用NodeList对象通常会引起的大多数性能问题。
+
+```js
+// 取得p元素中所有strong元素
+let strong = documet.querySelectorAll('p strong');
+```
 
 #### 2.2 遍历元素
+对于元素间的空格，IE9及之前版本不会返回文本节点，而其他所有浏览器都会返回文本节点。这样，就导致了在使用childNodes和firstChild等属性时的行为不一致。
 
+1. childElementCount：返回子元素（不包括文本节点和注释）的个数
+2. firstElementChild：指向第一个子元素；firstChild的元素版。
+3. lastElementChild：指向最后一个子元素；lastChild的元素版
+4. previousElementSibling：指向前一个同辈元素；previousSibling的元素版
+5. nextElementSibling：指向后一个同辈元素；nextSibling的元素版。
+
+利用这些元素不必担心空白文本节点，从而可以更方便地查找DOM元素。 
+
+```js
+var i,
+   len,
+   child=element.firstChild;
+while(child !=element.lastChild){
+   if (child.nodeType==1){    //检查是不是元素
+       processChild(child);
+   }
+   child=child.nextSibling;
+}
+```
+
+使用元素版为：
+
+```js
+var i,
+   len,
+   child=element.firstElementChild;
+while(child !=element.lastElementChild){
+   processChild(child);    //已知其是元素
+   child=child.nextElementSibling;
+}
+```
 #### 2.3 HTML5
 
 ### 3、DOM2和DOM3
