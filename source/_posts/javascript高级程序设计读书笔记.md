@@ -2188,6 +2188,50 @@ while(child !=element.lastElementChild){
 }
 ```
 #### 2.3 HTML5
+##### 2.3.1 getElementsByClassName()方法
+
+```js
+//取得所有类中包含"username"和"current"的元素，类名的先后顺序无所谓
+var allCurrentUsernames=document.getElementsByClassName("username current");
+```
+
+##### 2.3.2 classList属性
+在操作类名时，需要通过className属性添加、删除和替换类名。因为className中是一个字符串，所以即使只修改字符串一部分，也必须每次都设置整个字符串的值。
+
+```js
+// 删除 disable 类
+div.classList.remove('disable');
+
+// 添加 current 类
+div.classList.add('current');
+
+// 切换 user 类
+div.classList.toggle('user');
+
+// 确定是否有既定的类
+if(div.classList.contains('bd')){ 
+
+}
+
+// 类的数量
+let len = div.classList.length;
+```
+
+##### 2.3.3  焦点管理
+HTML5也添加了辅助管理DOM焦点的功能。首先就是document.activeElement属性，这个属性始终会引用DOM中当前获得了焦点的元素。
+
+另外就是新增了document.hasFocus()方法，这个方法用于确定文档是否获得了焦点。
+
+```js
+var button=document.getElementById("myButton");
+button.focus();
+alert(document.activeElement===button);    //true
+
+var button=document.getElementById("myButton");
+button.focus();
+alert(document.hasFocus());   //true
+```
+##### 2.3.4  HTMLDocument的变化
 
 ### 3、DOM2和DOM3
 
