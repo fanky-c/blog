@@ -2232,6 +2232,44 @@ button.focus();
 alert(document.hasFocus());   //true
 ```
 ##### 2.3.4  HTMLDocument的变化
+**1、readyState属性**
+   IE4最早为document对象引入了readyState属性。然后，其他浏览器也都陆续添加这个属性，最终HTML5把这个属性纳入了标准当中。Document的readyState属性有两个可能的值：
+
+   ❏ loading，正在加载文档；
+
+   ❏ complete，已经加载完文档。
+
+**2、自定义数据属性**
+HTML5规定可以为元素添加非标准的属性，但要添加前缀data-，目的是为元素提供与渲染无关的信息，或者提供语义信息。这些属性可以任意添加、随便命名，只要以data-开头即可。然后通过dataset来获取： div.dataset.myname
+
+**3、scrollIntoView()方法**
+scrollIntoView()可以在所有HTML元素上调用，通过滚动浏览器窗口或某个容器元素，调用元素就可以出现在视口中。
+
+```js
+//让元素可见
+document.forms[0].scrollIntoView();
+```
+
+当页面发生变化时，一般会用这个方法来吸引用户的注意力。实际上，为某个元素设置焦点也会导致浏览器滚动并显示出获得焦点的元素。
+
+##### 2.3.5 专有扩展
+**1、innerText属性**
+设置innerText永远只会生成当前节点的一个子文本节点，而为了确保只生成一个子文本节点，就必须要对文本进行HTML编码。利用这一点，可以通过innerText属性过滤掉HTML标签。方法是将innerText设置为等于innerText，这样就可以去掉所有HTML标签: div.innerText = div.innerText 
+
+**2、滚动**
+scrollIntoView()和scrollIntoViewIfNeeded()的作用对象是元素的容器，而scrollByLines()和scrollByPages()影响的则是元素自身。
+
+```js
+//将页面主体滚动5行
+document.body.scrollByLines(5);
+//在当前元素不可见的时候，让它进入浏览器的视口
+document.images[0].scrollIntoViewIfNeeded();
+//将页面主体往回滚动1页
+document.body.scrollByPages(-1);
+```
+
+由于scrollIntoView()是唯一一个所有浏览器都支持的方法，因此还是这个方法最常用。
+
 
 ### 3、DOM2和DOM3
 
