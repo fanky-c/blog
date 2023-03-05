@@ -2272,7 +2272,150 @@ document.body.scrollByPages(-1);
 
 
 ### 3、DOM2和DOM3
+#### 3.1 DOM变化
+DOM2级核心”没有引入新类型，它只是在DOM1级的基础上通过增加新方法和新属性来增强了既有类型。 
 
+没啥特别要介绍的....
+
+#### 3.2 样式
+##### 3.2.1 计算的样式
+虽然style对象能够提供支持style特性的任何元素的样式信息，但它不包含那些从其他样式表层叠而来并影响到当前元素的样式信息。“DOM2级样式”增强了document.defaultView，提供了getComputedStyle()方法。这个方法接受两个参数：要取得计算样式的元素和一个伪元素字符串（例如":after"）。如果不需要伪元素信息，第二个参数可以是null。getComputedStyle()方法返回一个CSSStyleDeclaration对象（与style属性的类型相同）。
+
+```js
+let elem1 = document.getElementById("elemId");
+let style = window.getComputedStyle(element, [pseudoElt]);
+
+let h3 = document.querySelector('h3');
+let result = window.getComputedStyle(h3, '::after').content;
+```
+
+##### 3.2.2 元素大小
+**1、偏移量**
+1. offsetHeight：元素在垂直方向上占用的空间大小，以像素计。包括元素的高度、（可见的）水平滚动条的高度、上边框高度和下边框高度。
+2. offsetWidth：元素在水平方向上占用的空间大小，以像素计。包括元素的宽度、（可见的）垂直滚动条的宽度、左边框宽度和右边框宽度。
+3. offsetLeft：元素的左外边框至包含元素的左内边框之间的像素距离。
+4. offsetTop：元素的上外边框至包含元素的上内边框之间的像素距离。
+
+要想知道某个元素在页面上的偏移量，将这个元素的offsetLeft和offsetTop与其offsetParent的相同属性相加，如此循环直至根元素，就可以得到一个基本准确的值
+
+```js
+// 元素左边偏移量
+funciton getElementLeft(el){
+   let actualLeft = el.offsetLeft;
+   let current = el.offsetParent;
+
+   while(current != null){
+      actualLeft += current.offsetLeft;
+      current = current.offsetParent;
+   }
+   return actualLeft;
+}
+
+// 元素距离顶部偏移量
+function getElementTop(el){
+   let actualTop = el.offsetTop;
+   let current = el.offsetParent;
+
+   while(current != null){
+     actualTop += el.offsetTop;
+     current = el.offsetParent;
+   }
+
+   return actualTop;
+}
+```
+**这些偏移量属性都是只读的，而且每次访问它们都需要重新计算。因此，应该尽量避免重复访问这些属性；如果需要重复使用其中某些属性的值，可以将它们保存在局部变量中，以提高性能。**
+
+
+**2、客户区大小**
+
+```js
+function getViewport(){
+   // 这个函数首先检查document.compatMode属性，以确定浏览器是否运行在混杂模式
+   if(document.compatMode == 'BackCompat'){
+      return {
+         width: document.body.clientWidth,
+         height: document.body.clientHeight
+      }
+   }else{
+      return {
+         width: document.documentElement.clientWidth,
+         height: document.documentElement.clientHeight
+      }
+   }
+}
+```
+
+**3、滚动大小**
+1. scrollHeight：在没有滚动条的情况下，元素内容的总高度。
+2. scrollWidth：在没有滚动条的情况下，元素内容的总宽度
+3. scrollLeft：被隐藏在内容区域左侧的像素数。通过设置这个属性可以改变元素的滚动位置。  
+4. scrollTop：被隐藏在内容区域上方的像素数。通过设置这个属性可以改变元素的滚动位置。
+
+scrollWidth和scrollHeight主要用于确定元素内容的实际大小。例如，通常认为\<html\>元素是在Web浏览器的视口中滚动的元素（IE6之前版本运行在混杂模式下时是\<body\>元素）。因此，带有垂直滚动条的页面总高度就是document.documentElement.scrollHeight。
+
+#### 3.3 遍历
+1. parentNode(): 遍历到当前节点的父节点；
+2. firstChild(): 遍历到当前节点的第一个子节点；
+3. lastChild()
+4. nextSibling()
+5. previousSibling()
+
+#### 3.4 范围
+“DOM2级遍历和范围”模块定义了“范围”（range）接口。通过范围可以选择文档中的一个区域，而不必考虑节点的界限（选择在后台完成，对用户是不可见的）。
+
+var range=document.createRange();
+
+❏ startContainer：包含范围起点的节点（即选区中第一个节点的父节点)
+
+❏ startOffset：范围在startContainer中起点的偏移量。如果startContainer是文本节点、注释节点或CDATA节点,那么startOffset就是范围起点之前跳过的字符数量。否则，startOffset就是范围中第一个子节点的索引。
+
+❏ endContainer：包含范围终点的节点（即选区中最后一个节点的父节点）。
+
+❏ endOffset：范围在endContainer中终点的偏移量（与startOffset遵循相同的取值规则）。
+
+
+##### 3.4.1 用DOM范围实现简单选择
+要使用范围来选择文档中的一部分，最简的方式就是使用selectNode()或selectNodeContents()。这两个方法都接受一个参数，即一个DOM节点，然后使用该节点中的信息来填充范围。其中，selectNode()方法选择整个节点，包括其子节点；而selectNodeContents()方法则只选择节点的子节点。
+
+```js
+// html
+<! DOCTYPE html>
+<html>
+   <body>
+       <p id="p1"><b>Hello</b> world! </p>
+   </body>
+</html>
+
+// js
+let rang1 = document.createRange();
+let rang2 = document.createRange();
+let p1 = document.getElementById('p1');
+
+rang1.selectNode(p1); // 值为：<p id="p1"><b>Hello</b> world! </p>
+rang2.selectNodeContents(p1); //值为： <b>Hello</b> world! 
+```
+
+##### 3.4.2 用DOM范围实现复杂选择
+要创建复杂的范围就得使用setStart()和setEnd()方法。这两个方法都接受两个参数：一个参照节点和一个偏移量值。
+
+
+##### 3.4.3 操作DOM范围中的内容
+
+##### 3.4.4 插入DOM范围中的内容
+
+##### 3.4.5 折叠DOM范围
+
+##### 3.4.6 比较DOM范围
+
+##### 3.4.7 复制DOM范围
+
+##### 3.4.8 清理DOM范围
+
+```js
+range.detach();         //从文档中分离
+range=null;           //解除引用
+```
 
 ## 七、事件
 JavaScript与HTML之间的交互是通过事件实现的。事件，就是文档或浏览器窗口中发生的一些特定的交互瞬间。可以使用侦听器（或处理程序）来预订事件，以便事件发生时执行相应的代码。这种在传统软件工程中被称为观察员模式的模型，支持页面的行为（JavaScript代码）与页面的外观（HTML和CSS代码）之间的松散耦合。
