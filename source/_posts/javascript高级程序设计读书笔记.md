@@ -2388,28 +2388,69 @@ var range=document.createRange();
 </html>
 
 // js
-let rang1 = document.createRange();
-let rang2 = document.createRange();
+let range1 = document.createRange();
+let range2 = document.createRange();
 let p1 = document.getElementById('p1');
 
-rang1.selectNode(p1); // 值为：<p id="p1"><b>Hello</b> world! </p>
-rang2.selectNodeContents(p1); //值为： <b>Hello</b> world! 
+range1.selectNode(p1); // 值为：<p id="p1"><b>Hello</b> world! </p>
+range2.selectNodeContents(p1); //值为： <b>Hello</b> world! 
 ```
 
 ##### 3.4.2 用DOM范围实现复杂选择
 要创建复杂的范围就得使用setStart()和setEnd()方法。这两个方法都接受两个参数：一个参照节点和一个偏移量值。
 
+```js
+
+```
 
 ##### 3.4.3 操作DOM范围中的内容
 
 ##### 3.4.4 插入DOM范围中的内容
 
 ##### 3.4.5 折叠DOM范围
+所谓折叠范围，就是指范围中未选择文档的任何部分。
+
 
 ##### 3.4.6 比较DOM范围
+在有多个范围的情况下，可以使用compareBoundaryPoints()方法来确定这些范围是否有公共的边界（起点或终点）。
+
+❏ Range.START_TO_START(0)：比较第一个范围和第二个范围的起点；
+
+❏ Range.START_TO_END(1)：比较第一个范围的起点和第二个范围的终点；
+
+❏ Range.END_TO_END(2)：比较第一个范围和第二个范围的终点；
+
+❏ Range.END_TO_START(3)：比较第一个范围的终点和第一个范围的起点。
+
+**compareBoundaryPoints()方法可能的返回值如下：**
+
+* 如果第一个范围中的点位于第二个范围中的点之前，返回-1；
+* 如果两个点相等，返回0；
+* 如果第一个范围中的点位于第二个范围中的点之后，返回1。
+
+```js
+// html
+ <p id="p1"><b>Hello</b> world</p>
+
+// js
+ let range1 = document.createRange();
+ let range2 = document.createRange();
+ let p1 = document.getElementById('p1');
+ range1.selectNodeContents(p1);
+ range2.selectNodeContents(p1);
+ range2.setEndBefore(p1.lastChild);
+
+ console.log(range1.compareBoundaryPoints(Range.START_TO_START, range2));  // 0
+ console.log(range1.compareBoundaryPoints(Range.END_TO_END, range2)); // 1
+```
+
+在这个例子中，两个范围的起点实际上是相同的，因为它们的起点都是由selectNodeContents()方法设置的默认值来指定的。因此，第一次比较返回0。但是，range2的终点由于调用setEndBefore()已经改变了，结果是range1的终点位于range2的终点后面，因此第二次比较返回1。
+
+<img src="/img/range1.jpeg" width="95%" height="auto">
+
 
 ##### 3.4.7 复制DOM范围
-
+var newRange=range.cloneRange();  方法会创建调用它的范围的一个副本。新创建的范围与原来的范围包含相同的属性，而修改它的端点不会影响原来的范围。
 ##### 3.4.8 清理DOM范围
 
 ```js
