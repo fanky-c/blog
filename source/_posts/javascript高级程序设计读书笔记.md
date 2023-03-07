@@ -2397,19 +2397,153 @@ range2.selectNodeContents(p1); //值为： <b>Hello</b> world!
 ```
 
 ##### 3.4.2 用DOM范围实现复杂选择
-要创建复杂的范围就得使用setStart()和setEnd()方法。这两个方法都接受两个参数：一个参照节点和一个偏移量值。
+要创建复杂的范围就得使用setStart()和setEnd()方法。这两个方法都接受两个参数：一个参照节点和一个偏移量值。对setStart()来说，参照节点会变成startContainer，而偏移量值会变成startOffset。对于setEnd()来说，参照节点会变成endContainer，而偏移量值会变成endOffset。
+
+可以使用这两个方法来模仿selectNode()和selectNodeContents()。来看下面的例子：
 
 ```js
+let range1 = document.createRange();
+let range2 = document.createRange();
+let p1 = document.getElementById('p1');
+let p1Index = -1;
+let i, len;
 
+for(i=0; len=p1.parentNode.childNodes.length; i<len; i++){
+    if(p1.parentNode.childNodes[i] == p1){
+        p1Index = i;
+        break;
+    }
+}
+
+range1.setStart(p1.parentNode, p1Index);
+range1.setEnd(p1.parentNode, p1Index+1);
+range2.setStart(p1, 0);
+range2.setEnd(p1, p1.childNodes.length);
 ```
 
 ##### 3.4.3 操作DOM范围中的内容
+在创建范围时，内部会为这个范围创建一个文档片段，范围所属的全部节点都被添加到了这个文档片段中。
+
+
+```js
+// html
+<p id="p1"><b>He</b><b>llo</b> world! </p>
+
+// js
+let p1 = document.getElementById('p1');
+helloNode = p1.firstChild.firstChild;
+worldNode = p1.lastChild;
+rang = document.createRang();
+
+rang.setStart(helloNode, 2);
+rang.setEnd(worldNode, 3);
+
+// 1、deleteContents() -- 从文档中删除范围所包含的内容
+rang.deleteContents();  
+
+/** 结果为：
+ * <p><b>He</b>rld! </p>
+ **/
+
+// 2、extractContents() -- 返回范围的文档片段
+let fragment = rang.extractContents();  
+p1.parentNode.appendChild(fragment); 
+
+/** 结果为：
+ * <p><b>He</b>rld! </p>
+ * <b>llo</b> wo
+ **/
+
+// 3、cloneContents() -- 返回的文档片段包含的是范围中节点的副本，而不是实际的节点
+let fragment = rang.cloneContents();  
+p1.parentNode.appendChild(fragment); 
+
+/** 结果为：
+   <p><b>Hello</b> world! </p>
+   <b>llo</b> wo
+ **/
+```
 
 ##### 3.4.4 插入DOM范围中的内容
+利用范围，可以删除或复制内容，还可以像前面介绍的那样操作范围中的内容。使用insertNode()方法可以向范围选区的开始处插入一个节点。
+
+```js
+// 假设我们想在前面例子中的HTML前面插入以下HTML代码：
+<span style="color: red">Inserted text</span>
+
+
+// 代码
+let p1 = document.getElementById('p1');
+let helloNode = p1.firstChild.firstChild;
+let worldNode = p1.lastChild;
+let range = document.createRange();
+
+range.setStart(helloNode, 2);
+range.setEnd(worldNode, 3);
+
+let span = documetn.createElement('span');
+span.style.color = 'red';
+span.appendChild(document.createTextNode('Inserted text'));
+range.insertNode(span);
+
+/**
+ * 结果
+ * <p id="p1"><b>He<span style="color: red">Inserted text</span>llo</b> world</p>
+ **/ 
+```
+
+**除了向范围内部插入内容之外，还可以环绕范围插入内容，此时就要使用surroundContents()方法。这个方法接受一个参数，即环绕范围内容的节点。在环绕范围插入内容时，后台会执行下列步骤：**
+
+1. 提取出范围中的内容（类似执行extractContent()）
+2. 将给定节点插入到文档中原来范围所在的位置上
+3. 将文档片段的内容添加到给定节点中
+
+可以使用这种技术来突出显示网页中的某些词句，例如下列代码：
+
+```js
+let p1 = document.getElementById('p1');
+let helloNode = p1.firstChild.firstChild;
+let worldNode = p1.lastChild;
+let range = document.createRange();
+
+range.selectNode(helloNode);
+
+let span = docuemt.createElement('span');
+span.style.backgroundColor = 'yellow';
+range.surroundContents(span);
+
+/** 结果
+ * <p><b><span style="background-color:yellow">Hello</span></b> world! </p>
+ **/ 
+```
+
 
 ##### 3.4.5 折叠DOM范围
-所谓折叠范围，就是指范围中未选择文档的任何部分。
+所谓折叠范围，就是指范围中未选择文档的任何部分。使用collapse()方法来折叠范围，这个方法接受一个参数，一个布尔值，表示要折叠到范围的哪一端。参数true表示折叠到范围的起点，参数false表示折叠到范围的终点。要确定范围已经折叠完毕，可以检查collapsed属性。
 
+<img src="/img/range2.jpeg" width="95%" height="auto">
+
+```js
+range.collapse(true);            //折叠到起点
+alert(range.collapsed);          //输出true
+```
+
+
+检测某个范围是否处于折叠状态，可以帮我们确定范围中的两个节点是否紧密相邻, 如下：
+
+```js
+// html
+<p id="p1">Paragraph 1</p><p id="p2">Paragraph 2</p>
+
+// js
+var p1=document.getElementById("p1"),
+   p2=document.getElementById("p2"),
+   range=document.createRange();
+range.setStartAfter(p1);
+range.setEndBefore(p2);
+alert(range.collapsed);      //输出true
+```
+在这个例子中，新创建的范围是折叠的，因为p1的后面和p2的前面什么也没有。
 
 ##### 3.4.6 比较DOM范围
 在有多个范围的情况下，可以使用compareBoundaryPoints()方法来确定这些范围是否有公共的边界（起点或终点）。
