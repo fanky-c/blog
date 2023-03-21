@@ -90,7 +90,7 @@ function defineReactive(data, key, val){
 思考一下，首先想到的是每个key都有一个数组，用来存储当前key的依赖。假设依赖是一个函数，保存在window.target上，现在就可以把defineReactive函数稍微改造一下：
 
 ```js
-function defineReactive(data, key, value) {
+function defineReactive(data, key, val) {
   const dep = []; // 新增
   Object.defineProperty(data, key, {
     enumerable: true,
@@ -99,7 +99,7 @@ function defineReactive(data, key, value) {
       dep.push(window.target);  // 新增, window.target是啥东西？？？
       return val;
     },
-    set: function(){
+    set: function(newVal){
       if(val === newVal) return;
       // 新增
       if(let i=0; i<dep.length; i++){
@@ -151,6 +151,7 @@ function remove(arr, item){
    }
 }
 ```
+改造一下defineReactive：
 
 ```js
 function defineReactive(data, key, val){
@@ -178,6 +179,7 @@ function defineReactive(data, key, val){
 
 我们要通知用到数据的地方，而使用这个数据的地方有很多，而且类型还不一样，既有可能是模板，也有可能是用户写的一个watch，这时需要抽象出一个能集中处理这些情况的类。然后，我们在依赖收集阶段只收集这个封装好的类的实例进来，通知也只通知它一个。接着，它再负责通知其他地方。所以，我们要抽象的这个东西需要先起一个好听的名字。嗯，就叫它Watcher吧。
 
+现在就可以回答上面的问题了，收集谁？Watcher！
 #### 2.6 什么是Watcher
 Watcher是一个中介的角色，数据发生变化时通知它，然后它再通知其他地方。
 
@@ -187,6 +189,10 @@ vm.$watch('a.b.c', function(newVal, oldVal){
    
 })
 ```
+
+思考一下，怎么实现这个功能呢？好像只要把这个watcher实例添加到data.a.b.c属性的Dep中就行了。然后，当data.a.b.c的值发生变化时，通知Watcher。接着，Watcher再执行参数中的这个回调函数。
+
+代码如下：
 
 ```js
 export default class Watcher {
@@ -211,11 +217,120 @@ export default class Watcher {
   }
 }
 
-const bailER = /[^\w.$]/;
 function parsePath(path){
-  
+  const bailER = /[^\w.$]/;
+  if(bailER.test(path)){
+    return;
+  }
+  const segments = path.split('.');
+  return function (obj){
+    for(let i=0; i<segments.length; i++){
+       if(!obj) return;
+       obj = obj[segments[i]];
+    }
+    return obj;
+  }
 }
 ```
+
+#### 2.7 递归侦测所有key
+现在，其实已经可以实现变化侦测的功能了，但是前面介绍的代码只能侦测数据中的某一个属性，我们希望把数据中的所有属性（包括子属性）都侦测到，所以要封装一个Observer类。这个类的作用是将一个数据内的所有属性（包括子属性）都转换成getter/setter的形式，然后去追踪它们的变化：
+
+```js
+/**
+* Observer类会附加到每一个被侦测的object上。
+* 一旦被附加上，Observer会将object的所有属性转换为getter/setter的形式
+* 来收集属性的依赖，并且当属性发生变化时会通知这些依赖
+*/
+
+export class Observer {
+  constructor(value){
+    this.value = value;
+    if(!Array.isArray(value)){
+      this.wall(value);
+    }
+  }
+
+  walk(obj){
+    const keys = Object.keys(obj);
+    for(let i = 0; i < keys.length; i++){
+      defineReactive(obj, keys[i], obj[keys[i]]);
+    }
+  }
+}
+
+function defineReactive(data, key, val){
+  // 递归子属性
+   if(typeof val === 'object'){
+     new Observer(val)
+   }
+
+   let dep = new Dep();
+   Object.defineProperty(data, key, {
+      enumerable: true,
+      configruable: true,
+      get(){
+        dep.depend();
+        return val;
+      }
+      set(newVal){
+        if(val === newVal) return;
+        val = newVal;
+        dep.notfiy();
+      }
+   });
+}
+```
+
+#### 2.8 关于Object的问题
+前面介绍了Object类型数据的变化侦测原理，了解了数据的变化是通过getter/setter来追踪的。也正是由于这种追踪方式，有些语法中即便是数据发生了变化，Vue.js也追踪不到：
+
+1. 新增属性：我们在obj上面新增了name属性，Vue.js无法侦测到这个变化，所以不会向依赖发送通知
+2. 删除属性：我们在action方法中删除了obj中的name属性，而Vue.js无法侦测到这个变化，所以不会向依赖发送通知。
+
+Vue.js通过Object.defineProperty来将对象的key转换成getter/setter的形式来追踪变化，但getter/setter只能追踪一个数据是否被修改，无法追踪新增属性和删除属性，所以才会导致上面例子中提到的问题。
+
+但这也是没有办法的事，因为在ES6之前，JavaScript没有提供元编程的能力，无法侦测到一个新属性被添加到了对象中，也无法侦测到一个属性从对象中删除了。为了解决这个问题，Vue.js提供了两个API——vm.$set与vm.$delete，
+
+#### 2.9 总结
+变化侦测就是侦测数据的变化。当数据发生变化时，要能侦测到并发出通知。
+
+Object可以通过Object.defineProperty将属性转换成getter/setter的形式来追踪变化。读取数据时会触发getter，修改数据时会触发setter。
+
+我们需要在getter中收集有哪些依赖使用了数据。当setter被触发时，去通知getter中收集的依赖数据发生了变化。
+
+收集依赖需要为依赖找一个存储依赖的地方，为此我们创建了Dep，它用来收集依赖、删除依赖和向依赖发送消息等。
+
+所谓的依赖，其实就是Watcher。只有Watcher触发的getter才会收集依赖，哪个Watcher触发了getter，就把哪个Watcher收集到Dep中。当数据发生变化时，会循环依赖列表，把所有的Watcher都通知一遍。
+
+Watcher的原理是先把自己设置到全局唯一的指定位置（例如window.target），然后读取数据。因为读取了数据，所以会触发这个数据的getter。接着，在getter中就会从全局唯一的那个位置读取当前正在读取数据的Watcher，并把这个Watcher收集到Dep中去。通过这样的方式，Watcher可以主动去订阅任意一个数据的变化。
+
+此外，我们创建了Observer类，它的作用是把一个object中的所有数据（包括子数据）都转换成响应式的，也就是它会侦测object中所有数据（包括子数据）的变化。
+
+**Data、Observer、Dep和Watcher之间的关系:**
+
+<img src="/img/vue2.jpeg" style="max-width:95%" />
+
+Data通过Observer转换成了getter/setter的形式来追踪变化;
+
+当外界通过Watcher读取数据时，会触发getter从而将Watcher添加到依赖中;
+
+当数据发生了变化时，会触发setter，从而向Dep中的依赖（Watcher）发送通知;
+
+Watcher接收到通知后，会向外界发送通知，变化通知到外界后可能会触发视图更新，也有可能触发用户的某个回调函数等。
+
+### 3、 Array的变化侦测
+#### 3.1 介绍
+这个例子使用了push方法来改变数组，并不会触发getter/setter
+
+```js
+this.list.push(1); 
+```
+
+正因为我们可以通过Array原型上的方法来改变数组的内容，所以Object那种通过getter/setter的实现方式就行不通了
+
+#### 3.2 如何追踪变化
+  
 
 ## 4、虚拟DOM
 
