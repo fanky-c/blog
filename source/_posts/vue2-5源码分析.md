@@ -330,7 +330,36 @@ this.list.push(1);
 正因为我们可以通过Array原型上的方法来改变数组的内容，所以Object那种通过getter/setter的实现方式就行不通了
 
 #### 3.2 如何追踪变化
-  
+Object的变化是靠setter来追踪的，只要一个数据发生了变化，一定会触发setter。
+
+在ES6之前，JavaScript并没有提供元编程的能力，也就是没有提供可以拦截原型方法的能力，但是这难不倒聪明的程序员们。我们可以用自定义的方法去覆盖原生的原型方法。  
+
+我们可以用一个拦截器覆盖Array.prototype。之后，每当使用Array原型上的方法操作数组时，其实执行的都是拦截器中提供的方法，比如push方法。然后，在拦截器中使用原生Array的原型方法去操作数组。
+
+#### 3.3 拦截器
+拦截器其实就是一个和Array.prototype一样的Object，里面包含的属性一模一样，只不过这个Object中某些可以改变数组自身内容的方法是我们处理过的。
+
+我们发现Array原型中可以改变数组自身内容的方法有7个，分别是push、pop、shift、unshift、splice、sort和reverse。
+
+```js
+const arrayProto = Array.prototype;
+export const ArrayMethods = Object.create(arrayProto); // 新对象， 继承Array.prototype
+
+['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'].forEach(function(method){
+    // 缓存原始方法
+    const original = arrayProto[method];
+
+    Object.defineProperty(ArrayMethods, method, {
+        value: function mutator(...args) {
+            return original.apply(this, args);
+        },
+        enumerable: false,
+        writable: true,
+        configurable: true
+    })
+})
+```
+#### 3.4 使用拦截器覆盖Array原型
 
 ## 4、虚拟DOM
 
