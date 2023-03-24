@@ -359,7 +359,81 @@ export const ArrayMethods = Object.create(arrayProto); // 新对象， 继承Arr
     })
 })
 ```
+
+我们创建了变量arrayMethods，它继承自Array.prototype，具备其所有功能。未来，我们要使用arrayMethods去覆盖Array.prototype
+
+接下来，在arrayMethods上使用Object.defineProperty方法将那些可以改变数组自身内容的方法（push、pop、shift、unshift、splice、sort和reverse）进行封装。
+
+所以，当使用push方法的时候，其实调用的是arrayMethods.push，而arrayMethods.push是函数mutator，也就是说，实际上执行的是mutator函数。（我们就可以在mutator函数中做一些其他的事，比如说发送变化通知）
+
+最后，在mutator中执行original（它是原生Array.prototype上的方法，例如Array.prototype.push）来做它应该做的事，比如push的功能。
+
+
 #### 3.4 使用拦截器覆盖Array原型
+有了拦截器之后，想要让它生效，就需要使用它去覆盖Array.prototype。但是我们又不能直接覆盖，因为这样会污染全局的Array，这并不是我们希望看到的结果。我们希望拦截操作只针对那些被侦测了变化的数据生效，也就是说希望拦截器只覆盖那些响应式数组的原型。
+
+而将一个数据转换成响应式的，需要通过Observer，所以我们只需要在Observer中使用拦截器覆盖那些即将被转换成响应式Array类型数据的原型就好了：
+
+```js
+export class Observer {
+  constructor(value){
+    this.value = value;
+
+    if(Array.isArray(value)){
+       value.__proto__ = ArrayMethods;
+    }else{
+      this.walk(value);
+    }
+  }
+}
+```
+通过 \__proto__ 可以很巧妙地实现覆盖value原型的功能
+
+<img src="/img/vue3.png" style="max-width:95%" />
+
+#### 3.5 将拦截器方法挂载到数组的属性上
+虽然绝大多数浏览器都支持这种非标准的属性（在ES6之前并不是标准）来访问原型，但并不是所有浏览器都支持！因此，我们需要处理不能使用 \__proto__ 的情况。 
+
+Vue的做法非常粗暴，如果不能使用 \__proto__，就直接将arrayMethods身上的这些方法设置到被侦测的数组上
+
+```js
+import { arrayMethods } from './array';
+
+const hasProto = '__proto__' in {};
+const arrayKeys = Object.getOwnPropertyNames(arrayMethods);
+
+function protoAugment(target, src, keys){
+    target.__proto__ = src;
+}
+
+function copyAugment(target, src, keys){
+  for(let i=0; i<keys.length; i++){
+      const key = keys[i];
+      def(target, key, src[key]);
+  }
+}
+
+export class Observer {
+  constructor(value){
+     this.value = value;
+     if(Array.isArray(value)){
+        const augment = hasProto ? protoAugment : copyAugment; // 增强
+        augment(value, arrayMethods, arrayKeys);
+     }else{
+         this.walk(value);
+     }
+  }
+}
+```
+
+在浏览器不支持 __proto__ 的情况下，会在数组上挂载一些方法。当用户使用这些方法时，其实执行的并不是浏览器原生提供的Array.prototype上的方法，而是拦截器中提供的方法。 
+
+因为当访问一个对象的方法时，只有其自身不存在这个方法，才会去它的原型上找这个方法。
+
+#### 3.6 如何收集依赖
+可能你也发现了，如果只有一个拦截器，其实还是什么事都做不了。为什么会这样呢？因为我们之所以创建拦截器，本质上是为了得到一种能力，一种当数组的内容发生变化时得到通知的能力。
+
+而现在我们虽然具备了这样的能力，但是通知谁呢？前面我们介绍Object时说过，答案肯定是通知Dep中的依赖（Watcher），但是依赖怎么收集呢？这就是本节要介绍的内容，如何收集数组的依赖！
 
 ## 4、虚拟DOM
 

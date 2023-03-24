@@ -1,9 +1,11 @@
 ---
-title: es6扩展运算符，三个点...
+title: es6扩展运算符和剩余运算符，三个点...
 date: 2018-11-11 19:01:24
 tags: 
    - es6
    - ...
+   - 扩展运算符
+   - 剩余运算符
 ---
 
 ### 含义
@@ -117,3 +119,5 @@ let arr = [...arrayLike];
 
 
 [参考](https://blog.csdn.net/qq_30100043/article/details/53391308)
+
+[参考二](https://www.freecodecamp.org/chinese/news/three-dots-operator-in-javascript/)
