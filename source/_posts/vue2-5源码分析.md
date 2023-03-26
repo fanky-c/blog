@@ -435,6 +435,230 @@ export class Observer {
 
 而现在我们虽然具备了这样的能力，但是通知谁呢？前面我们介绍Object时说过，答案肯定是通知Dep中的依赖（Watcher），但是依赖怎么收集呢？这就是本节要介绍的内容，如何收集数组的依赖！
 
+
+**Array在getter中收集依赖，在拦截器中触发依赖。**
+
+#### 3.7 依赖列表存在哪儿
+Vue.js把Array的依赖存放在Observer中：
+
+```js
+export class Observer {
+  constructor(value){
+     this.value = value;
+     this.dep = new Dep();
+
+     if(Array.isArray(value)){
+        const augment = hasProto ? protoAugment : copyAugment;
+        augment(value, arrayMethods, arrayKeys);
+     }else{
+        this.walk(value);
+     }
+  }
+}
+```
+
+#### 3.8 收集依赖
+把Dep实例保存在Observer的属性上之后，我们可以在getter中像下面这样访问并收集依赖：
+
+```js
+function defineReactive(data, key, val){
+  let childOb = observe(val); // 修改
+  let dep = new Dep(); 
+  Object.defineProperty(data, key, {
+    enumerable: true,
+    configruable: true,
+    get: function(){
+      dep.depend();
+      if(childOb){
+        childOb.dep.depend();
+      }
+      return val;
+    },
+    set: function(newVal){
+      if(val === newVal) return;
+      dep.notfiy();
+      val = newVal;
+    }
+  })
+}
+
+/**
+ * 尝试为value创建一个Observer实例，
+ * 如果创建成功，直接返回新创建Observer实例，
+ * 如果value已经存在一个Observer实例，则直接返回它
+ */
+export function observe(value, asRootData){
+  if(!isObject(value)) return;
+  let ob;
+  if(hasOwn(value, '__ob__') && value.__ob__ instanceof Observer){
+    ob = value.__ob__;
+  }else{
+    ob = new Observer(value);
+  }
+  return ob;
+}
+```
+
+#### 3.9 在拦截器中获取Observer实例
+因为Array拦截器是对原型的一种封装，所以可以在拦截器中访问到this（当前正在被操作的数组）。
+
+而dep保存在Observer中，所以需要在this上读到Observer的实例：
+
+```js
+// 工具函数
+function def (data, key, val, enumerable){
+  Object.defineProperty(obj, key, {
+     value: val,
+     enumerable: !!enumerable,
+     writable: true,
+     configurable: true
+  })
+}
+
+export class Observer {
+  constructor(value){
+    this.value = value;
+    this.dep = new Dep();
+    def(value, '__ob__', this); //新增
+
+    if(Array.isArray(value)){
+       const augment = hasProto ？ protoAugment : copyAugment;
+       augment(value, arrayMethods, arrayKeys);
+    }else{
+       this.walk(value);
+    }
+  }
+}
+```
+
+所有被侦测了变化的数据身上都会有一个 \__ob__ 属性来表示它们是响应式的。上一节中的observe函数就是通过 \__ob__ 属性来判断：如果value是响应，如果value是响应式的，则直接返回 \__ob__；如果不是响应式的，则使用new Observer来将数据转换成响应式数据。
+
+当value身上被标记了 \__ob__ 之后，就可以通过value.\__ob__ 来访问Observer实例。如果是Array拦截器，因为拦截器是原型方法，所以可以直接通过this.\__ob__来访问Observer实例。例如：
+
+```js
+['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'].
+forEach(function(method){
+  const original = arrayProto[method];
+  Object.defineProperty(arrayMethods, method, {
+    value: function muator (...args){
+      const ob = this.__ob__; // 新增
+      return original.apply(this, args);
+    },
+    enumerable: false,
+    writable: true,
+    configurable: true 
+  })
+})
+```
+
+#### 3.10 向数组的依赖发送通知
+当侦测到数组发生变化时，会向依赖发送通知。此时，首先要能访问到依赖。前面已经介绍过如何在拦截器中访问Observer实例，所以这里只需要在Observer实例中拿到dep属性，然后直接发送通知就可以了：
+
+```js
+['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'].
+forEach(function(method){
+  // 缓存原始方法
+  const original = arrayProto[method];
+  def(arrayMethods, method, function mutator(...args){
+      const result = original.apply(this, args);
+      const ob = this.__ob__;
+      ob.dep.notfiy(); // 通知依赖
+      return result; 
+  });
+})
+```
+在上面的代码中，我们调用了ob.dep.notify()去通知依赖（Watcher）数据发生了改变。
+
+#### 3.11 侦测数组中元素的变化
+我们要在Observer中新增一些处理，让它可以将Array也转换成响应式的:
+
+```js
+export class Observer {
+  constructor(value){
+    this.value = value;
+    def(value, '__ob__', this);
+
+    if(Array.isArray(valye)){
+      this.observeArray(value);
+    }else{
+      this.walk(value);
+    }
+  }
+  
+  // 侦测Array中每一项
+  ObserveArray(items){
+     for(let i=0, l=items.length; i<l; i++){
+       observe(item[i]);
+     }
+  }
+}
+```
+这里新增了observeArray方法，其作用是循环Array中的每一项，执行observe函数来侦测变化。前面介绍过observe函数，其实就是将数组中的每个元素都执行一遍new Observer，这很明显是一个递归的过程。
+
+现在只要将一个数据丢进去，Observer就会把这个数据的所有子数据转换成响应式的。接下来，我们介绍如何侦测数组中新增元素的变化。
+
+#### 3.12 侦测新增元素的变化
+数组中有一些方法是可以新增数组内容的，比如push，而新增的内容也需要转换成响应式来侦测变化，否则会出现修改数据时无法触发消息等问题。因此，我们必须侦测数组中新增元素的变化。
+
+**其实现方式其实并不难，只要能获取新增的元素并使用Observer来侦测它们就行。**
+
+#### 3.13 获取新增元素
+想要获取新增元素，我们需要在拦截器中对数组方法的类型进行判断。如果操作数组的方法是push、unshift和splice（可以新增数组元素的方法），则把参数中新增的元素拿过来，用Observer来侦测：
+
+```js
+['pop', 'push', 'shift', 'splice', 'sort', 'reverse'].
+forEach(function(method){
+  const original = arrayProto[method];
+  def(arrayMethod, method, function muator(...args){
+     const result = original.apply(this, args);
+     const ob = this.__ob__;
+     let inserted;
+     switch(method){
+         case 'push':
+         case 'unshift':
+          inserted = true;
+          break;
+         case 'splice':
+          inserted = args.slice(2);
+          break;  
+     }
+     ob.dep.notify();
+     return result;
+  });
+})
+```
+我们通过switch对method进行判断，如果method是push、unshift、splice这种可以新增数组元素的方法，那么从args中将新增元素取出来，暂存在inserted中。
+
+接下来，我们要使用Observer把inserted中的元素转换成响应式的。
+
+#### 3.14 使用Observer侦测新增元素
+前面介绍过Observer会将自身的实例附加到value的 \__ob__ 属性上。所有被侦测了变化的数据都有一个 \__ob__ 属性，数组元素也不例外。
+
+因此，我们可以在拦截器中通过this访问到 \__ob__，然后调用 \__ob__ 上的observeArray方法就可以了：
+
+```js
+['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'].
+forEach(function(method){
+   const original = arrayProto[method];
+   def(arrayMethods, method, function mutator(...args){
+     const result = original.apply(this, args);
+     const ob = this.__ob__;
+     let inserted;
+     switch(method){
+        case 'push':
+        case 'unshift':
+          inserted = true;
+          break;
+         case 'splice':
+           inserted = args.slice(2);
+           break; 
+     }
+     if(inserted) ob.observerArray(inserted); 
+     ob.dep.notfiy();
+     return result;
+   })
+})
+```
 ## 4、虚拟DOM
 
 ## 5、模板编译
