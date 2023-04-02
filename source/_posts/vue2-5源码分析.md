@@ -602,7 +602,7 @@ export class Observer {
 
 **其实现方式其实并不难，只要能获取新增的元素并使用Observer来侦测它们就行。**
 
-#### 3.13 获取新增元素
+##### 3.12.1 获取新增元素
 想要获取新增元素，我们需要在拦截器中对数组方法的类型进行判断。如果操作数组的方法是push、unshift和splice（可以新增数组元素的方法），则把参数中新增的元素拿过来，用Observer来侦测：
 
 ```js
@@ -631,7 +631,7 @@ forEach(function(method){
 
 接下来，我们要使用Observer把inserted中的元素转换成响应式的。
 
-#### 3.14 使用Observer侦测新增元素
+##### 3.12.2 使用Observer侦测新增元素
 前面介绍过Observer会将自身的实例附加到value的 \__ob__ 属性上。所有被侦测了变化的数据都有一个 \__ob__ 属性，数组元素也不例外。
 
 因此，我们可以在拦截器中通过this访问到 \__ob__，然后调用 \__ob__ 上的observeArray方法就可以了：
@@ -659,6 +659,397 @@ forEach(function(method){
    })
 })
 ```
+
+#### 3.15 关于Array的问题
+
+```js
+this.list[0] = 1; //  即修改数组中第一个元素的值时，无法侦测到数组的变化
+this.list.lengt = 0; // 这个清空数组操作也无法侦测到数组的变化，所以也不会触发re-render或watch等。
+```
+
+因为Vue.js的实现方式决定了无法对上面举的两个例子做拦截，也就没有办法响应。在ES6之前，无法做到模拟数组的原生行为，所以拦截不到也是没有办法的事情。ES6提供了元编程的能力，所以有能力拦截，我猜测未来Vue.js很有可能会使用ES6提供的Proxy来实现这部分功能，从而解决这个问题。
+
+#### 3.13 总结
+Array追踪变化的方式和Object不一样。因为它是通过方法来改变内容的，所以我们通过创建拦截器去覆盖数组原型的方式来追踪变化。
+
+为了不污染全局Array.prototype，我们在Observer中只针对那些需要侦测变化的数组使用 \__proto__ 来覆盖原型方法，但 \__proto__ 在ES6之前并不是标准属性，不是所有浏览器都支持它。因此，针对不支持 \__proto__ 属性的浏览器，我们直接循环拦截器，把拦截器中的方法直接设置到数组身上来拦截Array.prototype上的原生方法。
+
+Array收集依赖的方式和Object一样，都是在getter中收集。但是由于使用依赖的位置不同，数组要在拦截器中向依赖发消息，所以依赖不能像Object那样保存在defineReactive中，而是把依赖保存在了Observer实例上。
+
+在Observer中，我们对每个侦测了变化的数据都标上印记 \__ob__，并把this（Observer实例）保存在 \__ob__ 上。这主要有两个作用，一方面是为了标记数据是否被侦测了变化（保证同一个数据只被侦测一次），另一方面可以很方便地通过数据取到 \__ob__，从而拿到Observer实例上保存的依赖。当拦截到数组发生变化时，向依赖发送通知。
+
+除了侦测数组自身的变化外，数组中元素发生的变化也要侦测。我们在Observer中判断如果当前被侦测的数据是数组，则调用observeArray方法将数组中的每一个元素都转换成响应式的并侦测变化。
+
+除了侦测已有数据外，当用户使用push等方法向数组中新增数据时，新增的数据也要进行变化侦测。我们使用当前操作数组的方法来进行判断，如果是push、unshift和splice方法，则从参数中将新增数据提取出来，然后使用observeArray对新增数据进行变化侦测。
+
+由于在ES6之前，JavaScript并没有提供元编程的能力，所以对于数组类型的数据，一些语法无法追踪到变化，只能拦截原型上的方法，而无法拦截数组特有的语法，例如使用length清空数组的操作就无法拦截。
+
+### 4、变化侦测相关的API实现原理
+#### 4.1 vm.$watch
+##### 4.1.1 用法
+用于观察一个表达式或computed函数在Vue.js实例上的变化。回调函数调用时，会从参数得到新数据（new value）和旧数据（old value）。表达式只接受以点分隔的路径，例如a.b.c。如果是一个比较复杂的表达式，可以用函数代替表达式。
+
+```js
+let unwatch = vm.$watch('a.b.c', function (newVal, oldVal) {
+    // 做点什么
+});
+
+unwatch(); // vm.$watch返回一个取消观察函数，用来停止触发回调：
+```
+
+**deep。为了发现对象内部值的变化，可以在选项参数中指定deep: true：**
+
+```js
+vm.$watch('someObj', callback, {
+  deep: true
+});
+vm.someObj.a = 12; 
+// 回调函数讲被触发
+// 这里需要注意的是，监听数组的变动不需要这么做。
+```
+**immediate。在选项参数中指定immediate: true，将立即以表达式的当前值触发回调：**
+
+```js
+vm.$watch('a', callback, {
+  immediate: true
+});
+// 立即以 a 的当前值触发回调
+```
+##### 4.1.2 原理
+vm.$watch其实是对Watcher的一种封装，但vm.$watch中的参数deep和immediate是Watcher中所没有的。下面我们来看一看vm.$watch到底是怎么实现的：
+
+```js
+Vue.prototype.$watch = function(expOrFn, cb, options){
+  const vm = this;
+  options = options || {};
+  const watcher = new Watcher(vm, expOrFn, cb, options);
+
+  if(options.immediate){
+      cb.call(vm, watcher.value);
+  }
+
+  return function unwatchFn(){
+     watcher.teardown();
+  }
+}
+```
+
+先执行new Watcher来实现vm.$watch的基本功能。这里有一个细节需要注意，expOrFn是支持函数的，而我们在第2章中并没有介绍。这里我们需要对Watcher进行一个简单的修改：
+
+```js
+export default class Watcher {
+   constructor(vm, expOrFn, cb){
+     this.vm = vm;
+     if(typeof expOrFn === 'function'){
+       this.getter = expOrFn;
+     }else{
+       this.getter = parsePath(expOrFn);
+     }
+     this.cb = cb;
+     this.value = this.get();
+   }
+}
+```
+当expOrFn是函数时，会发生很神奇的事情。它不只可以动态返回数据，其中读取的所有数据也都会被Watcher观察。当expOrFn是字符串类型的keypath时，Watcher会读取这个keypath所指向的数据并观察这个数据的变化。而当expOrFn是函数时，Watcher会同时观察expOrFn函数中读取的所有Vue.js实例上的响应式数据。**也就是说，如果函数从Vue.js实例上读取了两个数据，那么Watcher会同时观察这两个数据的变化，当其中任意一个发生变化时，Watcher都会得到通知。(Vue.js中计算属性 Computed 的实现原理与expOrFn支持函数有很大的关系)**
+
+现在要在Watcher中添加该方法来实现unwatch的功能：
+
+首先，需要在Watcher中记录自己都订阅了谁，也就是watcher实例被收集进了哪些Dep里。然后当Watcher不想继续订阅这些Dep时，循环自己记录的订阅列表来通知它们（Dep）将自己从它们（Dep）的依赖列表中移除掉。
+
+```js
+export default class Wather {
+  constructor(vm, expOrFn, cb){
+     this.vm = vm;
+     this.deps = [];
+     this.depIds = new Set();
+     if(typeof expOrFn === 'function'){
+       this.getter = expOrFn;
+     }else{
+       this.getter = parsePath(expOrFn);
+     }
+     this.cb = cb;
+     this.value = this.get();
+  }
+
+  addDep(dep){
+    const id = dep.id;
+    if(!this.depIds.has(id)){
+       this.depIds.add(id);
+       this.deps.push(id);
+       dep.addSub(this);
+    }
+  }
+
+  teardown(){
+    let i = this.deps.length;
+    while(i--){
+      this.deps[i].removeSub(this);
+    }
+  }
+}
+```
+
+执行this.depIds.add来记录当前Watcher已经订阅了这个Dep。
+
+然后执行this.deps.push(dep)记录自己都订阅了哪些Dep。
+
+最后，触发dep.addSub(this)来将自己订阅到Dep中。
+
+在Watcher中新增addDep方法后，Dep中收集依赖的逻辑也需要有所改变：
+
+```js
+let uid = 0;
+
+export default class Dep {
+   constructor(){
+      this.id = uid++;
+      this.subs = [];
+   }
+
+   depend(){
+     if(window.target){
+       this.addSub(window.target);  // 废弃
+       window.target.addDep(this); // 新增
+     }
+   }
+
+   removeSub(sub){
+    const index = this.subs.indexOf(sub);
+    if(index > -1){
+       return this.subs.splice(index, 1)
+    }
+   }
+
+}
+```
+
+##### 4.1.3 deep参数的实现原理
+要想实现deep的功能，其实就是除了要触发当前这个被监听数据的收集依赖的逻辑之外，还要把当前监听的这个值在内的所有子值都触发一遍收集依赖逻辑。这就可以实现当前这个依赖的所有子数据发生变化时，通知当前Watcher了。
+
+```js
+export default class Wather {
+   constructor(vm, expOrFn, cb, options){
+     this.vm = vm;
+
+     // 新增
+     if(options){
+        this.deep = !!options.deep;
+     }else{
+        this.deep = false;
+     }
+
+     this.deps = [];
+     this.depIds = new Set();
+     if(typeof expOrFn === 'function'){
+       this.getter = expOrFn;
+     }else{
+       this.getter = parsePath(expOrFn);
+     }
+     this.cb = cb;
+     this.value = this.get();
+   }
+
+   get(){
+    window.target = this;
+    let value = this.getter.call(vm, vm);
+    if(this.deep){
+       traverse(value);
+    }
+    window.target = undefined;
+    return value
+   }
+}
+```
+
+一定要在window.target = undefined之前去触发子值的收集依赖逻辑，这样才能保证子集收集的依赖是当前这个Watcher。如果在window.target = undefined之后去触发收集依赖的逻辑，那么其实当前的Watcher并不会被收集到子值的依赖列表中，也就无法实现deep的功能。
+
+接下来，要递归value的所有子值来触发它们收集依赖的功能：
+
+```js
+const seenObjects = new Set();
+
+export function traverse (val){
+  _traverse(val, seenObjects);
+  seenObjects.clear();
+}
+
+function _traverse(val, seen){
+   let i, keys;
+   const isA = Array.isArray(val);
+   if((!isA && !isObject(val)) || Object.isFrozen(val)){
+       return;
+   }
+   if(val.__ob__){
+    const depId = val.__ob__.dep.id;
+    if(seen.has(depId)){
+      return;
+    }
+    seen.add(depId);
+   }
+
+   if(isA){
+      i = val.length;
+      while(i--) __traverse(val[i], seen);
+   }else{
+      keys = Object.keys(val);
+      i = keys.length;
+      while(i--) __traverse(val[keys[i]], seen); 
+   }
+}
+```
+
+#### 4.2 vm.$set
+##### 4.2.1 用法
+```js
+vm.$set(target, key, value);
+// {Object | Array } target
+// {String | Number} key
+// {any} value
+
+// 返回值 {Function} unwatch
+```
+
+用法：在object上设置一个属性，如果object是响应式的，Vue.js会保证属性被创建后也是响应式的，并且触发视图更新。这个方法主要用来避开Vue.js不能侦测属性被添加的限制。
+
+原因：只有已经存在的属性的变化会被追踪到，新增的属性无法被追踪到。因为在ES6之前，JavaScript并没有提供元编程的能力，所以根本无法侦测object什么时候被添加了一个新属性。
+
+```js
+/**
+ * 新增的这个属性也不是响应式的，Vue.js根本不知道这个obj新增了属性，
+ * 就好像Vue.js无法知道我们使用array.length = 0清空了数组一样。
+ */ 
+var vm = new Vue({
+    el: '#el',
+    template: '#demo-template',
+    data: {
+      obj: { }
+    },    
+    methods: {
+      action () {
+        this.obj.name = 'berwin' // 
+      }
+    }
+})
+```
+
+##### 4.2.2 原理
+
+```js
+import { set } from '../observer/index';
+Vue.prototype.$set = set;
+
+// index文件
+export function set (target, key, val){ } 
+```
+
+**1、Array处理：**
+
+```js
+export function set (target, key, val){
+  if(Array.isArray(target) && isValidArrayIndex(key)){
+      target.length = Math.max(target.length, key);
+      target.splice(key, 1, val);
+      return val;
+  }
+}
+```
+
+如果target是数组并且key是一个有效的索引值，就先设置length属性。这样如果我们传递的索引值大于当前数组的length，就需要让target的length等于索引值。
+
+通过splice方法把val设置到target中的指定位置（参数中提供的索引值的位置）。当我们使用splice方法把val设置到target中的时候，数组拦截器会侦测到target发生了变化，并且会自动帮助我们把这个新增的val转换成响应式的。
+
+**2、key已经存在target中**
+```js
+export function set(target, key, val){
+  if(Array.isArray(target) && isValidArrayIndex(key)){
+      target.length = Math.max(target.length, key);
+      target.splice(key, 1, val);
+      return val;
+  }
+
+  if(key in target && !(key in Object.prototype)){
+      target[key] = val;
+      return val;
+  }
+}
+```
+
+由于key已经存在于target中，所以其实这个key已经被侦测了变化。也就是说，这种情况属于修改数据，直接用key和val改数据就好了。
+
+**3、处理新增属性**
+```js
+export function set(target, key, val){
+  if(Array.isArray(target) && isValidArrayIndex(key)){
+      target.length = Math.max(target.length, key);
+      target.splice(key, 1, val);
+      return val;
+  }
+
+  if(key in target && !(key in Object.prototype)){
+      target[key] = val;
+      return val;
+  }
+
+  // 新增
+  const ob = target.__ob__;
+  if(target.isVue && (ob && ob.vmCount)){
+      process.env.NODE_ENV !== 'production' && warn(
+        'Avoid adding reactive properties to a Vue instance or its root $data ' +
+        'at runtime - declare it upfront in the data option.'
+      );
+      return val
+  }
+  if(!ob){
+    target[key] = val;
+    return val;
+  }
+  defineReactive(ob.value, key, val);
+  ob.dep.notify();
+  return val;
+}
+```
+
+要处理文档中所说的“target不能是Vue.js实例或Vue.js实例的根数据对象”的情况。
+
+实现这个功能并不难，只需要使用target._isVue来判断target是不是Vue.js实例，使用ob.vmCount来判断它是不是根数据对象即可。
+
+那么，什么是根数据？this.$data就是根数据。
+
+接下来，我们处理target不是响应式的情况。如果target身上没有 \__ob__ 属性，说明它并不是响应式的，并不需要做什么特殊处理，只需要通过key和val在target上设置就行了
+
+
+#### 4.3 vm.$delete
+##### 4.3.1 用法
+```js
+vm.$delete(target, key);
+
+// {Object | Array} target
+// {String | Numbet} key
+```
+
+删除对象的属性。如果对象是响应式的，需要确保删除能触发更新视图。这个方法主要用于避开Vue.js不能检测到属性被删除的限制，但是你应该很少会使用它。
+
+强烈不推荐这样写代码：
+
+```js
+delete this.obj.name;
+this.obj.__ob__.dep.notify(); // 手动向依赖发生变化通知
+```
+
+##### 4.3.2 原理
+
+```js
+import { del } from '../observer/index';
+Vue.prototype.$delete = del;
+
+// index
+export function del (target, key){
+  
+}
+```
+
+#### 4.4 总结
+
 ## 4、虚拟DOM
 
 ## 5、模板编译
