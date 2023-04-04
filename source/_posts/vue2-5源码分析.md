@@ -1044,13 +1044,102 @@ Vue.prototype.$delete = del;
 
 // index
 export function del (target, key){
-  
+  const ob = target.__ob__;
+  delete target[key];
+  ob.dep.notify();
 }
 ```
 
+**1、处理Array**
+
+```js
+export function del (target, key){
+  if(Array.isArray(target) && isValidArrayIndex(key)){
+    target.splice(key, 1);
+    return;
+  }
+  const ob = (target).__ob__;
+  delete target[key];
+  ob.dep.notify();  
+}
+```
+
+只需要使用splice将参数key所指定的索引位置的元素删除即可。因为使用了splice方法，数组拦截器会自动向依赖发送通知。
+
+vm.$delete也不可以在Vue.js实例或Vue.js实例的根数据对象上使用:
+```js
+export function del (target, key){
+   if(Array.isArray(target) && isValidArrayIndex(key)){
+      target.splice(key, 1);
+      return;
+   }
+   const ob = target.__ob__;
+
+   // 新增
+   if(target._isVue || (ob && ob.vmCount)){
+      process.env.NODE_ENV !== 'production' && warn(
+        'Avoid deleting properties on a Vue instance or its root $data ' +
+        '- just set it to null.'        
+      );
+      return;
+   }
+
+   // 如果key不是target自身属性， 则终止
+   if(!hasOwn(target, key))){
+    return;
+   }
+
+   delete target[key];
+   
+   // 如果ob不存在，则终止
+   if(!ob){
+     return;
+   }
+
+   ob.dep.notify();
+} 
+```
+
 #### 4.4 总结
+待补充吧
+
 
 ## 4、虚拟DOM
+Vue.js 2.0引入了虚拟DOM，比Vue.js 1.0的初始渲染速度提升了2~4倍，并大大降低了内存消耗。
+
+### 1、虚拟DOM简介
+#### 1.1 虚拟DOM背景
+虚拟DOM是随着时代发展而诞生的产物。
+
+在Web早期，页面的交互效果比现在简单得多，没有很复杂的状态需要管理，也不太需要频繁地操作DOM，使用jQuery来开发就可以满足我们的需求。
+
+随着时代的发展，页面上的功能越来越多，我们需要实现的需求也越来越复杂，程序中需要维护的状态也越来越多，DOM操作也越来越频繁。
+
+**命令式操作DOM：当状态变得越来越多，DOM操作越来越频繁时，我们就会发现如果像之前那样使用jQuery来开发页面，那么代码中会有相当多的代码是在操作DOM，程序中的状态也很难管理，代码中的逻辑也很混乱。**
+
+**声明式操作DOM: 我们通过描述状态和DOM之间的映射关系是怎样的，就可以将状态渲染成视图。关于状态到视图的转换过程，框架会帮我们做，不需要我们自己手动去操作DOM。**
+
+然而通常程序在运行时，状态会不断发生变化（引起状态变化的原因有很多，有可能是用户点击了某个按钮，也可能是某个Ajax请求，这些行为都是异步发生的。理论上，所有异步行为都有可能引起状态变化）。**每当状态发生变化时，都需要重新渲染。如何确定状态中发生了什么变化以及需要在哪里更新DOM？**
+
+在这种情况下，最简单粗暴的解决方式是，既不需要关心状态发生了什么变化，也不需要关心在哪里更新DOM，我们只需要把所有DOM全删了，然后使用状态重新生成一份DOM，并将其输出到页面上显示出来就好了。
+
+但是访问DOM是非常昂贵的。按照上面说的方式做，会造成相当多的性能浪费。状态变化通常只有有限的几个节点需要重新渲染，所以我们不仅需要找出哪里需要更新，还需要尽可能少地访问DOM。
+
+业界3大框架解决方案：
+
+1. Angular中就是脏检查的流程
+2. React中使用虚拟DOM
+3. Vue.js 1.0通过细粒度的绑定
+
+
+**虚拟DOM的解决方式是通过状态生成一个虚拟节点树，然后使用虚拟节点树进行渲染。在渲染之前，会使用新生成的虚拟节点树和上一次生成的虚拟节点树进行对比，只渲染不同的部分。**
+
+
+#### 1.2 为什么要引入虚拟DOM 
+
+### 2、VNode
+
+### 3、patch
 
 ## 5、模板编译
 
