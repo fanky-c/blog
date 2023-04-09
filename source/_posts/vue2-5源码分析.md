@@ -1136,8 +1136,100 @@ Vue.js 2.0引入了虚拟DOM，比Vue.js 1.0的初始渲染速度提升了2~4倍
 
 
 #### 1.2 为什么要引入虚拟DOM 
+事实上，Angular和React的变化侦测有一个共同点，那就是它们都不知道哪些状态（state）变了。因此，就需要进行比较暴力的比对，React是通过虚拟DOM的比对，Angular是使用脏检查的流程。
+
+Vue.js的变化侦测和它们都不一样，它在一定程度上知道具体哪些状态发生了变化，这样就可以通过更细粒度的绑定来更新视图。也就是说，在Vue.js中，当状态发生变化时，它在一定程度上知道哪些节点使用了这个状态，从而对这些节点进行更新操作，根本不需要比对。事实上，在Vue.js 1.0的时候就是这样实现的。
+
+**但是这样做其实也有一定的代价。因为粒度太细，每一个绑定都会有一个对应的watcher来观察状态的变化，这样就会有一些内存开销以及一些依赖追踪的开销。当状态被越多的节点使用时，开销就越大。对于一个大型项目来说，这个开销是非常大的。**
+
+**因此，Vue.js 2.0开始选择了一个中等粒度的解决方案，那就是引入了虚拟DOM。组件级别是一个watcher实例，就是说即便一个组件内有10个节点使用了某个状态，但其实也只有一个watcher在观察这个状态的变化。所以当这个状态发生变化时，只能通知到组件，然后组件内部通过虚拟DOM去进行比对与渲染。这是一个比较折中的方案。**
+
+**Vue.js之所以能随意调整绑定的粒度，本质上还要归功于变化侦测。**
+
+#### 1.3 vue.js中的虚拟dom
+在Vue.js中，我们使用模板来描述状态与DOM之间的映射关系。**Vue.js通过编译将模板转换成渲染函数（render），执行渲染函数就可以得到一个虚拟节点树，使用这个虚拟节点树就可以渲染页面：**
+
+<img src="/img/vue4.jpeg" style="max-width:95%" />
+
+由于DOM操作比较慢，所以这些DOM操作在性能上会有一定的浪费，避免这些不必要的DOM操作会提升很大一部分性能。
+
+为了避免不必要的DOM操作，虚拟DOM在虚拟节点映射到视图的过程中，将虚拟节点与上一次渲染视图所使用的旧虚拟节点（oldVnode）做对比，找出真正需要更新的节点来进行DOM操作，从而避免操作其他无任何改动的DOM。
+
+虚拟DOM的执行流程：
+
+<img src="/img/vue5.jpeg" style="max-width:95%" />
+
+虚拟DOM在Vue.js中所做的事情其实并没有想象中那么复杂，它主要做了两件事：
+
+1. 提供与真实DOM节点所对应的虚拟节点vnode。
+2. 将虚拟节点vnode和旧虚拟节点oldVnode进行比对，然后更新视图
+
+#### 1.4 总结
+虚拟DOM是将状态映射成视图的众多解决方案中的一种，它的运作原理是使用状态生成虚拟节点，然后使用虚拟节点渲染视图。
+
+之所以需要先使用状态生成虚拟节点，是因为如果直接用状态生成真实DOM，会有一定程度的性能浪费。而先创建虚拟节点再渲染视图，就可以将虚拟节点缓存，然后使用新创建的虚拟节点和上一次渲染时缓存的虚拟节点进行对比，然后根据对比结果只更新需要更新的真实DOM节点，从而避免不必要的DOM操作，节省一定的性能开销。
+
+Vue.js中通过模板来描述状态与视图之间的映射关系，所以它会先将模板编译成渲染函数，然后执行渲染函数生成虚拟节点，最后使用虚拟节点更新视图。
+
+因此，虚拟DOM在Vue.js中所做的事是提供虚拟节点vnode和对新旧两个vnode进行比对，并根据比对结果进行DOM操作来更新视图。
+
 
 ### 2、VNode
+#### 2.1 VNode简介
+在Vue.js中存在一个VNode类，使用它可以实例化不同类型的vnode实例，而不同类型的vnode实例各自表示不同类型的DOM元素。
+
+例如，DOM元素有元素节点、文本节点和注释节点等，vnode实例也会对应着有元素节点、文本节点和注释节点等。
+
+```js
+export default class VNode {
+  constructor(tag, data, children, text, elm, context, componentOptions, asyncFactory){
+      this.tag = tag;
+      this.data = data;
+      this.children = children;
+      this.text = text;
+      this.elm = elm;
+      this.ns = undefined;
+      this.context = context;
+      this.functionalContext = undefined;
+      this.functionalOptions = undefined;
+      this.functionalScopeId = undefined;
+      this.key = data && data.key;
+      this.componentOptions = componentOptions;
+      this.componentInstance = undefined;
+      this.parent = undefined;
+      this.raw = false;
+      this.isStatic = false;
+      this.isRootInsert = true;
+      this.isComment = false;
+      this.isCloned = false;
+      this.isOnce = false;
+      this.asyncFactory = asyncFactory;
+      this.asyncMeta = undefined;
+      this.isAsyncPlaceholder = false;
+  }
+
+  get child(){
+    return this.commponentInstance;
+  }
+}
+```
+
+简单地说，vnode可以理解成节点描述对象，它描述了应该怎样去创建真实的DOM节点。
+
+vnode表示一个真实的DOM元素，所有真实的DOM节点都使用vnode创建并插入到页面中:
+
+**Vnode --create--> DOM  --insert--> 视图**
+
+#### 2.2 VNode作用
+由于每次渲染视图时都是先创建vnode，然后使用它创建真实DOM插入到页面中，所以可以将上一次渲染视图时所创建的vnode缓存起来，之后每当需要重新渲染视图时，将新创建的vnode和上一次缓存的vnode进行对比，查看它们之间有哪些不一样的地方，找出这些不一样的地方并基于此去修改真实的DOM。
+
+**Vue.js目前对状态的侦测策略采用了中等粒度。当状态发生变化时，只通知到组件级别，然后组件内使用虚拟DOM来渲染视图。**
+
+也就是说，只要组件使用的众多状态中有一个发生了变化，那么整个组件就要重新渲染。
+
+如果组件只有一个节点发生了变化，那么重新渲染整个组件的所有节点，很明显会造成很大的性能浪费。因此，对vnode进行缓存，并将上一次缓存的vnode和当前新创建的vnode进行对比，只更新发生变化的节点就变得尤为重要。这也是vnode最重要的一个作用。
+
+#### 2.3 VNode类型
 
 ### 3、patch
 
