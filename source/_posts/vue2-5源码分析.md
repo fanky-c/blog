@@ -1230,6 +1230,88 @@ vnode表示一个真实的DOM元素，所有真实的DOM节点都使用vnode创�
 如果组件只有一个节点发生了变化，那么重新渲染整个组件的所有节点，很明显会造成很大的性能浪费。因此，对vnode进行缓存，并将上一次缓存的vnode和当前新创建的vnode进行对比，只更新发生变化的节点就变得尤为重要。这也是vnode最重要的一个作用。
 
 #### 2.3 VNode类型
+vnode的类型有以下几种：
+1. 注释节点
+2. 文本节点
+3. 元素节点
+4. 组件节点
+5. 函数式组件
+6. 克隆节点
+
+##### 2.3.1 注释节点
+
+```html
+<!-- 注释节点 -->
+```
+
+```js
+{
+  text: '注释节点',
+  isComment: true
+}
+```
+
+##### 2.3.2 文本节点
+当文本类型的vnode被创建时，它只有一个text属性：
+
+```js
+export function createTextVNode(val){
+  return new VNode(undefined, undefined, undefined, String(val));
+}
+
+{
+  text: 'hello world'
+}
+```
+
+##### 2.3.3 克隆节点
+克隆节点是将现有节点的属性复制到新节点中，让新创建的节点和被克隆节点的属性保持一致，从而实现克隆效果。它的作用是优化静态节点和插槽节点（slot node）。
+
+以静态节点为例，当组件内的某个状态发生变化后，当前组件会通过虚拟DOM重新渲染视图，静态节点因为它的内容不会改变，所以除了首次渲染需要执行渲染函数获取vnode之外，后续更新不需要执行渲染函数重新生成vnode。因此，这时就会使用创建克隆节点的方法将vnode克隆一份，使用克隆节点进行渲染。这样就不需要重新执行渲染函数生成新的静态节点的vnode，从而提升一定程度的性能
+
+```js
+export function cloneVNode(vnode, depp){
+  const cloned = new VNode(
+    vnode.tag,
+    vnode.data,
+    vnode.children,
+    vnode.text,
+    vnode.elm,
+    vnode.context,
+    vnode.componentOptions,
+    vnode.asyncFactory
+  )
+  cloned.ns = vnode.ns;
+  cloned.isStatic = vnode.isStatic;
+  cloned.key = vnode.key;
+  clone.isCloned = true; // 这是克隆节点与被克隆节点的区别
+  if(deep && vnode.children){
+    cloned.children = cloneVNode(vnode.children);
+  }
+  return cloned;
+}
+```
+
+##### 2.3.4 元素节点
+元素节点通常会存在以下4种有效属性。
+1. tag：顾名思义，tag就是一个节点的名称，例如p、ul、li和div等。
+2. data：该属性包含了一些节点上的数据，比如attrs、class和style等。
+3. children：当前节点的子节点列表。
+4. context：它是当前组件的Vue.js实例。
+
+```html
+<p><span>Hello</span><span>Berwin</span></p>
+```
+
+```js
+{
+  children: [VNode, VNode],
+  context: {...},
+  data: {...},
+  tag: 'p',
+  ...
+}
+```
 
 ### 3、patch
 
