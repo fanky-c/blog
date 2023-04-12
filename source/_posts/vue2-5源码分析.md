@@ -1313,7 +1313,70 @@ export function cloneVNode(vnode, depp){
 }
 ```
 
+##### 2.3.5 组件节点
+组件节点和元素节点类似，有以下两个独有的属性。
+
+1. componentOptions：顾名思义，就是组件节点的选项参数，其中包含propsData、tag和children等信息
+2. componentInstance：组件的实例，也是Vue.js的实例。事实上，在Vue.js中，每个组件都是一个Vue.js实例
+
+```js
+<child></child>
+
+// 对应vnode
+{
+   componentOptions: {...},
+   commponentInstance: {...},
+   context: {...},
+   data: {...},
+   tag: 'vue-component-child',
+   ...
+}
+```
+
+##### 2.3.6 函数式组件
+函数式组件和组件节点类似，它有两个独有的属性functionalContext和functionalOptions
+
+
 ### 3、patch
+虚拟DOM最核心的部分是patch，它可以将vnode渲染成真实的DOM。
+
+之所以要这么做，主要是因为DOM操作的执行速度远不如JavaScript的运算速度快。因此，把大量的DOM操作搬运到JavaScript中，使用patching算法来计算出真正需要更新的节点，最大限度地减少DOM操作，从而显著提升性能。这本质上其实是使用JavaScript的运算成本来替换DOM操作的执行成本，而JavaScript的运算速度要比DOM快很多，这样做很划算，所以才会有虚拟DOM。
+
+#### 3.1 patch介绍
+对现有DOM进行修改需要做三件事：
+
+1. 创建新增的节点；
+2. 删除已经废弃的节点；
+3. 修改需要更新的节点。
+
+
+之所以需要通过算法来比对两个节点之间的差异，并针对不同的节点进行更新，主要是为了性能考虑。
+
+我们完全可以把整个旧节点从DOM中删除，然后使用最新的状态（state）重新生成一份全新的节点并插入到DOM中，这种方式完全可以实现功能。
+
+##### 3.1.1 新增节点
+首先，新增节点的一个很明显的场景就是，当oldVnode不存在而vnode存在时，就需要使用vnode生成真实的DOM元素并将其插入到视图当中去。
+
+1. **1、这通常会发生在首次渲染中。**因为首次渲染时，DOM中不存在任何节点，所以oldVnode是不存在的。
+<img src="/img/vue6.jpeg" style="max-width:95%" />
+<img src="/img/vue7.jpeg" style="max-width:95%" />
+
+2. **2、还有一种情况也需要新增节点。**当vnode和oldVnode完全不是同一个节点时，需要使用vnode生成真实的DOM元素并将其插入到视图当中。
+<img src="/img/vue8.jpeg" style="max-width:95%" />
+
+
+##### 3.1.2 删除节点
+就是当一个节点只在oldVnode中存在时，我们需要把它从DOM中删除。因为渲染视图时，需要以vnode为标准，所以vnode中不存在的节点都属于被废弃的节点，而被废弃的节点需要从DOM中删除。
+
+##### 3.1.3 更新节点
+新旧两个节点是同一个节点。当新旧两个节点是相同的节点时，我们需要对这两个节点进行比较细致的比对，然后对oldVnode在视图中所对应的真实节点进行更新。
+
+举个简单的例子，当新旧两个节点是同一个文本节点，但是两个节点的文本不一样时，我们需要重新设置oldVnode在视图中所对应的真实DOM节点的文本。
+
+<img src="/img/vue9.jpeg" style="max-width:95%" />
+
+##### 3.1.4 总结
+<img src="/img/vue10.jpeg" style="max-width:95%" />
 
 ## 5、模板编译
 
