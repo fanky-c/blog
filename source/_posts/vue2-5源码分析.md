@@ -1378,6 +1378,85 @@ export function cloneVNode(vnode, depp){
 ##### 3.1.4 总结
 <img src="/img/vue10.jpeg" style="max-width:95%" />
 
+#### 3.2 创建节点
+只有三种类型的节点会被创建并插入到DOM中：元素节点、注释节点和文本节点。
+
+创建一个节点并将其渲染到视图的全过程：
+
+<img src="/img/vue11.jpeg" style="max-width:95%" />
+
+#### 3.2 删除节点
+
+```js
+// removeVnodes 删除一组指定的节点
+function removeVnodes(vnodes, startIdx, endIdx){
+  for(; startIdx <= endIdx; ++startIdx){
+    const ch = vnodes[startIdx];
+    if(isDef(ch)){
+        // removeNode 删除单个节点
+        removeNode(ch.elm);
+    }
+  }
+}
+
+const nodeOps = {
+  removeChild(node, child){
+     node.removeChild(child);
+  }
+}
+
+function removeNode(el){
+   const parent = nodeOps.parentNode(el);
+   if(!isDef(parent)){
+    nodeOps.removeChild(parent, el);
+   }
+}
+```
+有同学可能会对nodeOps感到奇怪，为什么不直接使用parent.removeChild(child)删除节点，而是将这个节点操作封装成函数放在nodeOps里呢？
+
+其实这涉及跨平台渲染的知识，我们知道阿里开发的Weex可以让我们使用相同的组件模型为iOS和Android编写原生渲染的应用。也就是说，我们写的Vue.js组件可以分别在iOS和Android环境中进行原生渲染。
+
+**跨平台渲染的本质是在设计框架的时候，要让框架的渲染机制和DOM解耦。**只要把框架更新DOM时的节点操作进行封装，就可以实现跨平台渲染，在不同平台下调用节点的操作。
+
+如果我们把这些平台下节点操作的封装看成渲染引擎，那么将这些渲染引擎所提供的节点操作的API和框架的运行时对接一下，就可以实现将框架中的代码进行原生渲染的目的。
+
+
+#### 3.3 更新节点
+只有两个节点是同一个节点时，才需要更新元素节点，而更新节点并不是很暴力地使用新节点覆盖旧节点，而是通过比对找出新旧两个节点不一样的地方，针对那些不一样的地方进行更新。
+
+##### 3.3.1 静态节点
+在更新节点时，首先需要判断新旧两个虚拟节点是否是静态节点，如果是，就不需要进行更新操作，可以直接跳过更新节点的过程。
+
+**静态节点指的是那些一旦渲染到界面上之后，无论日后状态如何变化，都不会发生任何变化的节点。**
+
+```html
+<span>我是静态节点，我不需要改变</span>
+```
+
+##### 3.3.2 新虚拟节点有文本属性
+当新旧两个虚拟节点（vnode和oldVnode）不是静态节点，并且有不同的属性时，要以新虚拟节点（vnode）为准来更新视图。根据新节点（vnode）是否有text属性，更新节点可以分为两种不同的情况。
+
+简单来说，就是当新虚拟节点有文本属性，并且和旧虚拟节点的文本属性不一样时，我们可以直接把视图中的真实DOM节点的内容改成新虚拟节点的文本。
+
+##### 3.3.3 新虚拟节点无文本属性
+如果新创建的虚拟节点没有text属性，那么它就是一个元素节点。元素节点通常会有子节点，也就是children属性，但也有可能没有子节点，所以存在两种不同的情况。
+
+1. 一种情况，有children情况
+   a、如果旧虚拟节点也有children属性，那么我们要对新旧两个虚拟节点的children进行一个更详细的对比并更新。 <br>
+
+   b、如果旧虚拟节点没有children属性，那么说明旧虚拟节点要么是一个空标签，要么是有文本的文本节点。
+
+2. 二种情况，无children情况
+  当新创建的虚拟节点既没有text属性也没有children属性时，这说明这个新创建的节点是一个空节点，它下面既没有文本也没有子节点，这时如果旧虚拟节点（oldVnode）中有子节点就删除子节点，有文本就删除文本。有什么删什么，最后达到视图中是空标签的目的。
+
+
+##### 3.3.4 总结
+<img src="/img/vue12.jpeg" style="max-width:95%" />
+
+<img src="/img/vue13.jpeg" style="max-width:95%" />
+
+#### 3.4 更新子节点
+
 ## 5、模板编译
 
 ## 6、整体流程
