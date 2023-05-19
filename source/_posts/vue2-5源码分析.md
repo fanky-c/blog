@@ -1977,22 +1977,207 @@ const startTagOpen = new RegExp(`^<${qnameCapture}`);
 // 以文本开始的模板
 '我是Berwin</p>'.match(startTagOpen); // null
 ```
+通过上面的例子可以看到，只有 '<div\></div\>' 可以成功匹配，而以 </div\> 开头的或者以文本开头的模板都无法成功匹配。
+
+当完成上面的解析后，我们可以得到这样一个数据结构：
+
+```js
+const start = '<div></div>'.match(startTagOpen)
+if (start) {
+  const match = {
+    tagName: start[1],
+    attrs: []
+  }
+}
+```
+
+前面解析开始标签时，我们将其拆解成了三个部分，分别是标签名、属性和结尾。我相信你已经对开始标签的解析有了一个清晰的认识，接下来看一下Vue.js中真实的代码是什么样的：
+
+```js
+  const ncname = '[a-zA-Z_][\\w\\-\\.]*'
+  const qnameCapture = `((?:${ncname}\\:)?${ncname})`
+  const startTagOpen = new RegExp(`^<${qnameCapture}`)
+  const startTagClose = /^\s*(\/?)>/
+  
+  function advance (n) {
+    html = html.substring(n)
+  }
+  
+  function parseStartTag () {
+    // 解析标签名，判断模板是否符合开始标签的特征
+    const start = html.match(startTagOpen)
+    if (start) {
+      const match = {
+        tagName: start[1],
+        attrs: []
+      }
+      advance(start[0].length)
+  
+      // 解析标签属性
+      let end, attr
+      while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {
+        advance(attr[0].length)
+        match.attrs.push(attr)
+      }
+  
+      // 判断该标签是否是自闭合标签
+      if (end) {
+        match.unarySlash = end[1]
+        advance(end[0].length)
+        return match
+      }
+    }
+  }
+```
+上面的代码是Vue.js中解析开始标签的源码，这段代码中的html变量是HTML模板。
+
 
 ##### 3.3.3 截取结束标签
+如果HTML模板的第一个字符不是 <，那么一定不是结束标签。只有HTML模板的第一个字符是 \< 时，我们才需要进一步确认它到底是不是结束标签。
+
+进一步确认时，我们只需要判断剩余HTML模板的开始位置是否符合正则表达式中定义的规则即可：
+
+```js
+  const ncname = '[a-zA-Z_][\\w\\-\\.]*'
+  const qnameCapture = `((?:${ncname}\\:)?${ncname})`
+  const endTag = new RegExp(`^<\\/${qnameCapture}[^>]*>`)
+  
+  const endTagMatch = '</div>'.match(endTag)
+  const endTagMatch2 = '<div>'.match(endTag)
+  
+  console.log(endTagMatch) // ["</div>", "div", index: 0, input: "</div>"]
+  console.log(endTagMatch2) // null
+```
+
+而Vue.js中相关源码被精简后如下：
+
+```js
+  const endTagMatch = html.match(endTag)
+  if (endTagMatch) {
+    html = html.substring(endTagMatch[0].length)
+    options.end(endTagMatch[1])
+    continue
+  }
+```
 
 
 ##### 3.3.4 截取注释
+分辨模板是否已经截取到注释的原理与开始标签和结束标签相同，先判断剩余HTML模板的第一个字符是不是 \<，如果是，再用正则表达式来进一步匹配：
 
+```js
+  const comment = /^<!--/
+  if (comment.test(html)) {
+    const commentEnd = html.indexOf('-->')
+  
+    if (commentEnd >= 0) {
+      if (options.shouldKeepComment) {
+        options.comment(html.substring(4, commentEnd))
+      }
+      html = html.substring(commentEnd + 3)
+      continue
+    }
+  }
+```
 
 ##### 3.3.5 截取条件注释
+截取条件注释的原理与截取注释非常相似，如果模板的第一个字符是 <，并且符合我们事先用正则表达式定义好的规则，就说明需要进行条件注释的截取操作。
+
+```js
+  const conditionalComment = /^<!\[/
+  if (conditionalComment.test(html)) {
+    const conditionalEnd = html.indexOf(']>')
+  
+    if (conditionalEnd >= 0) {
+      html = html.substring(conditionalEnd + 2)
+      continue
+    }
+  }
+```
+
+举个例子:
+
+```js
+  const conditionalComment = /^<!\[/
+  let html = '<![if !IE]><link href="non-ie.css" rel="stylesheet"><![endif]>'
+  if (conditionalComment.test(html)) {
+    const conditionalEnd = html.indexOf(']>')
+    if (conditionalEnd >= 0) {
+      html = html.substring(conditionalEnd + 2)
+    }
+  }
+  
+  console.log(html) // '<link href="non-ie.css" rel="stylesheet"><![endif]>'
+```
+
+通过这个逻辑可以发现，在Vue.js中条件注释其实没有用，写了也会被截取掉，通俗一点说就是写了也白写。
 
 
 ##### 3.3.6 截取DOCTYPE
 
-##### 3.3.7 截取文本
+```js
+  const doctype = /^<!DOCTYPE [^>]+>/i
+  const doctypeMatch = html.match(doctype)
+  if (doctypeMatch) {
+    html = html.substring(doctypeMatch[0].length)
+    continue
+  }
+```
 
+例子：
+
+```js
+  const doctype = /^<!DOCTYPE [^>]+>/i
+  let html = '<!DOCTYPE html><html lang="en"><head></head><body></body></html>'
+  const doctypeMatch = html.match(doctype)
+  if (doctypeMatch) {
+    html = html.substring(doctypeMatch[0].length)
+  }
+  
+  console.log(html) // '<html lang="en"><head></head><body></body></html>'
+```
+##### 3.3.7 截取文本
+在前面的其他标签类型中，我们都会判断剩余HTML模板的第一个字符是否是 <，如果是，再进一步确认到底是哪种类型。这是因为以 < 开头的标签类型太多了，如开始标签、结束标签和注释等。然而文本只有一种，如果HTML模板的第一个字符不是 <，那么它一定是文本了。
+
+```html
+我是文本</div>
+```
+
+上面这段HTML模板并不是以 < 开头的，所以可以断定它是以文本开头的。那么，如何从模板中将文本解析出来呢？我们只需要找到下一个 < 在什么位置，这之前的所有字符都属于文本。
+
+代码中可以这样实现：
+
+```js
+  while (html) {
+    let text
+    let textEnd = html.indexOf('<')
+  
+    // 截取文本
+    if (textEnd >= 0) {
+      text = html.substring(0, textEnd)
+      html = html.substring(textEnd)
+    }
+  
+    // 如果模板中找不到 <，就说明整个模板都是文本
+    if (textEnd < 0) {
+      text = html
+      html = ''
+    }
+  
+    // 触发钩子函数
+    if (options.chars && text) {
+      options.chars(text)
+    }
+  }
+```
+
+如果 < 是文本的一部分，该如何处理：
+
+```html
+<我<是文本</div>
+```
 
 ##### 3.3.8 纯文本内容元素的处理
+
 
 ##### 3.3.9 使用栈维护DOM层级
 
@@ -2007,4 +2192,15 @@ const startTagOpen = new RegExp(`^<${qnameCapture}`);
 代码字符串可以被包装在函数中执行，这个函数就是我们通常所说的渲染函数。
 
 ## 6、整体流程
+### 1、架构设计和项目结构
+
+### 2、实例方法和全局API的实现原理
+
+### 3、生命周期
+
+### 4、指令的奥秘
+
+### 5、过滤器的奥秘
+
+### 6、最佳实践
 
