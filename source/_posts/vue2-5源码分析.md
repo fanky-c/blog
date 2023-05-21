@@ -2176,14 +2176,296 @@ if (start) {
 <我<是文本</div>
 ```
 
-##### 3.3.8 纯文本内容元素的处理
+```js
+  while (html) {
+    let text, rest, next
+    let textEnd = html.indexOf('<')
+  
+    // 截取文本
+    if (textEnd >= 0) {
+      rest = html.slice(textEnd)
+      while (
+        !endTag.test(rest) &&
+        !startTagOpen.test(rest) &&
+        !comment.test(rest) &&
+        !conditionalComment.test(rest)
+      ) {
+        // 如果'<'在纯文本中，将它视为纯文本对待
+        next = rest.indexOf('<', 1)
+        if (next < 0) break
+        textEnd += next
+        rest = html.slice(textEnd)
+      }
+      text = html.substring(0, textEnd)
+      html = html.substring(textEnd)
+    }
+  
+    // 如果模板中找不到 <，那么说明整个模板都是文本
+    if (textEnd < 0) {
+      text = html
+      html = ''
+    }
+  
+    // 触发钩子函数
+    if (options.chars && text) {
+      options.chars(text)
+    }
+  }
+```
 
+上面的代码中，endTag、startTagOpen、comment和conditionalComment都是正则表达式，分别匹配结束标签、开始标签、注释和条件注释。
+
+##### 3.3.8 纯文本内容元素的处理
+什么是纯文本内容元素呢？script、style和textarea这三种元素叫作纯文本内容元素。解析它们的时候，会把这三种标签内包含的所有内容都当作文本处理。
+
+前面介绍开始标签、结束标签、文本、注释的截取时，其实都是默认当前需要截取的元素的父级元素不是纯文本内容元素。事实上，如果要截取元素的父级元素是纯文本内容元素的话，处理逻辑将完全不一样。
+
+```js
+  while (html) {
+    if (!lastTag || !isPlainTextElement(lastTag)) {
+      // 父元素为正常元素的处理逻辑
+      // todo
+    } else {
+      // 父元素为script、style、textarea的处理逻辑
+      const stackedTag = lastTag.toLowerCase()
+      const reStackedTag = reCache[stackedTag] || (reCache[stackedTag] = new RegExp('([\\s\\S]*?)(</' + stackedTag + '[^>]*>)', 'i'))
+      const rest = html.replace(reStackedTag, function (all, text) {
+        if (options.chars) {
+          options.chars(text)
+        }
+        return ''
+      })
+      html = rest
+      options.end(stackedTag)
+    }
+  }
+```
+
+在上面的代码中，lastTag表示父元素。可以看到，在while中，首先进行判断，如果父元素不存在或者不是纯文本内容元素，那么进行正常的处理逻辑，也就是前面介绍的逻辑。
+
+而当父元素是script这种纯文本内容元素时，会进入到else这个语句里面。由于纯文本内容元素都被视作文本处理，所以我们的处理逻辑就变得很简单，只需要把这些文本截取出来并触发钩子函数chars，然后再将结束标签截取出来并触发钩子函数end。
+
+
+假如我们现在有这样一个模板：
+
+```xml
+  <div id="el">
+    <script>console.log(1)</script>
+  </div>
+```
+
+当解析到script中的内容时，模板是下面的样子：
+
+```xml
+console.log(1)</script>
+</div>
+```
+
+钩子函数chars的参数为script中的所有内容，本例中大概是下面的样子：
+
+```js
+chars('console.log(1)')
+```
+
+处理后的剩余模板如下：
+
+```xml
+</div>
+```
 
 ##### 3.3.9 使用栈维护DOM层级
+在前面几节中，我们并没有介绍HTML解析器内部其实也有一个栈来维护DOM层级关系，其逻辑与9.2.1节相同：就是每解析到开始标签，就向栈中推进去一个；每解析到标签结束，就弹出来一个。因此，想取到父元素并不难，只需要拿到栈中的最后一项即可。
+
+同时，HTML解析器中的栈还有另一个作用，它可以检测出HTML标签是否正确闭合。例如：
+
+```xml
+<div><p></div>
+```
+
+在上面的代码中，p标签忘记写结束标签，那么当HTML解析器解析到div的结束标签时，栈顶的元素却是p标签。这个时候从栈顶向栈底循环找到div标签，发现在找到div标签之前遇到的所有其他标签都忘记写闭合标签，此时Vue.js会在非生产环境下的控制台中打印警告提示。
+
+##### 3.3.10 整体逻辑
+前面我们把开始标签、结束标签、注释、文本、纯文本内容元素等的截取方式拆分开，单独进行了详细介绍。本节中，我们就来介绍如何将这些解析方式组装起来完成HTML解析器的功能。
+
+首先，HTML解析器是一个函数。就像9.2节介绍的那样，HTML解析器最终的目的是实现这样的功能：
+
+```js
+  parseHTML(template, {
+    start (tag, attrs, unary) {
+      // 每当解析到标签的开始位置时，触发该函数
+    },
+    end () {
+      // 每当解析到标签的结束位置时，触发该函数
+    },
+    chars (text) {
+      // 每当解析到文本时，触发该函数
+    },
+    comment (text) {
+      // 每当解析到注释时，触发该函数
+    }
+  })
+```
+
+**文本解析器原理**
+文本解析器的作用是解析文本。你可能会觉得很奇怪，文本不是在HTML解析器中被解析出来了么？准确地说，文本解析器是对HTML解析器解析出来的文本进行二次加工。为什么要进行二次加工？
+
+**文本其实分两种类型，一种是纯文本，另一种是带变量的文本。**
+
+```xml
+Hello World
+
+Hello {{ name }}
+```
+
+而在构建文本类型的AST时，纯文本和带变量的文本是不同的处理方式。如果是带变量的文本，我们需要借助文本解析器对它进行二次加工，其代码如下：
+
+```js
+paseHTML(template, {
+   start(tag, attrs, unary){
+
+   },
+   end(){
+
+   },
+   chars(text){
+      text = text.trim();
+      if(text){
+        const children = currentParent.children;
+        let expression;
+        if(expression == parseText(text)){
+            children.push({
+              type: 2,
+              expression,
+              text
+            })
+        }else{
+            children.push({
+              type: 3,
+              text
+            })
+        }
+      }
+   },
+   comment(text){
+
+   }
+})
+```
+
+```js
+"hello {{name}}"
+```
+解析之后，得到expression变量为：
+
+```js
+"hello "+_s(name)
+```
+
+_s其实是下面这个toString函数的别名：
+
+```js
+function toString(val){
+  return val == null 
+         ? '' 
+         : typeof val === 'object'
+           ? JSON.stringify(val, null, 2) : String(val)
+}
+```
+
+假设当前上下文中有一个变量name，其值为Berwin，那么expression中的内容被执行时，它的内容是不是就是Hello Berwin了？
+
+举个例子：
+
+```js
+let obj = {name: 'Berwin'};
+with(obj){
+  funciton toString(val){
+    return val == null 
+           ? '' 
+           : typeof val === 'object'
+             ? JSON.stringify(val, null, 2) : String(val)
+  }
+  console.log("Hello "+toString(name));  // "Hello Berwin"
+}
+```
+
+在文本解析器中，**第一步要做的事情就是使用正则表达式来判断文本是否为带变量的文本，也就是检查文本中是否包含 {{xxx}} 这样的语法。如果是纯文本，则直接返回undefined；如果是带变量的文本，再进行二次加工。**所以我们的代码是这样的：
+
+```js
+function parseText (text){
+  const tagRE = /\{\{((?:.|\n)+?)\}\}/g
+  if(!tagRE(text)){
+     return;
+  }
+}
+```
+
+一个解决思路是使用正则表达式匹配出文本中的变量，先把变量左边的文本添加到数组中，然后把变量改成 _s(x)这样的形式也添加到数组中。如果变量后面还有变量，则重复以上动作，直到所有变量都添加到数组中。如果最后一个变量的后面有文本，就将它添加到数组中。
+
+这时我们其实已经有一个数组，数组元素的顺序和文本的顺序是一致的，此时将这些数组元素用+连起来变成字符串，就可以得到最终想要的效果:
+
+<img src="/img/vue34.jpeg" style="width:90%" />
+
+具体实现代码如下：
+
+```js
+function parseText(text){
+  const tagRE = /\{\{((?:.|\n)+?)\}\}/g
+  if(!tagRE.test(text)) return;
+
+  const tokens = [];
+  let lastIndex = tagRE.lastIndex = 0;
+  let match, index;
+  while((match=tagRE.exec(text))){
+     index = match.index;
+     // 先把 {{  前边的文本添到tokens中
+     if(index > lastIndex){
+        tokens.push(JSON.stringify(text.slice(lastIndex, index)))
+     }
+
+     // 把变量改成_s(x)这样的形式也添加到数组中
+     tokens.push(`_s(${match[1].trim()})`);
+
+     // 设置lastIndex来保证下一轮循环时，正则表达式不再重复匹配已经解析过文本
+     lastIndex = index + match[0].length;
+
+     // 当所有的变量都处理完毕后，如果最后一个变量右边还有文本，就讲文本添加数组中
+     if(lastIndex < text.length){
+       tokens.push(JSON.stringify(text.slice(lastIndex))
+     }
+
+     return tokens.join('+');
+  }
+}
+```
+
+这段代码有一个很关键的地方在lastIndex：每处理完一个变量后，会重新设置lastIndex的位置，这样可以保证如果后面还有其他变量，那么在下一轮循环时可以从lastIndex的位置开始向后匹配，而lastIndex之前的文本将不再被匹配。
+
+**总结**
+解析器的作用是通过模板得到AST（抽象语法树）。
+
+生成AST的过程需要借助HTML解析器，当HTML解析器触发不同的钩子函数时，我们可以构建出不同的节点。
+
+随后，我们可以通过栈来得到当前正在构建的节点的父节点，然后将构建出的节点添加到父节点的下面。
+
+最终，当HTML解析器运行完毕后，我们就可以得到一个完整的带DOM层级关系的AST。
+
+HTML解析器的内部原理是一小段一小段地截取模板字符串，每截取一小段字符串，就会根据截取出来的字符串类型触发不同的钩子函数，直到模板字符串截空停止运行。
+
+文本分两种类型，不带变量的纯文本和带变量的文本，后者需要使用文本解析器进行二次加工。
+
 
 
 ### 4、优化器
 解析器的作用是将HTML模板解析成AST，而优化器的作用是在AST中找出静态子树并打上标记。
+
+静态子树指的是那些在AST中永远都不会发生变化的节点。例如，一个纯文本节点就是静态子树，而带变量的文本节点就不是静态子树，因为它会随着变量的变化而变化。
+
+标记静态子树有两点好处：
+
+  ● 每次重新渲染时，不需要为静态子树创建新节点；
+
+  ● 在虚拟DOM中打补丁（patching）的过程可以跳过。
 
 
 ### 5、代码生成器
