@@ -2467,11 +2467,360 @@ HTML解析器的内部原理是一小段一小段地截取模板字符串，每�
 
   ● 在虚拟DOM中打补丁（patching）的过程可以跳过。
 
+每次重新渲染时，不需要为静态子树创建新节点，是什么意思呢？
+
+前面介绍虚拟DOM时，我们说每次重新渲染都会使用最新的状态生成一份全新的VNode与旧的VNode进行对比。而在生成VNode的过程中，如果发现一个节点被标记为静态子树，那么除了首次渲染会生成节点之外，在重新渲染时并不会生成新的子节点树，而是克隆已存在的静态子树。
+
+在虚拟DOM中打补丁的过程可以被跳过，又是什么意思？
+
+我们介绍了如果两个节点都是静态子树，就不需要进行对比与更新DOM的操作，直接跳过。因为静态子树是不可变的，不需要对比就知道它不可能发生变化。此外，直接跳过后续的各种对比可以节省JavaScript的运算成本。
+
+优化器的内部实现主要分为两个步骤：
+
+(1) 在AST中找出所有静态节点并打上标记；
+
+(2) 在AST中找出所有静态根节点并打上标记。
+
+先标记所有静态节点，再标记所有静态根节点。那么，什么是静态节点？像下面这样永远都不会发生变化的节点属于静态节点：
+
+```html
+<p>我是静态节点</p>
+```
+
+落到AST中，静态节点指static为true节点
+
+```js
+  {
+    type: 1,
+    tag: 'p',
+    staticRoot: false,
+    static: true,
+    ……
+  }
+```
+
+什么是静态根节点？如果一个节点下面的所有子节点都是静态节点，并且它的父级是动态节点，那么它就是静态根节点。下面模板中的ul就属于静态根节点：
+
+```html
+  <ul>
+    <li>我是静态节点，我不需要发生变化</li>
+    <li>我是静态节点2，我不需要发生变化</li>
+    <li>我是静态节点3，我不需要发生变化</li>
+  </ul>
+```
+
+落到AST中， 静态根节点指staticRoot属性为true
+
+```js
+  {
+    type: 1,
+    tag: 'ul',
+    staticRoot: true,
+    static: true,
+    ……
+  }
+```
+
+举个例子：
+
+```html
+<div id="el">Hello {{name}}</div>
+```
+
+如果我们有上面这样一个模板，它转换成AST之后是下面的样子：
+
+```js
+01  {
+02    'type': 1,
+03    'tag': 'div',
+04    'attrsList': [
+05      {
+06        'name': 'id',
+07        'value': 'el'
+08      }
+09    ],
+10    'attrsMap': {
+11      'id': 'el'
+12    },
+13    'children': [
+14      {
+15        'type':2,
+16        'expression':'"Hello "+_s(name)',
+17        'text':'Hello {{name}}'
+18      }
+19    ],
+20    'plain': false,
+21    'attrs': [
+22      {
+23        'name': 'id',
+24        'value': '"el"'
+25      }
+26    ]
+27  }
+```
+
+经过优化器优化后，AST如下：
+
+```js
+01  {
+02    'type': 1,
+03    'tag': 'div',
+04    'attrsList': [
+05      {
+06        'name': 'id',
+07        'value': 'el'
+08      }
+09    ],
+10    'attrsMap': {
+11      'id': 'el'
+12    },
+13    'children': [
+14      {
+15        'type': 2,
+16        'expression': '"Hello "+_s(name)',
+17        'text': 'Hello {{name}}',
+18        'static': false
+19      }
+20    ],
+21    'plain': false,
+22    'attrs': [
+23      {
+24        'name': 'id',
+25        'value': '"el"'
+26      }
+27    ],
+28    'static': false,
+29    'staticRoot': false
+30  }
+```
+
+#### 4.1 找出所有静态节点并标记
+找出所有静态子节点并不难，我们只需要从根节点开始，先判断根节点是不是静态根节点，再用相同的方式处理子节点，接着用同样的方式去处理子节点的子节点，直到所有节点都被处理之后程序结束，这个过程叫作递归。
+
+```js
+  function markStatic (node) {
+    node.static = isStatic(node)
+    if (node.type === 1) {
+      for (let i = 0, l = node.children.length; i < l; i++) {
+        const child = node.children[i]
+        markStatic(child)
+      }
+    }
+  }
+```
+
+isStatic方法如下：
+
+```js
+  function isStatic (node) {
+    if (node.type === 2) { // 带变量的动态文本节点
+      return false
+    }
+    if (node.type === 3) { // 不带变量的纯文本节点
+      return true
+    }
+    return !!(node.pre || (
+      !node.hasBindings && // 没有动态绑定
+      !node.if && !node.for && // 没有v-if或v-for或v-else
+      !isBuiltInTag(node.tag) && // 不是内置标签
+      isPlatformReservedTag(node.tag) && // 不是组件
+      !isDirectChildOfTemplateFor(node) &&
+      Object.keys(node).every(isStaticKey)
+    ))
+  }
+```
+type的取值及其说明：
+
+1、type = 1 为 元素节点
+
+2、type = 2 为 带变量的动态文本节点
+
+3、type = 3 为 不带变量的纯文本阶段
+
+当type等于1时，说明节点是元素节点。当一个节点是元素节点时，想分辨出它是否是静态节点，就会稍微有点复杂。
+
+首先，如果元素节点使用了指令v-pre，那么可以直接断定它是一个静态节点
+
+其次，如果元素节点没有使用指令v-pre，那么它必须同时满足以下条件才会被认为是一个静态节点。
+  
+  ● 不能使用动态绑定语法，也就是说标签上不能有以v-、@、:开头的属性。
+  
+  ● 不能使用v-if、v-for或者v-else指令。
+  
+  ● 不能是内置标签，也就是说标签名不能是slot或者component。
+  
+  ● 不能是组件，即标签名必须是保留标签，例如<div\></div\>是保留标签，而<list\></list\>不是保留标签。
+  
+  ● 当前节点的父节点不能是带v-for指令的template标签。
+  
+  ● 节点中不存在动态节点才会有的属性。
+
+
+我们已经可以判断一个节点是否是静态节点，并且可以通过递归的方式来标记子节点是否是静态节点。
+
+但是这里会遇到一个问题，递归是从上向下依次标记的，如果父节点被标记为静态节点之后，子节点却被标记为动态节点，这时就会发生矛盾。因为静态子树中不应该只有它自己是静态节点，静态子树的所有子节点应该都是静态节点。
+
+```js
+  function markStatic (node) {
+    node.static = isStatic(node)
+    if (node.type === 1) {
+      for (let i = 0, l = node.children.length; i < l; i++) {
+        const child = node.children[i]
+        markStatic(child)
+  
+        // 新增代码
+        if (!child.static) {
+          node.static = false
+        }
+      }
+    }
+  }
+```
+
+
+#### 4.2 找出所有静态根节点并标记
+
+
+#### 4.3 总结
+优化器的作用是在AST中找出静态子树并打上标记，这样做有两个好处：
+
+● 每次重新渲染时，不需要为静态子树创建新节点；
+
+● 在虚拟DOM中打补丁的过程可以跳过。
+
+通过递归的方式从上向下标记静态节点时，如果一个节点被标记为静态节点，但它的子节点却被标记为动态节点，就说明该节点不是静态节点，可以将它改为动态节点。静态节点的特征是它的子节点必须是静态节点。
+
+标记完静态节点之后需要标记静态根节点，其标记方式也是使用递归的方式从上向下寻找，在寻找的过程中遇到的第一个静态节点就为静态根节点，同时不再向下继续查找。
+
+但有两种情况比较特殊：一种是如果一个静态根节点的子节点只有一个文本节点，那么不会将它标记成静态根节点，即便它也属于静态根节点；另一种是如果找到的静态根节点是一个没有子节点的静态节点，那么也不会将它标记为静态根节点。因为这两种情况下，优化成本大于收益。
+
+
+
 
 ### 5、代码生成器
 代码生成器是模板编译的最后一步，它的作用是将AST转换成渲染函数中的内容，这个内容可以称为代码字符串。
 
 代码字符串可以被包装在函数中执行，这个函数就是我们通常所说的渲染函数。
+
+本章中，我们主要讨论如何使用AST生成代码字符串。
+
+假设现在有这样一个简单的模板：
+
+```xml
+<div id="el">Hello {{name}}</div>
+```
+
+它转换成AST并且经过优化器的优化之后是下面的样子：
+
+```js
+  {
+    'type': 1,
+    'tag': 'div',
+    'attrsList': [
+      {
+        'name': 'id',
+        'value': 'el'
+      }
+    ],
+    'attrsMap': {
+      'id': 'el'
+    },
+    'children': [
+      {
+        'type': 2,
+        'expression': '"Hello "+_s(name)',
+        'text': 'Hello {{name}}',
+        'static': false
+      }
+    ],
+    'plain': false,
+    'attrs': [
+      {
+        'name': 'id',
+        'value': '"el"'
+      }
+    ],
+    'static': false,
+    'staticRoot': false
+  }
+```
+
+代码生成器可以通过上面这个AST来生成代码字符串，生成后的代码字符串是这样的：
+
+```js
+'with(this){return _c("div",{attrs:{"id":"el"}},[_v("Hello "+_s(name))])}'
+
+// 格式化之后
+  with (this) {
+    return _c(
+      "div",
+      {
+        attrs:{"id": "el"}
+      },
+      [
+        _v("Hello "+_s(name))
+      ]
+    )
+  }
+```
+
+仔细观察生成后的代码字符串，我们会发现，**这其实是一个嵌套的函数调用。函数_c的参数中执行了函数 _v，而函数 _v的参数中又执行了函数 _s。**
+
+_c其实是createElement的别名。createElement是虚拟DOM中所提供的方法，它的作用是创建虚拟节点，有三个参数，分别是：
+
+● 标签名
+
+● 一个包含模板相关属性的数据对象
+
+● 子节点列表
+
+调用createElement方法，我们可以得到一个VNode。
+
+这也就知道了渲染函数可以生成VNode的原因：渲染函数其实是执行了createElement，而createElement可以创建一个VNode。
+
+#### 5.1 通过AST生成代码字符串 
+生成代码字符串是一个递归的过程，从顶向下依次处理每一个AST节点
+
+节点有三种类型，分别对应三种不同的创建方法与别名：
+
+<img src="/img/vue35.jpeg" style="max-width:95%" />
+
+例如：
+
+```html
+  <div id="el">
+    <div>
+      <p>Hello {{name}}</p>
+    </div>
+  </div>
+```
+
+生成代码字符串：
+
+```js
+_c('div',
+   {attrs:{"id":"el"}},
+   [_c('div',[_c('p',[_v("Hello "+_s(name))])])]
+   )
+```
+
+<img src="/img/vue36.jpeg" style="max-width:95%" />
+
+当递归结束时，我们就可以得到一个完整的代码字符串。这段代码字符串会被包裹在with语句中，其伪代码如下：
+
+```js
+`with(this){return ${code}}`
+```
+
+#### 5.2 代码生成器的原理
+##### 5.2.1 元素节点
+
+##### 5.2.2 文本节点
+
+##### 5.2.3 注释节点
+
+#### 5.3 总结
+
 
 ## 6、整体流程
 ### 1、架构设计和项目结构
