@@ -2814,18 +2814,257 @@ _c('div',
 
 #### 5.2 代码生成器的原理
 ##### 5.2.1 元素节点
+生成元素节点，其实就是生成一个 _c的函数调用字符串，相关代码如下：
+
+```js
+  function genElement (el, state) {
+    // 如果el.plain是true，则说明节点没有属性
+    const data = el.plain ? undefined : genData(el, state)
+  
+    const children = genChildren(el, state)
+    code = `_c('${el.tag}'${
+      data ? `,${data}` : '' // data
+    }${
+      children ? `,${children}` : '' // children
+    })`
+    return code
+  }
+
+  function genData (el: ASTElement, state: CodegenState): string {
+    let data = '{'
+    // key
+    if (el.key) {
+      data += `key:${el.key},`
+    }
+    // ref
+    if (el.ref) {
+      data += `ref:${el.ref},`
+    }
+    // pre
+    if (el.pre) {
+      data += `pre:true,`
+    }
+    // 类似的还有很多种情况
+    data = data.replace(/,$/, '') + '}'
+    return data
+  }
+
+  function genChildren (el, state) {
+    const children = el.children
+    if (children.length) {
+      return `[${children.map(c => genNode(c, state)).join(',')}]`
+    }
+  }
+  
+  function genNode (node, state) {
+    if (node.type === 1) {
+      return genElement(node, state)
+    } if (node.type === 3 && node.isComment) {
+      return genComment(node)
+    } else {
+      return genText(node)
+    }
+  }
+```
+
+代码中el的plain属性是在编译时发现的。如果节点没有属性，就会把plain设置为true。
+
+这里我们可以通过plain来判断是否需要获取节点的属性数据。代码中的主要逻辑是用genData和genChildren分别获取data和children，然后将它们分别拼到字符串中指定的位置，最后把拼好的 "_c(tagName, data, children)"返回，这样一个元素节点的代码字符串就生成好了。
 
 ##### 5.2.2 文本节点
+生成文本节点很简单，我们只需要把文本放在 _v这个函数的参数中即可：
+
+```js
+  function genText (text) {
+    return `_v(${text.type === 2
+      ? text.expression
+      : JSON.stringify(text.text)
+    })`
+  }
+```
+如果是动态文本，则使用expression；如果是静态文本，则使用text。
+
+你可能会问，为什么text需要使用JSON.stringify方法？
+
+这是因为expression中的文本是这样的：
+
+```js
+'"Hello "+_s(name)'
+```
+
+而text中的文本是这样的：
+
+```js
+"Hello Berwin"
+```
+
+而我们希望静态文本是这样的：
+
+```js
+'"Hello Berwin"'
+```
+
+所以静态文本需要使用JSON.stringify方法。因为JSON.stringify可以给文本包装一层字符串
 
 ##### 5.2.3 注释节点
+注释节点与文本节点相同，只需要把文本放在 _e的参数中即可，其代码如下：
+
+```js
+  function genComment (comment) {
+    return `_e(${JSON.stringify(comment.text)})`
+  }
+```
 
 #### 5.3 总结
+了解了代码生成器其实就是字符串拼接的过程。通过递归AST来生成字符串，最先生成根节点，然后在子节点字符串生成后，将其拼接在根节点的参数中，子节点的子节点拼接在子节点的参数中，这样一层一层地拼接，直到最后拼接成完整的字符串。
+
+最后，我们介绍了当字符串拼接好后，会将字符串拼在with中返回给调用者。
 
 
 ## 6、整体流程
 ### 1、架构设计和项目结构
+不同的Vue.js构建版本的区别：
+
+<img src="/img/vue37.jpeg" style="width:90%" />
+
+• 完整版：构建后的文件同时包含编译器和运行时。
+
+• 编译器：负责将模板字符串编译成JavaScript渲染函数，这部分内容在第三篇中介绍过。
+
+• 运行时：负责创建Vue.js实例，渲染视图和使用虚拟DOM实现重新渲染，基本上包含除编译器外的所有部分。
+
+• UMD：UMD版本的文件可以通过 <script\> 标签直接在浏览器中使用, 就是运行时+编译器的UMD版本。
+
+• CommonJS：CommonJS版本用来配合较旧的打包工具，比如Browserify或webpack 1，这些打包工具的默认文件（pkg.main）只包含运行时的CommonJS版本（vue.runtime.common.js）。
+
+
+• ES Module：ES Module版本用来配合现代打包工具，比如webpack 2或Rollup，这些打包工具的默认文件（pkg.module）只包含运行时的ES Module版本（vue.runtime.esm.js）。
+
+
+**运行时+编译器 与 只包含运行时区别：**
+
+如果需要在客户端编译模板（比如传入一个字符串给template选项，或挂载到一个元素上并以其DOM内部的HTML作为模板），那么需要用到编译器，因此需要完整版：
+
+```js
+  // 需要编译器
+  new Vue({
+    template: '<div>{{ hi }}</div>'
+  })
+  
+  // 不需要编译器
+  new Vue({
+    render (h) {
+      return h('div', this.hi)
+    }
+  })
+```
+
+当使用vue-loader或vueify的时候，*.vue文件内部的模板会在构建时预编译成JavaScript。所以，最终打包完成的文件实际上是不需要编译器的，只需要引入运行时版本即可。
+
+由于运行时版本的体积比完整版要小30%左右，所以应该尽可能使用运行时版本。如果仍然希望使用完整版，则需要在打包工具里配置一个别名。
+
+```js
+  module.exports = {
+    // ……
+    resolve: {
+      alias: {
+        'vue$': 'vue/dist/vue.esm.js'  // 'vue/dist/vue.common.js' for webpack 1
+      }
+    }
+  }
+```
+
+CommonJS和ES Module版本用于打包工具，因此Vue.js不提供压缩后的版本，需要自行将最终的包进行压缩。此外，这两个版本同时保留原始的process.env.NODE_ENV检测，来决定它们应该在什么模式下运行。我们应该使用适当的打包工具配置来替换这些环境变量，以便控制Vue.js所运行的模式。把process.env.NODE_ENV替换为字符串字面量，同时让UglifyJS之类的压缩工具完全删除仅供开发环境的代码块，从而减少最终文件的大小。
+
+在webpack中，我们使用DefinePlugin：
+
+```js
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: '"production"'
+    }
+  })
+```
+
+#### 1.1 架构设计
+
+<img src="/img/vue38.jpeg" style="width:90%" />
+
+最顶层是入口，也可以叫作出口。对于构建工具和Vue.js的使用者来说，这是入口；对于Vue.js自身来说，这是出口。在构建文件时，不同平台的构建文件会选择不同的入口进行构建操作。
+
+从整体结构上看，下面三层的代码是与平台无关的核心代码，上面三层是与平台相关的代码。因此，整个程序结构还可以用另一种表现形式来展现:
+
+<img src="/img/vue39.jpeg" style="width:90%" />
+
+
+#### 1.2 总结
+在架构设计中，我们介绍了Vue.js在大体上可以分三部分：核心代码、跨平台相关与公用工具函数。核心代码包含原型方法和全局API，它们可以在各个平台下运行，而跨平台相关的部分更多的是渲染相关的功能，不同平台下的渲染API是不同的。以Web平台为例，Web页面中的渲染操作就是操作DOM，所以在跨平台的Web环境下对DOM操作的API进行了封装，这个封装主要与虚拟DOM对接，而虚拟DOM中所使用的各种节点操作其实是调用跨平台层封装的API接口。而Weex平台对节点的操作与Web平台并不相同。
 
 ### 2、实例方法和全局API的实现原理
+上一章介绍了Vue.js内部的整体结构，知道了它会向构造函数添加一些属性和方法。本章中，我们将详细介绍它的实例方法和全局API的实现原理。
+
+```js
+  import { initMixin } from './init'
+  import { stateMixin } from './state'
+  import { renderMixin } from './render'
+  import { eventsMixin } from './events'
+  import { lifecycleMixin } from './lifecycle'
+  import { warn } from '../util/index'
+  
+  function Vue (options) {
+    if (process.env.NODE_ENV !== 'production' &&
+      !(this instanceof Vue)
+    ) {
+      warn('Vue is a constructor and should be called with the `new` keyword')
+    }
+    this._init(options)
+  }
+  
+  initMixin(Vue)
+  stateMixin(Vue)
+  eventsMixin(Vue)
+  lifecycleMixin(Vue)
+  renderMixin(Vue)
+  
+  export default Vue
+```
+
+其中定义了Vue构造函数，然后分别调用了initMixin、stateMixin、eventsMixin、lifecycleMixin和renderMixin这5个函数，并将Vue构造函数当作参数传给了这5个函数。
+
+这5个函数的作用就是向Vue的原型中挂载方法，以函数initMixin为例，它的实现方式是这样的：
+
+```js
+export function initMixin(Vue){
+  Vue.prototype._init = function(options){
+    // ...
+  }
+}
+```
+
+#### 2.1 数据相关的实例方法
+与数据相关的实例方法有3个，分别是vm.$watch、vm.$set和vm.$delete，它们是在stateMixin中挂载到Vue的原型上的，代码如下：
+
+```js
+  import {
+    set,
+    del
+  } from '../observer/index'
+  
+  export function stateMixin (Vue) {
+    Vue.prototype.$set = set
+    Vue.prototype.$delete = del
+    Vue.prototype.$watch = function (expOrFn, cb, options) {
+      // todo
+    }
+  }
+```
+
+#### 2.2 事件相关的实例方法
+
+
+
+
+
 
 ### 3、生命周期
 
