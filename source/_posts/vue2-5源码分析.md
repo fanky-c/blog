@@ -3059,11 +3059,267 @@ export function initMixin(Vue){
   }
 ```
 
+可以看到，当stateMixin被调用时，会向Vue构造函数的prototype属性挂载上面说的3个与数据相关的实例方法。
+
 #### 2.2 事件相关的实例方法
+与事件相关的实例方法有4个，分别是：vm.$on、vm.$once、vm.$off和vm.$emit。这4个方法是在eventsMixin中挂载到Vue构造函数的prototype属性中的，其代码如下：
+
+```js
+export function eventsMixin (Vue) {
+  Vue.prototype.$on = function (event, fn) {
+    // 做点什么
+  }
+
+  Vue.prototype.$once = function (event, fn) {
+    // 做点什么
+  }
+
+  Vue.prototype.$off = function (event, fn) {
+    // 做点什么
+  }
+
+  Vue.prototype.$emit = function (event) {
+    // 做点什么
+  }
+}
+```
+
+##### 2.2.1 vm.$on
+
+使用：监听当前实例上的自定义事件，事件可以由vm.$emit触发。回调函数会接收所有传入事件所触发的函数的额外参数。
+
+```js
+vm.$on('test', function (msg) {
+  console.log(msg)
+})
+vm.$emit('test', 'hi')
+// => "hi"
+```
+
+原理：
+
+```js
+Vue.prototype.$on = function (event, fn) {
+  const vm = this
+  if (Array.isArray(event)) {
+    for (let i = 0, l = event.length; i < l; i++) {
+      this.$on(event[i], fn)
+    }
+  } else {
+    (vm._events[event] || (vm._events[event] = [])).push(fn)
+  }
+  return vm
+}
+```
+
+vm._events是一个对象，用来存储事件。在代码中，我们使用事件名（event）从vm._events中取出事件列表，如果列表不存在，则使用空数组初始化，然后再将回调函数添加到事件列表中。
+
+vm._events是哪儿来的？事实上，在执行new Vue()时，Vue会执行this._init方法进行一系列初始化操作，其中就会在Vue.js的实例上创建一个 _events属性，用来存储事件。
+
+```js
+vm._events = Object.create(null)
+```
+
+##### 2.2.2 vm.$off
+使用：移除自定义事件监听器
+
+  ● 如果没有提供参数，则移除所有的事件监听器。
+
+  ● 如果只提供了事件，则移除该事件所有的监听器。
+
+  ● 如果同时提供了事件与回调，则只移除这个回调的监听器。
 
 
+原理：
+
+1、首先，我们需要处理没有提供参数的情况，此时需要移除所有事件的监听器，其代码如下：
+
+```js
+Vue.prototype.$off = function (event, fn) {
+  const vm = this
+  // 移除所有事件的监听器
+  if (!arguments.length) {
+    vm._events = Object.create(null)
+    return vm
+  }
+  return vm
+
+  // event支持数组
+  if(Array.isArray(event)){
+    for(let i=0; l=event.length; i<l; i++){
+       this.$off(event[i], fn);
+    }
+    return vm;
+  }
+  return vm;
+}
+```
+
+2、接下来，我们需要处理第二种条件：如果只提供了事件名，则移除该事件所有的监听器。实现这个功能并不复杂，我们只需要从this._events中将event重置为空即可。
+
+```js
+Vue.prototype.$off = function (event, fn) {
+  const vm = this
+
+  // todo: 上面已实现代码
+
+  // 新增代码
+  const cbs = vm._events[event]
+  if (!cbs) {
+    return vm
+  }
+  // 移除该事件的所有监听器
+  if (arguments.length === 1) {
+    vm._events[event] = null
+    return vm
+  }
+  return vm
+}
+```
+
+3、接下来处理最后一种情况：如果同时提供了事件与回调，那么只移除这个回调的监听器。实现这个功能并不复杂，只需要使用参数中提供的事件名从vm._events上取出事件列表，然后从列表中找到与参数中提供的回调函数相同的那个函数，并将它从列表中移除。综合上面2种情况其代码如下：
+
+```js
+  Vue.prototype.$off = function (event, fn) {
+    const vm = this
+    // 移除所有事件监听器
+    if (!arguments.length) {
+      vm._events = Object.create(null)
+      return vm
+    }
+  
+    // event支持数组
+    if (Array.isArray(event)) {
+      for (let i = 0, l = event.length; i < l; i++) {
+        this.$off(event[i], fn)
+      }
+      return vm
+    }
+  
+    const cbs = vm._events[event]
+    if (!cbs) {
+      return vm
+    }
+    // 移除该事件的所有监听器
+    if (arguments.length === 1) {
+      vm._events[event] = null
+      return vm
+    }
+  
+    // 新增代码
+    // 只移除与fn相同的监听器
+    if (fn) {
+      const cbs = vm._events[event]
+      let cb
+      let i = cbs.length
+      while (i--) {
+        cb = cbs[i]
+        if (cb === fn || cb.fn === fn) {
+          cbs.splice(i, 1)
+          break
+        }
+      }
+    }
+    return vm
+  }
+```
 
 
+##### 2.2.3 vm.$once
+使用：监听一个自定义事件，但是只触发一次，在第一次触发之后移除监听器。
+
+原理：我们知道vm.$once和vm.$on的区别是vm.$once只能被触发一次，所以实现这个功能的一个思路是：在vm.$once中调用vm.$on来实现监听自定义事件的功能，当自定义事件触发后会执行拦截器，将监听器从事件列表中移除。
+
+```js
+Vue.prototype.$once = function (event, fn) {
+  const vm = this
+  function on () {
+    vm.$off(event, on)
+    fn.apply(vm, arguments)
+  }
+  on.fn = fn
+  vm.$on(event, on)
+  return vm
+}
+```
+
+##### 2.2.4 vm.$emit
+使用：触发当前实例上的事件。附加参数都会传给监听器回调。
+
+
+原理：
+
+```js
+Vue.prototype.$emit = function (event) {
+  const vm = this
+  let cbs = vm._events[event]
+  if (cbs) {
+    const args = toArray(arguments, 1)
+    for (let i = 0, l = cbs.length; i < l; i++) {
+      try {
+        cbs[i].apply(vm, args)
+      } catch (e) {
+        handleError(e, vm, `event handler for "${event}"`)
+      }
+    }
+  }
+  return vm
+}
+```
+
+这里我们使用event从vm._events中取出事件监听器回调函数列表，并将其赋值给变量cbs。如果cbs存在，则循环它，依次调用每一个监听器回调并将所有参数传给监听器回调。toArray的作用是将类似于数组的数据转换成真正的数组，它的第二个参数是起始位置。也就是说，args是一个数组，里面包含除第一个参数之外的所有参数。
+
+
+### 2.3 生命周期相关的实例方法
+与生命周期相关的实例方法有4个，分别是vm.$mount、vm.$forceUpdate、vm.$nextTick和vm.$destroy。其中有两个方法是从lifecycleMixin中挂载到Vue构造函数的prototype属性上的，分别是vm.$forceUpdate和vm.$destroy。lifecycleMixin的代码如下：
+
+```js
+export function lifecycleMixin (Vue) {
+  Vue.prototype.$forceUpdate = function () {
+    // 做点什么
+  }
+
+  Vue.prototype.$destroy = function () {
+    // 做点什么
+  }
+}
+```
+
+vm.$nextTick方法是从renderMixin中挂载到Vue构造函数的prototype属性上的。renderMixin的代码如下：
+
+```js
+export function renderMixin (Vue) {
+  Vue.prototype.$nextTick = function (fn) {
+    // 做点什么
+  }
+}
+```
+
+而vm.$mount方法则是在跨平台的代码中挂载到Vue构造函数的prototype属性上的。
+
+#### 2.3.1 vm.$forceUpdate
+vm.$forceUpdate()的作用是迫使Vue.js实例重新渲染。注意它仅仅影响实例本身以及插入插槽内容的子组件，而不是所有子组件。
+
+我们只需要执行实例watcher的update方法，就可以让实例重新渲染。Vue.js的每一个实例都有一个watcher。第5章介绍虚拟DOM时提到，当状态发生变化时，会通知到组件级别，然后组件内部使用虚拟DOM进行更详细的重新渲染操作。事实上，组件就是Vue.js实例，所以组件级别的watcher和Vue.js实例上的watcher说的是同一个watcher。
+
+```js
+Vue.prototype.$forceUpdate = function () {
+  const vm = this
+  if (vm._watcher) {
+    vm._watcher.update()
+  }
+}
+```
+
+vm._watcher就是Vue.js实例的watcher，每当组件内依赖的数据发生变化时，都会自动触发Vue.js实例中 _watcher的update方法。
+
+重新渲染的实现原理并不难，Vue.js的自动渲染通过变化侦测来侦测数据，即当数据发生变化时，Vue.js实例重新渲染。而vm.$forceUpdate是手动通知Vue.js实例重新渲染。
+
+
+#### 2.3.2 vm.$destroy
+
+
+#### 2.3.3 vm.$nextTick
 
 
 ### 3、生命周期

@@ -211,7 +211,7 @@ class Animal {
 
 class People extends Animal {
     constructor(contents = {}) {
-        super()
+        super(); // 调用父类的 constructor方法， 且可以向父类的构造函数传达参数
         this.name = contents.name
         this.family = contents.family
     }
