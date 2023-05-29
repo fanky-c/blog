@@ -3270,7 +3270,7 @@ Vue.prototype.$emit = function (event) {
 这里我们使用event从vm._events中取出事件监听器回调函数列表，并将其赋值给变量cbs。如果cbs存在，则循环它，依次调用每一个监听器回调并将所有参数传给监听器回调。toArray的作用是将类似于数组的数据转换成真正的数组，它的第二个参数是起始位置。也就是说，args是一个数组，里面包含除第一个参数之外的所有参数。
 
 
-### 2.3 生命周期相关的实例方法
+#### 2.3 生命周期相关的实例方法
 与生命周期相关的实例方法有4个，分别是vm.$mount、vm.$forceUpdate、vm.$nextTick和vm.$destroy。其中有两个方法是从lifecycleMixin中挂载到Vue构造函数的prototype属性上的，分别是vm.$forceUpdate和vm.$destroy。lifecycleMixin的代码如下：
 
 ```js
@@ -3297,7 +3297,7 @@ export function renderMixin (Vue) {
 
 而vm.$mount方法则是在跨平台的代码中挂载到Vue构造函数的prototype属性上的。
 
-#### 2.3.1 vm.$forceUpdate
+##### 2.3.1 vm.$forceUpdate
 vm.$forceUpdate()的作用是迫使Vue.js实例重新渲染。注意它仅仅影响实例本身以及插入插槽内容的子组件，而不是所有子组件。
 
 我们只需要执行实例watcher的update方法，就可以让实例重新渲染。Vue.js的每一个实例都有一个watcher。第5章介绍虚拟DOM时提到，当状态发生变化时，会通知到组件级别，然后组件内部使用虚拟DOM进行更详细的重新渲染操作。事实上，组件就是Vue.js实例，所以组件级别的watcher和Vue.js实例上的watcher说的是同一个watcher。
@@ -3316,11 +3316,234 @@ vm._watcher就是Vue.js实例的watcher，每当组件内依赖的数据发生�
 重新渲染的实现原理并不难，Vue.js的自动渲染通过变化侦测来侦测数据，即当数据发生变化时，Vue.js实例重新渲染。而vm.$forceUpdate是手动通知Vue.js实例重新渲染。
 
 
-#### 2.3.2 vm.$destroy
+##### 2.3.2 vm.$destroy
+vm.$destroy的作用是完全销毁一个实例，它会清理该实例与其他实例的连接，并解绑其全部指令及监听器，同时会触发beforeDestroy和destroyed的钩子函数。
+
+这个方法并不是很常用，大部分场景下并不需要销毁组件，只需要使用v-if或者v-for等指令以数据驱动的方式控制子组件的生命周期即可。
 
 
-#### 2.3.3 vm.$nextTick
+完整的代码如下：
 
+```js
+Vue.prototype.$destroy = function () {
+  const vm = this
+  if (vm._isBeingDestroyed) {
+    return
+  }
+  callHook(vm, 'beforeDestroy')
+  vm._isBeingDestroyed = true
+
+  // 删除自己与父级之间的连接
+  const parent = vm.$parent
+  if (parent && !parent._isBeingDestroyed && !vm.$options.abstract) {
+    remove(parent.$children, vm)
+  }
+  // 从watcher监听的所有状态的依赖列表中移除watcher
+  if (vm._watcher) {
+    vm._watcher.teardown()
+  }
+  let i = vm._watchers.length
+  while (i--) {
+    vm._watchers[i].teardown()
+  }
+  vm._isDestroyed = true
+  // 在vnode树上触发destroy钩子函数解绑指令
+  vm.__patch__(vm._vnode, null)
+  // 触发destroyed钩子函数
+  callHook(vm, 'destroyed')
+  // 移除所有的事件监听器
+  vm.$off()
+}
+```
+
+
+##### 2.3.3 vm.$nextTick
+nextTick接收一个回调函数作为参数，它的作用是将回调延迟到下次DOM更新周期之后执行。它与全局方法Vue.nextTick一样，不同的是回调的this自动绑定到调用它的实例上。
+
+我们在开发项目时会遇到一种场景：当更新了状态（数据）后，需要对新DOM做一些操作，但是这时我们其实获取不到更新后的DOM，因为还没有重新渲染。这个时候我们需要使用nextTick方法。
+
+```js
+new Vue({
+  // ……
+  methods: {
+    // ……
+    example: function () {
+      // 修改数据
+      this.message = 'changed'
+      // DOM还没有更新
+      this.$nextTick(function () {
+        // DOM现在更新了
+        // this绑定到当前实例
+        this.doSomethingElse()
+      })
+    }
+  }
+})
+```
+
+**在Vue.js中，当状态发生变化时，watcher会得到通知，然后触发虚拟DOM的渲染流程。而watcher触发渲染这个操作并不是同步的，而是异步的。Vue.js中有一个队列，每当需要渲染时，会将watcher推送到这个队列中，在下一次事件循环中再让watcher触发渲染的流程。**
+
+**1、为什么Vue.js使用异步更新队列?**
+我们知道Vue.js 2.0开始使用虚拟DOM进行渲染，变化侦测的通知只发送到组件，组件内用到的所有状态的变化都会通知到同一个watcher，然后虚拟DOM会对整个组件进行“比对（diff）”并更改DOM。**也就是说，如果在同一轮事件循环中有两个数据发生了变化，那么组件的watcher会收到两份通知，从而进行两次渲染。事实上，并不需要渲染两次，虚拟DOM会对整个组件进行渲染，所以只需要等所有状态都修改完毕后，一次性将整个组件的DOM渲染到最新即可。**
+
+要解决这个问题，**Vue.js的实现方式是将收到通知的watcher实例添加到队列中缓存起来，并且在添加到队列之前检查其中是否已经存在相同的watcher，只有不存在时，才将watcher实例添加到队列中。然后在下一次事件循环（event loop）中，Vue.js会让队列中的watcher触发渲染流程并清空队列。这样就可以保证即便在同一事件循环中有两个状态发生改变，watcher最后也只执行一次渲染流程。**
+
+
+**2、什么是事件循环？**
+我们都知道JavaScript是一门单线程且非阻塞的脚本语言，这意味着JavaScript代码在执行的任何时候都只有一个主线程来处理所有任务。而非阻塞是指当代码需要处理异步任务时，主线程会挂起（pending）这个任务，当异步任务处理完毕后，主线程再根据一定规则去执行相应回调。
+
+事实上，**当任务处理完毕后，JavaScript会将这个事件加入一个队列中，我们称这个队列为事件队列。被放入事件队列中的事件不会立刻执行其回调，而是等待当前执行栈中的所有任务执行完毕后，主线程会去查找事件队列中是否有任务。**
+
+异步任务有两种类型：微任务（microtask）和宏任务（macrotask）。不同类型的任务会被分配到不同的任务队列中。
+
+**当执行栈中的所有任务都执行完毕后，会去检查微任务队列中是否有事件存在，如果存在，则会依次执行微任务队列中事件对应的回调，直到为空。然后去宏任务队列中取出一个事件，把对应的回调加入当前执行栈，当执行栈中的所有任务都执行完毕后，检查微任务队列中是否有事件存在。无限重复此过程，就形成了一个无限循环，这个循环就叫作事件循环。**
+
+微任务：
+
+1. Promise.then
+2. MutationObserver
+3. Object.observe
+4. process.nextTick
+
+
+宏任务：
+
+1. setTimeout
+2. setInterval
+3. setImmediate
+4. messageChannel
+5. requestAnimationFrame
+6. I/O
+7. UI rendering(交互渲染)
+
+**3、什么是执行栈？**
+当我们执行一个方法时，JavaScript会生成一个与这个方法对应的执行环境（context），又叫执行上下文。这个执行环境中有这个方法的私有作用域、上层作用域的指向、方法的参数、私有作用域中定义的变量以及this对象。这个执行环境会被添加到一个栈中，这个栈就是执行栈。
+
+如果在这个方法的代码中执行到了一行函数调用语句，那么JavaScript会生成这个函数的执行环境并将其添加到执行栈中，然后进入这个执行环境继续执行其中的代码。执行完毕并返回结果后，JavaScript会退出执行环境并把这个执行环境从栈中销毁，回到上一个方法的执行环境。这个过程反复进行，直到执行栈中的代码全部执行完毕。这个执行环境的栈就是执行栈。
+
+setTimeout属于宏任务，使用它注册的回调会加入到宏任务中。宏任务的执行要比微任务晚，所以即便是先注册，也是先更新DOM后执行setTimeout中设置的回调。
+
+vm.$nextTick的实现原理：
+
+```js
+import { nextTick } from '../util/index'
+
+Vue.prototype.$nextTick = function (fn) {
+  return nextTick(fn, this)
+}
+```
+
+<img src="/img/vue40.jpeg" style="max-width:95%" />
+
+
+最终完整的代码如下：
+
+```js
+  const callbacks = []
+  let pending = false
+  
+  function flushCallbacks () {
+    pending = false
+    const copies = callbacks.slice(0)
+    callbacks.length = 0
+    for (let i = 0; i < copies.length; i++) {
+      copies[i]()
+    }
+  }
+  
+  let microTimerFunc
+  let macroTimerFunc
+  let useMacroTask = false
+  
+  if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
+    macroTimerFunc = () => {
+      setImmediate(flushCallbacks)
+    }
+  } else if (typeof MessageChannel !== 'undefined' && (
+    isNative(MessageChannel) ||
+    MessageChannel.toString() === '[object MessageChannelConstructor]'
+  )) {
+    const channel = new MessageChannel()
+    const port = channel.port2
+    channel.port1.onmessage = flushCallbacks
+    macroTimerFunc = () => {
+      port.postMessage(1)
+    }
+  } else {
+    macroTimerFunc = () => {
+      setTimeout(flushCallbacks, 0)
+    }
+  }
+  
+  if (typeof Promise !== 'undefined' && isNative(Promise)) {
+    const p = Promise.resolve()
+    microTimerFunc = () => {
+      p.then(flushCallbacks)
+    }
+  } else {
+    microTimerFunc = macroTimerFunc
+  }
+  
+  // 新增了withMacroTask函数，它的作用是给回调函数做一层包装，
+  // 保证在整个回调函数执行过程中，如果修改了状态（数据），
+  // 那么更新DOM的操作会被推到宏任务队列中。
+  // 也就是说，更新DOM的执行时间会晚于回调函数的执行时间。
+  export function withMacroTask (fn) {
+    return fn._withTask || (fn._withTask = function () {
+      useMacroTask = true
+      const res = fn.apply(null, arguments)
+      useMacroTask = false
+      return res
+    })
+  }
+  
+  export function nextTick (cb, ctx) {
+    let _resolve
+    callbacks.push(() => {
+      if (cb) {
+        cb.call(ctx)
+      } else if (_resolve) {
+        _resolve(ctx)
+      }
+    })
+    if (!pending) {
+      pending = true
+      if (useMacroTask) {
+        macroTimerFunc()
+      } else {
+        microTimerFunc()
+      }
+    }
+    if (!cb && typeof Promise !== 'undefined') {
+      return new Promise(resolve => {
+        _resolve = resolve
+      })
+    }
+  }
+```
+
+##### 2.3.4 vm.$mount
+我们并不常用这个方法，其原因是如果在实例化Vue.js时设置了el选项，会自动把Vue.js实例挂载到DOM元素上。但理解这个方法却非常重要，因为无论我们在实例化Vue.js时是否设置了el选项，想让Vue.js实例具有关联的DOM元素，只有使用vm.$mount方法这一种途径。
+
+使用示例：
+
+```js
+let MyComponent = Vue.extend({
+  template: '<div>Hello!</div>'
+})
+
+// 创建并挂载到#app（会替换#app）
+new MyComponent().$mount('#app')
+
+// 创建并挂载到#app（会替换#app）
+new MyComponent({ el: '#app' })
+
+// 或者，在文档之外渲染并且随后挂载
+var component = new MyComponent().$mount()
+document.getElementById('app').appendChild(component.$el)
+```
+
+#### 2.4 全局API的实现原理
 
 ### 3、生命周期
 
