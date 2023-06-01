@@ -3543,7 +3543,272 @@ var component = new MyComponent().$mount()
 document.getElementById('app').appendChild(component.$el)
 ```
 
+在不同的构建版本中，vm.$mount的表现都不一样。其差异主要体现在完整版（vue.js）和只包含运行时版本（vue.runtime.js）之间。
+
+完整版和只包含运行时版本之间的差异在于是否有编译器，而是否有编译器的差异主要在于vm.$mount方法的表现形式。在只包含运行时的构建版本中，vm.$mount的作用如前面介绍的那样。而在完整的构建版本中，vm.$mount的作用会稍有不同，它首先会检查template或el选项所提供的模板是否已经转换成渲染函数（render函数）。如果没有，则立即进入编译过程，将模板编译成渲染函数，完成之后再进入挂载与渲染的流程中。
+
+**1、首先，来看完整版vm.$mount的实现代码：**
+
+```js
+// 通过函数劫持，可以在原始功能之上新增一些其他功能
+
+const mount = Vue.prototype.$mount
+Vue.prototype.$mount = function (el) {
+  // 做些什么
+  el = el && el.query(el);
+  return mount.call(this, el)
+}
+
+function query (el) {
+  if (typeof el === 'string') {
+    const selected = document.querySelector(el)
+    if (!selected) {
+      return document.createElement('div')
+    }
+    return selected
+  } else {
+    return el
+  }
+}
+```
+
+我们将Vue原型上的 $mount方法保存在mount中，以便后续使用。然后Vue原型上的 $mount方法被一个新的方法覆盖了。新方法中会调用原始的方法，这种做法通常被称为函数劫持。
+
+
+接下来，将实现完整版vm.$mount中最主要的功能：编译器。
+
+首先判断Vue.js实例中是否存在渲染函数，只有不存在时，才会将模板编译成渲染函数。其代码如下：
+
+```js
+const mount = Vue.prototype.$mount
+Vue.prototype.$mount = function (el) {
+  el = el && query(el)
+
+  const options = this.$options
+  if (!options.render) {
+    // 将模板编译成渲染函数并赋值给options.render
+  }
+
+  return mount.call(this, el)
+}
+```
+
+在实例化Vue.js时，会有一个初始化流程，其中会向Vue.js实例上新增一些方法，这里的this.$options就是其中之一，它可以访问到实例化Vue.js时用户设置的一些参数，例如template和render。
+
+关于这一点，Vue.js在官方文档的template选项中也给出了相应的提示。如果没有render选项，那么需要获取模板并将模板编译成渲染函数（render函数）赋值给render选项。
+
+
+我们先介绍获取模板相关的逻辑，代码如下:
+
+```js
+const mount = Vue.prototype.$mount
+Vue.prototype.$mount = function (el) {
+  el = el && query(el)
+
+  const options = this.$options
+  if (!options.render) {
+    // 新增获取模板相关逻辑
+    let template = options.template
+    if (template) {
+       if (typeof template === 'string') {
+           if (template.charAt(0) === '#') {
+             template = idToTemplate(template)
+           }
+       }else if (template.nodeType){
+           template = template.innerHTML
+       }else{
+           if (process.env.NODE_ENV !== 'production') {
+             warn('invalid template option:' + template, this)
+           }
+           return this
+       }
+
+    } else if (el) {
+      // 如果没取到template，说明用户没有设置template选项，
+      // 那么使用getOuterHTML方法从用户提供的el选项中获取模板
+      template = getOuterHTML(el)
+    }
+    
+    // 新增编码相关逻辑
+    if(template){
+       const { render } = compileToFunctions(
+          template,
+          {
+            ...
+          },
+          this
+       )
+       options.render = render
+    }
+  }
+
+  return mount.call(this, el)
+}
+
+function getOuterHTML (el) {
+  if (el.outerHTML) {
+    return el.outerHTML
+  } else {
+    const container = document.createElement('div')
+    container.appendChild(el.cloneNode(true))
+    return container.innerHTML
+  }
+}
+
+// idToTemplate方法使用选择符获取DOM元素之后，将它的innerHTML作为模板
+function idToTemplate (id) {
+  const el = query(id)
+  return el && el.innerHTML
+}
+```
+
+结合前面的代码，整体逻辑是，如果用户没有通过template选项设置模板，那么会从el选项中获取HTML字符串当作模板。如果用户提供了template选项，那么需要对它进一步解析，因为这个选项支持很多种使用方式。template选项可以直接设置成字符串模板，也可以设置为以#开头的选择符，还可以设置成DOM元素。
+
+
+将模板编译成代码字符串并将代码字符串转换成渲染函数的过程是在compileToFunctions函数中完成的，该函数的内部实现如下：
+
+```js
+function compileToFunctions (template, options, vm) {
+  options = extend({}, options)
+
+  // 检查缓存
+  const key = options.delimiters
+    ? String(options.delimiters) + template
+    : template
+  if (cache[key]) {
+    return cache[key]
+  }
+
+  // 编译
+  const compiled = compile(template, options)
+
+  // 将代码字符串转换为函数
+  const res = {}
+  res.render = createFunction(compiled.render)
+
+  return (cache[key] = res)
+}
+
+function createFunction (code) {
+  return new Function(code)
+}
+```
+
+ ●  1、首先，将options属性混合到空对象中，其目的是让options成为可选参数。
+
+ ●  2、接下来，检查缓存中是否已经存在编译后的模板。如果模板已经被编译，就会直接返回缓存中的结果，不会重复编译，保证不做无用功来提升性能。
+
+ ●  3、然后调用compile函数来编译模板。这部分内容就是第三篇中介绍的，将模板编译成代码字符串并存储在compiled中的render属性中，此时该属性中保存的内容类似下面这样：
+
+```js
+'with(this){return _c("div",{attrs:{"id":"el"}},[_v("Hello "+_s(name))])}'
+```
+
+
+ ●  4、接下来，调用createFunction函数将代码字符串转换为函数。其实现原理相当简单，使用new Function(code)就可以完成。
+
+```js
+const code = 'console.log("Hello Berwin")'
+const render = new Function(code)
+render() // Hello Berwin
+```
+
+ ●  5、最后，将渲染函数返回给调用方。
+
+**2、只包含运行时版本的vm.$mount的实现原理：**
+下面代码可以看到，$mount方法将ID转换为DOM元素后，使用mountComponent函数将Vue.js实例挂载到DOM元素上。事实上，将实例挂载到DOM元素上指的是将模板渲染到指定的DOM元素中，而且是持续性的，以后当数据（状态）发生变化时，依然可以渲染到指定的DOM元素中。
+
+实现这个功能需要开启watcher。watcher将持续观察模板中用到的所有数据（状态），当这些数据（状态）被修改时它将得到通知，从而进行渲染操作。这个过程会持续到实例被销毁。
+
+```js
+Vue.prototype.$mount = function (el) {
+  el = el && inBrowser ? query(el) : undefined;
+  return mountComponent(this, el);
+}
+
+export function mountComponent (vm, el) {
+  if (!vm.$options.render) {
+    vm.$options.render = createEmptyVNode
+    if (process.env.NODE_ENV !== 'production') {
+      // 在开发环境下发出警告
+    }
+  }
+  // 触发生命周期钩子
+  callHook(vm, 'beforeMount')
+
+  // 挂载
+  vm._watcher = new Watcher(vm, () => {
+    vm._update(vm._render())
+  }, noop)
+
+  // 触发生命周期钩子
+  callHook(vm, 'mounted')
+  return vm
+}
+```
+
+vm._update(vm._render()) 的作用是先调用渲染函数得到一份最新的VNode节点树，然后通过 _update方法对最新的VNode和上一次渲染用到的旧VNode进行对比并更新DOM节点。简单来说，就是执行了渲染操作。
+
+下面我们来回顾一下watcher观察数据的过程：
+
+状态通过Observer转换成响应式之后，每当触发getter时，会从全局的某个属性中获取watcher实例并将它添加到数据的依赖列表中。watcher在读取数据之前，会先将自己设置到全局的某个属性中。而数据被读取会触发getter，所以会将watcher收集到依赖列表中。收集好依赖后，当数据发生变化时，会向依赖列表中的watcher发送通知。
+
+由于Watcher的第二个参数支持函数，所以当watcher执行函数时，函数中所读取的数据都将会触发getter去全局找到watcher并将其收集到函数的依赖列表中。也就是说，函数中读取的所有数据都将被watcher观察。这些数据中的任何一个发生变化时，watcher都将得到通知。
+
+得出了这个结论后，有什么用呢？当数据发生变化时，watcher会一次又一次地执行函数进入渲染流程，如此反复，这个过程会持续到实例被销毁。
+
+挂载完毕后，会触发mounted钩子函数。
+
+
+
+
 #### 2.4 全局API的实现原理
+
+全局API和实例方法不同，后者是在Vue的原型上挂载方法，也就是在Vue.prototype上挂载方法，而前者是直接在Vue上挂载方法。
+
+```js
+Vue.extend = function (extendOptions) {
+  // 做点什么
+}
+```
+
+##### 2.4.1 Vue.extend
+
+用法：使用基础Vue构造器创建一个“子类”，其参数是一个包含“组件选项”的对象。
+
+```js
+<div id="mount-point"></div>
+// 创建构造器
+var Profile = Vue.extend({
+  template: '<p>{{firstName}} {{lastName}} aka {{alias}}</p>',
+  data: function () {
+    return {
+      firstName: 'Walter',
+      lastName: 'White',
+      alias: 'Heisenberg'
+    }
+  }
+})
+// 创建Profile实例，并挂载到一个元素上
+new Profile().$mount('#mount-point')
+```
+
+原理：
+
+```js
+
+```
+
+##### 2.4.2 Vue.nextTick
+
+##### 2.4.3 Vue.set
+
+
+##### 2.4.4 Vue.delete
+
+##### 2.4.5 Vue.directive
+
+##### 2.4.6 Vue.filter
 
 ### 3、生命周期
 
