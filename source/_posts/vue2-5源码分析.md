@@ -3795,20 +3795,354 @@ new Profile().$mount('#mount-point')
 
 原理：
 
-```js
+为了性能考虑，我们在Vue.extend方法内首先增加了缓存策略。反复调用Vue.extend其实应该返回同一个结果。只要返回结果是固定的，就可以将计算结果缓存，再次调用extend方法时，只需要从缓存中取出结果即可。
 
+完整代码如下：
+
+```js
+let cid = 1
+
+Vue.extend = function (extendOptions) {
+  extendOptions = extendOptions || {}
+  const Super = this
+  const SuperId = Super.cid
+  const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
+  if (cachedCtors[SuperId]) {
+    return cachedCtors[SuperId]
+  }
+  const name = extendOptions.name || Super.options.name
+  if (process.env.NODE_ENV !== 'production') {
+    if (!/^[a-zA-Z][\w-]*$/.test(name)) {
+      warn(
+        'Invalid component name: "' + name + '". Component names ' +
+        'can only contain alphanumeric characters and the hyphen, ' +
+        'and must start with a letter.'
+      )
+    }
+  }
+  const Sub = function VueComponent (options) {
+    this._init(options)
+  }
+  Sub.prototype = Object.create(Super.prototype)
+  Sub.prototype.constructor = Sub
+  Sub.cid = cid++
+
+  Sub.options = mergeOptions(
+    Super.options,
+    extendOptions
+  )
+  Sub['super'] = Super
+
+  if (Sub.options.props) {
+    initProps(Sub)
+  }
+
+  if (Sub.options.computed) {
+    initComputed(Sub)
+  }
+
+  Sub.extend = Super.extend
+  Sub.mixin = Super.mixin
+  Sub.use = Super.use
+
+  // ASSET_TYPES = ['component', 'directive', 'filter']
+  ASSET_TYPES.forEach(function (type) {
+    Sub[type] = Super[type]
+  })
+
+  if (name) {
+    Sub.options.components[name] = Sub
+  }
+
+  Sub.superOptions = Super.options
+  Sub.extendOptions = extendOptions
+  Sub.sealedOptions = extend({}, Sub.options)
+
+  // 缓存构造函数
+  cachedCtors[SuperId] = Sub
+  return Sub
+}
 ```
+
+总体来讲，其实就是创建了一个Sub函数并继承了父级。如果直接使用Vue.extend，则Sub继承于Vue构造函数。
 
 ##### 2.4.2 Vue.nextTick
 
+用法：在下次DOM更新循环结束之后执行延迟回调，修改数据之后立即使用这个方法获取更新后的DOM。
+
+```js
+// 修改数据
+vm.msg = 'Hello'
+// DOM还没有更新
+Vue.nextTick(function () {
+// DOM更新了
+})
+
+// 作为一个Promise使用（这是Vue.js 2.1.0版本新增的）
+Vue.nextTick()
+.then(function () {
+  // DOM更新了
+})
+```
+
+原理:
+
+```js
+import { nextTick } from '../util/index'
+
+Vue.nextTick = nextTick
+```
+
 ##### 2.4.3 Vue.set
 
+用法：设置对象的属性。如果对象是响应式的，确保属性被创建后也是响应式的，同时触发视图更新。这个方法主要用于避开Vue不能检测属性被添加的限制。
+
+注意　对象不能是Vue.js实例或者Vue.js实例的根数据对象。
+
+```js
+// target {object|arrary}
+// key {string|number}
+// value {any}
+Vue.set(target, key , value);
+```
+Vue.set与vm.$set的实现原理相同。
 
 ##### 2.4.4 Vue.delete
 
+用法：删除对象的属性。如果对象是响应式的，确保删除能触发更新视图。这个方法主要用于避开Vue.js不能检测到属性被删除的限制。
+
+```js
+Vue.delete(target, key)
+```
+
 ##### 2.4.5 Vue.directive
 
+用法：注册或获取全局指令。
+
+```js
+// 注册
+Vue.directive('my-directive', {
+  bind: function () {},
+  inserted: function () {},
+  update: function () {},
+  componentUpdated: function () {},
+  unbind: function () {}
+})
+
+// 注册（指令函数）
+Vue.directive('my-directive', function () {
+  // 这里将会被bind和update调用
+})
+
+// getter方法，返回已注册的指令
+let myDirective = Vue.directive('my-directive')
+```
+
+**除了核心功能默认内置的指令外（v-model和v-show），Vue.js也允许注册自定义指令。虽然代码复用和抽象的主要形式是组件，但是有些情况下，仍然需要对普通DOM元素进行底层操作，这时就会用到自定义指令。**
+
+原理：
+
+```js
+// 用于保存指令的位置
+Vue.options = Object.create(null)
+Vue.options['directives'] = Object.create(null)
+
+Vue.directive = function (id, definition) {
+  if (!definition) {
+    return this.options['directives'][id]
+  } else {
+    if (typeof definition === 'function') {
+      definition = { bind: definition, update: definition }
+    }
+    this.options['directives'][id] = definition
+    return definition
+  }
+}
+```
 ##### 2.4.6 Vue.filter
+
+用法：注册或获取全局过滤器。
+
+```js
+// 注册
+Vue.filter('my-filter', function (value) {
+  // 返回处理后的值
+})
+
+// getter方法，返回已注册的过滤器
+var myFilter = Vue.filter('my-filter')
+```
+
+```html
+<!-- 在双花括号中 -->
+{{ message | capitalize }}
+
+<!-- 在v-bind中 -->
+<div v-bind:id="rawId | formatId"></div>
+```
+
+原理：
+
+```js
+Vue.options['filters'] = Object.create(null)
+
+Vue.filter = function (id, definition) {
+  if (!definition) {
+    return this.options['filters'][id]
+  } else {
+    this.options['filters'][id] = definition
+    return definition
+  }
+}
+```
+
+##### 2.4.7 Vue.component
+用法：注册或获取全局组件。注册组件时，还会自动使用给定的id设置组件的名称。相关代码如下：
+
+```js
+// 注册组件，传入一个扩展过的构造器
+Vue.component('my-component', Vue.extend({ /* ... */ }))
+
+// 注册组件，传入一个选项对象（自动调用Vue.extend）
+Vue.component('my-component', { /* ... */ })
+
+// 获取注册的组件（始终返回构造器）
+var MyComponent = Vue.component('my-component')
+```
+
+我们在使用Vue.js开发项目时，会经常与组件打交道。在编写组件库时，也经常会用到Vue.component方法。因此，理解组件的注册原理非常重要。
+
+
+你会发现Vue.directive、Vue.filter和Vue.component这三个方法的实现方式非常相似，代码很多都是重复的。但是为了方便理解，这里我将这三个方法分别拆开单独介绍。事实上，在Vue.js的源码中，这三个方法是放在一起实现的:
+
+```js
+Vue.options = Object.create(null)
+ASSET_TYPES = ['component', 'directive', 'filter']
+ASSET_TYPES.forEach(type => {
+  Vue.options[type + 's'] = Object.create(null)
+})
+ASSET_TYPES.forEach(type => {
+  Vue[type] = function (id, definition) {
+    if (!definition) {
+      return this.options[type + 's'][id]
+    } else {
+      if (type === 'component' && isPlainObject(definition)) {
+        definition.name = definition.name || id
+        definition = Vue.extend(definition)
+      }
+      if (type === 'directive' && typeof definition === 'function') {
+        definition = { bind: definition, update: definition }
+      }
+      this.options[type + 's'][id] = definition
+      return definition
+    }
+  }
+})
+```
+
+##### 2.4.8 Vue.use
+用法：安装Vue.js插件。如果插件是一个对象，必须提供install方法。如果插件是一个函数，它会被作为install方法。调用install方法时，会将Vue作为参数传入。install方法被同一个插件多次调用时，插件也只会被安装一次。
+
+原理：
+
+Vue.use的作用是注册插件，此时只需要调用install方法并将Vue作为参数传入即可。但在细节上其实有两部分逻辑需要处理：一部分是插件的类型，可以是install方法，也可以是一个包含install方法的对象；另一部分逻辑是插件只能被安装一次，保证插件列表中不能有重复的插件。其代码如下：
+
+```js
+Vue.use = function (plugin) {
+  const installedPlugins = (this._installedPlugins || (this._installedPlugins = []))
+  if (installedPlugins.indexOf(plugin) > -1) {
+    return this
+  }
+
+  // 其他参数
+  const args = toArray(arguments, 1)
+  // 将Vue添加到args列表的最前面
+  args.unshift(this) 
+  if (typeof plugin.install === 'function') {
+    plugin.install.apply(plugin, args)
+  } else if (typeof plugin === 'function') {
+    plugin.apply(null, args)
+  }
+  installedPlugins.push(plugin)
+  return this
+}
+```
+
+##### 2.4.9 Vue.mixin
+用法：全局注册一个混入（mixin），影响注册之后创建的每个Vue.js实例。插件作者可以使用混入向组件注入自定义行为（例如：监听生命周期钩子）。不推荐在应用代码中使用。
+
+```js
+// 为自定义的选项myOption注入一个处理器
+Vue.mixin({
+  created: function () {
+    var myOption = this.$options.myOption
+    if (myOption) {
+      console.log(myOption)
+    }
+  }
+})
+  
+new Vue({
+  myOption: 'hello!'
+})
+// => "hello!"
+```
+
+原理：Vue.mixin方法注册后，会影响之后创建的每个Vue.js实例，因为该方法会更改Vue.options属性。
+
+```js
+import { mergeOptions } from '../util/index'
+
+export function initMixin (Vue) {
+  Vue.mixin = function (mixin) {
+    this.options = mergeOptions(this.options, mixin)
+    return this
+  }
+}
+```
+
+因为mixin方法修改了Vue.options属性，而之后创建的每个实例都会用到该属性，所以会影响创建的每个实例。但也正是因为有影响，所以mixin在某些场景下才堪称神器。
+
+##### 2.4.10 Vue.compile
+用法：编译模板字符串并返回包含渲染函数的对象。只在完整版中才有效。
+
+```js
+var res = Vue.compile('<div><span>{{ msg }}</span></div>')
+
+new Vue({
+  data: {
+    msg: 'hello'
+  },
+  render: res.render
+})
+```
+
+与vm.$mount类似，Vue.compile方法只存在于完整版中。
+
+原理：
+
+Vue.compile = compileToFunctions
+
+
+##### 2.4.11 Vue.version
+用法：
+```js
+var version = Number(Vue.version.split('.')[0])
+
+if (version === 2) {
+  // Vue.js v2.x.x
+} else if (version === 3) {
+  // Vue.js v3.x.x
+} else {
+  // 其他
+}
+```
+
+##### 2.4.12 总结
+我们详细介绍了Vue.js的实例方法和全局API的实现原理。它们的区别在于：实例方法是Vue.prototype上的方法，而全局API是Vue.js上的方法。
+
+实例方法又分为数据、事件和生命周期这三个类型。
+
 
 ### 3、生命周期
 
