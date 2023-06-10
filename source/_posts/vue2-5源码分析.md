@@ -4145,6 +4145,183 @@ if (version === 2) {
 
 
 ### 3、生命周期
+每个Vue.js实例在创建时都要经过一系列初始化，例如设置数据监听、编译模板、将实例挂载到DOM并在数据变化时更新DOM等。同时，也会运行一些叫作生命周期钩子的函数，这给了我们在不同阶段添加自定义代码的机会。
+
+#### 3.1 生命周期示意图
+
+初始化阶段（部分版本有模版编译）、挂载阶段、更新阶段、卸载阶段
+
+<img src="/img/vue41.jpeg" style="max-width:95%" />
+
+##### 3.1.1 初始化
+new Vue()到created之间的阶段叫作初始化阶段
+
+这个阶段的主要目的是在Vue.js实例上初始化一些属性、事件以及响应式数据，如props、methods、data、computed、watch、provide和inject等。
+
+
+##### 3.1.2 模版编译
+在created钩子函数与beforeMount钩子函数之间的阶段是模板编译阶段。
+
+这个阶段的主要目的是将模板编译为渲染函数，只存在于完整版中。如果在只包含运行时的构建版本中执行new Vue()，则不会存在这个阶段。
+
+当使用vue-loader或vueify时，*.vue文件内部的模板会在构建时预编译成JavaScript，所以最终打好的包里是不需要编译器的，用运行时版本即可。由于模板这时已经预编译成了渲染函数，所以在生命周期中并不存在模板编译阶段，初始化阶段的下一个生命周期直接是挂载阶段
+
+
+##### 3.1.3 挂载阶段
+beforeMount钩子函数到mounted钩子函数之间是挂载阶段。
+
+在这个阶段，Vue.js会将其实例挂载到DOM元素上，通俗地讲，就是将模板渲染到指定的DOM元素中。在挂载的过程中，Vue.js会开启Watcher来持续追踪依赖的变化。
+
+在已挂载状态下，Vue.js仍会持续追踪状态的变化。当数据（状态）发生变化时，Watcher会通知虚拟DOM重新渲染视图，并且会在渲染视图前触发beforeUpdate钩子函数，渲染完毕后触发updated钩子函数。
+
+通常，在运行时的大部分时间下，Vue.js处于已挂载状态，每当状态发生变化时，Vue.js都会通知组件使用虚拟DOM重新渲染，也就是我们常说的响应式。这个状态会持续到组件被销毁。
+
+##### 3.1.4 卸载阶段
+在这个阶段，Vue.js会将自身从父组件中删除，取消实例上所有依赖的追踪并且移除所有的事件监听器。
+
+
+#### 3.2 从源码角度了解生命周期
+new Vue()被调用时发生了什么？
+
+想要了解new Vue()被调用时发生了什么，我们需要知道在Vue构造函数中实现了哪些逻辑。前面介绍过，当new Vue()被调用时，会首先进行一些初始化操作，然后进入模板编译阶段，最后进入挂载阶段。
+
+```js
+function Vue (options) {
+  if (process.env.NODE_ENV !== 'production' && !(this instanceof Vue)
+      !(this instanceof Vue)
+  ) {
+    warn('Vue is a constructor and should be called with the `new` keyword')
+  }
+  this._init(options)
+}
+
+export default Vue
+```
+
+**_init方法的定义**
+
+```js
+import { initMixin } from './init'
+
+function Vue (options) {
+  if (process.env.NODE_ENV !== 'production' &&
+    !(this instanceof Vue)
+  ) {
+    warn('Vue is a constructor and should be called with the `new` keyword')
+  }
+  this._init(options)
+}
+
+// 通过调用initMixin方法将 _init挂载到Vue构造函数的原型上
+initMixin(Vue)
+
+export default Vue
+
+
+// init.js文件
+export function initMixin(Vue){
+  Vue.prototype._init = function(options){
+
+  }
+}
+```
+
+**_init方法的内部原理**
+
+当new Vue()执行后，触发的一系列初始化流程都是在 _init方法中启动的。_init的实现如下：
+
+```js
+Vue.prototype._init = function (options) {
+  vm.$options = mergeOptions(
+    resolveConstructorOptions(vm.constructor),
+    options || {},
+    vm
+  )
+  initLifecycle(vm)
+  initEvents(vm)
+  initRender(vm)
+  callHook(vm, 'beforeCreate')
+  initInjections(vm) // 在data/props前初始化inject
+  initState(vm)
+  initProvide(vm) // 在data/props后初始化provide
+  callHook(vm, 'created')
+
+  // 如果用户在实例化Vue.js时传递了el选项，则自动开启模板编译阶段与挂载阶段
+  // 如果没有传递el选项，则不进入下一个生命周期流程
+  // 用户需要执行vm.$mount方法，手动开启模板编译阶段与挂载阶段
+
+  if (vm.$options.el) {
+    vm.$mount(vm.$options.el)
+  }
+}
+```
+
+<img src="/img/vue42.jpeg" style="max-width:95%" />
+
+**callHook函数的内部原理**
+
+Vue.js通过callHook函数来触发生命周期钩子。我们需要理解callHook所实现的功能。callHook的作用是触发用户设置的生命周期钩子，而用户设置的生命周期钩子会在执行new Vue()时通过参数传递给Vue.js。也就是说，可以在Vue.js的构造函数中通过options参数得到用户设置的生命周期钩子。
+
+vue生命周期：
+
+● beforeCreate
+
+● created
+
+● beforeMount
+
+● mounted
+
+● beforeUpdate
+
+● updated
+
+● beforeDestroy
+
+● destroyed
+
+● activated
+
+● deactivated
+
+● errorCaptured
+
+通过vm.$options.created获取的是一个数组，数组中包含了钩子函数，例如：
+
+```js
+console.log(vm.$options.created); // [fn] 数组
+```
+
+原因：Vue.mixin和用户在实例化Vue.js时，如果设置了同一个生命周期钩子，那么在触发生命周期时，需要同时触发这两个函数。而转换成数组后，可以在同一个生命周期钩子列表中保存多个生命周期钩子。
+
+举个例子：使用Vue.mixin设置生命周期钩子mounted之后，在执行new Vue()时，会在参数中也设置一个生命周期钩子mounted，这时vm.$options.mounted是一个数组，里面包含两个生命周期钩子。
+
+```js
+export function callHook (vm, hook) {
+  const handlers = vm.$options[hook]
+  if (handlers) {
+    for (let i = 0, j = handlers.length; i < j; i++) {
+      try {
+        handlers[i].call(vm)
+      } catch (e) {
+        handleError(e, vm, `${hook} hook`)
+      }
+    }
+  }
+}
+```
+
+这里使用try...catch语句捕获钩子函数内发生的错误，并使用handleError处理错误。handleError会依次执行父组件的errorCaptured钩子函数与全局的config.errorHandler，这也是为什么生命周期钩子errorCaptured可以捕获子孙组件的错误。关于handleError与生命周期钩子errorCaptured，我们会在随后的内容中详细介绍。
+
+#### 3.3 errorCaptured与错误处理
+errorCaptured钩子函数的作用是捕获来自子孙组件的错误，此钩子函数会收到三个参数：错误对象、发生错误的组件实例以及一个包含错误来源信息的字符串。然后此钩子函数可以返回false，阻止该错误继续向上传播。
+
+#### 3.4 初始化实例属性
+
+#### 3.5 初始化实例属性
+
+#### 3.6 初始化inject
+
 
 ### 4、指令的奥秘
 
