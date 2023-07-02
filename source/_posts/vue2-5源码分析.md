@@ -5334,8 +5334,489 @@ new Vue()被执行后，Vue.js进入初始化阶段，然后选择性进入模�
 ##### 4.2.2 v-for指令的原理概述
 v-for指令也是在模板编译的代码生成阶段实现的。
 
+```xml
+<li v-for="(item, index) in list">v-for {{index}}</li>
+```
+
+在模板编译阶段会生成这样的代码字符串：
+
+```js
+_l((list), function (item, index) {
+  return _c('li', [
+    _v("v-for " + _s(index))
+  ])
+})
+```
+
+其中，_l是函数renderList的别名。当执行这段代码字符串时，_l函数会循环变量list并依次调用第二个参数所传递的函数。同时，会传递两个参数：item和index。此外，当 _c函数被调用时，会执行 _v函数创建一个文本节点。
+
+可以发现，v-for指令的实现原理和自定义指令也不一样。
+
+##### 4.2.3 v-on指令
+它用在普通元素上时，可以监听原生DOM事件；用在自定义元素组件上时，可以监听子组件触发的自定义事件。
+
+例如，在模板中注册一个点击事件：
+
+```js
+<button v-on:click="doThat">我是按钮</button>
+```
+
+在最终生成的VNode中，我们可以通过vnode.data.on读出下面的事件对象：
+
+```js
+{
+  click: function () {}
+}
+```
+
+事件绑定相关的处理逻辑分别设置了create与update钩子函数，也就是说在修补的过程中，每当一个DOM元素被创建或更新时，都会触发事件绑定相关的处理逻辑。
+
+事件绑定相关的处理逻辑是一个叫updateDOMListeners的函数，而create与update钩子函数执行的都是这个函数。其代码如下：
+
+```js
+let target
+function updateDOMListeners (oldVnode, vnode) {
+  if (isUndef(oldVnode.data.on) && isUndef(vnode.data.on)) {
+    return
+  }
+  const on = vnode.data.on || {}
+  const oldOn = oldVnode.data.on || {}
+  target = vnode.elm
+  // normalizeEvents 可以对特殊情况下的事件对象做一些特殊处理。
+  normalizeEvents(on)
+  // 该方法的作用是对比on与oldOn，
+  // 然后根据对比结果调用add方法或remove方法执行对应的绑定事件或解绑事件等
+  updateListeners(on, oldOn, add, remove, vnode.context)
+  target = undefined
+}
+```
+
+这个函数接收两个参数：oldVnode与vnode。我们可以通过对比两个VNode中的事件对象，来决定绑定原生DOM事件还是解绑原生DOM事件。
+
+那么，add和remove方法是如何绑定与解绑DOM原生事件的呢？
+
+浏览器提供了一个绑定事件的API，叫作node.addEventListener，我相信大家都不陌生。add方法的代码如下：
+
+```js
+function add (event, handler, once, capture, passive) {
+  handler = withMacroTask(handler)
+  // 
+  if (once) handler = createOnceHandler(handler, event, capture)
+  target.addEventListener(
+    event,
+    handler,
+    supportsPassive
+      ? { capture, passive }
+      : capture
+  )
+}
+```
+
+事件监听器使用withMacroTask包了一层，并且如果v-on使用了once修饰符，那么会使用高阶函数createOnceHandler实现once的功能。
+
+withMacroTask函数的作用是给回调函数做一层包装，当事件触发时，如果因为回调中修改了数据而触发更新DOM的操作，那么该更新操作会被推送到宏任务（macrotask）的任务队列中。
+
+前面说过，createOnceHandler函数可以实现once的功能，那么它是如何做到的呢？其代码如下：
+
+```js
+function createOnceHandler (handler, event, capture) {
+  const _target = target // 在闭包中保存当前目标元素
+  return function onceHandler () {
+    const res = handler.apply(null, arguments)
+    if (res !== null) {
+      remove(event, onceHandler, capture, _target)
+    }
+  }
+}
+```
+
+可以看到，这个createOnceHandler函数就是一个普通的once实现。执行该函数后，会返回函数onceHandler。当执行onceHandler时，会执行handler函数，并执行remove函数来解绑事件，使事件只能被执行一次。
+
+remove方法比add方法简单，它只需要调用浏览器提供的removeEventListener方法将事件解绑即可，其代码如下：
+
+```js
+function remove (event, handler, capture, _target) {
+  (_target || target).removeEventListener(
+    event,
+    handler._withTask || handler,
+    capture
+  )
+}
+```
+
+#### 4.3 自定义指令的内部原理
+我们知道，虚拟DOM通过算法对比两个VNode之间的差异并更新真实的DOM节点。在更新真实的DOM节点时，有可能是创建新的节点，或者更新一个已有的节点，还有可能是删除一个节点等。虚拟DOM在渲染时，除了更新DOM内容外，还会触发钩子函数。例如，在更新节点时，除了更新节点的内容外，还会触发update钩子函数。这是因为标签上通常会绑定一些指令、事件或属性，这些内容也需要在更新节点时同步被更新。因此，事件、指令、属性等相关处理逻辑只需要监听钩子函数，在钩子函数触发时执行相关处理逻辑即可实现功能。
+
+指令的处理逻辑分别监听了create、update与destroy，其代码如下：
+
+```js
+export default {
+  create: updateDirectives,
+  update: updateDirectives,
+  destroy: function unbindDirectives (vnode) {
+    updateDirectives(vnode, emptyNode)
+  }
+}
+```
+
+虚拟DOM在触发钩子函数时，上面代码中对应的函数会被执行。但无论哪个钩子函数被触发，最终都会执行一个叫作updateDirectives的函数。从代码中可以得知，指令相关的处理逻辑都在updateDirectives函数中实现，该函数的代码如下：
+
+```js
+function updateDirectives (oldVnode, vnode) {
+  if (oldVnode.data.directives || vnode.data.directives) {
+    _update(oldVnode, vnode)
+  }
+}
+
+function _update (oldVnode, vnode) {
+  // 判断虚拟节点是否是一个新创建的节点。
+  const isCreate = oldVnode === emptyNode
+  
+  // 当新虚拟节点不存在而旧虚拟节点存在时为真。
+  const isDestroy = vnode === emptyNode
+  
+  // 旧的指令集合，指oldVnode中保存的指令。
+  const oldDirs = normalizeDirectives(oldVnode.data.directives, oldVnode.context)
+  
+  // 新的指令集合，指vnode中保存的指令
+  const newDirs = normalizeDirectives(vnode.data.directives, vnode.context)
+  
+  // 其中保存需要触发inserted指令钩子函数的指令列表。
+  const dirsWithInsert = []
+
+  // 其中保存需要触发componentUpdated钩子函数的指令列表。
+  const dirsWithPostpatch = []
+
+  let key, oldDir, dir
+  for (key in newDirs) {
+    oldDir = oldDirs[key]
+    dir = newDirs[key]
+    if (!oldDir) {
+      // 新指令，触发bind
+      callHook(dir, 'bind', vnode, oldVnode)
+      if (dir.def && dir.def.inserted) {
+        dirsWithInsert.push(dir)
+      }
+    } else {
+      // 指令已存在，触发update
+      dir.oldValue = oldDir.value
+      callHook(dir, 'update', vnode, oldVnode)
+      if (dir.def && dir.def.componentUpdated) {
+        dirsWithPostpatch.push(dir)
+      }
+    }
+  }
+
+  if (dirsWithInsert.length) {
+    const callInsert = () => {
+      for (let i = 0; i < dirsWithInsert.length; i++) {
+        callHook(dirsWithInsert[i], 'inserted', vnode, oldVnode)
+      }
+    }
+    if (isCreate) {
+      mergeVNodeHook(vnode, 'insert', callInsert)
+    } else {
+      callInsert()
+    }
+  }
+
+  if (dirsWithPostpatch.length) {
+    mergeVNodeHook(vnode, 'postpatch', () => {
+      for (let i = 0; i < dirsWithPostpatch.length; i++) {
+        callHook(dirsWithPostpatch[i], 'componentUpdated', vnode, oldVnode)
+      }
+    })
+  }
+
+  if (!isCreate) {
+    for (key in oldDirs) {
+      if (!newDirs[key]) {
+        // 指令不再存在，触发unbind
+        callHook(oldDirs[key], 'unbind', oldVnode, oldVnode, isDestroy)
+      }
+    }
+  }
+}
+```
+
+这里通过normalizeDirectives函数将模板中使用的指令从用户注册的自定义指令集合中取出来，最终取到的值为：
+
+```js
+{
+  v-focus: {
+    def: {inserted: ?},
+    modifiers: {},
+    name: "focus",
+    rawName: "v-focus"
+  }
+}
+```
+
+自定义指令的代码为：
+
+```js
+Vue.directive('focus', {
+  inserted: function (el) {
+    el.focus()
+  }
+})
+```
+
+最后，介绍一下callHook函数是如何执行指令的钩子函数的，其代码如下：
+
+```js
+// dir：指令对象。
+// hook：将要触发的钩子函数名
+// vnode：新虚拟节点
+// oldVnode：旧虚拟节点
+// isDestroy：当新虚拟节点不存在而旧虚拟节点存在时为真
+function callHook (dir, hook, vnode, oldVnode, isDestroy) {
+  const fn = dir.def && dir.def[hook]
+  if (fn) {
+    try {
+      fn(vnode.elm, dir, vnode, oldVnode, isDestroy)
+    } catch (e) {
+      handleError(e, vnode.context, `directive ${dir.name} ${hook} hook`)
+    }
+  }
+}
+```
+
+#### 4.4 虚拟DOM钩子函数
+下表给出了虚拟DOM在渲染时会触发的所有钩子函数以及每个钩子函数的触发时机。
+
+**虚拟DOM在渲染时会触发的所有钩子函数及其触发时机：**
+
+<img src="/img/vue46.jpeg" style="max-width:95%" />
+
 
 ### 5、过滤器的奥秘
+Vue.js允许我们自定义过滤器来格式化文本。它可以用在两个地方：双花括号插值和v-bind表达式（后者从2.1.0+ 开始支持）。它应该被添加在JavaScript表达式的尾部，由“管道”符号指示：
+
+```js
+<!-- 在双花括号中 -->
+{{ message | capitalize }}
+
+<!-- 在v-bind中 -->
+<div v-bind:id="rawId | formatId"></div>
+```
+
+我们可以在一个组件的选项中定义本地的过滤器：
+
+```js
+filters: {
+  capitalize: function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  }
+}
+```
+
+或者在创建Vue.js实例之前全局定义过滤器：
+
+```js
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+})
+
+new Vue({
+  // ……
+})
+```
+
+过滤器可以串联，下例中，filterA被定义为接收单个参数的过滤器函数，表达式message的值将作为参数传入到filterA过滤器函数中。然后继续调用同样被定义为接收单个参数的过滤器函数filterB，将过滤器函数filterA的执行结果当作参数传递给filterB函数:
+
+```js
+ {{ message | filterA | filterB }}
+```
+
+过滤器是JavaScript函数，因此可以接收参数:
+
+```js
+{{ message | filterA('arg1', arg2) }}
+```
+
+这里，filterA被定义为接收三个参数的过滤器函数。其中message的值作为第一个参数，普通字符串 'arg1' 作为第二个参数，表达式arg2的值作为第三个参数。
+
+#### 5.1 过滤器原理概述
+
+```js
+{{ message | capitalize }}
+
+// 过滤器在模板编译阶段会编译成下面的样子
+
+_s(_f("capitalize")(message))
+```
+
+其中 _f函数是resolveFilter的别名，其作用是从this.$options.filters中找出注册的过滤器并返回。因此，上面例子中的 _f("capitalize") 与this.$options.filters['capitalize']相同。而this.$options.filters['capitalize'] 就是我们注册的capitalize过滤器函数：
+
+```js
+filters: {
+  capitalize: function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  }
+}
+```
+
+_s函数不陌生，第9章中介绍过，它是toString函数的别名。toString函数的代码如下：
+
+```js
+function toString (val) {
+  return val == null
+    ? ''
+    : typeof val === 'object'
+      ? JSON.stringify(val, null, 2)
+      : String(val)
+}
+```
+
+简单来说，其实就是执行了capitalize过滤器函数并把message当作参数传递进去，接着将capitalize过滤器处理后的结果当作参数传递给toString函数。最终toString函数执行后的结果会保存到VNode中的text属性中。换句话说，这个返回结果直接被拿去渲染视图了。
+
+
+##### 5.1.1 串联过滤器
+
+```js
+{{ message | capitalize | suffix }}
+```
+
+我们定义的本地过滤器如下：
+
+```js
+filters: {
+  capitalize: function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  },
+  suffix: function (value, symbol = '~') {
+    if (!value) return ''
+    return value + symbol
+  }
+}
+```
+
+最终在模板编译阶段会编译成下面的样子：
+
+```js
+_s(_f("suffix")(_f("capitalize")(message)))
+```
+
+##### 5.1.2 滤器接收参数
+
+```js
+{{message|capitalize|suffix('!')}}
+```
+
+设置了参数的过滤器最终被编译后变成这样：
+
+```js
+_s(_f("suffix")(_f("capitalize")(message),'!'))
+```
+
+##### 5.1.3 resolveFilter的内部原理
+
+_f函数是resolveFilter函数的别名。resolveFilter函数的代码如下：
+
+```js
+import { identity, resolveAsset } from 'core/util/index'
+  
+export function resolveFilter (id) {
+  return resolveAsset(this.$options, 'filters', id, true) || identity
+}
+
+// 返回相同值
+export const identity = _ => _
+```
+
+现在我们比较关心resolveAsset函数如何查找过滤器，其代码如下：
+
+```js
+export function resolveAsset (options, type, id, warnMissing) {
+  if (typeof id !== 'string') {
+    return
+  }
+  const assets = options[type]
+  // 先检查本地注册的变动
+  if (hasOwn(assets, id)) return assets[id]
+  const camelizedId = camelize(id)
+  if (hasOwn(assets, camelizedId)) return assets[camelizedId]
+  const PascalCaseId = capitalize(camelizedId)
+  if (hasOwn(assets, PascalCaseId)) return assets[PascalCaseId]
+  // 检查原型链
+  const res = assets[id] || assets[camelizedId] || assets[PascalCaseId]
+  if (process.env.NODE_ENV !== 'production' && warnMissing && !res) {
+    warn(
+      'Failed to resolve ' + type.slice(0, -1) + ': ' + id,
+      options
+    )
+  }
+  return res
+}
+```
+
+#### 5.2 解析过滤器
+现在我们已经了解了过滤器内部是如何执行的，但是并不了解模板中的过滤器语法是如何编译成过滤器函数来调用表达式的。例如下面的过滤器：
+
+```js
+{{ message | capitalize }}
+
+// 我们并不清楚它是如何被编译成下面这个样子的：
+_s(_f("capitalize")(message))
+```
+
+在Vue.js内部，src/compiler/parser/filter-parser.js文件中提供了一个parseFilters函数，专门用来解析过滤器，它可以将模板过滤器解析成过滤器函数调用表达式。这个逻辑并不复杂，我们只需要在解析出过滤器列表后，循环过滤器列表并拼接一个字符串即可。其代码如下：
+
+```js
+export function parseFilters (exp) {
+  let filters = exp.split('|')
+  let expression = filters.shift().trim()
+  let i
+  if (filters) {
+    for (i = 0; i < filters.length; i++) {
+      expression = wrapFilter(expression, filters[i].trim())
+    }
+  }
+
+  return expression
+}
+
+// exp 表达式
+// filter 过滤器
+function wrapFilter (exp, filter) {
+  const i = filter.indexOf('(')
+  if (i < 0) {
+    // _f: resolveFilter
+    return `_f("${filter}")(${exp})`
+  } else {
+    const name = filter.slice(0, i)
+    const args = filter.slice(i + 1)
+    return `_f("${name}")(${exp},${args}`
+  }
+}
+  
+// 测试
+
+parseFilters(`message | capitalize`)
+// _f("capitalize")(message)
+
+parseFilters(`message | filterA | filterB`)
+// _f("filterB")(_f("filterA")(message))
+
+parseFilters(`message | filterA('arg1', arg2)`)
+// _f("filterA")(message,'arg1', arg2)
+```
+
+#### 5.3 总结
+过滤器的原理是：在编译阶段将过滤器编译成函数调用，串联的过滤器编译后是一个嵌套的函数调用，前一个过滤器函数的执行结果是后一个过滤器函数的参数。
+
+编译后的 _f函数是resolveFilter函数的别名，resolveFilter函数的作用是找到对应的过滤器并返回。
+
+最后，介绍了在模板编译过程中过滤器是如何被编译成过滤器函数调用的。简单来说，编译过滤器的过程也分两步：解析和拼接字符串。
 
 ### 6、最佳实践
 
