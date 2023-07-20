@@ -583,11 +583,14 @@ reduce()和reduceRight()。这两个方法都会迭代数组的所有项，然�
 ```js
 // 数组之和
 let values = [1, 2, 3, 4, 5];
-// 参数：前一个值、当前值、项的索引和数组对象
-let sum = values.reduce((prev, cur, index, array)=>{
-   console.log(prev, cur, index, array); // prev ==> 1 3 6 10
-   return prev += cur;
-});
+// 累积器，它在每次回调执行时记录累积的结果
+// 当前值、
+// 当前项的索引
+// 数组对象
+let sum = values.reduce((acc, cur, index, array)=>{
+   console.log(acc, cur, index, array); // acc ==> 0 1 3 6 10 15
+   return acc + cur;
+}, 0);  // 0为acc的初始值， 如果未设置则为空
 
 console.log(sum) // 15
 ```
