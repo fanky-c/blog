@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "hexo server -p 5001",
+    "build": "hexo generate",
     "deploy": "hexo g -d"
   },
   "hexo": {
