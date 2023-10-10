@@ -113,6 +113,8 @@ tags:
 2. 原理：ES6引入模块是静态分析，所以编译的时候知道我们加载了哪些代码；进而分析哪些变量未用到，从而删除掉
 3. 有一些副作用（babel转换代码、自执行函数、函数里面使用外部变量
 
+<img src="/img/treeShaking.webp" width="95%" />
+
 #### 代码合并和分离(splitChunks)
 1. 分离部分第三方库（vue、vuex、vue-router）功能，类似于动态链接库DLL
 2. 合并公共代码（common
