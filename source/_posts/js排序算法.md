@@ -2,7 +2,8 @@
 title: js排序算法
 date: 2018-07-16 20:24:37
 tags:
-    - 算法
+    - 排序算法
+    - 常用算法
 ---
 
 ### 排序算法维度对比
@@ -272,7 +273,7 @@ function findSubStr(arr1, arr2) {
       sstr = arr1.substr(i, j);
       if (arr2.indexOf(sstr) >= 0){
         return sstr;
-      } 
+      }
     }
   return '';
 }
@@ -287,9 +288,9 @@ function findMaxSubstr(str1, str2){
        longer = str1;
    }else{
        shorter = str1;
-       longer = str2;      
+       longer = str2;
    }
-   
+
    //判断
    for(var subLength=shorter.length; subLength>0; subLength--){
        for(var i=0; i<=shorter.length-subLength; i++){
