@@ -20,28 +20,28 @@ tags:
    4. 收集用户浏览器信息
 4. 措施：
    1. 检测输入参数，对应<、>等字符进行过滤或者编码。
-   2. 对于富文本表情进行黑白名单设置（后端会有相应的库）
+   2. 对输出参数进行htmlEncode编码或转义
    3. 设置httpOnly防御js获取cookie
-   4. 对输出参数进行htmlEncode编码或转义
+   4. 设置csp(content-security-policy), 就是为了页面内容安全而制定的一系列防护策略. 通过CSP所约束的的规责指定可信的内容来源（这里的内容可以指脚本、图片、iframe、font、style等等可能的远程的资源）
 
 #### SQL注入
-1. 介绍：SQL注入是利用WEB服务，把精心设计的SQL命令注入到后台数据库执行。 
-2. 危害： 
-   1. 对数据库非法读取、删除、添加等 
+1. 介绍：SQL注入是利用WEB服务，把精心设计的SQL命令注入到后台数据库执行。
+2. 危害：
+   1. 对数据库非法读取、删除、添加等
    2. 盗取用户铭感信息
 3. 措施：
    1. 不应直接用前端传过来的sql做拼接，而应该用预编译语句，绑定变量，不改变sql语义。
    2. 用户输入参数验证
    3. 对关键数据库设置只读，减少风险。
 
-#### 跨站点请求伪造（CSRF）   
+#### 跨站点请求伪造（CSRF）
 1. 介绍：攻击者盗用你的身份，以你的名义发送恶意请求。
 
 2. 满足条件：
    1. 登录受信用网站A，并在本地生成Cookie
    2. 在不登出A网站情况下，访问危险的B网站。
-   3. 案例： 
-      1. 如果登录电商网站赠送积分或者礼物，接口：http://www.mybank.com/Transfer.php？money=1000&to=zhangsan   
+   3. 案例：
+      1. 如果登录电商网站赠送积分或者礼物，接口：http://www.mybank.com/Transfer.php？money=1000&to=zhangsan
       2. 攻击者在评论区发表：<img src=http://www.mybank.com/Transfer.php?money=1000&who=hacker>。 然后就源源不断收到礼物。
       3. 送礼物或礼物是有记录的，然后攻击者找到删除记录接口（发现是post方式），自己构造一个页面通过form表单删除，然后同window.location = 'XXXX' 返回之前网页。
 
@@ -50,4 +50,11 @@ tags:
    2. 不用get请求，改用post。
    3. 在http请求参数添加随机token，在服务器建立拦截器，如果请求中无token或者错误的token则拒绝请求。
    4. 添加验证码、滑块验证。
-   5. chrome51版本以上 cookie设置Samesite，直接禁止第三方访问
+   5. chrome51版本以上 cookie设置Same-site，直接禁止第三方访问
+
+
+
+<br >
+[参考一](https://tech.meituan.com/2018/09/27/fe-security.html)
+
+[参考二](https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html)
