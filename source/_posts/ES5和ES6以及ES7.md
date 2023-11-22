@@ -181,7 +181,7 @@ function sayHi(name1, name2) {
     console.log(`Hello ${name1} ${name2}`)
 }
 sayHi(...name) // Hello xixi zhang
-``` 
+```
 **不定参数和扩展参数可以认为恰好是相反的两个模式，不定参数是使用数组来表示多个参数，扩展参数则是将多个参数映射到一个数组。**
 
 需要注意：不定参数的 ... 和数组复制的 ... 是有区别的，不定参数可以使用函数的形参来表示所有的参数组成的列表。以前的 arguments 变量也有类似的作用，但是 arguments 不是真正的数组，除了存放参数的列表外，arguments 还有 length 属性，严格来说 arguments 是一个类数组对象，而不定参数则是一个完全的数组，这也是不定参数相对于 arguments 的优势，更加方便我们使用，所以建议使用不定参数来代替 arguments。
@@ -243,7 +243,7 @@ Set 本身是一个构造函数 ，用来生成 Set 数据结构，Set 类似于
 const arr = new Set([1, 2, 3, 4, 5, 5, 5, 5])
 
 console.log(arr)  //[1, 2, 3, 4, 5]
-console.log(arr.size)  //5 
+console.log(arr.size)  //5
 ```
 
 #### WeakSet
@@ -315,7 +315,7 @@ Promise 代表一个异步操作的执行返回状态，这个执行返回状态
 1. 无法取消 Promise，一旦新建它就会立即执行，无法中途取消
 2. 如果不设置回调函数，Promise 内部抛出的错误不会反应到外部
 3. 当处于 Pending 状态时，无法得知目前进展到哪一个阶段（刚开始还是即将完成）
-   
+
 
 #### 用法
 ```js
@@ -469,7 +469,7 @@ await 命令只能用在 async 函数中，如果用在普通函数中就会报�
 ### 4. Object.entries()
 ```js
 const exampleObj = {a: 1, b: 2, c: 3, d:4};
-console.log(Object.entries(exampleObj)); 
+console.log(Object.entries(exampleObj));
 // [["a", 1], ["b", 2], ["c", 3], ["d", 4]];
 
 // Usually used with for
@@ -490,10 +490,10 @@ arr2.flat(2); // [1, 2, 3, 4, 5, 6]
 
 
 let arr = ["早安", "", "今天天氣不錯"]
-arr.map(s => s.split('')) 
+arr.map(s => s.split(''))
 // [["早", "安"], [""], ["今", "天", "天", "氣", "不", "錯"]]
 
-arr.flatMap(s => s.split('')); 
+arr.flatMap(s => s.split(''));
 // ["早", "安", "", "今", "天", "天", "氣", "不", "錯"]
 
 ```
@@ -507,26 +507,26 @@ const username = user?.info?.name;
 const username = user?.name || 'guest';
 ```
 
-### 8. 循环等待 
+### 8. 循环等待
 ```js
+// 符合预期 (如果你想连续执行await调用，请使用for循环(或任何没有回调的循环)。)
 async function process(array) {
   for (const i of array) {
     await doSomething(i);
   }
 }
 
+// 不符合预期 (永远不要和forEach一起使用await，而是使用for循环(或任何没有回调的循环)。)
 async function process(array) {
   array.forEach(async i => {
     await doSomething(i);
   });
 }
 ```
-上面的代码不会像预期的那样输出期望的结果。
-
-**for循环本身还是同步的，会在循环中的异步函数完成之前执行整个for循环，然后将里面的异步函数逐一执行。**
 
 
-ES9 增加了异步迭代器，允许 await 与 for 循环一起使用，逐步执行异步操作。
+
+ES9 增加了异步迭代器，允许 await 与 for of 循环一起使用，逐步执行异步操作。
 ```js
 async function process(array) {
   for await (const i of array) {
