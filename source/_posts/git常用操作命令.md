@@ -5,6 +5,10 @@ tags:
  - git
 ---
 
+## git流程图（图片来自网络）
+<img src="/img/git.jpg" height = "auto" align=center />
+
+
 ## 工作区
 ### a、删除未跟踪的文件 untracked files
 ```sh
@@ -14,7 +18,7 @@ git clean -nfd
 # 确认删除文件
 git clean -fd
 
-# 连gitignore的untrack 文件/目录也一起删掉 
+# 连gitignore的untrack 文件/目录也一起删掉
 #（慎用，一般这个是用来删掉编译出来或者node_modules的之类的文件用的）
 git clean -xfd
 ```
@@ -27,7 +31,7 @@ git checkout .
 ## 暂存区
 ### a、取消暂存区已缓存的内容，修改前内容还在工作区
 ```sh
-git reset HEAD 
+git reset HEAD
 ```
 
 ### b、撤销丢弃所有文件修改，内容不在工作区
@@ -53,8 +57,8 @@ git reset HEAD^ --hard
 ### a、撤销revert
 ```sh
 # git 日志会新增一条记录
-git revert commitID (撤销指定的版本) 
-git push 
+git revert commitID (撤销指定的版本)
+git push
 ```
 
 ### b、回退reset
@@ -89,8 +93,8 @@ git branch -d branch_name
 
 ### 删除远程分支
 ```sh
-git branch -r -d origin/branch-name  
-git push origin :branch-name 
+git branch -r -d origin/branch-name
+git push origin :branch-name
 ```
 
 ### dev分支合并到prod分支
