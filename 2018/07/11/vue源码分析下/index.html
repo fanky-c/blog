@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        vue源码分析下 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1，响应对象"><span class="toc-text">1，响应对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2，依赖收集"><span class="toc-text">2，依赖收集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3，派发更新"><span class="toc-text">3，派发更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4，nextTick"><span class="toc-text">4，nextTick</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#js运行机制："><span class="toc-text">js运行机制：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5，计算属性-computed-和侦听属性-watch"><span class="toc-text">5，计算属性(computed)和侦听属性(watch)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6，组件更新"><span class="toc-text">6，组件更新</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        vue源码分析下
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-07-11 19:14:06</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#vue" title="vue">vue</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#数据处理和双向绑定" title="数据处理和双向绑定">数据处理和双向绑定</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="1，响应对象"><a href="#1，响应对象" class="headerlink" title="1，响应对象"></a>1，响应对象</h2><ul>
+<li>Object.defineProperty</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(obj, prop, descriptor)</span><br></pre></td></tr></table></figure>
+<p><em>重点是descriptor，有很多可选值但是我们关心的是set/get，get 是一个给属性提供的 getter 方法，当我们访问了该属性的时候会触发 getter 方法；set 是一个给属性提供的 setter 方法，当我们对该属性做修改的时候会触发 setter 方法。</em></p>
+<ul>
+<li>initState</li>
+</ul>
+<p><em>在 Vue 的初始化阶段，_init 方法执行的时候，会执行 initState(vm) 方法，它的定义在 src/core/instance/state.js 中。</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">initState</span> (<span class="params">vm: Component</span>) </span>&#123;</span><br><span class="line">  vm._watchers = []</span><br><span class="line">  <span class="keyword">const</span> opts = vm.$options</span><br><span class="line">  <span class="keyword">if</span> (opts.props) initProps(vm, opts.props)</span><br><span class="line">  <span class="keyword">if</span> (opts.methods) initMethods(vm, opts.methods)</span><br><span class="line">  <span class="keyword">if</span> (opts.data) &#123;</span><br><span class="line">    initData(vm)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    observe(vm._data = &#123;&#125;, <span class="literal">true</span> <span class="comment">/* asRootData */</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (opts.computed) initComputed(vm, opts.computed)</span><br><span class="line">  <span class="keyword">if</span> (opts.watch &amp;&amp; opts.watch !== nativeWatch) &#123;</span><br><span class="line">    initWatch(vm, opts.watch)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>initState 方法主要是对 props、methods、data、computed 和 wathcer 等属性做了初始化操作。</p>
+<ul>
+<li>proxy</li>
+</ul>
+<p><em>首先介绍一下代理，代理的作用是把 props 和 data 上的属性代理到 vm 实例上，这也就是为什么比如我们定义了如下 props，却可以通过 vm 实例访问到它。</em></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sharedPropertyDefinition = &#123;</span><br><span class="line">  enumerable: <span class="literal">true</span>,</span><br><span class="line">  configurable: <span class="literal">true</span>,</span><br><span class="line">  <span class="keyword">get</span>: noop,</span><br><span class="line">  <span class="keyword">set</span>: noop</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export function proxy (target: Object, sourceKey: string, key: string) &#123;</span><br><span class="line">  sharedPropertyDefinition.get = <span class="function"><span class="keyword">function</span> <span class="title">proxyGetter</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>[sourceKey][key]</span><br><span class="line">  &#125;</span><br><span class="line">  sharedPropertyDefinition.set = <span class="function"><span class="keyword">function</span> <span class="title">proxySetter</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>[sourceKey][key] = val</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(target, key, sharedPropertyDefinition)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>proxy 方法的实现很简单，通过 Object.defineProperty 把 target[sourceKey][key] 的读写变成了对 target[key] 的读写。所以对于 props 而言，对 vm._props.xxx 的读写变成了 vm.xxx 的读写，而对于 vm._props.xxx 我们可以访问到定义在 props 中的属性，所以我们就可以通过 vm.xxx 访问到定义在 props 中的 xxx 属性了。同理，对于 data 而言，对 vm._data.xxxx 的读写变成了对 vm.xxxx 的读写，而对于 vm._data.xxxx 我们可以访问到定义在 data 函数返回对象中的属性，所以我们就可以通过 vm.xxxx 访问到定义在 data 函数返回对象中的 xxxx 属性了。</p>
+<ul>
+<li>Observer</li>
+</ul>
+<p>Observer 是一个类，它的作用是给对象的属性添加 getter 和 setter，用于依赖收集和派发更新</p>
+<ul>
+<li>defineReactive</li>
+</ul>
+<p>defineReactive 的功能就是定义一个响应式对象，给对象动态添加 getter 和 setter，它的定义在 src/core/observer/index.js 中：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">defineReactive</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  obj: Object,</span></span></span><br><span class="line"><span class="function"><span class="params">  key: string,</span></span></span><br><span class="line"><span class="function"><span class="params">  val: any,</span></span></span><br><span class="line"><span class="function"><span class="params">  customSetter?: ?Function,</span></span></span><br><span class="line"><span class="function"><span class="params">  shallow?: boolean</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> dep = <span class="keyword">new</span> Dep()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> property = <span class="built_in">Object</span>.getOwnPropertyDescriptor(obj, key)</span><br><span class="line">  <span class="keyword">if</span> (property &amp;&amp; property.configurable === <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// cater for pre-defined getter/setters</span></span><br><span class="line">  <span class="keyword">const</span> getter = property &amp;&amp; property.get</span><br><span class="line">  <span class="keyword">const</span> setter = property &amp;&amp; property.set</span><br><span class="line">  <span class="keyword">if</span> ((!getter || setter) &amp;&amp; <span class="built_in">arguments</span>.length === <span class="number">2</span>) &#123;</span><br><span class="line">    val = obj[key]</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> childOb = !shallow &amp;&amp; observe(val)</span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(obj, key, &#123;</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span>,</span><br><span class="line">    <span class="keyword">get</span>: function reactiveGetter () &#123;</span><br><span class="line">      <span class="keyword">const</span> value = getter ? getter.call(obj) : val</span><br><span class="line">      <span class="keyword">if</span> (Dep.target) &#123;</span><br><span class="line">        dep.depend()</span><br><span class="line">        <span class="keyword">if</span> (childOb) &#123;</span><br><span class="line">          childOb.dep.depend()</span><br><span class="line">          <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(value)) &#123;</span><br><span class="line">            dependArray(value)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> value</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>: function reactiveSetter (newVal) &#123;</span><br><span class="line">      <span class="keyword">const</span> value = getter ? getter.call(obj) : val</span><br><span class="line">      <span class="comment">/* eslint-disable no-self-compare */</span></span><br><span class="line">      <span class="keyword">if</span> (newVal === value || (newVal !== newVal &amp;&amp; value !== value)) &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/* eslint-enable no-self-compare */</span></span><br><span class="line">      <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; customSetter) &#123;</span><br><span class="line">        customSetter()</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (setter) &#123;</span><br><span class="line">        setter.call(obj, newVal)</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        val = newVal</span><br><span class="line">      &#125;</span><br><span class="line">      childOb = !shallow &amp;&amp; observe(newVal)</span><br><span class="line">      dep.notify()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>defineReactive 函数最开始初始化 Dep 对象的实例，接着拿到 obj 的属性描述符，然后对子对象递归调用 observe 方法，这样就保证了无论 obj 的结构多复杂，它的所有子属性也能变成响应式的对象，这样我们访问或修改 obj 中一个嵌套较深的属性，也能触发 getter 和 setter。最后利用 Object.defineProperty 去给 obj 的属性 key 添加 getter 和 setter。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这一节我们介绍了响应式对象，核心就是利用 Object.defineProperty 给数据添加了 getter 和 setter，目的就是为了在我们访问数据以及写数据的时候能自动执行一些逻辑：getter 做的事情是依赖收集，setter 做的事情是派发更新</p>
+<h2 id="2，依赖收集"><a href="#2，依赖收集" class="headerlink" title="2，依赖收集"></a>2，依赖收集</h2><h2 id="3，派发更新"><a href="#3，派发更新" class="headerlink" title="3，派发更新"></a>3，派发更新</h2><h2 id="4，nextTick"><a href="#4，nextTick" class="headerlink" title="4，nextTick"></a>4，nextTick</h2><h3 id="js运行机制："><a href="#js运行机制：" class="headerlink" title="js运行机制："></a>js运行机制：</h3><p>JS 执行是单线程的，它是基于事件循环的。事件循环大致分为以下几个步骤：</p>
+<p>（1）所有同步任务都在主线程上执行，形成一个执行栈（execution context stack）。</p>
+<p>（2）主线程之外，还存在一个”任务队列”（task queue）。只要异步任务有了运行结果，就在”任务队列”之中放置一个事件。</p>
+<p>（3）一旦”执行栈”中的所有同步任务执行完毕，系统就会读取”任务队列”，看看里面有哪些事件。那些对应的异步任务，于是结束等待状态，进入执行栈，开始执行。</p>
+<p>（4）主线程不断重复上面的第三步。</p>
+<p>主线程的执行过程就是一个 tick，而所有的异步结果都是通过 “任务队列” 来调度被调度。 消息队列中存放的是一个个的任务（task）。 规范中规定 task 分为两大类，分别是 macro task 和 micro task，并且每个 macro task 结束后，都要清空所有的 micro task。</p>
+<p>关于 macro task 和 micro task 的概念，这里不会细讲，简单通过一段代码演示他们的执行顺序：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (macroTask <span class="keyword">of</span> macroTaskQueue) &#123;</span><br><span class="line">    <span class="comment">// 1. Handle current MACRO-TASK</span></span><br><span class="line">    handleMacroTask();</span><br><span class="line">      </span><br><span class="line">    <span class="comment">// 2. Handle all MICRO-TASK</span></span><br><span class="line">    <span class="keyword">for</span> (microTask <span class="keyword">of</span> microTaskQueue) &#123;</span><br><span class="line">        handleMicroTask(microTask);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在浏览器环境中，常见的 macro task 有 setTimeout、MessageChannel、postMessage、setImmediate；常见的 micro task 有 MutationObsever 和 Promise.then。</p>
+<p>vue的nextTick源码存放在src/core/util/next-tick.js（2.5+）</p>
+<h2 id="5，计算属性-computed-和侦听属性-watch"><a href="#5，计算属性-computed-和侦听属性-watch" class="headerlink" title="5，计算属性(computed)和侦听属性(watch)"></a>5，计算属性(computed)和侦听属性(watch)</h2><p><em>计算属性本质上是 computed watcher，而侦听属性本质上是 user watcher。就应用场景而言，计算属性适合用在模板渲染中，某个值是依赖了其它的响应式对象甚至是计算属性计算而来；而侦听属性适用于观测某个值的变化去完成一段复杂的业务逻辑。</em></p>
+<h2 id="6，组件更新"><a href="#6，组件更新" class="headerlink" title="6，组件更新"></a>6，组件更新</h2><p><em>原理图：</em><br><img src="/img/reactive.png" alt="原理图"></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

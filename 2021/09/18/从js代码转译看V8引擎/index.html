@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        从js代码转译看V8引擎 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#字节码和机器码"><span class="toc-text">字节码和机器码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AST（抽象语法树）"><span class="toc-text">AST（抽象语法树）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js在v8引擎中执行"><span class="toc-text">js在v8引擎中执行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-初期V8引擎架构"><span class="toc-text">1. 初期V8引擎架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-现在V8引擎架构"><span class="toc-text">2. 现在V8引擎架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-现在V8引擎引入字节码的好处"><span class="toc-text">3. 现在V8引擎引入字节码的好处</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js代码在现在V8引擎运行"><span class="toc-text">js代码在现在V8引擎运行</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        从js代码转译看V8引擎
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-09-18 15:51:55</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#V8引擎" title="V8引擎">V8引擎</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#AST（抽象语法树）" title="AST（抽象语法树）">AST（抽象语法树）</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="字节码和机器码"><a href="#字节码和机器码" class="headerlink" title="字节码和机器码"></a>字节码和机器码</h3><ol>
+<li>字节码<ol>
+<li>是一种包含执行程序，由数值常量、引用、指令等构成的序列组成的二进制文件; <strong>字节码是一种中间码，它比机器码更抽象，需要直译器转译后才能成为机器码的中间代码</strong>。</li>
+<li>优点： 1. 不针对特定CPU架构 2. 比原始的高级语言转换成机器语言更快</li>
+</ol>
+</li>
+<li>机器码： 学名机器语言指令，有时也被称为原生码，<strong>是电脑的CPU可直接解读的数据</strong>。</li>
+</ol>
+<h3 id="AST（抽象语法树）"><a href="#AST（抽象语法树）" class="headerlink" title="AST（抽象语法树）"></a>AST（抽象语法树）</h3><p>AST： 它是源代码语法结构的一种抽象表示。它以树状的形式表现编程语言的语法结构，树上的每个节点都表示源代码中的一种结构。  执行过程：源码 –&gt; 词法分析 （Token） –&gt; 语法分析 (AST)</p>
+<h3 id="js在v8引擎中执行"><a href="#js在v8引擎中执行" class="headerlink" title="js在v8引擎中执行"></a>js在v8引擎中执行</h3><h4 id="1-初期V8引擎架构"><a href="#1-初期V8引擎架构" class="headerlink" title="1. 初期V8引擎架构"></a>1. 初期V8引擎架构</h4><ol>
+<li>第一步： 将js源码转化成AST（抽象语法树）</li>
+<li>第二步： 通过引擎编译AST变成机器码二进制文件， 然后直接运行机器码二进制文件</li>
+<li>第三步： 在执行第二步过程中，标记重复执行的函数，将标记的代码生成更加高效的二进制代码（缓存在内存和硬盘中）， 节省了重复编译的时间。 </li>
+</ol>
+<h4 id="2-现在V8引擎架构"><a href="#2-现在V8引擎架构" class="headerlink" title="2. 现在V8引擎架构"></a>2. 现在V8引擎架构</h4><ol>
+<li>第一步： 将js源码转化为AST(抽象语法树)</li>
+<li>第二步： 通过解释器将AST编译成字节码， 开始逐句对字节码解释成二进制机器码并执行</li>
+<li>第三步： 在解释过程中，标记重复执行代码，将标记的代码通过引擎进行编译生成高效的二进制机器码， 再次运行到这个函数时只执行二进制机器码， 不用再解释字节码</li>
+</ol>
+<h4 id="3-现在V8引擎引入字节码的好处"><a href="#3-现在V8引擎引入字节码的好处" class="headerlink" title="3. 现在V8引擎引入字节码的好处"></a>3. 现在V8引擎引入字节码的好处</h4><ol>
+<li>启动时间缩短。 启动时只需编码字节码， 编译字节码速度远快于二进制机器码</li>
+<li>内存空间变小。 字节码空间小于二进制机器码</li>
+<li>代码复杂度降低。 引入字节码大大降低V8适配不同的CPU所需要的代码复杂程度</li>
+</ol>
+<h3 id="js代码在现在V8引擎运行"><a href="#js代码在现在V8引擎运行" class="headerlink" title="js代码在现在V8引擎运行"></a>js代码在现在V8引擎运行</h3><p>js源码  –&gt;  AST  –&gt; 字节码  –&gt; 解释器执行  –&gt; 机器码  –&gt; 输出结果</p>
+<p><br><br>[文章来源]（<a href="https://juejin.cn/post/6844904152745639949#heading-6）" target="_blank" rel="noopener">https://juejin.cn/post/6844904152745639949#heading-6）</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

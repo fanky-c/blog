@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        egg插件使用和开发 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#有了中间件为啥还要插件？"><span class="toc-text">有了中间件为啥还要插件？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#中间件、插件、应用的关系"><span class="toc-text">中间件、插件、应用的关系</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-plugin-js参数的配置"><span class="toc-text">1. plugin.js参数的配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-egg内置插件"><span class="toc-text">2. egg内置插件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-内置插件列表"><span class="toc-text">3. 内置插件列表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开发"><span class="toc-text">开发</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-脚手架快速开发"><span class="toc-text">1. 脚手架快速开发</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件使用场景"><span class="toc-text">插件使用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-扩展内置对象接口"><span class="toc-text">1. 扩展内置对象接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-插入自定义中间件"><span class="toc-text">2. 插入自定义中间件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-设置定时任务"><span class="toc-text">3. 设置定时任务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件开发实践"><span class="toc-text">插件开发实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-之前插件存在问题"><span class="toc-text">1. 之前插件存在问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-实现"><span class="toc-text">2. 实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-应用层面使用案例"><span class="toc-text">3. 应用层面使用案例</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#单实例"><span class="toc-text">单实例</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#多实例"><span class="toc-text">多实例</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#动态创建实例"><span class="toc-text">动态创建实例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件寻址规则"><span class="toc-text">插件寻址规则</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        egg插件使用和开发
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-08-29 14:39:47</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#egg" title="egg">egg</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#plugin" title="plugin">plugin</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#egg插件" title="egg插件">egg插件</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><h4 id="有了中间件为啥还要插件？"><a href="#有了中间件为啥还要插件？" class="headerlink" title="有了中间件为啥还要插件？"></a>有了中间件为啥还要插件？</h4><ol>
+<li>中间件是定位拦截用户请求， 并在它的前后做一件事情， 例如：鉴权、访问日志、安全检查</li>
+<li>中间件加载是有先后顺序的， 但是中间件自身缺无法管理这种顺序， 只能交给使用者</li>
+<li>一些非常复杂的初始化逻辑， 需要在应用启动的时候完成， 如果放在中间件就不合适</li>
+</ol>
+<h4 id="中间件、插件、应用的关系"><a href="#中间件、插件、应用的关系" class="headerlink" title="中间件、插件、应用的关系"></a>中间件、插件、应用的关系</h4><p>一个插件就是一个迷你版的应用， 包含：</p>
+<ol>
+<li>包含了：Service、中间件、配置、扩展等</li>
+<li>没有 Controller 和 Router</li>
+<li>没有plugin.js, 只能声明跟其他插件的依赖， 不能决定插件是否开启</li>
+<li>插件本身可以包含中间件</li>
+</ol>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="1-plugin-js参数的配置"><a href="#1-plugin-js参数的配置" class="headerlink" title="1. plugin.js参数的配置"></a>1. plugin.js参数的配置</h4><ol>
+<li>{Boolean} enable - 是否开启此插件，默认为 true</li>
+<li>{String} package - npm 模块名称，通过 npm 模块形式引入插件</li>
+<li>{String} path - 插件绝对路径，跟 上一个参数package 配置互斥</li>
+<li>{Array} env - 只有在指定运行环境才能开启，会覆盖插件自身 package.json 中的配置</li>
+</ol>
+<h4 id="2-egg内置插件"><a href="#2-egg内置插件" class="headerlink" title="2. egg内置插件"></a>2. egg内置插件</h4><p>关闭内置插件<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// config/plugin.js</span></span><br><span class="line">exports.cors = &#123;</span><br><span class="line">  enable: <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 也可以简写为：</span></span><br><span class="line">exports.cors = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>package 和 path</li>
+</ol>
+<ul>
+<li>package 是 npm 方式引入，也是最常见的引入方式</li>
+<li>path 是绝对路径引入，如应用内部抽了一个插件，但还没达到开源发布独立 npm 的阶段，或者是应用自己覆盖了框架的一些插件</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// config/plugin.js</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line">exports.mysql = &#123;</span><br><span class="line">  enable: <span class="literal">true</span>,</span><br><span class="line">  path: path.join(__dirname, <span class="string">'../lib/plugin/bg-mysql'</span>),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="3-内置插件列表"><a href="#3-内置插件列表" class="headerlink" title="3. 内置插件列表"></a>3. 内置插件列表</h4><ol>
+<li>异常处理 onerror </li>
+<li>session实现 session</li>
+<li>安全 security</li>
+<li>日志分割 logrotator</li>
+<li>定时任务 schedule</li>
+<li>模板引擎 view</li>
+<li>文件流式上传 multpart </li>
+<li>等等…<h3 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h3><h4 id="1-脚手架快速开发"><a href="#1-脚手架快速开发" class="headerlink" title="1. 脚手架快速开发"></a>1. 脚手架快速开发</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir egg-test &amp;&amp; cd egg-test</span><br><span class="line">npm init egg --type=plugin</span><br><span class="line">npm i</span><br><span class="line">npm test</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="插件使用场景"><a href="#插件使用场景" class="headerlink" title="插件使用场景"></a>插件使用场景</h3><h4 id="1-扩展内置对象接口"><a href="#1-扩展内置对象接口" class="headerlink" title="1. 扩展内置对象接口"></a>1. 扩展内置对象接口</h4><ol>
+<li>app/extend/request.js - 扩展 Koa#Request 类</li>
+<li>app/extend/response.js - 扩展 Koa#Response 类</li>
+<li>app/extend/context.js - 扩展 Koa#Context 类</li>
+<li>app/extend/helper.js  - 扩展 Helper 类</li>
+<li>app/extend/application.js - 扩展 Application 类</li>
+<li>app/extend/agent.js - 扩展 Agent 类</li>
+</ol>
+<h4 id="2-插入自定义中间件"><a href="#2-插入自定义中间件" class="headerlink" title="2. 插入自定义中间件"></a>2. 插入自定义中间件</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 启动前想读取一些本地配置</span></span><br><span class="line"><span class="comment">// $&#123;plugin_root&#125;/app.js</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="params">app</span> =&gt;</span> &#123;</span><br><span class="line">  app.customData = fs.readFileSync(path.join(app.config.baseDir, <span class="string">'data.bin'</span>));</span><br><span class="line"></span><br><span class="line">  app.coreLogger.info(<span class="string">'read data ok'</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="3-设置定时任务"><a href="#3-设置定时任务" class="headerlink" title="3. 设置定时任务"></a>3. 设置定时任务</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"your-plugin"</span>,</span><br><span class="line">  <span class="string">"eggPlugin"</span>: &#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"your-plugin"</span>,</span><br><span class="line">    <span class="string">"dependencies"</span>: [ <span class="string">"schedule"</span> ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//2.  $&#123;plugin_root&#125;/app/schedule/</span></span><br><span class="line">exports.schedule = &#123;</span><br><span class="line">  type: <span class="string">'worker'</span>,</span><br><span class="line">  cron: <span class="string">'0 0 3 * * *'</span>,</span><br><span class="line">  <span class="comment">// interval: '1h',</span></span><br><span class="line">  <span class="comment">// immediate: true,</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">exports.task = <span class="keyword">async</span> ctx =&gt; &#123;</span><br><span class="line">  <span class="comment">// your logic code</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="插件开发实践"><a href="#插件开发实践" class="headerlink" title="插件开发实践"></a>插件开发实践</h3><h4 id="1-之前插件存在问题"><a href="#1-之前插件存在问题" class="headerlink" title="1. 之前插件存在问题"></a>1. 之前插件存在问题</h4><ol>
+<li>在一个应用中同时使用同一个服务的不同实例（连接到两个不同的 MySQL 数据库）。</li>
+<li>从其他服务获取配置后动态初始化连接（从配置中心获取到 MySQL 服务地址后再建立连接）。</li>
+</ol>
+<h4 id="2-实现"><a href="#2-实现" class="headerlink" title="2. 实现"></a>2. 实现</h4><p>如果让插件各自实现，可能会出现各种奇怪的配置方式和初始化方式，所以框架提供了 app.addSingleton(name, creator) 方法来统一这一类服务的创建。需要注意的是在使用 app.addSingleton(name, creator) 方法时，配置文件中一定要有 client 或者 clients 为 key 的配置作为传入 creator 函数 的 config。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// egg-mysql/app.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="params">app</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 第一个参数 mysql 指定了挂载到 app 上的字段，我们可以通过 `app.mysql` 访问到 MySQL singleton 实例</span></span><br><span class="line">  <span class="comment">// 第二个参数 createMysql 接受两个参数(config, app)，并返回一个 MySQL 的实例</span></span><br><span class="line">  app.addSingleton(<span class="string">'mysql'</span>, createMysql);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">createMysql</span>(<span class="params">config, app</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 异步获取 mysql 配置</span></span><br><span class="line">  <span class="keyword">const</span> mysqlConfig = <span class="keyword">await</span> app.configManager.getMysqlConfig(config.mysql);</span><br><span class="line">  assert(mysqlConfig.host &amp;&amp; mysqlConfig.port &amp;&amp; mysqlConfig.user &amp;&amp; mysqlConfig.database);</span><br><span class="line">  <span class="comment">// 创建实例</span></span><br><span class="line">  <span class="keyword">const</span> client = <span class="keyword">new</span> Mysql(mysqlConfig);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 做启动应用前的检查</span></span><br><span class="line">  <span class="keyword">const</span> rows = <span class="keyword">await</span> client.query(<span class="string">'select now() as currentTime;'</span>);</span><br><span class="line">  app.coreLogger.info(<span class="string">`[egg-mysql] init instance success, rds currentTime: <span class="subst">$&#123;rows[<span class="number">0</span>].currentTime&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> client;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-应用层面使用案例"><a href="#3-应用层面使用案例" class="headerlink" title="3. 应用层面使用案例"></a>3. 应用层面使用案例</h4><h5 id="单实例"><a href="#单实例" class="headerlink" title="单实例"></a>单实例</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// config/config.default.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  mysql: &#123;</span><br><span class="line">    client: &#123;</span><br><span class="line">      host: <span class="string">'mysql.com'</span>,</span><br><span class="line">      port: <span class="string">'3306'</span>,</span><br><span class="line">      user: <span class="string">'test_user'</span>,</span><br><span class="line">      password: <span class="string">'test_password'</span>,</span><br><span class="line">      database: <span class="string">'test'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// app/controller/post.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> list() &#123;</span><br><span class="line">    <span class="keyword">const</span> posts = <span class="keyword">await</span> <span class="keyword">this</span>.app.mysql.query(sql, values);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="多实例"><a href="#多实例" class="headerlink" title="多实例"></a>多实例</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// config/config.default.js</span></span><br><span class="line">exports.mysql = &#123;</span><br><span class="line">  clients: &#123;</span><br><span class="line">    <span class="comment">// clientId, access the client instance by app.mysql.get('clientId')</span></span><br><span class="line">    db1: &#123;</span><br><span class="line">      user: <span class="string">'user1'</span>,</span><br><span class="line">      password: <span class="string">'upassword1'</span>,</span><br><span class="line">      database: <span class="string">'db1'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    db2: &#123;</span><br><span class="line">      user: <span class="string">'user2'</span>,</span><br><span class="line">      password: <span class="string">'upassword2'</span>,</span><br><span class="line">      database: <span class="string">'db2'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// default configuration for all databases</span></span><br><span class="line">  <span class="keyword">default</span>: &#123;</span><br><span class="line">    host: <span class="string">'mysql.com'</span>,</span><br><span class="line">    port: <span class="string">'3306'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// app/controller/post.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> list() &#123;</span><br><span class="line">    <span class="keyword">const</span> posts = <span class="keyword">await</span> <span class="keyword">this</span>.app.mysql.get(<span class="string">'db1'</span>).query(sql, values);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="动态创建实例"><a href="#动态创建实例" class="headerlink" title="动态创建实例"></a>动态创建实例</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="params">app</span> =&gt;</span> &#123;</span><br><span class="line">  app.beforeStart(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="comment">// 从配置中心获取 MySQL 的配置 &#123; host, post, password, ... &#125;</span></span><br><span class="line">    <span class="keyword">const</span> mysqlConfig = <span class="keyword">await</span> app.configCenter.fetch(<span class="string">'mysql'</span>);</span><br><span class="line">    <span class="comment">// 动态创建 MySQL 实例</span></span><br><span class="line">    app.database = <span class="keyword">await</span> app.mysql.createInstanceAsync(mysqlConfig);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// app/controller/post.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PostController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> list() &#123;</span><br><span class="line">    <span class="keyword">const</span> posts = <span class="keyword">await</span> <span class="keyword">this</span>.app.database.query(sql, values);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="插件寻址规则"><a href="#插件寻址规则" class="headerlink" title="插件寻址规则"></a>插件寻址规则</h3><ol>
+<li>优先级A: 如果配置了 path，直接按照 path 加载</li>
+<li>优先级B: 没有 path 根据 package 名去查找，查找的顺序依次是：<ul>
+<li>应用根目录下的 node_modules</li>
+<li>应用依赖框架路径下的 node_modules</li>
+<li>当前路径下的 node_modules （主要是兼容单元测试场景）</li>
+</ul>
+</li>
+</ol>
+<p><br><br><a href="https://eggjs.org/zh-cn/basics/plugin.html" target="_blank" rel="noopener">文章来源1</a><br><a href="https://eggjs.org/zh-cn/advanced/plugin.html" target="_blank" rel="noopener">文章来源2</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

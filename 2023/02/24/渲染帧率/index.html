@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        渲染帧率 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#帧率（FPS）"><span class="toc-text">帧率（FPS）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览器渲染帧的过程"><span class="toc-text">浏览器渲染帧的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#耗时-JS-会造成丢帧"><span class="toc-text">耗时 JS 会造成丢帧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测量渲染帧间隔-requestAnimationFrame"><span class="toc-text">测量渲染帧间隔 (requestAnimationFrame)</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        渲染帧率
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2023-02-24 16:52:18</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#浏览器最佳渲染" title="浏览器最佳渲染">浏览器最佳渲染</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#游戏渲染" title="游戏渲染">游戏渲染</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#requestAnimationFrame" title="requestAnimationFrame">requestAnimationFrame</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="帧率（FPS）"><a href="#帧率（FPS）" class="headerlink" title="帧率（FPS）"></a>帧率（FPS）</h3><p>每秒的帧数(fps)或者说帧率表示图形处理器处理场时每秒钟能够更新的次数。高的帧率可以得到更流畅、更逼真的动画。一般来说30fps就是可以接受的，但是将性能提升至60fps则可以明显提升交互感和逼真感，但是一般来说超过75fps一般就不容易察觉到有明显的流畅度提升了。如果帧率超过屏幕刷新率只会浪费图形处理的能力，因为监视器不能以这么快的速度更新，这样超过刷新率的帧率就浪费掉了。 </p>
+<h3 id="浏览器渲染帧的过程"><a href="#浏览器渲染帧的过程" class="headerlink" title="浏览器渲染帧的过程"></a>浏览器渲染帧的过程</h3><p>渲染帧是指浏览器一次完整绘制过程，帧之间的时间间隔是 DOM 视图更新的最小间隔。 由于主流的屏幕刷新率都在 60Hz，那么渲染一帧的时间就必须控制在 16ms（1000ms/60hz） 才能保证不掉帧。 也就是说每一次渲染都要在 16ms 内页面才够流畅不会有卡顿感。 这段时间内浏览器需要完成如下事情：</p>
+<ol>
+<li>脚本执行（JavaScript）：脚本造成了需要重绘的改动，比如增删 DOM、请求动画等</li>
+<li>样式计算（CSS Object Model）：级联地生成每个节点的生效样式。</li>
+<li>布局（Layout）：计算布局，执行渲染算法</li>
+<li>重绘（Paint）：各层分别进行绘制（比如 3D 动画）</li>
+<li>合成（Composite）：合成各层的渲染结果</li>
+</ol>
+<h3 id="耗时-JS-会造成丢帧"><a href="#耗时-JS-会造成丢帧" class="headerlink" title="耗时 JS 会造成丢帧"></a>耗时 JS 会造成丢帧</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JavaScript 忙的状态（持续 5s）下每隔 1s 新增一行 DOM 内容</span></span><br><span class="line"><span class="comment">// 可以观察到虽然每秒都会写一次 DOM，但在 5s 结束后才会全部渲染出来，明显耗时脚本阻塞了渲染</span></span><br><span class="line">&lt;div id=<span class="string">"message"</span>&gt;&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">var then = Date.now()</span></span><br><span class="line"><span class="regexp">var i = 0</span></span><br><span class="line"><span class="regexp">var el = document.getElementById('message')</span></span><br><span class="line"><span class="regexp">while (true) &#123;</span></span><br><span class="line"><span class="regexp">  var now = Date.now()</span></span><br><span class="line"><span class="regexp">  if (now - then &gt; 1000) &#123;</span></span><br><span class="line"><span class="regexp">    if (i++ &gt;= 5) &#123;</span></span><br><span class="line"><span class="regexp">      break;</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">    el.innerText += 'hello!\n'</span></span><br><span class="line"><span class="regexp">    console.log(i)</span></span><br><span class="line"><span class="regexp">    then = now</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="测量渲染帧间隔-requestAnimationFrame"><a href="#测量渲染帧间隔-requestAnimationFrame" class="headerlink" title="测量渲染帧间隔 (requestAnimationFrame)"></a>测量渲染帧间隔 (requestAnimationFrame)</h3><p>requestAnimationFrame 使用这个 API 可以请求浏览器在下一个渲染帧执行某个回调</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> then = <span class="built_in">Date</span>.now();</span><br><span class="line"><span class="keyword">var</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> reportCount = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">nextFrame</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  requestAnimationFrame(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    count ++</span><br><span class="line">    <span class="keyword">if</span>(count % reportCount === <span class="number">0</span>)&#123;</span><br><span class="line">      <span class="keyword">var</span> time = (<span class="built_in">Date</span>.now() - then) / count; </span><br><span class="line">      <span class="keyword">var</span> ms = <span class="built_in">Math</span>.round(time*<span class="number">1000</span>) / <span class="number">1000</span>; <span class="comment">// 每一帧耗时</span></span><br><span class="line">      <span class="keyword">var</span> fps = <span class="built_in">Math</span>.round(<span class="number">100000</span>/ms) / <span class="number">100</span>; <span class="comment">// 1秒钟渲染了多少帧</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">`count: <span class="subst">$&#123;count&#125;</span>\t<span class="subst">$&#123;ms&#125;</span>ms/frame\t<span class="subst">$&#123;fps&#125;</span>fps`</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    nextFrame()</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">nextFrame()</span><br></pre></td></tr></table></figure>
+<p>优化版本：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> lastTime = performance.now()</span><br><span class="line"><span class="keyword">let</span> frame = <span class="number">0</span></span><br><span class="line"><span class="keyword">let</span> lastFameTime = performance.now()</span><br><span class="line"><span class="keyword">let</span> fpsList = [];</span><br><span class="line"><span class="keyword">const</span> reportCount = <span class="number">20</span>;  <span class="comment">// 每20秒上报一次</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loop</span>(<span class="params">time</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> now =  performance.now()</span><br><span class="line">  <span class="keyword">let</span> fs = (now - lastFameTime)</span><br><span class="line">  lastFameTime = now</span><br><span class="line">  <span class="keyword">let</span> fps = <span class="built_in">Math</span>.round(<span class="number">1000</span> / fs)</span><br><span class="line">  frame++</span><br><span class="line">  <span class="keyword">if</span> (now &gt; <span class="number">1000</span> + lastTime) &#123;</span><br><span class="line">    fps = <span class="built_in">Math</span>.round(( frame * <span class="number">1000</span> ) / ( now - lastTime ))</span><br><span class="line">    frame = <span class="number">0</span></span><br><span class="line">    lastTime = now</span><br><span class="line">    addFpsPreSecond(fps);</span><br><span class="line">  &#125;    </span><br><span class="line">  <span class="built_in">window</span>.requestAnimationFrame(loop)</span><br><span class="line">&#125;</span><br><span class="line">loop();</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addFpsPreSecond</span> (<span class="params">fps</span>) </span>&#123;</span><br><span class="line">    fpsList.push(fps);</span><br><span class="line">    <span class="keyword">if</span> (fpsList.length &gt;= reportCount) &#123;</span><br><span class="line">        <span class="keyword">const</span> avgFps = fpsList.reduce(<span class="function">(<span class="params">acc, val</span>) =&gt;</span> acc + val, <span class="number">0</span>) / fpsList.length;</span><br><span class="line">        fpsList = [];</span><br><span class="line">        reportAvgFps(avgFps);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// 进行上报</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reportAvgFps</span> (<span class="params">avgFps</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`20s 内平均帧率为：<span class="subst">$&#123;avgFps&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

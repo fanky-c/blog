@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        egg加载器 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#加载器"><span class="toc-text">加载器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#框架、插件和应用的关系"><span class="toc-text">框架、插件和应用的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-框架继承"><span class="toc-text">1. 框架继承</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-加载单元执行顺序"><span class="toc-text">2. 加载单元执行顺序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-加载单元生命周期"><span class="toc-text">3. 加载单元生命周期</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加载器函数"><span class="toc-text">加载器函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-loadFile"><span class="toc-text">1. loadFile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-loadToApp"><span class="toc-text">2. loadToApp</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-loadToContext"><span class="toc-text">3. loadToContext</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CustomLoader"><span class="toc-text">CustomLoader</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        egg加载器
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-07-19 11:40:04</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#egg加载器" title="egg加载器">egg加载器</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#egg loader" title="egg loader">egg loader</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="加载器"><a href="#加载器" class="headerlink" title="加载器"></a>加载器</h3><p>Egg 在 Koa 的基础上进行增强最重要的就是基于一定的约定，根据功能差异将代码放到不同的目录下管理，对整体团队的开发成本提升有着明显的效果。Loader 实现了这套约定，并抽象了很多底层 API 可以进一步扩展</p>
+<h3 id="框架、插件和应用的关系"><a href="#框架、插件和应用的关系" class="headerlink" title="框架、插件和应用的关系"></a>框架、插件和应用的关系</h3><h4 id="1-框架继承"><a href="#1-框架继承" class="headerlink" title="1. 框架继承"></a>1. 框架继承</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+-----------------------------------+--------+</span><br><span class="line">|      app1, app2, app3, app4       |        |</span><br><span class="line">+-----+--------------+--------------+        |</span><br><span class="line">|     |              |  framework3  |        |</span><br><span class="line">+     |  framework1  +--------------+ plugin |</span><br><span class="line">|     |              |  framework2  |        |</span><br><span class="line">+     +--------------+--------------+        |</span><br><span class="line">|                   Egg             |        |</span><br><span class="line">+-----------------------------------+--------|</span><br><span class="line">|                   Koa                      |</span><br><span class="line">+-----------------------------------+--------+</span><br></pre></td></tr></table></figure>
+<h4 id="2-加载单元执行顺序"><a href="#2-加载单元执行顺序" class="headerlink" title="2. 加载单元执行顺序"></a>2. 加载单元执行顺序</h4><p><strong><em>文件按表格内的顺序自上而下加载</em></strong><br><img src="/img/egg.png" height="auto" align="center"></p>
+<blockquote>
+<ul>
+<li>按插件 =&gt; 框架 =&gt; 应用依次加载</li>
+<li>插件之间的顺序由依赖关系决定，被依赖方先加载，无依赖按 object key 配置顺序加载，具体可以查看插件章节</li>
+<li>框架按继承顺序加载，越底层越先加载。</li>
+</ul>
+</blockquote>
+<h4 id="3-加载单元生命周期"><a href="#3-加载单元生命周期" class="headerlink" title="3. 加载单元生命周期"></a>3. 加载单元生命周期</h4><ol>
+<li>配置文件即将加载，这是最后动态修改配置的时机（configWillLoad）</li>
+<li>配置文件加载完成（configDidLoad）</li>
+<li>文件加载完成（didLoad）</li>
+<li>插件启动完毕（willReady）</li>
+<li>worker 准备就绪（didReady）</li>
+<li>应用启动完成（serverDidReady）</li>
+<li>应用即将关闭（beforeClose）</li>
+</ol>
+<h3 id="加载器函数"><a href="#加载器函数" class="headerlink" title="加载器函数"></a>加载器函数</h3><h4 id="1-loadFile"><a href="#1-loadFile" class="headerlink" title="1. loadFile"></a>1. loadFile</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 用于加载一个文件，比如加载 app/xx.js 就是使用这个方法</span><br><span class="line">// app/xx.js</span><br><span class="line">module.exports = app =&gt; &#123;</span><br><span class="line">  console.log(app.config);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// app.js</span><br><span class="line">// 以 app/xx.js 为例，我们可以在 app.js 加载这个文件</span><br><span class="line">const path = require(&apos;path&apos;);</span><br><span class="line">module.exports = app =&gt; &#123;</span><br><span class="line">  app.loader.loadFile(path.join(app.config.baseDir, &apos;app/xx.js&apos;));</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="2-loadToApp"><a href="#2-loadToApp" class="headerlink" title="2. loadToApp"></a>2. loadToApp</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 用于加载一个目录下的文件到 app，比如 app/controller/home.js 会加载到 app.controller.home。</span><br><span class="line">// app.js</span><br><span class="line">// 以下只是示例，加载 controller 请用 loadController</span><br><span class="line">module.exports = app =&gt; &#123;</span><br><span class="line">  const directory = path.join(app.config.baseDir, &apos;app/controller&apos;);</span><br><span class="line">  app.loader.loadToApp(directory, &apos;controller&apos;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="3-loadToContext"><a href="#3-loadToContext" class="headerlink" title="3. loadToContext"></a>3. loadToContext</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 与 loadToApp 有一点差异，loadToContext 是加载到 ctx 上而非 app，而且是懒加载。加载时会将文件都放到一个临时对象上，在调用 ctx API 时才实例化对象。</span><br><span class="line">// 以下为示例，请使用 loadService</span><br><span class="line">// app/service/user.js</span><br><span class="line">const Service = require(&apos;egg&apos;).Service;</span><br><span class="line">class UserService extends Service &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">module.exports = UserService;</span><br><span class="line"></span><br><span class="line">// app.js</span><br><span class="line">// 获取所有的 loadUnit</span><br><span class="line">const servicePaths = app.loader.getLoadUnits().map(unit =&gt; path.join(unit.path, &apos;app/service&apos;));</span><br><span class="line"></span><br><span class="line">app.loader.loadToContext(servicePaths, &apos;service&apos;, &#123;</span><br><span class="line">  // service 需要继承 app.Service，所以要拿到 app 参数</span><br><span class="line">  // 设置 call 在加载时会调用函数返回 UserService</span><br><span class="line">  call: true,</span><br><span class="line">  // 将文件加载到 app.serviceClasses</span><br><span class="line">  fieldClass: &apos;serviceClasses&apos;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="CustomLoader"><a href="#CustomLoader" class="headerlink" title="CustomLoader"></a>CustomLoader</h3><p>loadToContext 和 loadToApp 可被 customLoader 配置替代。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// app.js</span><br><span class="line">module.exports = app =&gt; &#123;</span><br><span class="line">  const directory = path.join(app.config.baseDir, &apos;app/adapter&apos;);</span><br><span class="line">  app.loader.loadToApp(directory, &apos;adapter&apos;);</span><br><span class="line">&#125;;;</span><br><span class="line"></span><br><span class="line">=====</span><br><span class="line">变成：</span><br><span class="line">=====</span><br><span class="line"></span><br><span class="line">// config/config.default.js</span><br><span class="line">module.exports = &#123;</span><br><span class="line">  customLoader: &#123;</span><br><span class="line">    // 定义在 app 上的属性名 app.adapter</span><br><span class="line">    adapter: &#123;</span><br><span class="line">      // 相对于 app.config.baseDir</span><br><span class="line">      directory: &apos;app/adapter&apos;,</span><br><span class="line">      // 如果是 ctx 则使用 loadToContext</span><br><span class="line">      inject: &apos;app&apos;,</span><br><span class="line">      // 是否加载框架和插件的目录</span><br><span class="line">      loadunit: false,</span><br><span class="line">      // 还可以定义其他 LoaderOptions</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

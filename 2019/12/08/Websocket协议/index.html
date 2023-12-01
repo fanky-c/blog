@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Websocket协议 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Websocket介绍"><span class="toc-text">Websocket介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Websocket优缺点"><span class="toc-text">Websocket优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Websocket协议流程"><span class="toc-text">Websocket协议流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#握手阶段"><span class="toc-text">握手阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据传输阶段"><span class="toc-text">数据传输阶段</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Websocket使用"><span class="toc-text">Websocket使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#客户端使用"><span class="toc-text">客户端使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器使用"><span class="toc-text">服务器使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#检测心跳"><span class="toc-text">检测心跳</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#身份认证"><span class="toc-text">身份认证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决ws与wss共存"><span class="toc-text">解决ws与wss共存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#websocket和http2服务器推送的区别"><span class="toc-text">websocket和http2服务器推送的区别</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Websocket协议
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-12-08 14:29:39</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#websocket协议" title="websocket协议">websocket协议</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="Websocket介绍"><a href="#Websocket介绍" class="headerlink" title="Websocket介绍"></a>Websocket介绍</h3><p>HTML5开始提供的一种浏览器与服务器进行全双工通讯的网络技术，属于应用层协议。基于TCP这些应用程序需要与服务器进行双向通信，而不依赖于打开多个HTTP连接。</p>
+<h3 id="Websocket优缺点"><a href="#Websocket优缺点" class="headerlink" title="Websocket优缺点"></a>Websocket优缺点</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
+<li>支持双向通信，实时性更强。</li>
+<li>可以发送文本，也可以发送二进制数据。</li>
+<li>较少的控制开销，通信性能更高。http1.x协议每次通信都需要携带完整的头部；websocket协议头部包含的较小。</li>
+<li>允许跨域</li>
+</ol>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>对于客户端来说兼容性差。</li>
+<li>对服务器来说开发者要求更高，长连接需要服务业务更加稳定（不能随便把进程和框架crash）。</li>
+</ol>
+<h3 id="Websocket协议流程"><a href="#Websocket协议流程" class="headerlink" title="Websocket协议流程"></a>Websocket协议流程</h3><h4 id="握手阶段"><a href="#握手阶段" class="headerlink" title="握手阶段"></a>握手阶段</h4><ol>
+<li>WebSocket客户端的握手是一个HTTP Upgrade请求</li>
+<li>Sec-WebSocket-Key（请求头）以及Sec-WebSocket-Accept（响应头）。 目的：Websocket协议需要保证客户端发起的Websocket连接请求只会被能理解Websocket协议的服务器所识别。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//相比传统的http多了这个2个值</span></span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="数据传输阶段"><a href="#数据传输阶段" class="headerlink" title="数据传输阶段"></a>数据传输阶段</h4><p>客户端与服务器之间互相传输数据的的基本单位根据规格说明书里我们称为“Messages”。在实际网络中，这些Message由一个或多个Frames组成。解决了http的被动性、无状态性。</p>
+<h3 id="Websocket使用"><a href="#Websocket使用" class="headerlink" title="Websocket使用"></a>Websocket使用</h3><h4 id="客户端使用"><a href="#客户端使用" class="headerlink" title="客户端使用"></a>客户端使用</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ws = <span class="keyword">new</span> WebSocket(<span class="string">"wss://127.0.0.1"</span>); <span class="comment">//ws默认端口:80， wss默认端口:443</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//建立连接</span></span><br><span class="line">ws.onopen = <span class="function"><span class="keyword">function</span>(<span class="params">evt</span>) </span>&#123; </span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Connection open ..."</span>); </span><br><span class="line">  ws.send(<span class="string">"Hello WebSockets!"</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//接受服务器信息调用</span></span><br><span class="line">ws.onmessage = <span class="function"><span class="keyword">function</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log( <span class="string">"Received Message: "</span> + evt.data);</span><br><span class="line">  ws.close();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//连接出错时候调用</span></span><br><span class="line">ws.onerror = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//连接终止是调用</span></span><br><span class="line">ws.onclose = <span class="function"><span class="keyword">function</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Connection closed."</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="服务器使用"><a href="#服务器使用" class="headerlink" title="服务器使用"></a>服务器使用</h4><ol>
+<li>常用的Node实现有:Socket.IO、WebSocket-Node。</li>
+</ol>
+<h4 id="检测心跳"><a href="#检测心跳" class="headerlink" title="检测心跳"></a>检测心跳</h4><ol>
+<li>在使用websocket的过程中，有时候会遇到客户端网络关闭的情况，而这时候在服务端并没有触发onclose事件。这样会：<ol>
+<li>多余的连接</li>
+<li>服务端会继续给客户端发数据</li>
+</ol>
+</li>
+</ol>
+<h4 id="身份认证"><a href="#身份认证" class="headerlink" title="身份认证"></a>身份认证</h4><ol>
+<li>大体上Websocket的身份认证都是发生在握手阶段，通过请求中的内容来认证。一个常见的例子是在url中附带参数token。</li>
+</ol>
+<h4 id="解决ws与wss共存"><a href="#解决ws与wss共存" class="headerlink" title="解决ws与wss共存"></a>解决ws与wss共存</h4><ol>
+<li>nginx配置</li>
+</ol>
+<h4 id="websocket和http2服务器推送的区别"><a href="#websocket和http2服务器推送的区别" class="headerlink" title="websocket和http2服务器推送的区别"></a>websocket和http2服务器推送的区别</h4><ol>
+<li>websocket是全双工同学， 消息可以直接推送给webapp, 也就是说webapp有API来获取服务器推送的数据</li>
+<li>http2虽然也支持server push，但是服务器只会主动把资源推送到客户端缓存，并不直接推送到webapp本身。 也可以说webapp本身没有直接响应这些数据的API接口。</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

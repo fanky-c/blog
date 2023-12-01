@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        js原型链和闭包 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#原型和原型链"><span class="toc-text">原型和原型链</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#原型概念"><span class="toc-text">原型概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#原型链概念"><span class="toc-text">原型链概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-prototype"><span class="toc-text">1. prototype</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-proto"><span class="toc-text">2. __proto__</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-constructor"><span class="toc-text">3. constructor</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-实例和原型"><span class="toc-text">4. 实例和原型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-原型的原型"><span class="toc-text">5. 原型的原型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-原型链"><span class="toc-text">6. 原型链</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#7-hasOwnProperty"><span class="toc-text">7. hasOwnProperty</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#作用"><span class="toc-text">作用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#继承属性"><span class="toc-text">继承属性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#继承方法"><span class="toc-text">继承方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#闭包"><span class="toc-text">闭包</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#作用-1"><span class="toc-text">作用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-封装私有变量-模拟模块化"><span class="toc-text">1. 封装私有变量/模拟模块化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-做缓存"><span class="toc-text">2. 做缓存</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-实现代码块"><span class="toc-text">3. 实现代码块</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#性能考量"><span class="toc-text">性能考量</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-常驻内存，-增加内存使用量"><span class="toc-text">1. 常驻内存， 增加内存使用量</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-使用不当的话，应用不销户，造成泄漏"><span class="toc-text">2. 使用不当的话，应用不销户，造成泄漏</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        js原型链和闭包
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-11-04 22:03:03</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#原型链" title="原型链">原型链</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#原型" title="原型">原型</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#闭包" title="闭包">闭包</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="原型和原型链"><a href="#原型和原型链" class="headerlink" title="原型和原型链"></a>原型和原型链</h3><h4 id="原型概念"><a href="#原型概念" class="headerlink" title="原型概念"></a>原型概念</h4><p>每一个js对象(null除外)在创建的时候就会与之关联另一个对象，这个对象就是我们所说的原型，每一个对象都会从原型继承属性和方法</p>
+<h4 id="原型链概念"><a href="#原型链概念" class="headerlink" title="原型链概念"></a>原型链概念</h4><p>每个实例对象（object）都有一个私有属性（称之为 __proto__ ）指向它的构造函数的原型对象（prototype）。该原型对象也有一个自己的原型对象（__proto__），层层向上直到一个对象的原型对象为 null。根据定义，null 没有原型，并作为这个原型链中的最后一个环节。</p>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><h5 id="1-prototype"><a href="#1-prototype" class="headerlink" title="1. prototype"></a>1. prototype</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Person.prototype.name = <span class="string">'fanky'</span>;</span><br><span class="line"><span class="keyword">let</span> person1 = <span class="keyword">new</span> Person();</span><br><span class="line"><span class="keyword">let</span> person2 = <span class="keyword">new</span> Person();</span><br><span class="line"><span class="built_in">console</span>.log(person1.name) <span class="comment">// fanky</span></span><br><span class="line"><span class="built_in">console</span>.log(person2.name) <span class="comment">// fanky</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>函数的prototype属性指向一个对象， 这个对象正是调用该构造函数而创建的实例原型， 也就是person1 和 person2</strong></p>
+</blockquote>
+<h5 id="2-proto"><a href="#2-proto" class="headerlink" title="2. __proto__"></a>2. __proto__</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> person = <span class="keyword">new</span> Person();</span><br><span class="line"><span class="built_in">console</span>.log(person.__proto__ === Person.prototype); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>每一个js对象(除了 null )都具有的一个属性，叫__proto__，这个属性会指向该对象的原型。</p>
+<h5 id="3-constructor"><a href="#3-constructor" class="headerlink" title="3. constructor"></a>3. constructor</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(Person === Person.prototype.constructor); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>每个原型都有一个 constructor 属性指向关联的构造函数</p>
+</blockquote>
+<h5 id="4-实例和原型"><a href="#4-实例和原型" class="headerlink" title="4. 实例和原型"></a>4. 实例和原型</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 原型</span></span><br><span class="line">Person.prototype.name = <span class="string">'fanky'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例</span></span><br><span class="line"><span class="keyword">let</span> person = <span class="keyword">new</span> Person();</span><br><span class="line">person.name = <span class="string">'Daisy'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(person.name) <span class="comment">// Daisy</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span> person.name;</span><br><span class="line"><span class="built_in">console</span>.log(person.name) <span class="comment">// fanky</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>但是当我们删除了 person 的 name 属性时，读取 person.name，从 person 对象中找不到 name 属性就会从 person 的原型也就是 person.__proto__ ，也就是 Person.prototype中查找，幸运的是我们找到了 name 属性，结果为 fanky</p>
+</blockquote>
+<p>但是万一还没有找到呢？原型的原型又是什么呢？</p>
+<h5 id="5-原型的原型"><a href="#5-原型的原型" class="headerlink" title="5. 原型的原型"></a>5. 原型的原型</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">obj.name = <span class="string">'fanky'</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.name); <span class="comment">// fanky</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实原型对象就是通过 Object 构造函数生成的，结合之前所讲，实例的 __proto__ 指向构造函数的 prototype </p>
+</blockquote>
+<h5 id="6-原型链"><a href="#6-原型链" class="headerlink" title="6. 原型链"></a>6. 原型链</h5><p>那 Object.prototype 的原型呢:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.__proto__ === <span class="literal">null</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/img/prototype.png" alt="原型链" height="auto"><br><strong><em>图中由相互关联的原型组成的链状结构就是原型链，也就是蓝色的这条线</em></strong></p>
+<h5 id="7-hasOwnProperty"><a href="#7-hasOwnProperty" class="headerlink" title="7. hasOwnProperty"></a>7. hasOwnProperty</h5><p>在原型链上查询属性比较耗时，对性能有影响，试图访问不存在的属性时会遍历整个原型链。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> object1 = &#123;&#125;;</span><br><span class="line">object1.property1 = <span class="number">42</span>;</span><br><span class="line"><span class="built_in">console</span>.log(object1.hasOwnProperty(<span class="string">'property1'</span>));</span><br><span class="line"><span class="comment">// expected output: true</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(object1.hasOwnProperty(<span class="string">'toString'</span>));</span><br><span class="line"><span class="comment">// expected output: false</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><h5 id="继承属性"><a href="#继承属性" class="headerlink" title="继承属性"></a>继承属性</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> f = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="keyword">this</span>.a = <span class="number">1</span>;</span><br><span class="line">   <span class="keyword">this</span>.b = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> o = <span class="keyword">new</span> f(); <span class="comment">// &#123;a: 1, b: 2&#125;</span></span><br><span class="line">f.prototype.b = <span class="number">3</span>;</span><br><span class="line">f.prototype.c = <span class="number">4</span>;</span><br><span class="line"><span class="built_in">console</span>.log(o.b); <span class="comment">// 3</span></span><br><span class="line"><span class="built_in">console</span>.log(o.c); <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+<h5 id="继承方法"><a href="#继承方法" class="headerlink" title="继承方法"></a>继承方法</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = &#123;</span><br><span class="line">  a: <span class="number">2</span>,</span><br><span class="line">  m: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.a + <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(o.m()); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = <span class="built_in">Object</span>.create(o); <span class="comment">//p是一个继承自 o 的对象</span></span><br><span class="line">p.a = <span class="number">4</span>;</span><br><span class="line"><span class="built_in">console</span>.log(p.m()); <span class="comment">// 5</span></span><br><span class="line"><span class="comment">// 调用 p.m 时，'this' 指向了 p</span></span><br><span class="line"><span class="comment">// 又因为 p 继承了 o 的 m 函数</span></span><br><span class="line"><span class="comment">// 所以，此时的 'this.a' 即 p.a，就是 p 的自身属性 'a'</span></span><br></pre></td></tr></table></figure>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><blockquote>
+<ol>
+<li>闭包就可以在全局函数里面操作另一个作用域的局部变量</li>
+<li>形成步骤：<br> a. 外层函数嵌套内层函数<br> b.  内层函数使用外层函数的局部变量<br> c. 把内层函数作为外层函数的返回值</li>
+</ol>
+</blockquote>
+<h4 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h4><h5 id="1-封装私有变量-模拟模块化"><a href="#1-封装私有变量-模拟模块化" class="headerlink" title="1. 封装私有变量/模拟模块化"></a>1. 封装私有变量/模拟模块化</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">create_counter</span>(<span class="params">initial</span>) </span>&#123;</span><br><span class="line">     <span class="keyword">var</span> x = initial || <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">return</span> &#123;</span><br><span class="line">         inc: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">             x += <span class="number">1</span>;</span><br><span class="line">             <span class="keyword">return</span> x;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> c1 = create_counter();</span><br><span class="line">c1.inc(); <span class="comment">// 1</span></span><br><span class="line">c1.inc(); <span class="comment">// 2</span></span><br><span class="line">c1.inc(); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c2 = create_counter(<span class="number">10</span>);</span><br><span class="line">c2.inc(); <span class="comment">// 11</span></span><br><span class="line">c2.inc(); <span class="comment">// 12</span></span><br><span class="line">c2.inc(); <span class="comment">// 13</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-做缓存"><a href="#2-做缓存" class="headerlink" title="2. 做缓存"></a>2. 做缓存</h5><p>数字累加</p>
+<h5 id="3-实现代码块"><a href="#3-实现代码块" class="headerlink" title="3. 实现代码块"></a>3. 实现代码块</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">i</span>) </span>&#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(i)</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;)(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="性能考量"><a href="#性能考量" class="headerlink" title="性能考量"></a>性能考量</h4><h5 id="1-常驻内存，-增加内存使用量"><a href="#1-常驻内存，-增加内存使用量" class="headerlink" title="1. 常驻内存， 增加内存使用量"></a>1. 常驻内存， 增加内存使用量</h5><h5 id="2-使用不当的话，应用不销户，造成泄漏"><a href="#2-使用不当的话，应用不销户，造成泄漏" class="headerlink" title="2. 使用不当的话，应用不销户，造成泄漏"></a>2. 使用不当的话，应用不销户，造成泄漏</h5><p><br><br><a href="https://github.com/mqyqingfeng/blog/issues/2" target="_blank" rel="noopener">文章来源于1</a><br><a href="https://github.com/YvetteLau/Step-By-Step/issues/24" target="_blank" rel="noopener">文章来源于2</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

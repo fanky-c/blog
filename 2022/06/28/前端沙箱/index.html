@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        前端沙箱 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是沙箱？"><span class="toc-text">什么是沙箱？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript中沙箱的使用场景"><span class="toc-text">javascript中沙箱的使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript中沙箱实现"><span class="toc-text">javascript中沙箱实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、跟浏览器宿主环境一致的沙箱实现"><span class="toc-text">一、跟浏览器宿主环境一致的沙箱实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-构建闭包环境"><span class="toc-text">1.构建闭包环境</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-原生浏览器对象模拟"><span class="toc-text">2.原生浏览器对象模拟</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#eval"><span class="toc-text">eval</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#new-Function"><span class="toc-text">new Function</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#with"><span class="toc-text">with</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#with-new-Function"><span class="toc-text">with + new Function</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Proxy"><span class="toc-text">Proxy</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-iframe的沙箱环境实现"><span class="toc-text">3.iframe的沙箱环境实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、nodejs中沙箱实现"><span class="toc-text">二、nodejs中沙箱实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vm"><span class="toc-text">vm</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vm2"><span class="toc-text">vm2</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        前端沙箱
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-06-28 14:24:13</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#前端沙箱" title="前端沙箱">前端沙箱</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#eval" title="eval">eval</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#new Function" title="new Function">new Function</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#with" title="with">with</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#iframe" title="iframe">iframe</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#proxy" title="proxy">proxy</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#vm" title="vm">vm</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="什么是沙箱？"><a href="#什么是沙箱？" class="headerlink" title="什么是沙箱？"></a>什么是沙箱？</h2><p>也称作：“沙箱/沙盒/沙盘”。沙箱是一种安全机制，为运行中的程序提供隔离环境。通常是作为一些来源不可信、具破坏力或无法判定程序意图的程序提供实验之用。沙箱能够安全的执行不受信任的代码，且不影响外部实际代码影响的独立环境。</p>
+<h2 id="javascript中沙箱的使用场景"><a href="#javascript中沙箱的使用场景" class="headerlink" title="javascript中沙箱的使用场景"></a>javascript中沙箱的使用场景</h2><ol>
+<li>在线代码编辑器：相信大家都有使用过一些在线代码编辑器，而这些代码的执行，基本都会放置在沙箱中，防止对页面本身造成影响</li>
+<li>vue 模板中表达式计算：vue 模板中表达式的计算被放在沙盒中，只能访问全局变量的一个白名单，如 Math 和 Date 。你不能够在模板表达式中试图访问用户定义的全局变量。</li>
+<li>vue 的服务端渲染：vue 的服务端渲染实现中，通过创建沙箱执行前端的 bundle 文件；在调用 createBundleRenderer 方法时候，允许配置 runInNewContext 为 true 或 false 的形式，判断是否传入一个新创建的 sandbox 对象以供 vm 使用</li>
+</ol>
+<h2 id="javascript中沙箱实现"><a href="#javascript中沙箱实现" class="headerlink" title="javascript中沙箱实现"></a>javascript中沙箱实现</h2><h3 id="一、跟浏览器宿主环境一致的沙箱实现"><a href="#一、跟浏览器宿主环境一致的沙箱实现" class="headerlink" title="一、跟浏览器宿主环境一致的沙箱实现"></a>一、跟浏览器宿主环境一致的沙箱实现</h3><h4 id="1-构建闭包环境"><a href="#1-构建闭包环境" class="headerlink" title="1.构建闭包环境"></a>1.构建闭包环境</h4><p>我们知道在 JavaScript 中的作用域（scope）只有全局作用域（global scope）、函数作用域（function scope）以及从 ES6 开始才有的块级作用域（block scope）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(a);</span><br><span class="line"> &#125;)();<span class="comment">// 无法从外部访问变量 </span></span><br><span class="line"> </span><br><span class="line"> <span class="built_in">console</span>.log(a) <span class="comment">// 抛出错误："Uncaught ReferenceError: a is not defined"</span></span><br><span class="line"></span><br><span class="line"> (<span class="function"><span class="keyword">function</span> (<span class="params">window</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> jQuery = <span class="function"><span class="keyword">function</span> (<span class="params">selector, context</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> jQuery.fn.init(selector, context);</span><br><span class="line">    &#125;</span><br><span class="line">    jQuery.fn = jQuery.prototype = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">//原型上的方法，即所有jQuery对象都可以共享的方法和属性</span></span><br><span class="line">    &#125;</span><br><span class="line">    jQuery.fn.init.prototype = jQuery.fn;</span><br><span class="line">    <span class="built_in">window</span>.jQeury = <span class="built_in">window</span>.$ = jQuery; <span class="comment">//如果需要在外界暴露一些属性或者方法，可以将这些属性和方法加到window全局对象上去</span></span><br><span class="line">&#125;)(<span class="built_in">window</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 当将 IIFE 分配给一个变量，不是存储 IIFE 本身，而是存储 IIFE 执行后返回的结果。</span></span><br><span class="line"><span class="keyword">const</span> result = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> name = <span class="string">"张三"</span>;</span><br><span class="line">    <span class="keyword">return</span> name;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(result); <span class="comment">// "张三"</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-原生浏览器对象模拟"><a href="#2-原生浏览器对象模拟" class="headerlink" title="2.原生浏览器对象模拟"></a>2.原生浏览器对象模拟</h4><p>模拟原生浏览器对象的目的是为了防止闭包环境，操作原生对象，篡改污染原生环境，完成模拟浏览器对象之前我们需要先关注几个不常用的 API。</p>
+<h5 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h5><p>eval 函数可将字符串转换为代码执行，并返回一个或多个值；eval代码内部可以沿着作用域链往上找，篡改全局变量。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> b = <span class="built_in">eval</span>(<span class="string">"(&#123;name:'张三'&#125;)"</span>);</span><br><span class="line"><span class="built_in">console</span>.log(b.name);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">eval</span>( <span class="keyword">this</span>.window === <span class="built_in">window</span> )); <span class="comment">// true</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="new-Function"><a href="#new-Function" class="headerlink" title="new Function"></a>new Function</h5><p>Function构造函数创建一个新的 Function 对象。直接调用这个构造函数可用于动态创建函数。<br>new Function ([arg1[, arg2[, …argN]],] functionBody)<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> sum = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'return a + b'</span>); </span><br><span class="line"><span class="built_in">console</span>.log(sum(<span class="number">1</span>, <span class="number">2</span>));<span class="comment">//3 </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sandbox</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'return a;'</span>); <span class="comment">// 这里的 a 指向最上面全局作用域内的 1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> f = sandbox();</span><br><span class="line"><span class="built_in">console</span>.log(f());</span><br></pre></td></tr></table></figure></p>
+<p><em>与 eval 不同的是 Function 创建的函数只能在全局作用域中运行，它无法访问局部闭包变量，它们总是被创建于全局环境，<strong>因此在运行时它们只能访问全局变量和自己的局部变量，不能访问它们被 Function 构造器创建时所在的作用域的变量。</strong>new Function()是 eval()更好替代方案。它具有卓越的性能和安全性，但仍没有解决访问全局的问题。</em></p>
+<h5 id="with"><a href="#with" class="headerlink" title="with"></a>with</h5><p>with 是 JavaScript 中一个关键字，扩展一个语句的作用域链。它允许半沙盒执行。那什么叫半沙盒？语句将某个对象添加到作用域链的顶部，如果在沙盒中有某个未使用命名空间的变量，跟作用域链中的某个属性同名，则这个变量将指向这个属性值。如果沒有同名的属性，则将拋出 ReferenceError。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 严格模式下以下代码运行会有问题</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sandbox</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">with</span> (o)&#123;</span><br><span class="line">        c=<span class="number">2</span>;</span><br><span class="line">        d=<span class="number">3</span>;</span><br><span class="line">        <span class="comment">// 0,1,2,3</span></span><br><span class="line">        <span class="comment">// 每个变量首先被认为是一个局部变量，</span></span><br><span class="line">        <span class="comment">// 如果局部变量与 obj 对象的某个属性同名，则这个局部变量会指向 obj 对象属性。        </span></span><br><span class="line">        <span class="built_in">console</span>.log(a,b,c,d); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> f = &#123;</span><br><span class="line">    a:<span class="number">0</span>,</span><br><span class="line">    b:<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line">sandbox(f);  </span><br><span class="line"><span class="built_in">console</span>.log(f); <span class="comment">// &#123;a: 0, b: 1&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(c,d); <span class="comment">// 2,3。  c、d被泄露到window对象上</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>究其原理，with在内部使用in运算符。对于块内的每个变量访问，它都在沙盒条件下计算变量。如果条件是 true，它将从沙盒中检索变量。否则，就在全局范围内查找变量。但是 with 语句使程序在查找变量值时，都是先在指定的对象中查找。所以对于那些本来不是这个对象的属性的变量，查找起来会很慢，对于有性能要求的程序不适合（JavaScript 引擎会在编译阶段进行数项的性能优化。其中有些优化依赖于能够根据代码的词法进行静态分析，并预先确定所有变量和函数的定义位置，才能在执行过程中快速找到标识符）。with 也会导致数据泄漏(在非严格模式下，会自动在全局作用域创建一个全局变量)</p>
+</blockquote>
+<h5 id="with-new-Function"><a href="#with-new-Function" class="headerlink" title="with + new Function"></a>with + new Function</h5><p>配合 with 用法可以稍微限制沙盒作用域，先从当前的 with 提供对象查找，但是如果查找不到依然还能从更上面的作用域获取，污染或篡改全局环境<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sandbox</span> (<span class="params">src</span>) </span>&#123;</span><br><span class="line">    src = <span class="string">'with (sandbox) &#123;'</span> + src + <span class="string">'&#125;'</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'sandbox'</span>, src);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> str = <span class="string">`</span></span><br><span class="line"><span class="string">    let a = 1; </span></span><br><span class="line"><span class="string">    window.name="张三"; </span></span><br><span class="line"><span class="string">    console.log(a); // 打印：1</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line">sandbox(str)(&#123;&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.name);<span class="comment">//'张三'</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>存在的问题：</strong></p>
+<ol>
+<li>eval 是全局对象的一个函数属性，执行的代码拥有着和应用中其它正常代码一样的的权限，它能访问「执行上下文」中的局部变量，也能访问所有「全局变量」，在这个场景下，它是一个非常危险的函数</li>
+<li>使用 Function 构造器生成的函数，并不会在创建它的上下文中创建闭包，一般在全局作用域中被创建。当运行函数的时候，只能访问自己的本地变量和全局变量，不能访问 Function 构造器被调用生成的上下文的作用域</li>
+<li>with 一样的问题，它首先会在传入的对象中查找对应的变量，如果找不到就会往更上层的全局作用域去查找，所以也避免不了污染或篡改全局环境</li>
+</ol>
+<h5 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h5><p>ES6 Proxy 用于修改某些操作的默认行为，等同于在语言层面做出修改，属于一种“元编程”<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">evalute</span>(<span class="params">code,sandbox</span>) </span>&#123;</span><br><span class="line">  sandbox = sandbox || <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">  <span class="keyword">const</span> fn = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">'sandbox'</span>, <span class="string">`with(sandbox)&#123;return (<span class="subst">$&#123;code&#125;</span>)&#125;`</span>);</span><br><span class="line">  <span class="keyword">const</span> proxy = <span class="keyword">new</span> <span class="built_in">Proxy</span>(sandbox, &#123;</span><br><span class="line">    has(target, key) &#123;</span><br><span class="line">      <span class="comment">// 让动态执行的代码认为属性已存在</span></span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>; </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> fn(proxy);</span><br><span class="line">&#125;</span><br><span class="line">evalute(<span class="string">'1+2'</span>) <span class="comment">// 3</span></span><br><span class="line">evalute(<span class="string">'console.log(1)'</span>) <span class="comment">// Cannot read property 'log' of undefined</span></span><br></pre></td></tr></table></figure></p>
+<p>我们知道无论 eval 还是 function，执行时都会把作用域一层一层向上查找，如果找不到会一直到 global，那么利用 Proxy 的原理就是，让执行了代码在 sandobx 中找的到，以达到「防逃逸」的目的。</p>
+<h4 id="3-iframe的沙箱环境实现"><a href="#3-iframe的沙箱环境实现" class="headerlink" title="3.iframe的沙箱环境实现"></a>3.iframe的沙箱环境实现</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> parent = <span class="built_in">window</span>;</span><br><span class="line"><span class="keyword">const</span> frame = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 限制代码 iframe 代码执行能力</span></span><br><span class="line">frame.sandbox = <span class="string">'allow-same-origin'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line"><span class="keyword">let</span> newData = [];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当前页面给 iframe 发送消息</span></span><br><span class="line">frame.onload = <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  frame.contentWindow.postMessage(data);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.body.appendChild(frame);</span><br><span class="line"></span><br><span class="line"><span class="comment">// iframe 接收到消息后处理</span></span><br><span class="line"><span class="keyword">const</span> code = <span class="string">`</span></span><br><span class="line"><span class="string">    return dataInIframe.filter((item) =&gt; item % 2 === 0)</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line">frame.contentWindow.addEventListener(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> func = <span class="keyword">new</span> frame.contentWindow.Function(<span class="string">'dataInIframe'</span>, code);</span><br><span class="line">  <span class="comment">// 给副页面也送消息</span></span><br><span class="line">  parent.postMessage(func(e.data));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 父页面接收 iframe 发送过来的消息</span></span><br><span class="line">parent.addEventListener(</span><br><span class="line">  <span class="string">'message'</span>,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'parent - message from iframe:'</span>, e.data);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="literal">false</span>,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<h3 id="二、nodejs中沙箱实现"><a href="#二、nodejs中沙箱实现" class="headerlink" title="二、nodejs中沙箱实现"></a>二、nodejs中沙箱实现</h3><h4 id="vm"><a href="#vm" class="headerlink" title="vm"></a>vm</h4><p>VM是 Node.js 默认提供的一个内建模块，VM 模块提供了一系列 API 用于在 V8 虚拟机环境中编译和运行代码。JavaScript 代码可以被编译并立即运行，或编译、保存然后再运行。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> vm = <span class="built_in">require</span>(<span class="string">'vm'</span>);</span><br><span class="line"><span class="keyword">const</span> script = <span class="keyword">new</span> vm.Script(<span class="string">'m + n'</span>); <span class="comment">// 先new一个脚本执行的容器实例</span></span><br><span class="line"><span class="keyword">const</span> sandbox = &#123; <span class="attr">m</span>: <span class="number">1</span>, <span class="attr">n</span>: <span class="number">2</span> &#125;; </span><br><span class="line"><span class="keyword">const</span> context = <span class="keyword">new</span> vm.createContext(sandbox); <span class="comment">// 实例化一个执行上下文</span></span><br><span class="line"><span class="keyword">const</span> res = script.runInContext(context); <span class="comment">// 运行</span></span><br><span class="line"><span class="built_in">console</span>.log(res); <span class="comment">// 打印：3</span></span><br></pre></td></tr></table></figure>
+<h4 id="vm2"><a href="#vm2" class="headerlink" title="vm2"></a>vm2</h4><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>运行不信任的代码是非常困难的，只依赖软件模块作为沙箱技术，防止不受信任代码用于非正当用途是不得已的决定。这可能促使云上SAAS应用的不安全，因为通过逃逸出沙箱进程多个租户间的数据可能被访问（主进程数据获取），这样你就可能可以通过session，secret等来潜入其他租户。一个更安全的选择是依赖于硬件虚拟化，比如每个租户代码在独立的docker容器或AWS Lambada Function 中执行会是更好的选择。</p>
+<p><br></p>
+<p><a href="https://mp.weixin.qq.com/s/c9tMAZLvA3pI40qxZ2Zv5w" target="_blank" rel="noopener">文章来源</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

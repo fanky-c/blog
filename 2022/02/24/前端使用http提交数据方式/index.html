@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        前端使用http提交数据方式 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#支持方式"><span class="toc-text">支持方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#url-param"><span class="toc-text">url param</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#query"><span class="toc-text">query</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#form-urlencoded"><span class="toc-text">form-urlencoded</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#form-data"><span class="toc-text">form-data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#application-json"><span class="toc-text">application/json</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        前端使用http提交数据方式
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-02-24 20:29:47</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#resful" title="resful">resful</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#query" title="query">query</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#form-urlencoded" title="form-urlencoded">form-urlencoded</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#form-data" title="form-data">form-data</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#application/json" title="application/json">application/json</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="支持方式"><a href="#支持方式" class="headerlink" title="支持方式"></a>支持方式</h2><h3 id="url-param"><a href="#url-param" class="headerlink" title="url param"></a>url param</h3><p>url param是一种resful风格（<a href="https://www.ruanyifeng.com/blog/2014/05/restful_api.html），把参数写在url中" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2014/05/restful_api.html），把参数写在url中</a><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里的 chao 就是路径中的参数（url param）, 获取chao相关信息</span></span><br><span class="line">http:<span class="comment">//abc.com/person/chao</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="query"><a href="#query" class="headerlink" title="query"></a>query</h3><p>通过 url 中 ？后面的用 &amp; 分隔的字符串传递数据。 需要对数据做 url encode</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里的 chao 就是路径中的参数（url param）, 获取chao相关信息</span></span><br><span class="line"><span class="comment">// 其中非英文的字符和一些特殊字符要经过编码，可以使用 encodeURLComponent 的 api，</span></span><br><span class="line"><span class="comment">// 或者使用封装了一层的 qeury-string 库来处理</span></span><br><span class="line"></span><br><span class="line">http:<span class="comment">//abc.com/person?name=chao&amp;age=12</span></span><br></pre></td></tr></table></figure>
+<h3 id="form-urlencoded"><a href="#form-urlencoded" class="headerlink" title="form-urlencoded"></a>form-urlencoded</h3><p><strong>用 form 表单提交数据就是这种，它和 query 字符串的方式的区别只是放在了 body 里，然后指定下 header头 content-type 是 application/x-www-form-urlencoded。 需要对数据做 url encode</strong></p>
+<p><img src="/img/form-urlencoded.png"></p>
+<p>通过 &amp; 分隔的 form-urlencoded 的方式需要对内容做 url encode，如果传递大量的数据，比如上传文件的时候就不是很合适了，因为文件 encode 一遍的话太慢了，这时候就可以用 form-data</p>
+<h3 id="form-data"><a href="#form-data" class="headerlink" title="form-data"></a>form-data</h3><p>form data 不再是通过 &amp; 分隔数据，<strong>而是用 ——— + 一串数字做为分隔符</strong>。因为不是 url 的方式了，自然也不用再做 url encode。</p>
+<p><strong>form-data 需要指定 content type 为 multipart/form-data，然后指定 boundary 也就是分割线。很明显，这种方式适合传输文件，而且可以传输多个文件</strong></p>
+<p><img src="/img/form-data.png"></p>
+<h3 id="application-json"><a href="#application-json" class="headerlink" title="application/json"></a>application/json</h3><p><strong>form-urlencoded 需要对内容做 url encode，而 form data 则需要加很长的 boundary，两种方式都有一些缺点。如果只是传输 json 数据的话，content-type 为 application/json</strong></p>
+<p><img src="/img/json.png"></p>
+<p><br><br><a href="https://mp.weixin.qq.com/s/Df3Q3IRBZlHq9RkSsHGT8g" target="_blank" rel="noopener">文章来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

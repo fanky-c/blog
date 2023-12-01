@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        macOs相关 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#线程之间通信"><span class="toc-text">线程之间通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#performSelector"><span class="toc-text">performSelector</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#load和initialize方法分别在调用时机"><span class="toc-text">load和initialize方法分别在调用时机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#load"><span class="toc-text">+ load</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#initialize"><span class="toc-text">+ initialize</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#runloop和线程的关系"><span class="toc-text">runloop和线程的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#block的实质是什么？-block修饰的变量为什么能在block里面能改变其值？"><span class="toc-text">block的实质是什么？__block修饰的变量为什么能在block里面能改变其值？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建线程的方法是什么-如果在主线程中执行代码，方法是什么-如果想延时执行代码、方法又是什么"><span class="toc-text">创建线程的方法是什么?如果在主线程中执行代码，方法是什么? 如果想延时执行代码、方法又是什么?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建线程"><span class="toc-text">创建线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在主线程执行代码"><span class="toc-text">在主线程执行代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#延迟执行"><span class="toc-text">延迟执行</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#delegate和notification区别和场景"><span class="toc-text">delegate和notification区别和场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#区别"><span class="toc-text">区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#场景"><span class="toc-text">场景</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        macOs相关
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-10-06 16:27:38</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#mac" title="mac">mac</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#ios" title="ios">ios</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="线程之间通信"><a href="#线程之间通信" class="headerlink" title="线程之间通信"></a>线程之间通信</h3><h4 id="performSelector"><a href="#performSelector" class="headerlink" title="performSelector"></a>performSelector</h4><ol>
+<li><ul>
+<li>(void)performSelectorOnMainThread:(SEL)aSelector withObject:(id)arg waitUntilDone:(BOOL)wait;  //返回主线程</li>
+</ul>
+</li>
+<li><ul>
+<li>(void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withObject:(id)arg waitUntilDone:(BOOL)wait; //返回指定线程</li>
+</ul>
+</li>
+</ol>
+<h3 id="load和initialize方法分别在调用时机"><a href="#load和initialize方法分别在调用时机" class="headerlink" title="load和initialize方法分别在调用时机"></a>load和initialize方法分别在调用时机</h3><h4 id="load"><a href="#load" class="headerlink" title="+ load"></a>+ load</h4><ol>
+<li>它应该是在一个类进行装载的时候触发，就是不管这个类有没有被调用，只要它被装载，那么它就会运行这个方法，只要被添加到编译源下面就会执行。</li>
+<li>不管子类有没有写load方法，父类的load都只会执行一次。</li>
+<li>load方法执行的时候，系统为脆弱状态，如果我们在load里面需要调用其它类的实例对象(或类对象)的属性或者方法，必须要确保那个依赖类的load方法执行完毕</li>
+<li>当加载资源过大会造成性能问题（用户体验、系统抖动）</li>
+</ol>
+<h4 id="initialize"><a href="#initialize" class="headerlink" title="+ initialize"></a>+ initialize</h4><ol>
+<li>如果没有用到该类，就算加载完毕也不会执行该方法（这点与load方法不同，load方法是只要加载就执行，initialize方法必须是第一次使用该类的时候才触发且触发一次）</li>
+<li>以懒加载的方式被调用的，不是启动程序就调用。</li>
+</ol>
+<h3 id="runloop和线程的关系"><a href="#runloop和线程的关系" class="headerlink" title="runloop和线程的关系"></a>runloop和线程的关系</h3><ol>
+<li>每条线程都有唯一的一个 RunLoop 对象与之对应的</li>
+<li>主线程的 RunLoop 是自动创建并启动</li>
+<li>子线程的 RunLoop 需要手动创建(懒加载,只创建一次)</li>
+<li>RunLoop保存在一个全局的Dictionary里，线程作为key,RunLoop作为value</li>
+<li>RunLoop在第一次获取时创建，在线程结束时销毁<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> //启动RunLoop</span><br><span class="line">[[NSRunLoop currentRunLoop] run];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//第一个参数:指定运行模式</span><br><span class="line">//第二个参数:指定 RunLoop 的过期时间,即:到了这个时间后RunLoop 就失效了</span><br><span class="line">[[NSRunLoop currentRunLoop] runMode:kCFRunLoopDefaultModebeforeDate:[NSDate distantFuture]];</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="block的实质是什么？-block修饰的变量为什么能在block里面能改变其值？"><a href="#block的实质是什么？-block修饰的变量为什么能在block里面能改变其值？" class="headerlink" title="block的实质是什么？__block修饰的变量为什么能在block里面能改变其值？"></a>block的实质是什么？__block修饰的变量为什么能在block里面能改变其值？</h3><ol>
+<li>block其实也是一个oc对象，内部有一个isa指针</li>
+<li>__block 所起到的作用就是只要观察到该变量被 block 所持有，就将“外部变量”在栈中的内存地址放到了堆中。进而在block内部也可以修改外部变量的值。</li>
+<li>block不允许修改外部变量的值，这里所说的外部变量的值，指的是栈中指针的内存地址。栈区是红灯区，堆区才是绿灯区。</li>
+</ol>
+<h3 id="创建线程的方法是什么-如果在主线程中执行代码，方法是什么-如果想延时执行代码、方法又是什么"><a href="#创建线程的方法是什么-如果在主线程中执行代码，方法是什么-如果想延时执行代码、方法又是什么" class="headerlink" title="创建线程的方法是什么?如果在主线程中执行代码，方法是什么? 如果想延时执行代码、方法又是什么?"></a>创建线程的方法是什么?如果在主线程中执行代码，方法是什么? 如果想延时执行代码、方法又是什么?</h3><h4 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h4><ol>
+<li>NSThread创建</li>
+<li>GCD的dispatch创建</li>
+<li>使用子类化的NSOperation,然后将其加入NSOperationQueue;</li>
+</ol>
+<h4 id="在主线程执行代码"><a href="#在主线程执行代码" class="headerlink" title="在主线程执行代码"></a>在主线程执行代码</h4><ol>
+<li>performSelectorOnMainThread 或者 GCD中 dispatch_main</li>
+</ol>
+<h4 id="延迟执行"><a href="#延迟执行" class="headerlink" title="延迟执行"></a>延迟执行</h4><ol>
+<li>performSelectorOnMainThread:onThread:withObject:waitUntilDone: 或者 GCD中 dispatch_after</li>
+</ol>
+<h3 id="delegate和notification区别和场景"><a href="#delegate和notification区别和场景" class="headerlink" title="delegate和notification区别和场景"></a>delegate和notification区别和场景</h3><h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><ol>
+<li>delegate效率高于notification</li>
+<li>delegate比notification更加直观<h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4></li>
+<li>nofification适合2个不是很紧密的模块， 例如多线程传值。</li>
+<li>delegate是一种简单的回调，且主要集中在一个模块。例如想把值从底层传到上层。</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

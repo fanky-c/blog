@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        javascript类型检测 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#typeof"><span class="toc-text">typeof</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#instanceof"><span class="toc-text">instanceof</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Object-prototype-toString-call-obj-slice-8-1"><span class="toc-text">Object.prototype.toString.call(obj).slice(8, -1)</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        javascript类型检测
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-05-22 16:21:03</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#js类型检测" title="js类型检测">js类型检测</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#typeof" title="typeof">typeof</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#instanceof" title="instanceof">instanceof</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h4 id="typeof"><a href="#typeof" class="headerlink" title="typeof"></a>typeof</h4><ol>
+<li><p>基本类型（number、string、undefined、boolean）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">1</span> <span class="comment">//</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="string">'1'</span> <span class="comment">//</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">true</span> <span class="comment">//  </span></span><br><span class="line"><span class="keyword">typeof</span> x <span class="comment">// undefined </span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">typeof</span> x == <span class="string">'undefined'</span>) <span class="comment">// true</span></span><br><span class="line"><span class="keyword">if</span>(x)  <span class="comment">//直接报错</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>function(函数)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="keyword">typeof</span> <span class="class"><span class="keyword">class</span> <span class="title">C</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">typeof</span> <span class="built_in">Math</span>.sin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>object</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// 当时设计的原因</span></span><br><span class="line"><span class="keyword">typeof</span> [] <span class="comment">//</span></span><br><span class="line"><span class="keyword">typeof</span> &#123;&#125; <span class="comment">//</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h4><ol>
+<li>判断某个对象的是另外一个对象实例<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// A 的 __proto__ 指向 B 的 prototype 时，就认为 A 就是 B 的实例</span></span><br><span class="line">[] <span class="keyword">instanceof</span> <span class="built_in">Array</span>; <span class="comment">//true</span></span><br><span class="line">(&#123;&#125;) <span class="keyword">instanceof</span> <span class="built_in">Object</span>;<span class="comment">//true</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>() <span class="keyword">instanceof</span> <span class="built_in">Date</span>;<span class="comment">//true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//无法判断继承</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parent</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Child</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Other</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line">Child.prototype = <span class="keyword">new</span> Parent();</span><br><span class="line"><span class="keyword">let</span> child = <span class="keyword">new</span> Child();</span><br><span class="line">child <span class="keyword">instanceof</span> Child; <span class="comment">// true</span></span><br><span class="line">child <span class="keyword">instanceof</span> Parent; <span class="comment">// true</span></span><br><span class="line">child <span class="keyword">instanceof</span> <span class="built_in">Object</span>; <span class="comment">// true</span></span><br><span class="line">child <span class="keyword">instanceof</span> Other;  <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Child.prototype.__proto__ = Parent.prototype</span></span><br><span class="line"><span class="comment">//Parent.prototype.__proto__ = Object.prototype</span></span><br><span class="line"><span class="comment">//Object.prototype.__proto__ = null</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Object-prototype-toString-call-obj-slice-8-1"><a href="#Object-prototype-toString-call-obj-slice-8-1" class="headerlink" title="Object.prototype.toString.call(obj).slice(8, -1)"></a>Object.prototype.toString.call(obj).slice(8, -1)</h4>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

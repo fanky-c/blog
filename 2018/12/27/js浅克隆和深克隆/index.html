@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        js浅克隆和深克隆 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#js数据类型"><span class="toc-text">js数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基本类型"><span class="toc-text">基本类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#引用类型"><span class="toc-text">引用类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#区别"><span class="toc-text">区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拷贝"><span class="toc-text">拷贝</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#浅拷贝"><span class="toc-text">浅拷贝</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#深拷贝"><span class="toc-text">深拷贝</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        js浅克隆和深克隆
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-12-27 19:01:55</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#js拷贝" title="js拷贝">js拷贝</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#js数据类型" title="js数据类型">js数据类型</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="js数据类型"><a href="#js数据类型" class="headerlink" title="js数据类型"></a>js数据类型</h3><h4 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h4><ol>
+<li>Null、String、Bool、Number、Symbol、Undefined<ol>
+<li>Symbol: 如果有一种机制，保证每个属性的名字都是独一无二的就好了，这样就从根本上防止属性名的冲突。这就是 ES6 引入Symbol的原因。<a href="http://es6.ruanyifeng.com/#docs/symbol" target="_blank" rel="noopener">参考</a></li>
+</ol>
+</li>
+</ol>
+<h4 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h4><ol>
+<li>Object<ol>
+<li>Array、Date、RegExp、Function</li>
+</ol>
+</li>
+</ol>
+<h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><ol>
+<li>基本数据类型的特点：直接存储在栈(stack)中的数据</li>
+<li>引用数据类型的特点：存储的是该对象在栈中引用，真实的数据存放在堆内存里。</li>
+</ol>
+<h3 id="拷贝"><a href="#拷贝" class="headerlink" title="拷贝"></a>拷贝</h3><h4 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h4><ol>
+<li>Object.assign();</li>
+<li><p>自己实现方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function shallowClone(source = &#123;&#125;)&#123;</span><br><span class="line"> var target = &#123;&#125;;</span><br><span class="line"> for ( let i in source) &#123;</span><br><span class="line">   target[i] = source[i];</span><br><span class="line"> &#125;</span><br><span class="line"> return target;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>缺点就对象虽然被复制但是还是会指向相同内存，修改任何一方都影响另一方。</p>
+</li>
+</ol>
+<h4 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h4><ol>
+<li><p>JSON.parse方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const oldObj = &#123;</span><br><span class="line">  a: 1,</span><br><span class="line">  b: [ &apos;e&apos;, &apos;f&apos;, &apos;g&apos; ],</span><br><span class="line">  c: &#123; h: &#123; i: 2 &#125; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const newObj = JSON.parse(JSON.stringify(oldObj));</span><br></pre></td></tr></table></figure>
+<ol>
+<li>缺点：无法拷贝Function、RegExp；循环引用错误； </li>
+</ol>
+</li>
+</ol>
+<ol>
+<li>自己实现方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">function checkType(obj)&#123;</span><br><span class="line">    retrun Object.prototype.toString.call(obj).slice(8, -1);  //[object,String]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function deepClone(target) &#123;</span><br><span class="line">  let result, targetType = checkedType(target)</span><br><span class="line"></span><br><span class="line">  if (targetType === &apos;object&apos;) &#123;</span><br><span class="line">    result = &#123;&#125;</span><br><span class="line">  &#125; else if (targetType === &apos;Array&apos;) &#123;</span><br><span class="line">    result = []</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    return target</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  for (let i in target) &#123;</span><br><span class="line">    let value = target[i]</span><br><span class="line">    if (checkedType(value) ===&apos;Object&apos; || checkedType(value) ===&apos;Array&apos;) &#123;</span><br><span class="line">      result[i] = deepClone(value)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      result[i] = value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

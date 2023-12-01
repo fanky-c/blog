@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        构建高性能web应用 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是高性能web前端应用？"><span class="toc-text">什么是高性能web前端应用？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在浏览器输入url到显示网页的过程"><span class="toc-text">在浏览器输入url到显示网页的过程:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#浏览器工作过程-客户端加载渲染"><span class="toc-text">浏览器工作过程(客户端加载渲染)</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#A-浏览器加载"><span class="toc-text">A:浏览器加载</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#B-浏览器解析"><span class="toc-text">B:浏览器解析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#C-浏览器渲染"><span class="toc-text">C:浏览器渲染</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#网页生成的过程总结："><span class="toc-text">网页生成的过程总结：</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#性能优化方案"><span class="toc-text">性能优化方案</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        构建高性能web应用
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-02-17 14:55:53</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#性能" title="性能">性能</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#async、defer" title="async、defer">async、defer</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h4 id="什么是高性能web前端应用？"><a href="#什么是高性能web前端应用？" class="headerlink" title="什么是高性能web前端应用？"></a>什么是高性能web前端应用？</h4><ol>
+<li>打开慢<ol>
+<li>白屏、无样式时间长 -&gt; css、图片、字体等加载和页面渲染时间太长</li>
+<li>可用时间晚 -&gt; js加载时间长</li>
+</ol>
+</li>
+<li>反应慢<ol>
+<li>响应时间慢 -&gt; 网络延迟、不稳定</li>
+<li>操作没反应 -&gt; </li>
+<li>动画卡顿、不顺畅 -&gt; 内存占用高、内存泄露</li>
+</ol>
+</li>
+<li>耗电</li>
+</ol>
+<h4 id="在浏览器输入url到显示网页的过程"><a href="#在浏览器输入url到显示网页的过程" class="headerlink" title="在浏览器输入url到显示网页的过程:"></a>在浏览器输入url到显示网页的过程:</h4><p>DNS查询-&gt;tcp连接-&gt;http请求-&gt;服务器响应-&gt;客户端加载渲染</p>
+<h4 id="浏览器工作过程-客户端加载渲染"><a href="#浏览器工作过程-客户端加载渲染" class="headerlink" title="浏览器工作过程(客户端加载渲染)"></a>浏览器工作过程(客户端加载渲染)</h4><h5 id="A-浏览器加载"><a href="#A-浏览器加载" class="headerlink" title="A:浏览器加载"></a>A:浏览器加载</h5><ol>
+<li>加载过程：<ol>
+<li>浏览器接受完整的html或者一个chunk资源。</li>
+<li>当遇到请求外链css、js、image等资源，浏览器发送请求来获取相应的资源。这是个异步的请求过程，但是当js请求会阻塞后面的请求、解析、渲染。<blockquote>
+<p>原因是js当初设计就是简单修改网页内容，所以会改变DOM、CSS，也就是说当js执行前后面所有资源的下载都是不必要的。当js加载、解析、执行完成后才进行html后面的渲染。</p>
+</blockquote>
+</li>
+<li>css文件虽然不会阻塞js文件下载，但是会阻塞js文件执行。<blockquote>
+<p>var height = $(‘#id’).height(); 浏览器必须保证css下载、解析完成后才执行这段代码。 </p>
+</blockquote>
+</li>
+<li>css会阻塞DOM树解析吗？css会阻塞DOM树渲染吗？</li>
+</ol>
+</li>
+<li>了解浏览器如何进行加载，我们可以在引用外部样式文件，外部css、js时，将他们放到合适的位置，使浏览器以最快的速度将文件加载完毕。</li>
+</ol>
+<h5 id="B-浏览器解析"><a href="#B-浏览器解析" class="headerlink" title="B:浏览器解析"></a>B:浏览器解析</h5><ol>
+<li>解析过程：<ol>
+<li>DOM解析(DOM树)：html文档解析生成解析树即dom树，是由dom元素及属性节点组成，树的根是document对象。<img src="https://image-static.segmentfault.com/323/594/3235942180-5960e0d629942_articlex" alt="image"></li>
+<li>CSS解析：将css文件解析为样式表对象。该对象包含css规则，该规则包含选择器和声明对象。<img src="http://upload-images.jianshu.io/upload_images/94752-a88c7ccbb30a132c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/630/format/webp" alt="image"></li>
+</ol>
+</li>
+<li>了解浏览器如何进行解析，我们可以在构建DOM结构，组织css选择器时，选择最优的写法，提高浏览器的解析速率。</li>
+</ol>
+<h5 id="C-浏览器渲染"><a href="#C-浏览器渲染" class="headerlink" title="C:浏览器渲染"></a>C:浏览器渲染</h5><ol>
+<li>渲染过程：<ol>
+<li>根据CSS树和DOM树，生成布局（flow），即将所有渲染树的所有节点进行平面合成</li>
+<li>将布局绘制（paint）在屏幕上</li>
+</ol>
+</li>
+<li>了解浏览器如何进行渲染，明白渲染的过程，我们在设置元素属性，编写js文件时，可以减少”重绘“”重排“的消耗。<blockquote>
+<ol>
+<li>重绘: 当一个元素的外观发生改变，但没有改变布局,重新把元素外观绘制出来的过程。</li>
+<li>重排: 当DOM的变化影响了元素的几何信息(DOM对象的位置和尺寸大小)，浏览器需要重新计算元素的几何属性，将其安放在界面中的正确位置。由于浏览器渲染界面是基于流式布局的，所以影响范围有全局和局部之分。</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<h5 id="网页生成的过程总结："><a href="#网页生成的过程总结：" class="headerlink" title="网页生成的过程总结："></a>网页生成的过程总结：</h5><p><img src="/img/brower.webp" alt="image"></p>
+<h4 id="性能优化方案"><a href="#性能优化方案" class="headerlink" title="性能优化方案"></a>性能优化方案</h4><ol>
+<li>DNS查询:<ol>
+<li>拆分域名增加并行下载量，可以按照静态和动态资源进行域名划分</li>
+<li>首页提前预获取DNS(dns-prefetch)，提前解析页面所需的域名：<br><img src="http://user-gold-cdn.xitu.io/2018/5/28/163a4d01ff02c0c5?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image"></li>
+</ol>
+</li>
+<li><p>http连接和服务器响应：</p>
+<ol>
+<li>减少和合并请求(http2可以不用这一步)<ol>
+<li>稍微大一点的图标可以用css雪碧图</li>
+<li>小的图标用Base64编码，可以节约请求数</li>
+<li>如果服务器支持（nginx-http-concat插件）可以把多个请求合并成一个：<a href="http://localhost/my-web/static/css??a.css,b.css，" target="_blank" rel="noopener">http://localhost/my-web/static/css??a.css,b.css，</a></li>
+</ol>
+</li>
+<li>减少传输资源的大小<ol>
+<li>服务器开启GZIP压缩</li>
+<li>js混淆压缩、图片压缩或者用更小的WebP图片格式以及css压缩  </li>
+<li>减少不必要的cookie传输，禁用静态资源域名下的cookie(和上面的拆分域相配合)</li>
+</ol>
+</li>
+<li>充分利用浏览器缓存，减少重新请求服务器数据<ol>
+<li>缓存存储：Cache-Control: max-age=31536000</li>
+<li>缓存过期：过期头 (Expires)</li>
+<li>缓存对比：Last-Modified、E-Tag<br><img src="/img/expires" width="100%" alt="缓存"><br><img src="/img/expires1.png" alt="image"><blockquote>
+<p>只有当ctrl+f5才会强制刷新，开发的时候一般建议用文件hash值避免这种修改的文件也被强缓存</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li>单页面应用可以在webpack打包的时候使用code split和bundle split将代码分离动态加载<blockquote>
+<p>Bundle splitting: 实际上就是创建多个更小的文件，并行加载，以获得更好的缓存效果；主要的作用就是使浏览器并行下载，提高下载速度。并且运用浏览器缓存，只有代码被修改，文件名中的哈希值改变了才会去再次加载。</p>
+<p>Code splitting: 只加载用户最需要的部分，其余的代码都遵从懒加载的策略；主要的作用就是加快页面加载速度，不加载不必要加载的东西。(require.ensure / Dynamic Imports)<br><a href="https://mp.weixin.qq.com/s/LCqnIoRzIiy8zTyw6_avqA" target="_blank" rel="noopener">参考</a></p>
+</blockquote>
+</li>
+<li>nginx搭建反向代理，进行有效的负载均衡。nginx配置截取：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">  upstream video &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    server 127.0.0.1:3000 weight = 2; //权重的值，越大被命中几率越大</span><br><span class="line">    server 127.0.0.1:3001 weight = 1;</span><br><span class="line">    server 127.0.0.1:3002 weight = 0.5;</span><br><span class="line">  &#125;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen: 8080;</span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass: http://video</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>客户端加载渲染</p>
+<ol>
+<li>js阻塞浏览器其他资源加载，所以不是必须尽量放在页面底部或者async/defer等异步加载<ol>
+<li>async是js和后续文档并行加载，加载完就串行执行。（加载是并行，执行就阻塞后面文档的加载）</li>
+<li>defer是js和后续文档并行加载， 等到后续文档解析之后才执行。</li>
+</ol>
+</li>
+<li>优化关键渲染路径就是要优先显示和用户先关内容，可以把关键的css样式内联在页面，其他完成的样式可以异步加载</li>
+<li>DOM和样式结构嵌套不用太深，减少解析耗时</li>
+<li>减少重排(回流)<ol>
+<li>在js中尽量减少DOM操作，尽量缓存访问DOM的样式信息，可以用操作class方式改变样式或者渲染动画，避免多次回流</li>
+<li>如果一个文档区域要大量操作DOM，可以让当前区域脱离文档流(absolute、fixed、float)或者固定当前区域大小、位置。</li>
+<li>由于隐藏的元素不会影响重新渲染，如果对一个元素进行复杂的操作，可以先隐藏再显示，这样只会重排二次。</li>
+<li>现在流行的框架vue、reactjs都引入Virtual DOM。<blockquote>
+<p>1，innerHTML: render html string O(template size) + 重新创建所有 DOM 元素 O(DOM size)</p>
+<p>2，Virtual : render Virtual DOM + diff O(template size) + 必要的 DOM 更新 O(DOM change)</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li>减少重绘<ol>
+<li>利用缓存把多次的操作合并在一起，不要在循环中直接调用。</li>
+</ol>
+</li>
+<li>涉及到动画尽量开启GPU，js做动画会阻塞代码执行。transform: translateZ(0);</li>
+<li>防止内存泄露（如果一个值不再需要了，引用数却不为0，垃圾回收机制无法释放这块内存）<ol>
+<li>全局变量。有时候业务需求要在模块定义全局变量，模块销毁的时候让变量等于null</li>
+<li>定时器没被销毁。</li>
+<li>脱离 DOM 的引用。</li>
+<li>闭包，匿名函数可以访问父级作用域。</li>
+</ol>
+</li>
+<li><p>在开发的过程， 对于连续行为及短时间会触发很多次的浏览器事件,例如：scroll,resize, mousemove,我们急需对其进行性能优化。两种方式可以去优化我们的性能 函数节流(throttle) 和 函数去抖(debounce)<a href="http://demo.nimius.net/debounce_throttle/" target="_blank" rel="noopener">参考</a></p>
+<blockquote>
+<p>throttle策略的电梯。保证如果电梯第一个人进来后，15秒后准时运送一次，不等待。如果没有人，则待机</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法一</span></span><br><span class="line"> <span class="keyword">var</span> throttle = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">     <span class="keyword">var</span> statTime = <span class="number">0</span>,</span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">fn, wait</span>)</span>&#123;</span><br><span class="line">         <span class="keyword">var</span> currentTime = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">         <span class="keyword">if</span>(currentTime - statTime &gt; wait)&#123;</span><br><span class="line">            fn &amp;&amp; fn();</span><br><span class="line">            statTime = currentTime;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line"> &#125;)()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//方法二</span></span><br><span class="line"><span class="keyword">var</span> throttle = <span class="function"><span class="keyword">function</span> (<span class="params">fn, wait</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">let</span> timer = <span class="literal">null</span>;</span><br><span class="line">   <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="keyword">const</span> that = <span class="keyword">this</span>;</span><br><span class="line">      <span class="keyword">const</span> args = <span class="built_in">arguments</span>;</span><br><span class="line">      <span class="keyword">if</span>(!timer)&#123;</span><br><span class="line">         timer = setTimeout(funciton()&#123;</span><br><span class="line">             fn.apply(that, args);  <span class="comment">//fn.call(that,arg1, arg2,...);</span></span><br><span class="line">             clearTimeout(timer);</span><br><span class="line">             timer = <span class="literal">null</span>;</span><br><span class="line">         &#125;, wait)</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>debounce策略的电梯。如果电梯里有人进来，等待15秒。如果又人进来，15秒等待重新计时，直到15秒超时，开始运送。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> dubounce = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="keyword">var</span> timer = <span class="literal">null</span>;</span><br><span class="line">   <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">func, wait</span>)</span>&#123;</span><br><span class="line">     timer &amp;&amp; clearTimeout(timer);</span><br><span class="line"></span><br><span class="line">     timer = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        func()</span><br><span class="line">     &#125;, wait)</span><br><span class="line">   &#125;   </span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>耗电</p>
+<ol>
+<li>主要是网络模块耗电。</li>
+<li>整个UI可用用黑白色调节省电。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

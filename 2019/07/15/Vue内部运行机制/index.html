@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Vue内部运行机制 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#new-Vue-内部流程图"><span class="toc-text">new Vue() 内部流程图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#初始化及挂载"><span class="toc-text">初始化及挂载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#编译-如果用了vue-loader则直接生成render-function字符串"><span class="toc-text">编译(如果用了vue-loader则直接生成render function字符串)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#响应式"><span class="toc-text">响应式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Virtual-DOM"><span class="toc-text">Virtual DOM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#更新视图"><span class="toc-text">更新视图</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#响应式系统依赖收集追踪原理"><span class="toc-text">响应式系统依赖收集追踪原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实现Virtual-DOM下的一个VNode节点"><span class="toc-text">实现Virtual DOM下的一个VNode节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#template模板怎么通过Compile编译"><span class="toc-text">template模板怎么通过Compile编译</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-parse，利用正则解析template、class、style等数据，生成ast语法树"><span class="toc-text">1.parse，利用正则解析template、class、style等数据，生成ast语法树</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-optimize，优化静态内容"><span class="toc-text">2.optimize，优化静态内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-generate-生成render-function字符串"><span class="toc-text">3.generate,生成render function字符串</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据状态更新时差异diff以及patch机制"><span class="toc-text">数据状态更新时差异diff以及patch机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#patch四种情况"><span class="toc-text">patch四种情况</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-老VNode节点不存在，就向父元素中添加新VNode节点。"><span class="toc-text">1.老VNode节点不存在，就向父元素中添加新VNode节点。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-新VNode节点不存在，就从父元素中把旧的VNode节点删除掉。"><span class="toc-text">2.新VNode节点不存在，就从父元素中把旧的VNode节点删除掉。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-新VNode和老VNode都存在且相同，比对-VNode。"><span class="toc-text">3.新VNode和老VNode都存在且相同，比对 VNode。</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-新VNode和老VNode都存在且不同，删除老节点，增加新节点。"><span class="toc-text">4.新VNode和老VNode都存在且不同，删除老节点，增加新节点。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#批量异步更新策略和nextTick原理"><span class="toc-text">批量异步更新策略和nextTick原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#为啥什么要异步更新"><span class="toc-text">为啥什么要异步更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nextTick"><span class="toc-text">nextTick</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vuex状态管理的原理"><span class="toc-text">Vuex状态管理的原理</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Vue内部运行机制
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-07-15 21:56:08</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#vue" title="vue">vue</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#vue运行机制" title="vue运行机制">vue运行机制</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="new-Vue-内部流程图"><a href="#new-Vue-内部流程图" class="headerlink" title="new Vue() 内部流程图"></a>new Vue() 内部流程图</h3><p><img src="/img/newVue.png" width="700" height="auto" alt="离线日志" align="center"></p>
+<h4 id="初始化及挂载"><a href="#初始化及挂载" class="headerlink" title="初始化及挂载"></a>初始化及挂载</h4><p>在 new Vue() 之后。 Vue 会调用 _init 函数进行初始化，也就是这里的 init 过程，它会初始化生命周期、事件、 props、 methods、 data、 computed 与 watch 等。其中最重要的是通过 Object.defineProperty 设置 setter 与 getter 函数，用来实现「响应式」以及「依赖收集」。</p>
+<blockquote>
+<p>初始化之后调用 $mount 会挂载组件，如果是运行时编译，即不存在 render function 但是存在 template 的情况，需要进行「编译」步骤。</p>
+</blockquote>
+<h4 id="编译-如果用了vue-loader则直接生成render-function字符串"><a href="#编译-如果用了vue-loader则直接生成render-function字符串" class="headerlink" title="编译(如果用了vue-loader则直接生成render function字符串)"></a>编译(如果用了vue-loader则直接生成render function字符串)</h4><p>compile编译可以分成 parse、optimize 与 generate 三个阶段，最终需要得到 render function。<br><strong> 如果是用vue-loader实现预编译就直接生成了render function 字符串；如果是运行时编译就不会生成render function。</strong></p>
+<blockquote>
+<ol>
+<li>parse 会用正则等方式解析 template 模板中的指令、class、style等数据，形成AST。</li>
+<li>optimize 的主要作用是标记 static 静态节点，这是 Vue 在编译过程中的一处优化，后面当 update 更新界面时，会有一个 patch 的过程， diff 算法会直接跳过静态节点，从而减少了比较的过程，优化了 patch 的性能</li>
+<li>generate 是将 AST 转化成 render function 字符串的过程，得到结果是 render 的字符串以及 staticRenderFns 字符串。</li>
+</ol>
+</blockquote>
+<h4 id="响应式"><a href="#响应式" class="headerlink" title="响应式"></a>响应式</h4><ol>
+<li>getter 跟 setter 已经在之前介绍过了，在 init 的时候通过 Object.defineProperty 进行了绑定，它使得当被设置的对象被读取的时候会执行 getter 函数，而在当被赋值的时候会执行 setter 函数。</li>
+<li>当 render function 被渲染的时候，因为会读取所需对象的值，所以会触发 getter 函数进行「依赖收集」，「依赖收集」的目的是将观察者 Watcher 对象存放到当前闭包中的订阅者 Dep 的 subs 中。</li>
+<li>在修改对象的值的时候，会触发对应的 setter， setter 通知之前「依赖收集」得到的 Dep 中的每一个 Watcher，告诉它们自己的值改变了，需要重新渲染视图。这时候这些 Watcher 就会开始调用 update 来更新视图，当然这中间还有一个 patch 的过程以及使用队列来异步更新的策略。</li>
+</ol>
+<h4 id="Virtual-DOM"><a href="#Virtual-DOM" class="headerlink" title="Virtual DOM"></a>Virtual DOM</h4><p>render function 会被转化成 VNode 节点。Virtual DOM 其实就是一棵以 JavaScript 对象（ VNode 节点）作为基础的树，用对象属性来描述节点，实际上它只是一层对真实 DOM 的抽象。最终可以通过一系列操作使这棵树映射到真实环境上。由于 Virtual DOM 是以 JavaScript 对象为基础而不依赖真实平台环境，所以使它具有了跨平台的能力，比如说浏览器平台、Weex、Node 等<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    tag: <span class="string">'div'</span>,                 <span class="comment">/*说明这是一个div标签*/</span></span><br><span class="line">    children: [                 <span class="comment">/*存放该标签的子节点*/</span></span><br><span class="line">        &#123;</span><br><span class="line">            tag: <span class="string">'a'</span>,           <span class="comment">/*说明这是一个a标签*/</span></span><br><span class="line">            text: <span class="string">'click me'</span>    <span class="comment">/*标签的内容*/</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>渲染后成真实DOM<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span>&gt;</span>click me<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>实际上的节点有更多的属性来标志节点，比如 isStatic （代表是否为静态节点）、 isComment （代表是否为注释节点）等</p>
+<h4 id="更新视图"><a href="#更新视图" class="headerlink" title="更新视图"></a>更新视图</h4><p>前面提到通过 setter -&gt; Watcher -&gt; update 的流程来修改对应的视图，那么最终是如何更新视图的呢？</p>
+<p>当数据变化后，执行 render function 就可以得到一个新的 VNode 节点，我们如果想要得到新的视图，最简单粗暴的方法就是直接解析这个新的 VNode 节点，然后用 innerHTML 直接全部渲染到真实 DOM 中。但是其实我们只对其中的一小块内容进行了修改，这样做似乎有些「浪费」。</p>
+<p>那么我们为什么不能只修改那些「改变了的地方」呢？这个时候就要介绍我们的「patch」了。我们会将新的 VNode 与旧的 VNode 一起传入 patch 进行比较，经过 diff 算法得出它们的「差异」。最后我们只需要将这些「差异」的对应 DOM 进行修改即可</p>
+<h3 id="响应式系统依赖收集追踪原理"><a href="#响应式系统依赖收集追踪原理" class="headerlink" title="响应式系统依赖收集追踪原理"></a>响应式系统依赖收集追踪原理</h3><h3 id="实现Virtual-DOM下的一个VNode节点"><a href="#实现Virtual-DOM下的一个VNode节点" class="headerlink" title="实现Virtual DOM下的一个VNode节点"></a>实现Virtual DOM下的一个VNode节点</h3><h3 id="template模板怎么通过Compile编译"><a href="#template模板怎么通过Compile编译" class="headerlink" title="template模板怎么通过Compile编译"></a>template模板怎么通过Compile编译</h3><h4 id="1-parse，利用正则解析template、class、style等数据，生成ast语法树"><a href="#1-parse，利用正则解析template、class、style等数据，生成ast语法树" class="headerlink" title="1.parse，利用正则解析template、class、style等数据，生成ast语法树"></a>1.parse，利用正则解析template、class、style等数据，生成ast语法树</h4><p>AST语法树结构如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* 标签属性的map，记录了标签上属性 */</span></span><br><span class="line">    <span class="string">'attrsMap'</span>: &#123;</span><br><span class="line">        <span class="string">':class'</span>: <span class="string">'c'</span>,</span><br><span class="line">        <span class="string">'class'</span>: <span class="string">'demo'</span>,</span><br><span class="line">        <span class="string">'v-if'</span>: <span class="string">'isShow'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">/* 解析得到的:class */</span></span><br><span class="line">    <span class="string">'classBinding'</span>: <span class="string">'c'</span>,</span><br><span class="line">    <span class="comment">/* 标签属性v-if */</span></span><br><span class="line">    <span class="string">'if'</span>: <span class="string">'isShow'</span>,</span><br><span class="line">    <span class="comment">/* v-if的条件 */</span></span><br><span class="line">    <span class="string">'ifConditions'</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'exp'</span>: <span class="string">'isShow'</span></span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="comment">/* 标签属性class */</span></span><br><span class="line">    <span class="string">'staticClass'</span>: <span class="string">'demo'</span>,</span><br><span class="line">    <span class="comment">/* 标签的tag */</span></span><br><span class="line">    <span class="string">'tag'</span>: <span class="string">'div'</span>,</span><br><span class="line">    <span class="comment">/* 子标签数组 */</span></span><br><span class="line">    <span class="string">'children'</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'attrsMap'</span>: &#123;</span><br><span class="line">                <span class="string">'v-for'</span>: <span class="string">"item in sz"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="comment">/* for循环的参数 */</span></span><br><span class="line">            <span class="string">'alias'</span>: <span class="string">"item"</span>,</span><br><span class="line">            <span class="comment">/* for循环的对象 */</span></span><br><span class="line">            <span class="string">'for'</span>: <span class="string">'sz'</span>,</span><br><span class="line">            <span class="comment">/* for循环是否已经被处理的标记位 */</span></span><br><span class="line">            <span class="string">'forProcessed'</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="string">'tag'</span>: <span class="string">'span'</span>,</span><br><span class="line">            <span class="string">'children'</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">/* 表达式，_s是一个转字符串的函数 */</span></span><br><span class="line">                    <span class="string">'expression'</span>: <span class="string">'_s(item)'</span>,</span><br><span class="line">                    <span class="string">'text'</span>: <span class="string">'&#123;&#123;item&#125;&#125;'</span></span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-optimize，优化静态内容"><a href="#2-optimize，优化静态内容" class="headerlink" title="2.optimize，优化静态内容"></a>2.optimize，优化静态内容</h4><p>这个涉及到后面要讲 patch 的过程，因为 patch 的过程实际上是将 VNode 节点进行一层一层的比对，然后将「差异」更新到视图上。那么一些静态节点是不会根据数据变化而产生变化的，这些节点我们没有比对的需求，是不是可以跳过这些静态节点的比对，从而节省一些性能呢？<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">'attrsMap'</span>: &#123;</span><br><span class="line">        <span class="string">':class'</span>: <span class="string">'c'</span>,</span><br><span class="line">        <span class="string">'class'</span>: <span class="string">'demo'</span>,</span><br><span class="line">        <span class="string">'v-if'</span>: <span class="string">'isShow'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">'classBinding'</span>: <span class="string">'c'</span>,</span><br><span class="line">    <span class="string">'if'</span>: <span class="string">'isShow'</span>,</span><br><span class="line">    <span class="string">'ifConditions'</span>: [</span><br><span class="line">        <span class="string">'exp'</span>: <span class="string">'isShow'</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="string">'staticClass'</span>: <span class="string">'demo'</span>,</span><br><span class="line">    <span class="string">'tag'</span>: <span class="string">'div'</span>,</span><br><span class="line">    <span class="comment">/* 静态标志 */</span></span><br><span class="line">    <span class="string">'static'</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">'children'</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'attrsMap'</span>: &#123;</span><br><span class="line">                <span class="string">'v-for'</span>: <span class="string">"item in sz"</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'static'</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="string">'alias'</span>: <span class="string">"item"</span>,</span><br><span class="line">            <span class="string">'for'</span>: <span class="string">'sz'</span>,</span><br><span class="line">            <span class="string">'forProcessed'</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="string">'tag'</span>: <span class="string">'span'</span>,</span><br><span class="line">            <span class="string">'children'</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="string">'expression'</span>: <span class="string">'_s(item)'</span>,</span><br><span class="line">                    <span class="string">'text'</span>: <span class="string">'&#123;&#123;item&#125;&#125;'</span>,</span><br><span class="line">                    <span class="string">'static'</span>: <span class="literal">false</span></span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li><p>isStatic函数；判断的标准是当 type 为 2（表达式节点）则是非静态节点，当 type 为 3（文本节点）的时候则是静态节点，当然，如果存在 if 或者 for这样的条件的时候（表达式节点），也是非静态节点。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isStatic</span> (<span class="params">node</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (node.type === <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (node.type === <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (!node.if &amp;&amp; !node.for);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>markStatic函数；遍历所有节点通过 isStatic 来判断当前节点是否是静态节点，此外，会遍历当前节点的所有子节点，如果子节点是非静态节点，那么当前节点也是非静态节点。</p>
+</li>
+</ol>
+<h4 id="3-generate-生成render-function字符串"><a href="#3-generate-生成render-function字符串" class="headerlink" title="3.generate,生成render function字符串"></a>3.generate,生成render function字符串</h4><p>generate 会将 AST 转化成 render funtion 字符串，最终得到 render 的字符串以及 staticRenderFns 字符串。<br>Vue.js编译得到结果<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> (isShow) ? </span><br><span class="line">    _c(</span><br><span class="line">        <span class="string">'div'</span>,</span><br><span class="line">        &#123;</span><br><span class="line">            staticClass: <span class="string">"demo"</span>,</span><br><span class="line">            class: c</span><br><span class="line">        &#125;,</span><br><span class="line">        _l(</span><br><span class="line">            (sz),</span><br><span class="line">            <span class="function"><span class="keyword">function</span>(<span class="params">item</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> _c(<span class="string">'span'</span>,[_v(_s(item))])</span><br><span class="line">            &#125;</span><br><span class="line">        )</span><br><span class="line">    )</span><br><span class="line">    : _e()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="数据状态更新时差异diff以及patch机制"><a href="#数据状态更新时差异diff以及patch机制" class="headerlink" title="数据状态更新时差异diff以及patch机制"></a>数据状态更新时差异diff以及patch机制</h3><p>首先说一下 patch 的核心 diff 算法，我们用 diff 算法可以比对出两颗树的「差异」，我们来看一下，假设我们现在有如下两颗树，它们分别是新老 VNode 节点，这时候到了 patch 的过程。</p>
+<p><img src="/img/diff.png" width="700" height="auto" alt align="center"></p>
+<p>diff 算法是通过同层的树节点进行比较而非对树进行逐层搜索遍历的方式，所以时间复杂度只有 O(n)，是一种相当高效的算法，如下图。</p>
+<p><img src="/img/path.png" width="700" height="auto" alt align="center"></p>
+<p>这张图中的相同颜色的方块中的节点会进行比对，比对得到「差异」后将这些「差异」更新到视图上。因为只进行同层级的比对，所以十分高效。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">patch</span> (<span class="params">oldVnode, vnode, parentElm</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!oldVnode) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//老VNode节点不存在，向父元素中添加新VNode节点</span></span><br><span class="line">        addVnodes(parentElm, <span class="literal">null</span>, vnode, <span class="number">0</span>, vnode.length - <span class="number">1</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (!vnode) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//没有新的VNode节点，就从父元素中把旧的VNode节点删除掉</span></span><br><span class="line">        removeVnodes(parentElm, oldVnode, <span class="number">0</span>, oldVnode.length - <span class="number">1</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">if</span> (sameVnode(oldVNode, vnode)) &#123;</span><br><span class="line">            <span class="comment">//新VNode和老VNode都存在且相同，比对 VNode</span></span><br><span class="line">            patchVnode(oldVNode, vnode); </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//新VNode和老VNode都存在且不同，删除老节点，增加新节点</span></span><br><span class="line">            removeVnodes(parentElm, oldVnode, <span class="number">0</span>, oldVnode.length - <span class="number">1</span>);</span><br><span class="line">            addVnodes(parentElm, <span class="literal">null</span>, vnode, <span class="number">0</span>, vnode.length - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="patch四种情况"><a href="#patch四种情况" class="headerlink" title="patch四种情况"></a>patch四种情况</h4><h5 id="1-老VNode节点不存在，就向父元素中添加新VNode节点。"><a href="#1-老VNode节点不存在，就向父元素中添加新VNode节点。" class="headerlink" title="1.老VNode节点不存在，就向父元素中添加新VNode节点。"></a>1.老VNode节点不存在，就向父元素中添加新VNode节点。</h5><h5 id="2-新VNode节点不存在，就从父元素中把旧的VNode节点删除掉。"><a href="#2-新VNode节点不存在，就从父元素中把旧的VNode节点删除掉。" class="headerlink" title="2.新VNode节点不存在，就从父元素中把旧的VNode节点删除掉。"></a>2.新VNode节点不存在，就从父元素中把旧的VNode节点删除掉。</h5><h5 id="3-新VNode和老VNode都存在且相同，比对-VNode。"><a href="#3-新VNode和老VNode都存在且相同，比对-VNode。" class="headerlink" title="3.新VNode和老VNode都存在且相同，比对 VNode。"></a>3.新VNode和老VNode都存在且相同，比对 VNode。</h5><ol>
+<li><p>怎么判断两个VNode是否为相同节点？</p>
+<ol>
+<li><p>sameVnode 其实很简单，只有当 key、 tag(div、p)、 isComment（是否为注释节点）、 data同时定义（或不定义），同时满足当标签类型为 input 的时候 type 相同（某些浏览器不支持动态修改&lt;input>类型，所以他们被视为不同类型）即可</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sameVnode</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">      a.key === b.key &amp;&amp;</span><br><span class="line">      a.tag === b.tag &amp;&amp;</span><br><span class="line">      a.isComment === b.isComment &amp;&amp;</span><br><span class="line">      (!!a.data) === (!!b.data) &amp;&amp;</span><br><span class="line">      sameInputType(a, b)</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">sameInputType</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (a.tag !== <span class="string">'input'</span>) <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">      <span class="keyword">let</span> i</span><br><span class="line">      <span class="keyword">const</span> typeA = (i = a.data) &amp;&amp; (i = i.attrs) &amp;&amp; i.type</span><br><span class="line">      <span class="keyword">const</span> typeB = (i = b.data) &amp;&amp; (i = i.attrs) &amp;&amp; i.type</span><br><span class="line">      <span class="keyword">return</span> typeA === typeB</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>patchVnode过程<ol>
+<li>test</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h5 id="4-新VNode和老VNode都存在且不同，删除老节点，增加新节点。"><a href="#4-新VNode和老VNode都存在且不同，删除老节点，增加新节点。" class="headerlink" title="4.新VNode和老VNode都存在且不同，删除老节点，增加新节点。"></a>4.新VNode和老VNode都存在且不同，删除老节点，增加新节点。</h5><h3 id="批量异步更新策略和nextTick原理"><a href="#批量异步更新策略和nextTick原理" class="headerlink" title="批量异步更新策略和nextTick原理"></a>批量异步更新策略和nextTick原理</h3><h4 id="为啥什么要异步更新"><a href="#为啥什么要异步更新" class="headerlink" title="为啥什么要异步更新"></a>为啥什么要异步更新</h4><p>通过前面几个章节我们介绍，相信大家已经明白了 Vue.js 是如何在我们修改 data 中的数据后修改视图了。简单回顾一下，这里面其实就是一个“setter -&gt; Dep -&gt; Watcher -&gt; patch -&gt; 视图”的过程。</p>
+<p>Vue.js在默认情况下，每次触发某个数据的 setter 方法后，对应的 Watcher 对象其实会被 push 进一个队列 queue 中，在下一个 tick 的时候将这个队列 queue 全部拿出来 run（ Watcher 对象的一个方法，用来触发 patch 操作） 一遍</p>
+<p><img src="/img/vueWatcher.png" style="width:300px; margin:0 auto;display:block;" alt="离线日志" align="center"></p>
+<p>那么什么是下一个 tick 呢？</p>
+<h4 id="nextTick"><a href="#nextTick" class="headerlink" title="nextTick"></a>nextTick</h4><p>Vue.js 实现了一个 nextTick 函数，传入一个 cb ，这个 cb 会被存储到一个队列中，在下一个 tick 时触发队列中的所有 cb 事件。</p>
+<p>因为目前浏览器平台并没有实现 nextTick 方法，所以 Vue.js 源码中分别用 Promise、setTimeout、setImmediate 等方式。目的是在当前调用栈执行完毕以后（不一定立即）才会去执行这个事件。</p>
+<h3 id="Vuex状态管理的原理"><a href="#Vuex状态管理的原理" class="headerlink" title="Vuex状态管理的原理"></a>Vuex状态管理的原理</h3><p><a href="https://juejin.im/book/5a36661851882538e2259c0f/section/5a37bbb35188257d167a4d64" target="_blank" rel="noopener">本文来源参考</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

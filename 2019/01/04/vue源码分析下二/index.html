@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        vue源码分析下二 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#组件化介绍"><span class="toc-text">组件化介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件化相关"><span class="toc-text">组件化相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#createComponent"><span class="toc-text">createComponent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Patch"><span class="toc-text">Patch</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#patch流程处理"><span class="toc-text">patch流程处理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#合并配置"><span class="toc-text">合并配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生命周期"><span class="toc-text">生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组件注册"><span class="toc-text">组件注册</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#全局注册"><span class="toc-text">全局注册</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#局部注册"><span class="toc-text">局部注册</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异步组件"><span class="toc-text">异步组件</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        vue源码分析下二
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-01-04 10:41:56</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#vue" title="vue">vue</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#vue组件化" title="vue组件化">vue组件化</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="组件化介绍"><a href="#组件化介绍" class="headerlink" title="组件化介绍"></a>组件化介绍</h2><ol>
+<li>所谓组件化，就是把页面拆分成多个组件 (component)，每个组件依赖的 CSS、JavaScript、模板、图片等资源放在一起开发和维护。组件是资源独立的，组件在系统内部可复用，组件和组件之间可以嵌套。</li>
+</ol>
+<h2 id="组件化相关"><a href="#组件化相关" class="headerlink" title="组件化相关"></a>组件化相关</h2><h3 id="createComponent"><a href="#createComponent" class="headerlink" title="createComponent"></a>createComponent</h3><ol>
+<li>首先判断是否是真正html标签还是component。如果是html标签会是渲染普通VNode节点，负责渲染通过createComponent方法创建一个组件VNode</li>
+<li>createComponent实现:<ol>
+<li>构造子类构造函数</li>
+<li>安装组件钩子函数</li>
+<li>实例化VNode</li>
+</ol>
+</li>
+</ol>
+<h3 id="Patch"><a href="#Patch" class="headerlink" title="Patch"></a>Patch</h3><ol>
+<li>当我们通过 createComponent 创建了组件 VNode，接下来会走到 vm._update，执行 vm.<strong>patch</strong> 比较新生成的VNode和旧的VNode，最后将差异（变化的节点）更新到真实的DOM树上。如果组件 patch 过程中又创建了子组件，那么DOM 的插入顺序是先子后父。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">funciton patch(oldVnode,vnode,...)&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">//oldVnode: 旧的VNode或旧的真实DOM节点</span><br><span class="line">//vnode: 新的VNode</span><br><span class="line">//hydrating: 是否要和真实DOM混合</span><br><span class="line">//removeOnly: 特殊的flag，用于&lt;transition-group&gt;</span><br><span class="line">//parentElm: 父节点</span><br><span class="line">//refElm: 新节点将插入到refElm之前</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="patch流程处理"><a href="#patch流程处理" class="headerlink" title="patch流程处理"></a>patch流程处理</h4><ol>
+<li>如果vnode不存在，但是oldVnode存在，说明是需要销毁旧节点，则调用invokeDestroyHook(oldVnode)来销毁oldVnode。</li>
+<li>如果vnode存在，但是oldVnode不存在，说明是需要创建新节点，则调用createElm来创建新节点。</li>
+<li>当vnode和oldVnode都存在时<br>1.</li>
+<li>返回VNode.elm</li>
+</ol>
+<h3 id="合并配置"><a href="#合并配置" class="headerlink" title="合并配置"></a>合并配置</h3><h3 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h3><h3 id="组件注册"><a href="#组件注册" class="headerlink" title="组件注册"></a>组件注册</h3><h4 id="全局注册"><a href="#全局注册" class="headerlink" title="全局注册"></a>全局注册</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(tagName, options)</span><br></pre></td></tr></table></figure>
+<h4 id="局部注册"><a href="#局部注册" class="headerlink" title="局部注册"></a>局部注册</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import HelloWorld from &apos;./components/HelloWorld&apos;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    HelloWorld</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="异步组件"><a href="#异步组件" class="headerlink" title="异步组件"></a>异步组件</h3><ol>
+<li><p>方法一，普通异步组件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(&apos;async-example&apos;, function (resolve, reject) &#123;</span><br><span class="line">    // 这个特殊的 require 语法告诉 webpack</span><br><span class="line">    // 自动将编译后的代码分割成不同的块，</span><br><span class="line">    // 这些块将通过 Ajax 请求自动下载。  </span><br><span class="line">   require([&apos;./my-async-component&apos;], resolve)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法二，promise异步组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(</span><br><span class="line">  // 该 `import` 函数返回一个 `Promise` 对象。</span><br><span class="line">  () =&gt; import(&apos;./my-async-component&apos;)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法三，高级异步组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const AsyncComp = () =&gt; (&#123;</span><br><span class="line">  // 需要加载的组件。应当是一个 Promise</span><br><span class="line">  component: import(&apos;./MyComp.vue&apos;),</span><br><span class="line">  // 加载中应当渲染的组件</span><br><span class="line">  loading: LoadingComp,</span><br><span class="line">  // 出错时渲染的组件</span><br><span class="line">  error: ErrorComp,</span><br><span class="line">  // 渲染加载中组件前的等待时间。默认：200ms。</span><br><span class="line">  delay: 200,</span><br><span class="line">  // 最长等待时间。超出此时间则渲染错误组件。默认：Infinity</span><br><span class="line">  timeout: 3000</span><br><span class="line">&#125;)</span><br><span class="line">Vue.component(&apos;async-example&apos;, AsyncComp)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>总结：异步组件实现的本质是2次渲染，除了 0 delay 的高级异步组件第一次直接渲染成 loading 组件外，其它都是第一次渲染生成一个注释节点，当异步获取组件成功后，再通过forceRender强制重新渲染，这样就能正确渲染出我们异步加载的组件了。</p>
+</li>
+</ol>
+<p><a href="https://ustbhuangyi.github.io/vue-analysis/components/" target="_blank" rel="noopener">本文来源</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

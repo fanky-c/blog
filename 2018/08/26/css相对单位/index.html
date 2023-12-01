@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        css相对单位 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#css无单位和line-height"><span class="toc-text">css无单位和line-height</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#css无单位"><span class="toc-text">css无单位</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#line-height"><span class="toc-text">line-height</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参考："><span class="toc-text">参考：</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        css相对单位
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-08-26 16:33:38</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#css" title="css">css</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#line-height" title="line-height">line-height</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#样式无单位" title="样式无单位">样式无单位</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h4 id="css无单位和line-height"><a href="#css无单位和line-height" class="headerlink" title="css无单位和line-height"></a>css无单位和line-height</h4><h5 id="css无单位"><a href="#css无单位" class="headerlink" title="css无单位"></a>css无单位</h5><p>有一些属性可以接收不带单位的数值（意思就是一个不带长度单位的数字），如line-height、z-index和font-weight（700等于bold，400等于normal，如此类推）。你也可以在需要长度单位的地方（如px、em、rem）使用一个不带单位的0，因为长度已经是0了，带不带单位也无所谓了 —— 0px 等于 0% 等于 0em。</p>
+<p><strong><em>不带单位的0只可以表示长度单位和百分比的值，譬如padding、border和width。而对于一些特殊的情况，如度数（degrees）或者像秒这样基于时间的值（time-based values），是不可以使用不带单位的0的。</em></strong> </p>
+<h5 id="line-height"><a href="#line-height" class="headerlink" title="line-height"></a>line-height</h5><p>line-height属性最特别的地方，在于同时支持带单位和不带单位的值。你应该保持使用不带单位的数值，因为这样就可以从父元素继承。</p>
+<p><strong>浏览器默认的行高取决于用户代理。桌面浏览器（包括火狐浏览器）使用默认值，约为1.2，这取决于元素的font-family</strong> </p>
+<p>代码案例：</p>
+<p>父级元素：line-height:150%;font-size:16px;</p>
+<p>子元素：  font-size:30px;</p>
+<ul>
+<li><p>单位是px（12px): 继承父元素行高12px。</p>
+</li>
+<li><p>单位是% (150% <em> 16px浏览器默认字体大小)：字元素的行高等于16px </em> 150% = 24px。</p>
+</li>
+<li><p>单位 （1.5em)：字元素的行高等于16px * 150% = 24px。</p>
+</li>
+<li><p>无单位  (1.5)：字元素的行高等于30px * 150% = 45px。</p>
+</li>
+</ul>
+<p><strong><strong>总结：有单位时，子元素继承了父元素计算得出的行距；无单位时继承了系数，子元素会分别计算各自行距（推荐使用）。</strong></strong></p>
+<h4 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h4><ul>
+<li><a href="https://mp.weixin.qq.com/s/ilkmqnwVvPLjiVfEyNadHg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/ilkmqnwVvPLjiVfEyNadHg</a></li>
+<li><a href="https://www.zhihu.com/question/20394889" target="_blank" rel="noopener">https://www.zhihu.com/question/20394889</a></li>
+</ul>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

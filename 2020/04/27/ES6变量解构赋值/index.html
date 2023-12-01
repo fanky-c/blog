@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        ES6变量解构赋值 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#数组的解构赋值"><span class="toc-text">数组的解构赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对象的解构赋值"><span class="toc-text">对象的解构赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#字符串的解构赋值"><span class="toc-text">字符串的解构赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#函数参数的解构赋值"><span class="toc-text">函数参数的解构赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#圆括号的解构赋值"><span class="toc-text">圆括号的解构赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数值和布尔值解构赋值"><span class="toc-text">数值和布尔值解构赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用途"><span class="toc-text">用途</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#从函数返回多个值"><span class="toc-text">从函数返回多个值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#提取-JSON-数据"><span class="toc-text">提取 JSON 数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#输入模块的指定方法"><span class="toc-text">输入模块的指定方法</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        ES6变量解构赋值
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-04-27 19:24:33</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#解构赋值" title="解构赋值">解构赋值</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="数组的解构赋值"><a href="#数组的解构赋值" class="headerlink" title="数组的解构赋值"></a>数组的解构赋值</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [foo, [[bar], baz]] = [<span class="number">1</span>, [[<span class="number">2</span>], <span class="number">3</span>]];</span><br><span class="line">foo <span class="comment">// 1</span></span><br><span class="line">bar <span class="comment">// 2</span></span><br><span class="line">baz <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [ , , third] = [<span class="string">"foo"</span>, <span class="string">"bar"</span>, <span class="string">"baz"</span>];</span><br><span class="line">third <span class="comment">// "baz"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [x, , y] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">x <span class="comment">// 1</span></span><br><span class="line">y <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [head, ...tail] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line">head <span class="comment">// 1</span></span><br><span class="line">tail <span class="comment">// [2, 3, 4]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [x, y, ...z] = [<span class="string">'a'</span>];</span><br><span class="line">x <span class="comment">// "a"</span></span><br><span class="line">y <span class="comment">// undefined</span></span><br><span class="line">z <span class="comment">// []</span></span><br></pre></td></tr></table></figure>
+<h3 id="对象的解构赋值"><a href="#对象的解构赋值" class="headerlink" title="对象的解构赋值"></a>对象的解构赋值</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; bar, foo, baz &#125; = &#123; <span class="attr">foo</span>: <span class="string">'aaa'</span>, <span class="attr">bar</span>: <span class="string">'bbb'</span> &#125;;</span><br><span class="line">foo <span class="comment">// "aaa"</span></span><br><span class="line">bar <span class="comment">// "bbb"</span></span><br><span class="line">baz <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//用途</span></span><br><span class="line"><span class="keyword">const</span> &#123; log &#125; = <span class="built_in">console</span>;</span><br><span class="line">log(<span class="string">'hello'</span>) <span class="comment">// hello</span></span><br></pre></td></tr></table></figure>
+<h3 id="字符串的解构赋值"><a href="#字符串的解构赋值" class="headerlink" title="字符串的解构赋值"></a>字符串的解构赋值</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [a, b, c, d, e] = <span class="string">'world'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//字符串有length属性</span></span><br><span class="line"><span class="keyword">let</span> &#123;<span class="attr">length</span> : len&#125; = <span class="string">'hello'</span>;</span><br><span class="line">len  <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+<h3 id="函数参数的解构赋值"><a href="#函数参数的解构赋值" class="headerlink" title="函数参数的解构赋值"></a>函数参数的解构赋值</h3><h3 id="圆括号的解构赋值"><a href="#圆括号的解构赋值" class="headerlink" title="圆括号的解构赋值"></a>圆括号的解构赋值</h3><h3 id="数值和布尔值解构赋值"><a href="#数值和布尔值解构赋值" class="headerlink" title="数值和布尔值解构赋值"></a>数值和布尔值解构赋值</h3><h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><h4 id="从函数返回多个值"><a href="#从函数返回多个值" class="headerlink" title="从函数返回多个值"></a>从函数返回多个值</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">example</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    foo: <span class="number">1</span>,</span><br><span class="line">    bar: <span class="number">2</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> &#123; foo, bar &#125; = example();</span><br></pre></td></tr></table></figure>
+<h4 id="提取-JSON-数据"><a href="#提取-JSON-数据" class="headerlink" title="提取 JSON 数据"></a>提取 JSON 数据</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> jsonData = &#123;</span><br><span class="line">  id: <span class="number">42</span>,</span><br><span class="line">  status: <span class="string">"OK"</span>,</span><br><span class="line">  data: [<span class="number">867</span>, <span class="number">5309</span>]</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> &#123; id, status, <span class="attr">data</span>: number &#125; = jsonData;</span><br><span class="line"><span class="keyword">let</span> &#123; id, status, data &#125; = jsonData;</span><br><span class="line"><span class="built_in">console</span>.log(id, status, number);</span><br><span class="line"><span class="comment">// 42, "OK", [867, 5309]</span></span><br><span class="line"><span class="keyword">let</span> &#123; id, status, data &#125; = jsonData;</span><br><span class="line"><span class="built_in">console</span>.log(id, status, data);</span><br><span class="line"><span class="comment">// 42, "OK", [867, 5309]</span></span><br></pre></td></tr></table></figure>
+<h4 id="输入模块的指定方法"><a href="#输入模块的指定方法" class="headerlink" title="输入模块的指定方法"></a>输入模块的指定方法</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//require加载方法</span></span><br><span class="line"><span class="keyword">const</span> &#123; SourceMapConsumer, SourceNode &#125; = <span class="built_in">require</span>(<span class="string">"source-map"</span>);</span><br></pre></td></tr></table></figure>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

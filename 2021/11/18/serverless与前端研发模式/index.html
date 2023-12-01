@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        serverless与前端研发模式 [转载] - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#名称解释"><span class="toc-text">名称解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前端发展历程和挑战"><span class="toc-text">前端发展历程和挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-发展历程"><span class="toc-text">1. 发展历程</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#pc时代"><span class="toc-text">pc时代</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#移动互联网时代"><span class="toc-text">移动互联网时代</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#serverless时代"><span class="toc-text">serverless时代</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-挑战"><span class="toc-text">2. 挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#知识体系"><span class="toc-text">知识体系</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#工作内容"><span class="toc-text">工作内容</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前端面对日益复杂的业务场景"><span class="toc-text">前端面对日益复杂的业务场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-CSR"><span class="toc-text">1. CSR</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-SSR"><span class="toc-text">2. SSR</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-BFF"><span class="toc-text">3. BFF</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-微前端"><span class="toc-text">4. 微前端</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#传统的研发模式和挑战"><span class="toc-text">传统的研发模式和挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-研发流程"><span class="toc-text">1. 研发流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-面临挑战"><span class="toc-text">2. 面临挑战</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基于serverless的研发模式"><span class="toc-text">基于serverless的研发模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-策略和架构"><span class="toc-text">1. 策略和架构</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#基础能力平台化"><span class="toc-text">基础能力平台化</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#友好的开发体验"><span class="toc-text">友好的开发体验</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#整体架构"><span class="toc-text">整体架构</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-cicd"><span class="toc-text">2. cicd</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-实践"><span class="toc-text">3. 实践</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#目标"><span class="toc-text">目标</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-CSR-1"><span class="toc-text">1. CSR</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#a-开发流程"><span class="toc-text">a. 开发流程</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#b-运行流程"><span class="toc-text">b. 运行流程</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-SSR-1"><span class="toc-text">2. SSR</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#a-开发流程-1"><span class="toc-text">a. 开发流程</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#b-运行流程-1"><span class="toc-text">b. 运行流程</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-一体化BFF"><span class="toc-text">3. 一体化BFF</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#a-开发流程-2"><span class="toc-text">a. 开发流程</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#b-运行流程-2"><span class="toc-text">b. 运行流程</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-微前端-1"><span class="toc-text">4. 微前端</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#a-开发流程-3"><span class="toc-text">a. 开发流程</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#b-运行流程-3"><span class="toc-text">b. 运行流程</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#serverless监控和运维"><span class="toc-text">serverless监控和运维</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-业务监控和指标大盘"><span class="toc-text">1. 业务监控和指标大盘</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-日志系统"><span class="toc-text">2. 日志系统</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-运行时的监控和调试"><span class="toc-text">3. 运行时的监控和调试</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        serverless与前端研发模式 [转载]
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-11-18 21:52:57</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#serverless" title="serverless">serverless</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#BaaS" title="BaaS">BaaS</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#FaaS" title="FaaS">FaaS</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#IaaS" title="IaaS">IaaS</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#PaaS" title="PaaS">PaaS</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#SaaS" title="SaaS">SaaS</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="名称解释"><a href="#名称解释" class="headerlink" title="名称解释"></a>名称解释</h3><blockquote>
+<ol>
+<li><p>IaaS:  IaaS：Infrastructure as a Service（基础设施即服务）;IaaS处于最底层，服务商提供底层/物理层基础设施资源（服务器，数据中心，环境控制，电源，服务器机房），客户自己部署和执行操作系统或应用程序等各种软件。 <strong>例如：你提供他人厨房、煤气、炉子，他人使用基础设施， 来烤自己的披萨</strong></p>
+</li>
+<li><p>PaaS:  PaaS：Platform as a Service（平台即服务）; PaaS处于中间层，服务商提供基础设施底层服务，提供操作系统（Windows，Linux）、数据库服务器、Web服务器、域控制器和其他中间件，以及服务模型中的备份服务等中件层服务。例如IIS，.NET，Apache，MySQL …，客户自己控制上层的应用程序部署与应用托管的环境。<strong>例如：你提供他人披萨皮，他人只要设计披萨口味， 来烤自己的披萨</strong></p>
+</li>
+<li><p>SaaS:  SaaS：Software as a Service（软件即服务）; SaaS处于最上层，服务商提供基于软件的解决方案，满足客户最终需求；如OA、CRM、MIS、ERP、HRM、CM、Office 365、iCloud、G Suite等应用，客户不需考虑任何形式的专业技术知识，获得完整的软件包，使他们的日常工作和生活变得更轻松。<strong>例如：你提供完整的披萨，到手是一个成品；他人只要设计好自己logo， 来卖自己的披萨</strong></p>
+</li>
+<li><p>BaaS:  BaaS：Backend as a Service（后端即服务）;  服务商为客户(开发者)提供整合云后端的服务，如提供文件存储、数据存储、推送服务、身份验证服务等功能，以帮助开发者快速开发应用。</p>
+</li>
+<li><p>FaaS:  FaaS：Function as a service（函数即服务）; 服务商提供一个平台，允许客户开发、运行和管理应用程序功能，而无需构建和维护通常与开发和启动应用程序相关的基础架构的复杂性。 按照此模型构建应用程序是实现“无服务器”体系结构的一种方式，通常在构建微服务应用程序时使用。</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="前端发展历程和挑战"><a href="#前端发展历程和挑战" class="headerlink" title="前端发展历程和挑战"></a>前端发展历程和挑战</h3><h4 id="1-发展历程"><a href="#1-发展历程" class="headerlink" title="1. 发展历程"></a>1. 发展历程</h4><h5 id="pc时代"><a href="#pc时代" class="headerlink" title="pc时代"></a>pc时代</h5><p>主要工作是切图、写样式、写交互、浏览器兼容； 还会做一些组件化、前后端分离的事情； <strong><em>总结就是专注于浏览器领域</em></strong></p>
+<h5 id="移动互联网时代"><a href="#移动互联网时代" class="headerlink" title="移动互联网时代"></a>移动互联网时代</h5><p>跨端方向： h5、react native、 flutter；工程化方向： 基于nodejs前端工程 <strong><em>总结前端跨出了浏览器， 走向了android、ios和前端工程化</em></strong> </p>
+<h5 id="serverless时代"><a href="#serverless时代" class="headerlink" title="serverless时代"></a>serverless时代</h5><p>前端的工作更加丰富化，从客户端走向服务端，从单端走向多端： ssr、 bff、csr、微前端 <strong><em>总结前端整体向”前端全栈化“的方向发展</em></strong> </p>
+<h4 id="2-挑战"><a href="#2-挑战" class="headerlink" title="2. 挑战"></a>2. 挑战</h4><h5 id="知识体系"><a href="#知识体系" class="headerlink" title="知识体系"></a>知识体系</h5><p>除了传统的js、css、node、前端框架、打包工具、前端工程化。 还会涉及到后端领域：egg、redis、网关、mysql、rpc服务等。 运维领域： 容器、监控和告警</p>
+<h5 id="工作内容"><a href="#工作内容" class="headerlink" title="工作内容"></a>工作内容</h5><p>除了偏前端的工作：写页面、组件、性能优化、跨端、前端工程化。 还会涉及到后端和运维的工作：bff、ssr、网关、监控告警和集群化部署</p>
+<h3 id="前端面对日益复杂的业务场景"><a href="#前端面对日益复杂的业务场景" class="headerlink" title="前端面对日益复杂的业务场景"></a>前端面对日益复杂的业务场景</h3><h4 id="1-CSR"><a href="#1-CSR" class="headerlink" title="1. CSR"></a>1. CSR</h4><p>CSR: 是一种目前流行的渲染方式，它依赖的是运行在客户端的JS，用户首次发送请求只能得到小部分的指引性HTML代码。第二次请求将会请求更多包含HTML字符串的JS文件。 <strong><em>使用场景：C端业务</em></strong></p>
+<h4 id="2-SSR"><a href="#2-SSR" class="headerlink" title="2. SSR"></a>2. SSR</h4><p>SSR: 传统的渲染方式，由服务端把渲染的完整的页面吐给客户端。这样减少了一次客户端到服务端的一次http请求，加快相应速度，一般用于首屏的性能优化。 <strong><em>使用场景：对首屏要求高、有内容分享需求</em></strong></p>
+<h4 id="3-BFF"><a href="#3-BFF" class="headerlink" title="3. BFF"></a>3. BFF</h4><p>BFF: Backend For Frontend (后端服务于前端) ，前后端胶水层。 <strong><em>使用场景：减少前后端沟通成本、多端应用适配、让后端更加专注于原子化服务</em></strong></p>
+<h4 id="4-微前端"><a href="#4-微前端" class="headerlink" title="4. 微前端"></a>4. 微前端</h4><p>微前端：微前端是一种多个团队通过独立发布功能的方式来共同构建现代化 web 应用的技术手段及方法策略。 <strong><em>使用场景：后端管理系统</em></strong></p>
+<h3 id="传统的研发模式和挑战"><a href="#传统的研发模式和挑战" class="headerlink" title="传统的研发模式和挑战"></a>传统的研发模式和挑战</h3><h4 id="1-研发流程"><a href="#1-研发流程" class="headerlink" title="1. 研发流程"></a>1. 研发流程</h4><p><img src="/img/csr.webp" height="auto" align="center"><br>如图可得： </p>
+<ol>
+<li>cdn服务</li>
+<li>静态server托管html。 含文件服务、登陆认证、AB 灰度等功能; 运维部署需要域名申请、lvs接入、机器资源</li>
+<li>BFF服务。 需要运维强介入，域名申请、lvs接入、机器资源。（ 如果接入网关基本无需运维介入 ）</li>
+</ol>
+<h4 id="2-面临挑战"><a href="#2-面临挑战" class="headerlink" title="2. 面临挑战"></a>2. 面临挑战</h4><ol>
+<li>运维成本高、流程长； 需要换种qps、cpu和内存等指标</li>
+<li>开发成本高； 不仅需要开发业务、更需要开发基础服务</li>
+<li>机器资源利用率的浪费，无法精确预估流量 （使用k8s动态扩容可以无视）</li>
+<li>对前端要求更高， 招聘成本更难</li>
+</ol>
+<h3 id="基于serverless的研发模式"><a href="#基于serverless的研发模式" class="headerlink" title="基于serverless的研发模式"></a>基于serverless的研发模式</h3><h4 id="1-策略和架构"><a href="#1-策略和架构" class="headerlink" title="1. 策略和架构"></a>1. 策略和架构</h4><h5 id="基础能力平台化"><a href="#基础能力平台化" class="headerlink" title="基础能力平台化"></a>基础能力平台化</h5><p><img src="/img/serverless_2.webp" height="auto" align="center"></p>
+<blockquote>
+<p>业务再也不需要关注前端基础服务的开发，平台提供，开箱即用，简单配置即可</p>
+</blockquote>
+<h5 id="友好的开发体验"><a href="#友好的开发体验" class="headerlink" title="友好的开发体验"></a>友好的开发体验</h5><p><img src="/img/serverless.webp" height="auto" align="center"></p>
+<blockquote>
+<p>用户在开发 SSR 和 BFF 的过程中无需感知到差异性，和开发 CSR 一样轻松</p>
+</blockquote>
+<h5 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h5><p><img src="/img/serverless_3.webp" height="auto" align="center"></p>
+<h4 id="2-cicd"><a href="#2-cicd" class="headerlink" title="2. cicd"></a>2. cicd</h4><p><img src="/img/ci.webp" height="auto" align="center"></p>
+<h4 id="3-实践"><a href="#3-实践" class="headerlink" title="3. 实践"></a>3. 实践</h4><h5 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h5><ol>
+<li>无感中ssr、bff开发带来的差异， 和csr开发一样轻松</li>
+<li>支持csr到ssr到bff再到微前端<strong>渐进式开发</strong></li>
+</ol>
+<h5 id="1-CSR-1"><a href="#1-CSR-1" class="headerlink" title="1. CSR"></a>1. CSR</h5><h6 id="a-开发流程"><a href="#a-开发流程" class="headerlink" title="a. 开发流程"></a>a. 开发流程</h6><p><img src="/img/csr1.webp" height="auto" align="center"></p>
+<ol>
+<li>前端前端开发、云编译、生成静态资源上次到cdn</li>
+<li>html入口会生成es5、es6两份，通过部署控制台配置上线， 整个过程用户只关注开发和配置</li>
+</ol>
+<h6 id="b-运行流程"><a href="#b-运行流程" class="headerlink" title="b. 运行流程"></a>b. 运行流程</h6><p><img src="/img/csr2.webp" height="auto" align="center"></p>
+<ol>
+<li>静态资源cdn</li>
+<li>html入口</li>
+<li>浏览器Polyfill, 按需返回提高性能</li>
+</ol>
+<h5 id="2-SSR-1"><a href="#2-SSR-1" class="headerlink" title="2. SSR"></a>2. SSR</h5><h6 id="a-开发流程-1"><a href="#a-开发流程-1" class="headerlink" title="a. 开发流程"></a>a. 开发流程</h6><p><img src="/img/ssr1.webp" height="auto" align="center"></p>
+<ol>
+<li>编译生成ssr runtime 和 启动文件</li>
+<li>添加redis缓存组件</li>
+<li>启动ssr server</li>
+</ol>
+<h6 id="b-运行流程-1"><a href="#b-运行流程-1" class="headerlink" title="b. 运行流程"></a>b. 运行流程</h6><p><img src="/img/ssr2.webp" height="auto" align="center"></p>
+<ol>
+<li>访问ssr入口， 到达网关， 然后到达渲染处理</li>
+<li>查看是否有缓存，有就直接方式html; 没有就访问ssr server </li>
+<li>超时或者异常，会兜底到web server获取csr页面 </li>
+</ol>
+<h5 id="3-一体化BFF"><a href="#3-一体化BFF" class="headerlink" title="3. 一体化BFF"></a>3. 一体化BFF</h5><h6 id="a-开发流程-2"><a href="#a-开发流程-2" class="headerlink" title="a. 开发流程"></a>a. 开发流程</h6><p><img src="/img/bff1.webp" height="auto" align="center"></p>
+<ol>
+<li>项目中添加api目录， 和前端开发一样， 通过import方式引入</li>
+<li>生成bff的runtime, 部署服务会多一个bff  server</li>
+</ol>
+<h6 id="b-运行流程-2"><a href="#b-运行流程-2" class="headerlink" title="b. 运行流程"></a>b. 运行流程</h6><p><img src="/img/bff2.webp" height="auto" align="center"></p>
+<h5 id="4-微前端-1"><a href="#4-微前端-1" class="headerlink" title="4. 微前端"></a>4. 微前端</h5><h6 id="a-开发流程-3"><a href="#a-开发流程-3" class="headerlink" title="a. 开发流程"></a>a. 开发流程</h6><p><img src="/img/micFed1.webp" height="auto" align="center"></p>
+<h6 id="b-运行流程-3"><a href="#b-运行流程-3" class="headerlink" title="b. 运行流程"></a>b. 运行流程</h6><p><img src="/img/micFed2.webp" height="auto" align="center"></p>
+<h3 id="serverless监控和运维"><a href="#serverless监控和运维" class="headerlink" title="serverless监控和运维"></a>serverless监控和运维</h3><h4 id="1-业务监控和指标大盘"><a href="#1-业务监控和指标大盘" class="headerlink" title="1. 业务监控和指标大盘"></a>1. 业务监控和指标大盘</h4><ol>
+<li>grafana报表</li>
+</ol>
+<h4 id="2-日志系统"><a href="#2-日志系统" class="headerlink" title="2. 日志系统"></a>2. 日志系统</h4><ol>
+<li>用户行为打点日志<h4 id="3-运行时的监控和调试"><a href="#3-运行时的监控和调试" class="headerlink" title="3. 运行时的监控和调试"></a>3. 运行时的监控和调试</h4></li>
+<li>sentry错误监控</li>
+<li>apm前端资源和接口性能监控</li>
+<li>easy-monitor服务端性能</li>
+</ol>
+<p><br><br><a href="https://mp.weixin.qq.com/s/J2fHm_mR7UE65q1vSQ9xpA?st=4C7DB6F51F132A3368EFB533BCD7A842B49302A24C9477FEF33A439C6057A1F595541AEE2507F7D0CB08FD444CC58669B1141CEF1EFB448E84E1E825E66F504045EBF38276934F3E35D21BF73B76272A96E1B0AAFC936CBB482A7F390990EAE634528C4DFD88BD0F8B70FFCE7AC31F5AE9FDD6C618736BA66C81871C490D1388F6EF36CDB44ADD6259F52C61DD87E1B9BFAFBA47A642670BA4677C94EDD0D78F38F958F30B026FFF29B3CEA80EFD5E96C67F14EDB9F3EC31B62BB153DBEFC37B3A78E43240E76183903CD576EDF7A624A2FA101E6FC3CCE984436F5C7EA13572&amp;vid=1688851884861646&amp;cst=0B8E0646D00C493A9AF905E0F7F1AD4DB95E6574B50C74C6B2C1D12178C7839181D489E09EA6DDF4D3396322BD31131D&amp;deviceid=fae71291-ae83-4e26-9054-666127dd2311&amp;version=3.1.12.70057&amp;platform=mac" target="_blank" rel="noopener">文章来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

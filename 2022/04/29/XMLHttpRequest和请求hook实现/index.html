@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        XMLHttpRequest和请求hook实现 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#xhr"><span class="toc-text">xhr</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#构造方法"><span class="toc-text">构造方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标准属性"><span class="toc-text">标准属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标准方法"><span class="toc-text">标准方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#标准事件"><span class="toc-text">标准事件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码封装"><span class="toc-text">代码封装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hook"><span class="toc-text">hook</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#重写xhr-open原型方法-替换url"><span class="toc-text">重写xhr.open原型方法, 替换url</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#生成xhr代理对象，覆盖全局xhr对象"><span class="toc-text">生成xhr代理对象，覆盖全局xhr对象</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        XMLHttpRequest和请求hook实现
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-04-29 17:24:35</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#xhr" title="xhr">xhr</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#请求hook" title="请求hook">请求hook</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="xhr"><a href="#xhr" class="headerlink" title="xhr"></a>xhr</h2><h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><p>该构造函数用于初始化一个 XMLHttpRequest 实例对象。在调用下列任何其他方法之前，必须先调用该构造函数，或通过其他方式，得到一个实例对象。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = <span class="keyword">new</span> XMLHttpRequest();</span><br></pre></td></tr></table></figure></p>
+<h3 id="标准属性"><a href="#标准属性" class="headerlink" title="标准属性"></a>标准属性</h3><ol>
+<li>XMLHttpRequest.onreadystatechange：当 readyState 属性发生变化时</li>
+<li>XMLHttpRequest.readyState</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>状态</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>UNSENT</td>
+<td>代理被创建，但尚未调用 open() 方法</td>
+</tr>
+<tr>
+<td>1</td>
+<td>OPENED</td>
+<td>open() 方法已经被调用</td>
+</tr>
+<tr>
+<td>2</td>
+<td>HEADERS_RECEIVED</td>
+<td>send() 方法已经被调用，并且头部和状态已经可获得</td>
+</tr>
+<tr>
+<td>3</td>
+<td>LOADING</td>
+<td>下载中； responseText 属性已经包含部分数据。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>DONE</td>
+<td>下载操作已完成</td>
+</tr>
+</tbody>
+</table>
+<ol start="3">
+<li>XMLHttpRequest.response:返回一个 ArrayBuffer、Blob、Document，或 DOMString，具体是哪种类型取决于 XMLHttpRequest.responseType 的值。其中包含整个响应实体（response entity body）</li>
+<li>XMLHttpRequest.responseText:返回一个 DOMString，该 DOMString 包含对请求的响应，如果请求未成功或尚未发送，则返回 null</li>
+<li>XMLHttpRequest.responseType: 一个用于定义响应类型的枚举值(arraybuffer、blob、document、json、text)</li>
+<li>XMLHttpRequest.status: 返回一个无符号短整型数字，代表请求的响应状态(在请求完成前/如果 XMLHttpRequest出错，status的值都为0)</li>
+<li>XMLHttpRequest.timeout： 一个无符号长整型数字，表示该请求的最大请求时间（毫秒），若超出该时间，请求会自动终止。</li>
+<li>XMLHttpRequestEventTarget.ontimeout:当请求超时调用的</li>
+<li>XMLHttpRequest.withCredentials:一个布尔值，用来指定跨域 Access-Control 请求是否应当带有授权信息，如 cookie 或授权 header 头</li>
+</ol>
+<h3 id="标准方法"><a href="#标准方法" class="headerlink" title="标准方法"></a>标准方法</h3><ol>
+<li>XMLHttpRequest.abort()：如果请求已被发出，则立刻中止请求。</li>
+<li>XMLHttpRequest.getAllResponseHeaders(): 以字符串的形式返回所有用 CRLF(回车符（CR）和换行符（LF）是文本文件用于标记换行的控制字符或字节码（bytecode）) 分隔的响应头，如果没有收到响应，则返回 null。</li>
+<li>XMLHttpRequest.getResponseHeader(): 返回包含指定响应头的字符串，如果响应尚未收到或响应中不存在该报头，则返回 null</li>
+<li>XMLHttpRequest.open(): 初始化一个请求。该方法只能在 JavaScript 代码中使用，若要在 native code 中初始化请求，请使用 openRequest()。</li>
+<li>XMLHttpRequest.overrideMimeType(): 覆写由服务器返回的 MIME 类型。</li>
+<li>XMLHttpRequest.send(): 发送请求。如果请求是异步的（默认），那么该方法将在请求发送后立即返回。</li>
+<li>XMLHttpRequest.setRequestHeader(): 设置 HTTP 请求头的值。必须在 open() 之后、send() 之前调用 setRequestHeader() 方法</li>
+</ol>
+<h3 id="标准事件"><a href="#标准事件" class="headerlink" title="标准事件"></a>标准事件</h3><ol>
+<li>abort: 当 request 被停止时触发，例如当程序调用 XMLHttpRequest.abort() 时。也可以使用 onabort 属性。</li>
+<li>error: 当 request 遭遇错误时触发。 也可以使用 onerror 属性</li>
+<li>load: XMLHttpRequest请求成功完成时触发。 也可以使用 onload 属性</li>
+<li>loadend: 当请求结束时触发, 无论请求成功 ( load) 还是失败 (abort 或 error)。也可以使用 onloadend 属性。</li>
+<li>loadstart: 接收到响应数据时触发。也可以使用 onloadstart 属性。</li>
+<li>progress: 当请求接收到更多数据时，周期性地触发。也可以使用 onprogress 属性。</li>
+<li>timeout: 在预设时间内没有接收到响应时触发。 也可以使用 ontimeout 属性</li>
+</ol>
+<h3 id="代码封装"><a href="#代码封装" class="headerlink" title="代码封装"></a>代码封装</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> (<span class="params">opts</span>) </span>&#123; </span><br><span class="line"><span class="keyword">const</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">xhr.open(opts.type || <span class="string">'GET'</span>, opts.url, <span class="literal">true</span>);</span><br><span class="line">xhr.success = opts.success;</span><br><span class="line">xhr.fail = opts.fail;</span><br><span class="line">xhr.withCredentials = opts.withCredentials;</span><br><span class="line">xhr.onreadystatechange = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (xhr.readyState === <span class="number">4</span>) &#123;</span><br><span class="line">       <span class="keyword">const</span> status = xhr.status;</span><br><span class="line">       <span class="keyword">if</span> (status &gt;= <span class="number">200</span>) &#123;</span><br><span class="line">           opts.success &amp;&amp; opts.success(xhr.responseText);</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           opts.fail &amp;&amp; opts.fail(<span class="string">`Request failed, status: <span class="subst">$&#123;status&#125;</span>, responseText: <span class="subst">$&#123;xhr.responseText&#125;</span>`</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (opts.type === <span class="string">'POST'</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (opts.headers) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> opts.headers) &#123;</span><br><span class="line">          xhr.setRequestHeader(key, opts.headers[key]);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  xhr.send(opts.data);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  xhr.send();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> xhr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="hook"><a href="#hook" class="headerlink" title="hook"></a>hook</h2><h3 id="重写xhr-open原型方法-替换url"><a href="#重写xhr-open原型方法-替换url" class="headerlink" title="重写xhr.open原型方法, 替换url"></a>重写xhr.open原型方法, 替换url</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fill</span>(<span class="params">source: object, key: string, replacementFactory: Function</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!(key <span class="keyword">in</span> source)) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> original = source[key];</span><br><span class="line">  <span class="keyword">const</span> wrapped = replacementFactory(original);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> wrapped === <span class="string">'function'</span>) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      wrapped.prototype = wrapped.prototype || &#123;&#125;;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">      <span class="built_in">console</span>.warn(<span class="string">'This can throw if multiple fill happens on a global object like XMLHttpRequest'</span>, err);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  source[key] = wrapped;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ((<span class="string">'XMLHttpRequest'</span> <span class="keyword">in</span> <span class="built_in">window</span>)) &#123;</span><br><span class="line">  fill(XMLHttpRequest.prototype, <span class="string">'open'</span>, originalOpen =&gt; <span class="function"><span class="keyword">function</span> <span class="title">replacementFactory</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; url &#125; = xhrHostReplace(args[<span class="number">1</span>]);</span><br><span class="line">    args[<span class="number">1</span>] = url;</span><br><span class="line">    <span class="keyword">return</span> originalOpen.apply(<span class="keyword">this</span>, args);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="生成xhr代理对象，覆盖全局xhr对象"><a href="#生成xhr代理对象，覆盖全局xhr对象" class="headerlink" title="生成xhr代理对象，覆盖全局xhr对象"></a>生成xhr代理对象，覆盖全局xhr对象</h3><p>Ajax-hook实现的整体思路是实现一个XMLHttpRequest的代理对象，然后覆盖全局的XMLHttpRequest，这样一但上层调用 new XMLHttpRequest这样的代码时，其实创建的是Ajax-hook的代理对象实例</p>
+<p>参考文档：<a href="https://www.jianshu.com/p/7337ac624b8e" target="_blank" rel="noopener">https://www.jianshu.com/p/7337ac624b8e</a><br><br><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest" target="_blank" rel="noopener">来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

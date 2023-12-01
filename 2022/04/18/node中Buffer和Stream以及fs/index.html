@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        node中Buffer和Stream以及fs - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Buffer和Stream的区别"><span class="toc-text">Buffer和Stream的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Buffer"><span class="toc-text">Buffer</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Buffer和Cache"><span class="toc-text">Buffer和Cache</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Buffer和String"><span class="toc-text">Buffer和String</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、性能对比"><span class="toc-text">1、性能对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、相互转换"><span class="toc-text">2、相互转换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用场景"><span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存分配机制"><span class="toc-text">内存分配机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream"><span class="toc-text">Stream</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍-1"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#常用事件"><span class="toc-text">常用事件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fs"><span class="toc-text">fs</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#readFile和writeFile"><span class="toc-text">readFile和writeFile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#read和write"><span class="toc-text">read和write</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#createReadStream和createWriteStream"><span class="toc-text">createReadStream和createWriteStream</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        node中Buffer和Stream以及fs
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-04-18 17:16:57</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Buffer" title="Buffer">Buffer</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Stream" title="Stream">Stream</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#fs" title="fs">fs</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="Buffer和Stream的区别"><a href="#Buffer和Stream的区别" class="headerlink" title="Buffer和Stream的区别"></a>Buffer和Stream的区别</h2><p>Buffer是数据以二进制形式临时存放在内存中的物理映射，stream为搬运数据的传送带和加工器，有方向、状态、缓冲大小<br><img src="/img/bufstream.awebp" style="max-width:95%"></p>
+<h2 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p><strong>就像摆渡车一样，坐满了20位才发车(程序可以决定何时发生数据)，乘客有早到有晚到（程序无法控制数据流到达的时间），必须有一个地方等候，这就是车站（程序中缓冲区[buffer]）</strong><br><img src="/img/buffer.awebp" style="max-width:95%"></p>
+<h3 id="Buffer和Cache"><a href="#Buffer和Cache" class="headerlink" title="Buffer和Cache"></a>Buffer和Cache</h3><ol>
+<li>缓冲（Buffer）是用于处理二进制流数据，将数据缓冲起来，它是临时性的，对于流式数据，会采用缓冲区将数据临时存储起来，等缓冲到一定的大小之后在存入硬盘中。视频播放器就是一个经典的例子</li>
+<li>缓存（Cache）我们可以看作是一个中间层，它可以是永久性的将热点数据进行缓存，使得访问速度更快，例如我们通过 Memory、Redis 等将数据从硬盘或其它第三方接口中请求过来进行缓存，目的就是将数据存于内存的缓存区中，这样对同一个资源进行访问，速度会更快，也是性能优化一个重要的点</li>
+</ol>
+<h3 id="Buffer和String"><a href="#Buffer和String" class="headerlink" title="Buffer和String"></a>Buffer和String</h3><h4 id="1、性能对比"><a href="#1、性能对比" class="headerlink" title="1、性能对比"></a>1、性能对比</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"><span class="keyword">let</span> s = <span class="string">''</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i =<span class="number">0</span>; i&lt;<span class="number">1024</span>*<span class="number">10</span>; i++)&#123;</span><br><span class="line">    s += <span class="string">'a'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> str = a;</span><br><span class="line"><span class="keyword">const</span> buffer = Buffer.from(s);</span><br><span class="line"><span class="keyword">const</span> server = http.createServer(<span class="function">(<span class="params">req, res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(req.url === <span class="string">'/buffer'</span>)&#123;</span><br><span class="line">         res.end(buffer);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(req.url === <span class="string">'/string'</span>)&#123;</span><br><span class="line">        res.end(str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">server.listen(<span class="number">3000</span>);</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * ab -c 200 -t 60 http://localhost:3000/buffer</span></span><br><span class="line"><span class="comment"> * ab-c 200 -t 60 http://localhost:3000/string</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * 相同的测试参数，Buffer完成请求13998次，string完成请求9237次，相差4761次，</span></span><br><span class="line"><span class="comment"> *  Buffer比字符串的的传输更快</span></span><br><span class="line"><span class="comment"> * /</span></span><br></pre></td></tr></table></figure>
+<h4 id="2、相互转换"><a href="#2、相互转换" class="headerlink" title="2、相互转换"></a>2、相互转换</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// string --&gt; buffer</span></span><br><span class="line"><span class="keyword">const</span> buf = Buffer.from(<span class="string">'nodejs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// buffer --&gt; string</span></span><br><span class="line"><span class="keyword">const</span> str = buf.toString();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol>
+<li>Buffer =&gt; utf8：如遇到非UTF-8数据会转换为 �。</li>
+<li>Buffer =&gt; utf16le：每个字符会使用2或4个字节进行编码。</li>
+<li>Buffer =&gt; latin1：指定了Unicode编码范围，超出会截断并映射为范围内的字符串。<br>buffer不支持的编码类型，gbk、gb2312等可以借助js工具包iconv-lite实现</li>
+</ol>
+</blockquote>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ol>
+<li>I/O 操作：关于 I/O 可以是文件或网络 I/O</li>
+<li>文件压缩：zlib.js 为 Node.js 的核心库之一，其利用了缓冲区（Buffer）的功能来操作二进制数据流，提供了压缩或解压功能</li>
+</ol>
+<h3 id="内存分配机制"><a href="#内存分配机制" class="headerlink" title="内存分配机制"></a>内存分配机制</h3><blockquote>
+<p>由于 Buffer 需要处理的是大量的二进制数据，假如用一点就向系统去申请，则会造成频繁的向系统申请内存调用，所以 Buffer 所占用的内存不再由 V8 分配，<strong>而是在 Node.js 的 C++ 层面完成申请，在 JavaScript 中进行内存分配。因此，这部分内存我们称之为堆外内存。</strong>   </p>
+</blockquote>
+<ol>
+<li>在初次加载时就会初始化 1 个 8KB 的内存空间</li>
+<li>根据申请的内存大小分为 小 Buffer 对象 和 大 Buffer 对象（通过8KB来区分）</li>
+<li>小 Buffer 情况，会继续判断这个 slab 空间是否足够<ol>
+<li>如果空间足够就去使用剩余空间同时更新 slab 分配状态，偏移量会增加</li>
+<li>如果空间不足，slab 空间不足，就会去创建一个新的 slab 空间用来分配</li>
+</ol>
+</li>
+<li>大Buffer 情况，则会直接走 createUnsafeBuffer(size) 函数</li>
+<li>不论是小 Buffer 对象还是大 Buffer 对象，内存申请是在 C++ 层面完成，内存管理在 JavaScript 层面，最终还是可以被 V8 的垃圾回收标记所回收</li>
+</ol>
+<h2 id="Stream"><a href="#Stream" class="headerlink" title="Stream"></a>Stream</h2><h3 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h3><p>流（stream）是 Node.js 中处理流式数据的抽象接口。 stream 模块用于构建实现了流接口的对象。<br>Node.js 提供了多种流对象。 例如，HTTP 服务器的请求和 process.stdout 都是流的实例。<br>流可以是可读的（Readable）、可写的（Writable）、可读可写（Duplex）或者操作被写入数据，然后读出结果（Transform）</p>
+<p>我们现在有一大罐水需要浇一片菜地，如果我们将水罐的水一下全部倒入菜地，首先得需要有多么大的力气（这里的力气好比计算机中的硬件性能）才可搬得动。如果，我们拿来了水管将水一点一点流入我们的菜地，这个时候不要这么大力气就可完成</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="常用事件"><a href="#常用事件" class="headerlink" title="常用事件"></a>常用事件</h4><ol>
+<li>data - 当有数据可读时触发。</li>
+<li>end - 没有更多的数据可读时触发。</li>
+<li>error - 在接收和写入过程中发生错误时触发。</li>
+<li>finish - 所有数据已被写入到底层系统时触发<br><em>所有的 Stream 对象都是 EventEmitter 的实例</em></li>
+</ol>
+<h2 id="fs"><a href="#fs" class="headerlink" title="fs"></a>fs</h2><h3 id="readFile和writeFile"><a href="#readFile和writeFile" class="headerlink" title="readFile和writeFile"></a>readFile和writeFile</h3><ol>
+<li><p>readFile方法是将要读取的文件内容完整读入缓存区，再从该缓存区中读取文件内容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> readFile = <span class="function">(<span class="params">file</span>) =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  fs.readFile(file, <span class="string">'utf8'</span>, (err, data) =&gt; (err ? reject(err) : resolve(data)));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>writeFile方法是将要写入的文件内容完整的读入缓存区，然后一次性的将缓存区中的内容写入都文件中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> writeFile = <span class="function">(<span class="params">file, contents</span>) =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  fs.writeFile(file, contents, <span class="string">'utf8'</span>, err =&gt; (err ? reject(err) : resolve()));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>以上的读写操作，Node.js将文件内容视为一个整体，为其分配缓存区并且一次性将文件内容读取到缓存区中，在这个期间，Node.js将不能执行任何其他处理。所以当读写大文件的时候，有可能造成缓存区“爆仓”</strong></p>
+<h3 id="read和write"><a href="#read和write" class="headerlink" title="read和write"></a>read和write</h3><ol>
+<li><p>read方法读取文件内容是不断地将文件中的一小块内容读入缓存区，最后从该缓存区中读取文件内容</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> read = <span class="function">(<span class="params">file</span>) =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;   </span><br><span class="line">  fs.open(file,<span class="string">'r'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,fd</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">const</span> buf = <span class="keyword">new</span> Buffer(<span class="number">225</span>);</span><br><span class="line">    <span class="comment">//读取fd文件内容到buf缓存区</span></span><br><span class="line">    fs.read(fd,buf,<span class="number">0</span>,<span class="number">9</span>,<span class="number">3</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,bytesRead,buffer</span>)</span>&#123;</span><br><span class="line">      <span class="keyword">const</span> str = buf.slice(<span class="number">0</span>,bytesRead).toString();</span><br><span class="line">      resolve(str)</span><br><span class="line">      <span class="built_in">console</span>.log(str);</span><br><span class="line">    &#125;); </span><br><span class="line">  &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>write方法执行过程：1将需要写入的数据写入到一个内存缓存区；2待缓存区写满后再将缓存区中的内容写入到文件中；3重复执行步骤1和步骤2，直到数据全部写入文件为止</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">var</span> buf = <span class="keyword">new</span> Buffer(<span class="string">'test'</span>);</span><br><span class="line">fs.open(<span class="string">'./mess.txt'</span>,<span class="string">'w'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,fd</span>)</span>&#123;</span><br><span class="line">  fs.write(fd,buf,<span class="number">3</span>,<span class="number">9</span>,<span class="number">0</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,written,buffer</span>)</span>&#123;</span><br><span class="line">    fs.write(fd,buf,<span class="number">12</span>,<span class="number">3</span>,<span class="literal">null</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err,written,buffer</span>)</span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(err) <span class="built_in">console</span>.log(<span class="string">'写文件操作失败'</span>);</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'写文件操作成功'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//同步写入</span></span><br><span class="line">  fs.writeSync(fd,buf,<span class="number">3</span>,<span class="number">9</span>,<span class="number">0</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>以上读写操作，node.js会将文件分成一块一块逐步操作，在读写文件过程中允许执行其他操作</strong></p>
+<h3 id="createReadStream和createWriteStream"><a href="#createReadStream和createWriteStream" class="headerlink" title="createReadStream和createWriteStream"></a>createReadStream和createWriteStream</h3><ol>
+<li><p>createReadStream方法创建一个将文件内容读取为流数据的ReadStream对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个可以读的流，读取文件 file 内容</span></span><br><span class="line"> <span class="keyword">const</span> readFileStream = <span class="function">(<span class="params">file</span>) =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">   <span class="keyword">let</span> chunks = [];</span><br><span class="line">   <span class="keyword">let</span> size = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">const</span> readerStream = fs.createReadStream(file, &#123; <span class="attr">highWaterMark</span>: <span class="number">1024</span> &#125;);</span><br><span class="line"></span><br><span class="line">   readerStream.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">     chunks.push(data);</span><br><span class="line">     size += data.length;</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   readerStream.on(<span class="string">'end'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">     <span class="keyword">const</span> buf = Buffer.concat(chunks, size);</span><br><span class="line">     <span class="keyword">const</span> str = iconv.decode(buf, <span class="string">'utf8'</span>);</span><br><span class="line">     resolve(str);</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   readerStream.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">     reject(err);</span><br><span class="line">   &#125;);</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>createWriteStream方法创建一个将流数据写入文件中的WriteStream对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个可以写入的流，写入到文件 file 中</span></span><br><span class="line"><span class="keyword">const</span> writeFileStream = <span class="function">(<span class="params">file, contents</span>) =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>)=&gt;</span>&#123;</span><br><span class="line">  <span class="keyword">const</span> writerStream = fs.createWriteStream(file);</span><br><span class="line">  writerStream.write(contents,<span class="string">'utf8'</span>);</span><br><span class="line">  writerStream.end();</span><br><span class="line">  writerStream.on(<span class="string">'finish'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    resolve();</span><br><span class="line">  &#125;);</span><br><span class="line">  writerStream.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">    reject(err);</span><br><span class="line"> &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pipe</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">"fs"</span>);</span><br><span class="line"><span class="comment">// 创建一个可读流</span></span><br><span class="line"><span class="keyword">var</span> readerStream = fs.createReadStream(<span class="string">'input.txt'</span>);</span><br><span class="line"><span class="comment">// 创建一个可写流</span></span><br><span class="line"><span class="keyword">var</span> writerStream = fs.createWriteStream(<span class="string">'output.txt'</span>);</span><br><span class="line"><span class="comment">// 管道读写操作</span></span><br><span class="line"><span class="comment">// 读取 input.txt 文件内容，并将内容写入到 output.txt 文件中</span></span><br><span class="line">readerStream.pipe(writerStream);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/img/pipe.webp" style="max-width:95%"></p>
+<p><strong>如上面的图片所示，我们把文件比作装水的桶，而水就是文件里的内容，我们用一根管子(pipe)连接两个桶使得水从一个桶流入另一个桶，这样就慢慢的实现了大文件的复制过程</strong></p>
+<p><br><br><a href="https://juejin.cn/post/6955331683499376676#heading-1" target="_blank" rel="noopener">文章来源于1</a><br><a href="https://mp.weixin.qq.com/s/UU-Gug_Dx-OmXVL-99rWRg" target="_blank" rel="noopener">文章来源于2</a><br><a href="https://mp.weixin.qq.com/s/huPERCsDnDpk6jRnbD6n-Q" target="_blank" rel="noopener">文章来源于3</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

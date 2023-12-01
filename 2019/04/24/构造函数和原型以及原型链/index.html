@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        构造函数和原型以及原型链 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是构造函数？"><span class="toc-text">什么是构造函数？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#constructor-NaN"><span class="toc-text">constructor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#new-Class-详解"><span class="toc-text">new Class()详解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#案例"><span class="toc-text">案例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#new-Person-‘chao’-12-一个对象的4个过程"><span class="toc-text">new Person(‘chao’, 12)一个对象的4个过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模拟实现new"><span class="toc-text">模拟实现new</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#原型"><span class="toc-text">原型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#prototype"><span class="toc-text">prototype</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#proto"><span class="toc-text">__proto__</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#原型链"><span class="toc-text">原型链</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#思考题"><span class="toc-text">思考题</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        构造函数和原型以及原型链
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-04-24 21:07:18</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#原型链" title="原型链">原型链</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#原型" title="原型">原型</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#构造函数" title="构造函数">构造函数</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="什么是构造函数？"><a href="#什么是构造函数？" class="headerlink" title="什么是构造函数？"></a>什么是构造函数？</h3><p>构造函数本身就是一个函数，与普通函数没有任何区别，不过为了规范一般将其首字母大写。构造函数和普通函数的区别在于，使用 new 生成实例的函数就是构造函数，直接调用的就是普通函数。</p>
+<h3 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h3><ol>
+<li><p>constructor 返回创建实例对象时构造函数的引用。此属性的值是对函数本身的引用，而不是一个包含函数名称的字符串。</p>
+<ol>
+<li><p>构造函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parent</span>(<span class="params">age</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Parent(<span class="number">50</span>);</span><br><span class="line">p.constructor === Parent; <span class="comment">// true</span></span><br><span class="line">p.constructor === <span class="built_in">Object</span>; <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>普通函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parent1</span>(<span class="params">age</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        age: age</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p = parent1(<span class="number">20</span>);</span><br><span class="line">p.constructor === <span class="built_in">Object</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li><p>对于基本类型(String、Number、Boolean、Symbol、null、undefined)constructor只读，当然null、undefined没有构造属性；对于引用类型constructor可修改。</p>
+</li>
+</ol>
+<h3 id="new-Class-详解"><a href="#new-Class-详解" class="headerlink" title="new Class()详解"></a>new Class()详解</h3><h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><ol>
+<li>代码：<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Person(<span class="string">'chao'</span>, <span class="number">12</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="new-Person-‘chao’-12-一个对象的4个过程"><a href="#new-Person-‘chao’-12-一个对象的4个过程" class="headerlink" title="new Person(‘chao’, 12)一个对象的4个过程"></a>new Person(‘chao’, 12)一个对象的4个过程</h4><ol>
+<li><p>创建一个空对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var obj = new Object();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>让实例对象中this指向obj， 并且执行Person函数体</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var result = Person.call(this);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置原型链，将obj的<strong>proto</strong>指向实例化对象的prototype成员对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.__proto__ = Person.prototype;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>判断实例化返回类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if(typeof(result) === &apos;object&apos;)&#123;</span><br><span class="line">   p = result;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">  p = obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="模拟实现new"><a href="#模拟实现new" class="headerlink" title="模拟实现new"></a>模拟实现new</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">create</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">// 1、获得构造函数，同时删除 arguments 中第一个参数</span></span><br><span class="line">    Con = [].shift.call(<span class="built_in">arguments</span>);</span><br><span class="line">	<span class="comment">// 2、创建一个空的对象并链接到原型，obj 可以访问构造函数原型中的属性</span></span><br><span class="line">    <span class="keyword">var</span> obj = <span class="built_in">Object</span>.create(Con.prototype);</span><br><span class="line">	<span class="comment">// 3、绑定 this 实现继承，obj 可以访问到构造函数中的属性</span></span><br><span class="line">    <span class="keyword">var</span> ret = Con.apply(obj, <span class="built_in">arguments</span>);</span><br><span class="line">	<span class="comment">// 4、优先返回构造函数返回的对象</span></span><br><span class="line">	<span class="keyword">return</span> ret <span class="keyword">instanceof</span> <span class="built_in">Object</span> ? ret : obj;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h3><h4 id="prototype"><a href="#prototype" class="headerlink" title="prototype"></a>prototype</h4><h4 id="proto"><a href="#proto" class="headerlink" title="__proto__"></a>__proto__</h4><h4 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h4><ol>
+<li>含义：每个对象拥有一个原型对象，通过 __proto__ 指针指向上一个原型 ，并从中继承方法和属性，同时原型对象也可能拥有原型，这样一层一层，最终指向 null。这种关系被称为原型链 (prototype chain)<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.name = name;</span><br><span class="line">  <span class="keyword">this</span>.age = age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> Person(<span class="string">'chao'</span>, <span class="number">12</span>);</span><br><span class="line">p  <span class="comment">//Person</span></span><br><span class="line">p.__proto__ ===  Person.prototype <span class="comment">// true</span></span><br><span class="line">p.__proto__.__proto__ === <span class="built_in">Object</span>.prototype <span class="comment">//true  </span></span><br><span class="line">p.__proto__.__proto__.__proto__ === <span class="literal">null</span> <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>Symbol 作为构造函数来说并不完整，因为不支持语法 new Symbol()，但其原型上拥有 constructor 属性，即 Symbol.prototype.constructor。</li>
+<li>引用类型 constructor 属性值是可以修改的，但是对于基本类型来说是只读的，当然 null 和 undefined 没有 constructor 属性。</li>
+<li>__proto__ 是每个实例上都有的属性，prototype 是构造函数的属性，这两个并不一样，但 p.__proto__ 和 Parent.prototype 指向同一个对象。</li>
+<li>__proto__ 属性在 ES6 时被标准化，但因为性能问题并不推荐使用，推荐使用 Object.getPrototypeOf()。</li>
+<li>每个对象拥有一个原型对象，通过 __proto__ 指针指向上一个原型 ，并从中继承方法和属性，同时原型对象也可能拥有原型，这样一层一层，最终指向 null，这就是原型链。</li>
+</ol>
+<h3 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h3><ol>
+<li>js无限累计<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params">b</span>)</span>&#123;</span><br><span class="line">      a += b;</span><br><span class="line">      <span class="keyword">return</span> sum;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">//重写toString</span></span><br><span class="line">   sum.toString = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'======'</span>);</span><br><span class="line">      <span class="keyword">return</span> a;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> sum; <span class="comment">//返回函数</span></span><br><span class="line">&#125;</span><br><span class="line">add(<span class="number">1</span>)(<span class="number">2</span>)(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><em>我们知道打印函数时会自动调用 toString()方法，函数 add(a) 返回一个闭包 sum(b)，函数 sum() 中累加计算 a = a + b，只需要重写sum.toString()方法返回变量 a 就OK了</em></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

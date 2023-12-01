@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        git常用操作命令 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#git流程图（图片来自网络）"><span class="toc-text">git流程图（图片来自网络）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#工作区"><span class="toc-text">工作区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a、删除未跟踪的文件-untracked-files"><span class="toc-text">a、删除未跟踪的文件 untracked files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b、删除已跟踪的文件"><span class="toc-text">b、删除已跟踪的文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#暂存区"><span class="toc-text">暂存区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a、取消暂存区已缓存的内容，修改前内容还在工作区"><span class="toc-text">a、取消暂存区已缓存的内容，修改前内容还在工作区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b、撤销丢弃所有文件修改，内容不在工作区"><span class="toc-text">b、撤销丢弃所有文件修改，内容不在工作区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本地仓库"><span class="toc-text">本地仓库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a、回退暂存区相关文件到上一个版本，内容还在工作区"><span class="toc-text">a、回退暂存区相关文件到上一个版本，内容还在工作区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b、回退暂存区相关文件到上一个版本，内容不在工作区"><span class="toc-text">b、回退暂存区相关文件到上一个版本，内容不在工作区</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#远程仓库"><span class="toc-text">远程仓库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a、撤销revert"><span class="toc-text">a、撤销revert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b、回退reset"><span class="toc-text">b、回退reset</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分支"><span class="toc-text">分支</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建新的分支，且关联远程"><span class="toc-text">创建新的分支，且关联远程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本地没有分支，远程有"><span class="toc-text">本地没有分支，远程有</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本地有分支，远程没有"><span class="toc-text">本地有分支，远程没有</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除本地分支"><span class="toc-text">删除本地分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除远程分支"><span class="toc-text">删除远程分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dev分支合并到prod分支"><span class="toc-text">dev分支合并到prod分支</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        git常用操作命令
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-07-01 11:39:10</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#git" title="git">git</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="git流程图（图片来自网络）"><a href="#git流程图（图片来自网络）" class="headerlink" title="git流程图（图片来自网络）"></a>git流程图（图片来自网络）</h2><p><img src="/img/git.jpg" height="auto" align="center"></p>
+<h2 id="工作区"><a href="#工作区" class="headerlink" title="工作区"></a>工作区</h2><h3 id="a、删除未跟踪的文件-untracked-files"><a href="#a、删除未跟踪的文件-untracked-files" class="headerlink" title="a、删除未跟踪的文件 untracked files"></a>a、删除未跟踪的文件 untracked files</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看需要删除的文件</span></span><br><span class="line">git clean -nfd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 确认删除文件</span></span><br><span class="line">git clean -fd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连gitignore的untrack 文件/目录也一起删掉</span></span><br><span class="line"><span class="comment">#（慎用，一般这个是用来删掉编译出来或者node_modules的之类的文件用的）</span></span><br><span class="line">git clean -xfd</span><br></pre></td></tr></table></figure>
+<h3 id="b、删除已跟踪的文件"><a href="#b、删除已跟踪的文件" class="headerlink" title="b、删除已跟踪的文件"></a>b、删除已跟踪的文件</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout .</span><br></pre></td></tr></table></figure>
+<h2 id="暂存区"><a href="#暂存区" class="headerlink" title="暂存区"></a>暂存区</h2><h3 id="a、取消暂存区已缓存的内容，修改前内容还在工作区"><a href="#a、取消暂存区已缓存的内容，修改前内容还在工作区" class="headerlink" title="a、取消暂存区已缓存的内容，修改前内容还在工作区"></a>a、取消暂存区已缓存的内容，修改前内容还在工作区</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD</span><br></pre></td></tr></table></figure>
+<h3 id="b、撤销丢弃所有文件修改，内容不在工作区"><a href="#b、撤销丢弃所有文件修改，内容不在工作区" class="headerlink" title="b、撤销丢弃所有文件修改，内容不在工作区"></a>b、撤销丢弃所有文件修改，内容不在工作区</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br></pre></td></tr></table></figure>
+<h2 id="本地仓库"><a href="#本地仓库" class="headerlink" title="本地仓库"></a>本地仓库</h2><h3 id="a、回退暂存区相关文件到上一个版本，内容还在工作区"><a href="#a、回退暂存区相关文件到上一个版本，内容还在工作区" class="headerlink" title="a、回退暂存区相关文件到上一个版本，内容还在工作区"></a>a、回退暂存区相关文件到上一个版本，内容还在工作区</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD^ <span class="comment">#回退所有内容到上一个版本</span></span><br><span class="line">git reset HEAD^ hello.php  <span class="comment"># 回退hello.php文件的版本到上一个版本</span></span><br><span class="line">git reset commitID hello.php <span class="comment"># 回退hello.php文件的版本到某一个版本</span></span><br></pre></td></tr></table></figure>
+<h3 id="b、回退暂存区相关文件到上一个版本，内容不在工作区"><a href="#b、回退暂存区相关文件到上一个版本，内容不在工作区" class="headerlink" title="b、回退暂存区相关文件到上一个版本，内容不在工作区"></a>b、回退暂存区相关文件到上一个版本，内容不在工作区</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD^ --hard</span><br></pre></td></tr></table></figure>
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><blockquote>
+<p>git reset 是把HEAD向后移动了一下，而git revert是HEAD继续前进</p>
+</blockquote>
+<h3 id="a、撤销revert"><a href="#a、撤销revert" class="headerlink" title="a、撤销revert"></a>a、撤销revert</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># git 日志会新增一条记录</span></span><br><span class="line">git revert commitID (撤销指定的版本)</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+<h3 id="b、回退reset"><a href="#b、回退reset" class="headerlink" title="b、回退reset"></a>b、回退reset</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># git日志不会新增一条记录，</span></span><br><span class="line"><span class="comment"># 反而会把commitID之后的日志给删掉</span></span><br><span class="line">git reset commitID (HEAD指向版本)</span><br><span class="line">git push -f <span class="comment">#此时如果用“git push”会报错，因为我们本地库HEAD指向的版本比远程库的要旧</span></span><br></pre></td></tr></table></figure>
+<h2 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h2><h3 id="创建新的分支，且关联远程"><a href="#创建新的分支，且关联远程" class="headerlink" title="创建新的分支，且关联远程"></a>创建新的分支，且关联远程</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b branch_name origin/branch_name</span><br></pre></td></tr></table></figure>
+<h3 id="本地没有分支，远程有"><a href="#本地没有分支，远程有" class="headerlink" title="本地没有分支，远程有"></a>本地没有分支，远程有</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#自动跟踪远程的同名分支 branch_name</span></span><br><span class="line">git checkout --track origin/branch_name</span><br></pre></td></tr></table></figure>
+<h3 id="本地有分支，远程没有"><a href="#本地有分支，远程没有" class="headerlink" title="本地有分支，远程没有"></a>本地有分支，远程没有</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push --<span class="built_in">set</span>-upstream origin branch_name</span><br></pre></td></tr></table></figure>
+<h3 id="删除本地分支"><a href="#删除本地分支" class="headerlink" title="删除本地分支"></a>删除本地分支</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d branch_name</span><br></pre></td></tr></table></figure>
+<h3 id="删除远程分支"><a href="#删除远程分支" class="headerlink" title="删除远程分支"></a>删除远程分支</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch -r -d origin/branch-name</span><br><span class="line">git push origin :branch-name</span><br></pre></td></tr></table></figure>
+<h3 id="dev分支合并到prod分支"><a href="#dev分支合并到prod分支" class="headerlink" title="dev分支合并到prod分支"></a>dev分支合并到prod分支</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 切换到prod分支</span></span><br><span class="line">git checkout prod</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拉取prod最新代码</span></span><br><span class="line">git pull origin prod</span><br><span class="line"></span><br><span class="line"><span class="comment"># dev分支合并到prod</span></span><br><span class="line">git merge dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看状态</span></span><br><span class="line">git status</span><br></pre></td></tr></table></figure>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

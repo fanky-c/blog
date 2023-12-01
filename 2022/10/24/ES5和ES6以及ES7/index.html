@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        ES5和ES6以及ES7+ - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、ES5"><span class="toc-text">一、ES5</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-严格模式"><span class="toc-text">1. 严格模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Object"><span class="toc-text">2. Object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Array"><span class="toc-text">3. Array</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-String"><span class="toc-text">4. String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Function"><span class="toc-text">5. Function</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-JSON"><span class="toc-text">6. JSON</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-其他"><span class="toc-text">7. 其他</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、ES6"><span class="toc-text">二、ES6</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-let、const"><span class="toc-text">1. let、const</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-字符串模板"><span class="toc-text">2. 字符串模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-解构赋值"><span class="toc-text">3. 解构赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-数组的新特性"><span class="toc-text">4. 数组的新特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-增强对象"><span class="toc-text">5. 增强对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-函数参数"><span class="toc-text">6. 函数参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-箭头函数"><span class="toc-text">6. 箭头函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-class"><span class="toc-text">7. class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-模块-module"><span class="toc-text">9. 模块 module</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-集合类型-Map-Set-WeakMap-WeakSet"><span class="toc-text">10. 集合类型 Map + Set + WeakMap + WeakSet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Set"><span class="toc-text">Set</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WeakSet"><span class="toc-text">WeakSet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WeakMap"><span class="toc-text">WeakMap</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-Symbol-类型"><span class="toc-text">11. Symbol 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-Promise"><span class="toc-text">12. Promise</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Promise-的状态有三种"><span class="toc-text">Promise 的状态有三种</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Promise-对象有两个特点"><span class="toc-text">Promise 对象有两个特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用法"><span class="toc-text">用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实例方法"><span class="toc-text">实例方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Promise-对象方法"><span class="toc-text">Promise 对象方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-Proxy"><span class="toc-text">13. Proxy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-Reflect"><span class="toc-text">14. Reflect</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、ES7"><span class="toc-text">三、ES7+</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Array-prototype-includes"><span class="toc-text">1. Array.prototype.includes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-异步函数-async-await"><span class="toc-text">2. 异步函数 async/await</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基本用法"><span class="toc-text">基本用法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#注意"><span class="toc-text">注意</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Object-values"><span class="toc-text">3. Object.values()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Object-entries"><span class="toc-text">4. Object.entries()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Array-prototype-flat-amp-Array-prototype-flatMap"><span class="toc-text">5. Array.prototype.flat() &amp; Array.prototype.flatMap()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Promise-allSettled"><span class="toc-text">6. Promise.allSettled()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-可选链接？"><span class="toc-text">7. 可选链接？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-循环等待"><span class="toc-text">8. 循环等待</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        ES5和ES6以及ES7+
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-10-24 19:59:58</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#ES5" title="ES5">ES5</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#ES6" title="ES6">ES6</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#ES7" title="ES7">ES7</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="一、ES5"><a href="#一、ES5" class="headerlink" title="一、ES5"></a>一、ES5</h2><p>ECMAScript 5 于 2009 年 12 月发布的，内容主要包括严格模式、JSON 对象、新增 Object 接口、新增 Array 接口和 Function.prototype.bind 等。可以认为 ECMAScript 5 规范的推出在原来没有规范的 JavaScript 语法上添加了有限的限制标准，其中最重要的一条可能就是严格模式的推出。</p>
+<h3 id="1-严格模式"><a href="#1-严格模式" class="headerlink" title="1. 严格模式"></a>1. 严格模式</h3><ul>
+<li>未声明的全局变量赋值会抛出 ReferenceError，而不是默认去创建一个全局变量</li>
+<li>默认支持的糟糕特性都会被禁用，使用 with、eval 等语句执行会抛出 SyntaxError</li>
+<li>限制了函数中 arguments 使用，arguments.callee( ) 和 arguments.caller( ) 调用会提示 Uncaught ReferenceError</li>
+<li>函数 arguments 严格定义为参数，不能与形参绑定</li>
+</ul>
+<h3 id="2-Object"><a href="#2-Object" class="headerlink" title="2. Object"></a>2. Object</h3><ul>
+<li>getPrototypeOf，返回一个对象的原型</li>
+<li>getOwnPropertyDescriptor，返回某个对象自有属性的属性描述符</li>
+<li>getOwnPropertyNames，返回一个数组，包括对象所有自由属性名称集合（包括不可枚举的属性）</li>
+<li>hasOwnProperty，给定属性存在于对象实例中，返回 true</li>
+<li>isPrototypeOf，在原型链中出现过的原型，返回 true</li>
+<li>create，创建一个拥有指定原型和若干指定属性的对象</li>
+<li>defineProperty，为对象定义一个新属性，或者修改已有的属性，并对属性重新设置 getter 和 setter，这里可以被用作数据绑定的对象劫持用途</li>
+<li>defineProperties，在一个对象上添加或修改一个或者多个自有属性，与 defineProperty 类</li>
+<li>seal，锁定对象，阻止修改现有属性的特性，并阻止添加新属性，但是可以修改已有属性的值</li>
+<li>freeze，冻结对象，阻止对对象的一切操作和更改，冻结对象将变成只读</li>
+<li>preventExtensions，让一个对象变得不可以扩展，也就是不能再添加新的属性</li>
+<li>keys，返回一个由给定对象的所有可以枚举自身属性的属性名组成的数组</li>
+</ul>
+<h3 id="3-Array"><a href="#3-Array" class="headerlink" title="3. Array"></a>3. Array</h3><ul>
+<li>Array.isArray，确定某个值到底是不是数组，不管它在哪个全局执行环境中创建</li>
+<li>push，接收任意数量的参数，把它们逐个添加到数组末尾，并返回修改后数组的长度</li>
+<li>pop，在数组尾部移除最后一项，减少数组的 length 值，然后返回移除的项</li>
+<li>shift，移除数组中的第一项并返回该项，同时将数组长度减 1</li>
+<li>unshift，在数组前端添加任意个项，并返回新数组的长度</li>
+<li>reverse，反转数组项的顺序，返回排序后的数组</li>
+<li>sort，默认情况下，按升序排序数组项，返回排序后的数组</li>
+<li>concat，创建当前数组的一个副本，将接收到的参数添加到这个副本的末尾，返回新构建的数组</li>
+<li>join，用指定的字符拼接数组，返回拼接好的字符串</li>
+<li>slice，基于当前数组中的一个或多个创建一个新数组，不影响原始数组</li>
+<li>splice，根据传入参数不同，可以删除、插入、替换数组元素，返回一个数组，该数组中包含从原始数组中删除的项，如果没有删除任何项，则返回空数组</li>
+<li>indexOf，返回根据给定元素找到的第一个索引值，如果不存在则返回 -1</li>
+<li>lastIndexOf，返回指定元素在数组中的最后一个索引值，如果不存在则返回 -1</li>
+<li>every ，对数组中的每一项运行给定函数 ，如果该函数对每一项都返回 true，则返回 true</li>
+<li>filter，对数组中的每一项运行给定函数 ，返回该函数会返回 true 的项组成的数组</li>
+<li>forEach，对数组中的每一项运行给定函数，没有返回值</li>
+<li>map，对数组中的每一项运行给定函数，返回每次函数调用的结果组成的数组</li>
+<li>some，对数组中的每一项运行给定函数，如果函数对任一项返回 true，则返回 true</li>
+<li>reduce，接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终缩减为一个值</li>
+</ul>
+<h3 id="4-String"><a href="#4-String" class="headerlink" title="4. String"></a>4. String</h3><ul>
+<li>charAt，访问字符串中特定字符，返回给定位置的字符</li>
+<li>charCodeAt，访问字符串中特定字符，返回给定位置的字符的字符编码</li>
+<li>concat，将一个或多个字符串拼接起来，返回拼接得到的新字符串</li>
+<li>match，查找匹配的字符串，返回一个数组</li>
+<li>search，查找匹配的字符串，返回匹配项的索引，没有找到，返回 -1</li>
+<li>replace，替换字符串</li>
+<li>split，基于指定的分隔符将一个字符串分割成多个字符串，将结果放在一个数组中，并返回</li>
+<li>trim，创建一个字符串的副本，删除前置及后缀的所有空格，然后返回结果</li>
+<li>localeCompare，比较两个字符串</li>
+<li>slice，返回被操作字符串的一个子字符串</li>
+<li>substr，返回被操作字符串的一个子字符串</li>
+<li>substring，返回被操作字符串的一个子字符串</li>
+</ul>
+<h3 id="5-Function"><a href="#5-Function" class="headerlink" title="5. Function"></a>5. Function</h3><ul>
+<li>arguments.callee，该属性是一个指针，指向拥有这个 arguments 对象的函数</li>
+<li>arguments.caller，该属性保存着调用当前函数的函数的引用</li>
+<li>apply，在特定的作用域中调用函数，第一个参数是在其中运行函数的作用域，第二个是参数数组</li>
+<li>call，在特定的作用域中调用函数，第一个参数是在其中运行函数的作用域，其余参数直接传递给函数</li>
+<li>bind，创建一个函数的实例，其 this 值会被绑定到传给 bind 函数的值</li>
+</ul>
+<h3 id="6-JSON"><a href="#6-JSON" class="headerlink" title="6. JSON"></a>6. JSON</h3><ul>
+<li>JSON.parse，解析字符串为 JSON 对象</li>
+<li>JSON.stringify，解析 JSON 对象为字符串</li>
+<li>JSON.valueOf，获取某个JSON 对象中的值</li>
+<li>JSON.toString，被调用时，会调用 Object 原型上的 toString 方法，会获的 JSON 对象的值并转为字符串，如果没有具体的值，则返回原型数组</li>
+</ul>
+<h3 id="7-其他"><a href="#7-其他" class="headerlink" title="7. 其他"></a>7. 其他</h3><ul>
+<li>Date.now，返回当前时间戳</li>
+<li>Number.prototype.toFixed，按照指定的小数位返回数值的字符串表示</li>
+</ul>
+<h2 id="二、ES6"><a href="#二、ES6" class="headerlink" title="二、ES6"></a>二、ES6</h2><p>ECMAScript 6 于 2015 年 6 月 17 日正式发布，也被命名为 ECMAScript 2015。ES6 借鉴了 ES5 和其他语言的特性，并在此基础上进行了补充和增强，使得 JavaScript 语言规范更加高效、严谨、完善。</p>
+<p>例如，字符串模板、集合、箭头函数、Promise、for…of 等均是借鉴其他语言的优秀特性而增加的功能点。class 类和 import/export 模块规范则可以认为是对原有标准缺失的补充。迭代器、生成器、解构赋值、函数参数等都可以认为是对原有标准特性的增强。</p>
+<h3 id="1-let、const"><a href="#1-let、const" class="headerlink" title="1. let、const"></a>1. let、const</h3><p>对于跨级作用域变量声明关键字 let、const，在使用时有几个需要注意的地方:</p>
+<ol>
+<li>let 和 const 都只能作为块级作用域变量的声明，且只能在块作用域内生效，块内声明的变量无法在块级外层 引用</li>
+<li>使用 const 声明的变量必须进行初始化赋值，而且一旦赋值就不能再进行二次修改赋值</li>
+<li>使用 let 和 const 在全局作用域下声明的变量不会作为属性添加到全局作用域对象里面</li>
+</ol>
+<p>let 和 const 使用场景的区别：</p>
+<ol>
+<li>模块内不变的引用和常量，一般使用 const 定义</li>
+<li>可变的变量或引用使用 let 声明</li>
+<li>var 仅用于声明函数整个作用域内需要使用的变量</li>
+</ol>
+<h3 id="2-字符串模板"><a href="#2-字符串模板" class="headerlink" title="2. 字符串模板"></a>2. 字符串模板</h3><p>如果没有字符串模板，我们依然需要像以前一样借助“字符串+操作符” 拼接或数组 join 方法来连接多个字符串变量。<br><strong>需要注意的是，字符串模板不会压缩内部的换行与空格，而是按照原有的格式输出，只将变量内容填充替换掉。</strong></p>
+<h3 id="3-解构赋值"><a href="#3-解构赋值" class="headerlink" title="3. 解构赋值"></a>3. 解构赋值</h3><p>解构赋值主要分为数组解构和对象解构：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [a, b, c] = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"><span class="keyword">let</span> &#123;one, two, three&#125; = &#123;<span class="attr">two</span>:<span class="number">2</span>, <span class="attr">three</span>: <span class="number">3</span>, <span class="attr">one</span>: <span class="number">1</span>&#125;</span><br><span class="line"></span><br><span class="line">[a, b] = [b, a] <span class="comment">// 交换a、b 变量的值</span></span><br><span class="line"><span class="built_in">console</span>.log(c) <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure></p>
+<p>数组解构是严格按照数组下标依次对应顺序赋值的，如果复制的常量个数不够，则对应下标的变量默认为 undefined；如果常量个数超出，则多余的会被舍弃，所以顺序很重要。</p>
+<p>对象的解构赋值是根据对象引用的键名来赋值的，可以无视顺序。</p>
+<h3 id="4-数组的新特性"><a href="#4-数组的新特性" class="headerlink" title="4. 数组的新特性"></a>4. 数组的新特性</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="keyword">const</span> newArr = [...arr]  <span class="comment">//[1, 2, 3]</span></span><br></pre></td></tr></table></figure>
+<p>注意：这里 <strong>… 进行的数组复制是浅拷贝</strong>。</p>
+<p><strong>ES6 数组的新增方法：</strong></p>
+<ol>
+<li>Array.from，用于将类数组对象（包括 [array-like object] 和可遍历对象）转化为真正的数组</li>
+<li>Array.of，可以将传入的一组参数值转换为数组</li>
+<li>Array.prototype.copyWithin，可以在当前数组内部将指定位置的数组项复制到其他位置，然后返回当前数组，使用 copyWithin 方法会修改当前数组</li>
+<li>Array.prototype.fill，使用给定值，填充一个数组，会改变原来的数组</li>
+<li>Array.prototype.find，用于找出第一个符合条件的数组元素，有点类似于 filter</li>
+<li>Array.prototype.findIndex，用来返回某个特定数组元素在数组中的位置</li>
+<li>Array.prototype.entries，对数组中键值对进行遍历</li>
+<li>Array.prototype.keys，对数组键名进行遍历</li>
+<li>Array.prototype.values，对数组键值进行遍历</li>
+<li>for…of 循环进行遍历</li>
+<li>Array.prototype[Symbol.iterator]，用来获取遍历数组对象的迭代器</li>
+</ol>
+<h3 id="5-增强对象"><a href="#5-增强对象" class="headerlink" title="5. 增强对象"></a>5. 增强对象</h3><p>在 ES6 中，对象的使用变得更加方便了，可以在定义对象时通过属性简写、遍历作为属性名或省略对象函数属性的书写等方式来提高编码的效率：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> name = <span class="string">'xixi'</span></span><br><span class="line"><span class="keyword">const</span> people = &#123;</span><br><span class="line">    name,</span><br><span class="line">    [getKey(<span class="string">'family'</span>)]: <span class="string">'zhang'</span>,</span><br><span class="line">    sayHi() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`Hello <span class="subst">$&#123;<span class="keyword">this</span>.name&#125;</span> <span class="subst">$&#123;<span class="keyword">this</span>.family&#125;</span>`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">people.sayHi() <span class="comment">// Hello xixi zhang</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKey</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> key</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="6-函数参数"><a href="#6-函数参数" class="headerlink" title="6. 函数参数"></a>6. 函数参数</h3><p>ES6 对函数参数进行了新的设计，主要添加了默认参数、不定参数和扩展参数：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 默认参数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params">name = <span class="string">'xixi'</span></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Hello <span class="subst">$&#123;name&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br><span class="line">sayHi() <span class="comment">// Hello xixi</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不定参数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params">...name</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(name.reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> <span class="string">`Hello <span class="subst">$&#123;a&#125;</span> <span class="subst">$&#123;b&#125;</span>`</span>))</span><br><span class="line">&#125;</span><br><span class="line">sayHi(<span class="string">'xixi'</span>, <span class="string">'zhang'</span>) <span class="comment">// Hello xixi zhang</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 扩展参数</span></span><br><span class="line"><span class="keyword">let</span> name = [<span class="string">'xixi'</span>, <span class="string">'zhang'</span>]</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params">name1, name2</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Hello <span class="subst">$&#123;name1&#125;</span> <span class="subst">$&#123;name2&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br><span class="line">sayHi(...name) <span class="comment">// Hello xixi zhang</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>不定参数和扩展参数可以认为恰好是相反的两个模式，不定参数是使用数组来表示多个参数，扩展参数则是将多个参数映射到一个数组。</strong></p>
+<p>需要注意：不定参数的 … 和数组复制的 … 是有区别的，不定参数可以使用函数的形参来表示所有的参数组成的列表。以前的 arguments 变量也有类似的作用，但是 arguments 不是真正的数组，除了存放参数的列表外，arguments 还有 length 属性，严格来说 arguments 是一个类数组对象，而不定参数则是一个完全的数组，这也是不定参数相对于 arguments 的优势，更加方便我们使用，所以建议使用不定参数来代替 arguments。</p>
+<h3 id="6-箭头函数"><a href="#6-箭头函数" class="headerlink" title="6. 箭头函数"></a>6. 箭头函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 箭头函数</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].forEach(<span class="function"><span class="params">x</span> =&gt;</span> x*x)</span><br><span class="line"></span><br><span class="line">(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hello xixi'</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p>箭头函数没有完整的执行上下文，因此其 this 和外层的 this 相同，可以理解为它的执行上下文只有变量对象和作用域链，没有 this 值。</p>
+<p>在 JavaScript 中，代码的执行上下文由变量对象、作用域链和 this 值组成，但箭头函数与外层执行上下文共享 this 值，如果需要创建具有独立上下文的函数，就不要使用箭头函数。</p>
+<h3 id="7-class"><a href="#7-class" class="headerlink" title="7. class"></a>7. class</h3><p>基本上，ES6 中的 class 可以看做是一个语法糖，它的绝大部分功能，ES5 都可以做到，新的 class 写法只是让对象原型的写法更加清晰，更像面向对象变成的语法而已。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>() &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">People</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(contents = &#123;&#125;) &#123;</span><br><span class="line">        <span class="keyword">super</span>(); <span class="comment">// 调用父类的 constructor方法， 且可以向父类的构造函数传达参数</span></span><br><span class="line">        <span class="keyword">this</span>.name = contents.name</span><br><span class="line">        <span class="keyword">this</span>.family = contents.family</span><br><span class="line">    &#125;</span><br><span class="line">    sayHi() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`Hello <span class="subst">$&#123;<span class="keyword">this</span>.name&#125;</span> <span class="subst">$&#123;<span class="keyword">this</span>.family&#125;</span>`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> me = <span class="keyword">new</span> People(&#123;</span><br><span class="line">    name: <span class="string">'xixi'</span>,</span><br><span class="line">    family: <span class="string">'zhang'</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">me.sayHi() <span class="comment">//Hello xixi zhang</span></span><br></pre></td></tr></table></figure>
+<h3 id="9-模块-module"><a href="#9-模块-module" class="headerlink" title="9. 模块 module"></a>9. 模块 module</h3><p>ES6 引入了模块引用规范，这也是之前语言标准上没有的，这样现有的 JavaScript 模块化规范又多了一种选择：import/export</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; sayHi &#125; <span class="keyword">from</span> <span class="string">'./people'</span></span><br><span class="line"><span class="keyword">export</span> sayHi</span><br></pre></td></tr></table></figure>
+<h3 id="10-集合类型-Map-Set-WeakMap-WeakSet"><a href="#10-集合类型-Map-Set-WeakMap-WeakSet" class="headerlink" title="10. 集合类型 Map + Set + WeakMap + WeakSet"></a>10. 集合类型 Map + Set + WeakMap + WeakSet</h3><h4 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h4><p>Set 本身是一个构造函数 ，用来生成 Set 数据结构，Set 类似于数组（但它不是数组），Set 的成员的值都是唯一的，没有重复的值，也常用它来去重（不可以传递对象）。像 Set 加入值的时候，不会发生类型转换，所以 5 和 “5” 是两个不同的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(arr)  <span class="comment">//[1, 2, 3, 4, 5]</span></span><br><span class="line"><span class="built_in">console</span>.log(arr.size)  <span class="comment">//5</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="WeakSet"><a href="#WeakSet" class="headerlink" title="WeakSet"></a>WeakSet</h4><p>WeakSet 结构与 Set 类似，也是不重复的值的集合，但是，它与 Set 有两个区别：</p>
+<ol>
+<li>第一，WeakSet 的成员只能是对象，而不能是其他类型的值。</li>
+<li>第二，WeakSet 中的对象都是弱引用，即垃圾回收机制 不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不在引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象是否还存在于 WeakSet 中。因此 ES6 规定 WeakSet 不可遍历。</li>
+</ol>
+<h4 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h4><p>传统的 JavaScript 的对象（Object），本质上是键值对的集合（Hash 结构），但是只能用字符串当做键，这给它的使用带来了很大的限制，而 ES6 提供了 Map 数据结构，它类似于对象，也是键值对的集合，但是“键” 的范围不限于字符串，各种类型的值（包括对象）都可以当做键。也就是说，Object 结构提供了“字符串-值”的对应，Map 结构提供了“值-值”的对应，是一种更完善的 Hash 结构实现。Map 的键实际上是跟内存地址绑定的，只要内存地址不一样，就视为两个键。</p>
+<p>操作方法：</p>
+<ol>
+<li>set(key, value)，设置 key 所对应的键值，返回整个 Map 结构 ，如果 key 已经有值，则键值会被更新，否则就生成该键</li>
+<li>get(key)，读取 key 对应的键值，如果在好不到 key，则返回 undefined</li>
+</ol>
+<p>遍历方法：</p>
+<ol>
+<li>keys()，返回键名的遍历器</li>
+<li>values()，返回键值的遍历器</li>
+<li>entries()，返回所有成员的遍历器</li>
+<li>forEach()，遍历 Map 的所有成员</li>
+</ol>
+<h4 id="WeakMap"><a href="#WeakMap" class="headerlink" title="WeakMap"></a>WeakMap</h4><p>WeakMap 结构与 Map 结构类似，也用于生成键值对的集合，但 WeakMap 与 Map 有两个个区别：</p>
+<ol>
+<li>WeakMap 只接受对象作为键名（null 除外），不接受其他类型的值作为键名</li>
+<li>WeakMap 的键名所指向的对象不计入垃圾回收机制。它的键名所引用的对象都是弱引用，即垃圾回收机制不将该引用考虑在内，因此，只要所引用的对象的其他引用被清除了，垃圾回收机制就会释放该对象所占用的内存。也就是说， 一旦不再需要，WeakMap 里面的键名对象和所对应的键值对会自动消失，不用手动删除引用。基本上，如果要想对象中添加数据又不想干扰垃圾回收机制，便可以使用 WeakMap。一个典型的应用场景是，在网页的 DOM 元素上添加数据时就可以使用 WeakMap 结构，当该 DOM 元素被清除，其对应的 WeakMap 记录就会自动被移除。</li>
+</ol>
+<p>注意：WeakMap 的专用场景就是它的键所对应的对象可能会在将来消失，WeakMap 结构有助于防止内存泄露。但是，WeakMap 弱引用的只是键名而不是键值，键值依然是正常引用的。</p>
+<h3 id="11-Symbol-类型"><a href="#11-Symbol-类型" class="headerlink" title="11. Symbol 类型"></a>11. Symbol 类型</h3><p>ES6 引入了一种新的原始数据类型 Symbol，表示独一无二的值，它是 JavaScript 语言的第 7 种数据类型，前 6 种分别是：Undefined、Null、Boolean、String、Number 和 Object。</p>
+<p>Symbol 值通过 Symbol 函数生成，一般作为属性键值，并且能避免对象属性键的命名冲突。也就是说，对象的属性名现在可以有两种类型：一种是原来就有的字符串，另一种就是新增的 Symbol 类型。只要属性名属于 Symbol 类型，就是独一无二的，可以保证不会与其他属性名产生冲突。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> s = <span class="built_in">Symbol</span>(<span class="string">'foo'</span>)</span><br><span class="line"><span class="keyword">typeof</span> s  <span class="comment">//"symbol"</span></span><br></pre></td></tr></table></figure></p>
+<p>Symbol 函数前不能使用 new 命令，否则会报错，这是因为生产的 Symbol 是一个原始类型的值，不是对象。也就是说，由于 Symbol 值不是对象，所以不能添加属性。基本上，它是一种类似于字符串的数据类型。</p>
+<p><strong>Symbol 函数的参数只表示对当前 Symbol 值的描述，因此相同参数的 Symbol 函数的返回值是不相等的。</strong></p>
+<p>Symbol 值作为对象属性名时不能使用点运算符：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> s = <span class="built_in">Symbol</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">    [s]: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Hello'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj[s]()  <span class="comment">// 'Hello'</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="12-Promise"><a href="#12-Promise" class="headerlink" title="12. Promise"></a>12. Promise</h3><p>Promise 代表一个异步操作的执行返回状态，这个执行返回状态在 Promise 对象创建时是未知的，它允许为异步操作的成功或失败指定处理方法。</p>
+<h4 id="Promise-的状态有三种"><a href="#Promise-的状态有三种" class="headerlink" title="Promise 的状态有三种"></a>Promise 的状态有三种</h4><ol>
+<li>Fulfilled，表示 Promise 执行成功</li>
+<li>Rejected，表示 Promise 执行失败</li>
+<li>Pending，表示 Promise 正在执行中</li>
+</ol>
+<h4 id="Promise-对象有两个特点"><a href="#Promise-对象有两个特点" class="headerlink" title="Promise 对象有两个特点"></a>Promise 对象有两个特点</h4><ol>
+<li>对象的状态不受外界影响</li>
+<li>一旦状态改变就不会再变，任何时候都可以得到这个结果</li>
+</ol>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>无法取消 Promise，一旦新建它就会立即执行，无法中途取消</li>
+<li>如果不设置回调函数，Promise 内部抛出的错误不会反应到外部</li>
+<li>当处于 Pending 状态时，无法得知目前进展到哪一个阶段（刚开始还是即将完成）</li>
+</ol>
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// ... some code</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> ( <span class="comment">/*异步操作成功*/</span> ) &#123;</span><br><span class="line">        resolve(value)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        reject(error)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">promise.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// success</span></span><br><span class="line">&#125;, <span class="function"><span class="keyword">function</span>(<span class="params">error</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// failure</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h4><ol>
+<li>Promise.prototype.then()，为 Promise 实例添加状态改变时的回调函数，返回一个新的 Promise 实例</li>
+<li>Promise.prototype.catch()，用于指定发生错误时的回调函数，返回一个新的 Promise 实例</li>
+<li>Promise.prototype.done()，总是处于回调链的尾端，保证捕捉到任何可能出现的错误</li>
+<li>Promise.prototype.finally()，用于指定不管 Promise 对象最后状态如何都会执行的操作。</li>
+</ol>
+<p>finally 与 done 的最大区别在于：finally 接受一个普通的回调函数作为参数，该函数不管怎样都必须执行。</p>
+<h4 id="Promise-对象方法"><a href="#Promise-对象方法" class="headerlink" title="Promise 对象方法"></a>Promise 对象方法</h4><ol>
+<li>Promise.all()，将多个 Promise 实例包装成一个新的 Promise 实例。<ol>
+<li>第一，只有 p1，p2，p3 的状态都编程 Fulfilled，p 的状态才会变成 Fulfilled，此时p1，p2，p3 的返回值组成一个数组，传递给 p 的回调函数。</li>
+<li>第二，只要 p1，p2，p3 中有一个被 Rejected，p 的状态就变成 Rejected，此时第一个被 Rejected 的实例的返回值会传递给 p 的回调函数</li>
+</ol>
+</li>
+<li>Promise.race()，将多个 Promise 实例包装成一个新的 Promise 实例。<ol>
+<li>只要 p1，p2，p3 中有一个实例率先改变状态，p 的状态就跟着改变，那个率先改变的 Promise 实例的返回值就传递给 p 的回调函数。</li>
+</ol>
+</li>
+<li>Promise.resolve()，将现有对象转为 Promise 对象，状态为 Resolved</li>
+<li>Promise.reject()，将现有对象转为 Promise 对象，状态为 Rejected</li>
+</ol>
+<h3 id="13-Proxy"><a href="#13-Proxy" class="headerlink" title="13. Proxy"></a>13. Proxy</h3><p>Proxy 用于修改某些操作的默认行为，可以用来拦截某个对象的属性访问方法，然后重载对象的 “ . ” 运算符。</p>
+<p>Proxy 可以理解成在目标对象前架设一个“拦截”层，外界对该对象的访问都必须先通过这层拦截，因此提供了一种机制可以对外界的访问进行过滤和改写。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> object = <span class="keyword">new</span> <span class="built_in">Proxy</span>(&#123;&#125;, &#123;</span><br><span class="line">    <span class="keyword">get</span>: function(target, key, receiver) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`getting <span class="subst">$&#123;key&#125;</span>`</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(target, key, receiver)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>: function(target, key, value, receiver) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">`setting <span class="subst">$&#123;key&#125;</span>`</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Reflect</span>.set(target, key, value, receiver)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对比 Object.defineProperty</span></span><br><span class="line"><span class="keyword">let</span> object = &#123;&#125;,</span><br><span class="line">    value</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.defineProperty(object, <span class="string">'value'</span>, &#123;</span><br><span class="line">    <span class="keyword">get</span>: function() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'getting value'</span>)</span><br><span class="line">        <span class="keyword">return</span> value</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span>: function(newValue) &#123;</span><br><span class="line">        value = newValue</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'setting: '</span> + newValue)</span><br><span class="line">    &#125;,</span><br><span class="line">    enumerable: <span class="literal">true</span>,</span><br><span class="line">    configurable: <span class="literal">true</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<h3 id="14-Reflect"><a href="#14-Reflect" class="headerlink" title="14. Reflect"></a>14. Reflect</h3><p>Reflect 对象的设计目的有以下几个：</p>
+<p>第一，将 Object 对象的一些明显属于语言内部的方法（如 Object.defineProperty）放到 Reflect 对象上，现阶段，某些方法同时在 Object 和 Reflect 对象上部署，未来新的方法只在 Reflect 对象上部署。也就是说，从 Reflect 对象上可以获得语言内部的方法。</p>
+<p>第二，修改某些 Object 方法的返回结果，让其变得更加合理。</p>
+<p>第三，让 Object 操作都编程函数行为，某些 Object 操作是命令式，比如 name in obj 和 delete obj [name]，而 Reflect.has(obj, name) 和 Reflect.deleteProperty(obj, name) 让它们变成了函数行为。</p>
+<p>第四，Reflect 对象的方法与 Proxy 对象的方法一一对应，只要是 Proxy 对象的方法，就能在 Reflect 对象上找到对应的方法，这就是 Proxy 对象可以方便的调用对应的 Reflect 方法来完成默认行为，作为修改行为的基础。也就是说，无论 Proxy 怎么修改默认行为，我们总可以在 Reflect 上获取到默认行为。</p>
+<h2 id="三、ES7"><a href="#三、ES7" class="headerlink" title="三、ES7+"></a>三、ES7+</h2><p>2016 年，ECMAScript 7（或称为 ECMAScript 2016） 正式发布，整体来说，在 ES6 的版本逐渐稳定后，后期版本添加的主要内容已经不是太多了。</p>
+<h3 id="1-Array-prototype-includes"><a href="#1-Array-prototype-includes" class="headerlink" title="1. Array.prototype.includes"></a>1. Array.prototype.includes</h3><p>这个数组方法主要用来判断数组中是否包含某个元素<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> num = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(num.includes(<span class="number">1</span>))  <span class="comment">// true</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="2-异步函数-async-await"><a href="#2-异步函数-async-await" class="headerlink" title="2. 异步函数 async/await"></a>2. 异步函数 async/await</h3><p>async 函数返回一个 Promise 对象，可以使用 then 方法添加回调函数。当函数执行的时候，一旦遇到 await 就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。</p>
+<h4 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">timeout</span>(<span class="params">ms</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">        setTimeout(resolve, ms)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">asyncPrint</span>(<span class="params">value, ms</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> timeout(ms)</span><br><span class="line">    <span class="built_in">console</span>.log(value)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">asyncPrint(<span class="string">'Hello'</span>, <span class="number">300</span>)</span><br></pre></td></tr></table></figure>
+<p>async 函数返回一个 Promise 对象，async 函数内部 return 语句返回的值，会成为 then 方法回调函数的参数：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello'</span></span><br><span class="line">&#125;</span><br><span class="line">f().then(<span class="function"><span class="params">v</span> =&gt;</span> <span class="built_in">console</span>.log(v))  <span class="comment">// 'Hello'</span></span><br></pre></td></tr></table></figure></p>
+<p>async 函数内部抛出错误会导致返回的 Promise 对象变成 rejected 状态，抛出的错误对象会被 catch 方法回调函数接受到：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">f</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'出错了'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">f().then(</span><br><span class="line">    v =&gt; <span class="built_in">console</span>.log(v),</span><br><span class="line">    e =&gt; <span class="built_in">console</span>.log(<span class="number">1</span>+e)</span><br><span class="line">)   <span class="comment">// ‘1Error: 出错了’</span></span><br></pre></td></tr></table></figure></p>
+<p>正常情况下，await 命令后面是一个 Promise 对象，如果不是，会被转为一个立即 resolve 的 Promise 对象。</p>
+<p>await 命令后面的 Promise 对象如果变成 rejected 状态，则 reject 的参数会被 catch 方法的回调函数接收到。</p>
+<p>只要一个 await 语句后面的 Promise 变成 rejected，那么整个 async 函数都会被中断执行。</p>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>await 命令后面的 Promise 对象的运行结果可能是 rejected，最好把 await 命令放在 try…catch 中。</p>
+<p>多个 await 命令后面的异步操作如果不存在继发关系，最好让它们同时触发。</p>
+<p>await 命令只能用在 async 函数中，如果用在普通函数中就会报错。</p>
+<h3 id="3-Object-values"><a href="#3-Object-values" class="headerlink" title="3. Object.values()"></a>3. Object.values()</h3><h3 id="4-Object-entries"><a href="#4-Object-entries" class="headerlink" title="4. Object.entries()"></a>4. Object.entries()</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> exampleObj = &#123;<span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span>, <span class="attr">c</span>: <span class="number">3</span>, <span class="attr">d</span>:<span class="number">4</span>&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.entries(exampleObj));</span><br><span class="line"><span class="comment">// [["a", 1], ["b", 2], ["c", 3], ["d", 4]];</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Usually used with for</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> [key, value] <span class="keyword">of</span> <span class="built_in">Object</span>.entries(exampleObj)) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`key: <span class="subst">$&#123;key&#125;</span>, value: <span class="subst">$&#123;value&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// key: a, value: 1</span></span><br><span class="line"><span class="comment">// key: b, value: 2</span></span><br><span class="line"><span class="comment">// key: c, value: 3</span></span><br><span class="line"><span class="comment">// key: d, value: 4</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-Array-prototype-flat-amp-Array-prototype-flatMap"><a href="#5-Array-prototype-flat-amp-Array-prototype-flatMap" class="headerlink" title="5. Array.prototype.flat() &amp; Array.prototype.flatMap()"></a>5. Array.prototype.flat() &amp; Array.prototype.flatMap()</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr2 = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>, [<span class="number">5</span>, <span class="number">6</span>]]];</span><br><span class="line">arr2.flat(); <span class="comment">// [1, 2, 3, 4, [5, 6]]</span></span><br><span class="line">arr2.flat(<span class="number">2</span>); <span class="comment">// [1, 2, 3, 4, 5, 6]</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> arr = [<span class="string">"早安"</span>, <span class="string">""</span>, <span class="string">"今天天氣不錯"</span>]</span><br><span class="line">arr.map(<span class="function"><span class="params">s</span> =&gt;</span> s.split(<span class="string">''</span>))</span><br><span class="line"><span class="comment">// [["早", "安"], [""], ["今", "天", "天", "氣", "不", "錯"]]</span></span><br><span class="line"></span><br><span class="line">arr.flatMap(<span class="function"><span class="params">s</span> =&gt;</span> s.split(<span class="string">''</span>));</span><br><span class="line"><span class="comment">// ["早", "安", "", "今", "天", "天", "氣", "不", "錯"]</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-Promise-allSettled"><a href="#6-Promise-allSettled" class="headerlink" title="6. Promise.allSettled()"></a>6. Promise.allSettled()</h3><h3 id="7-可选链接？"><a href="#7-可选链接？" class="headerlink" title="7. 可选链接？"></a>7. 可选链接？</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> username = user?.info?.name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> username = user?.name || <span class="string">'guest'</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="8-循环等待"><a href="#8-循环等待" class="headerlink" title="8. 循环等待"></a>8. 循环等待</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 符合预期 (如果你想连续执行await调用，请使用for循环(或任何没有回调的循环)。)</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> i <span class="keyword">of</span> array) &#123;</span><br><span class="line">    <span class="keyword">await</span> doSomething(i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 不符合预期 (永远不要和forEach一起使用await，而是使用for循环(或任何没有回调的循环)。)</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">  array.forEach(<span class="keyword">async</span> i =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> doSomething(i);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ES9 增加了异步迭代器，允许 await 与 for of 循环一起使用，逐步执行异步操作。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span>(<span class="params">array</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> <span class="keyword">await</span> (<span class="keyword">const</span> i <span class="keyword">of</span> array) &#123;</span><br><span class="line">    doSomething(i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><br><br><a href="https://zhuanlan.zhihu.com/p/531959101" target="_blank" rel="noopener">文章来源</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

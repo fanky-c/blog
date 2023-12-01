@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        研发效能总结 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#技术人的核心价值"><span class="toc-text">技术人的核心价值</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、不同公司的研发核心价值"><span class="toc-text">1、不同公司的研发核心价值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、我们的核心价值是什么"><span class="toc-text">2、我们的核心价值是什么</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何提高研发效能"><span class="toc-text">如何提高研发效能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、研发的流程效能：拆分阶段、发现关键问题阶段、提出方案"><span class="toc-text">1、研发的流程效能：拆分阶段、发现关键问题阶段、提出方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、研发的生产效能"><span class="toc-text">2、研发的生产效能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1）全链路技术规范"><span class="toc-text">1）全链路技术规范</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2）全链路业务可配置"><span class="toc-text">2）全链路业务可配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3）统一横向支撑工具"><span class="toc-text">3）统一横向支撑工具</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4）非功能性代码"><span class="toc-text">4）非功能性代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5）部署交付：部署手册指导；统一的问题排查工具"><span class="toc-text">5）部署交付：部署手册指导；统一的问题排查工具</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6）接口文档化：web层统一遵循swagger规范等"><span class="toc-text">6）接口文档化：web层统一遵循swagger规范等</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7）系统协作的清晰边界"><span class="toc-text">7）系统协作的清晰边界</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、研发的协作效能"><span class="toc-text">3、研发的协作效能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1）日常答疑的协作流程"><span class="toc-text">1）日常答疑的协作流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2）项目过程管理"><span class="toc-text">2）项目过程管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3）日常需求排期"><span class="toc-text">3）日常需求排期</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、研发的人员效能"><span class="toc-text">4、研发的人员效能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1）学习与培训"><span class="toc-text">1）学习与培训</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2）检查和考试"><span class="toc-text">2）检查和考试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#研发效能衡量关键指标"><span class="toc-text">研发效能衡量关键指标</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        研发效能总结
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-09-14 21:34:22</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#个人成长" title="个人成长">个人成长</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#研发效能" title="研发效能">研发效能</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#研发流程" title="研发流程">研发流程</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="技术人的核心价值"><a href="#技术人的核心价值" class="headerlink" title="技术人的核心价值"></a>技术人的核心价值</h2><h3 id="1、不同公司的研发核心价值"><a href="#1、不同公司的研发核心价值" class="headerlink" title="1、不同公司的研发核心价值"></a>1、不同公司的研发核心价值</h3><ol>
+<li>外包公司：最核心的价值不是技术，而是快速响应、资源调配、项目成本控制；</li>
+<li><strong>企业信息化公司：</strong><ol>
+<li>第一层运用技术更好的支撑业务</li>
+<li>第二层用技术推动业务，用自身的业务经验服务和帮助客户</li>
+<li>第三层用经验积累去影响行业</li>
+</ol>
+</li>
+<li>解决特定场景和问题的产品公司：核心价值在于技术，专注做技术深度</li>
+</ol>
+<h3 id="2、我们的核心价值是什么"><a href="#2、我们的核心价值是什么" class="headerlink" title="2、我们的核心价值是什么"></a>2、我们的核心价值是什么</h3><ol>
+<li>一、有质量高效交付业务<ol>
+<li>交付业务：阶段性与业务对齐产品目标</li>
+<li>质量和高效：用数据说明安全高效的交付需求</li>
+</ol>
+</li>
+<li>二、用技术影响行业， 需要持续的积累和思考</li>
+<li>三、建技术壁垒和技术基建，确保系统稳定，业务健康和持久发展</li>
+</ol>
+<h2 id="如何提高研发效能"><a href="#如何提高研发效能" class="headerlink" title="如何提高研发效能"></a>如何提高研发效能</h2><h3 id="1、研发的流程效能：拆分阶段、发现关键问题阶段、提出方案"><a href="#1、研发的流程效能：拆分阶段、发现关键问题阶段、提出方案" class="headerlink" title="1、研发的流程效能：拆分阶段、发现关键问题阶段、提出方案"></a>1、研发的流程效能：拆分阶段、发现关键问题阶段、提出方案</h3><ol>
+<li><p><strong>1）需求阶段</strong></p>
+<ol>
+<li>问题：需求反复、需求不清楚、需求争议</li>
+<li>解决方案：<ol>
+<li>确保需求的有效期，明确业务价值和需求范围，并确保需求理解的一致性；</li>
+<li>需求内容，先小范围内沟通对焦；等需求讨论清晰，再拉落地相关同学参与；</li>
+<li>需求有争议时，为避免反复，拉上相关同学一起对焦；</li>
+<li>日常需求，定期排期、通晒。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p><strong>2）研发阶段：在后面的研发的生产效能说明</strong></p>
+</li>
+<li><p><strong>3）联调和测试阶段</strong></p>
+<ol>
+<li>问题：联调效率低、环境不可用、提测代码质量低</li>
+<li>解决方案：<ol>
+<li>前后端分离，各自具备Mock的能力；</li>
+<li>日常环境治理，降级系统服务的依赖，确保测试环境问题；</li>
+<li>基准测试用例，冒烟测试，自动化脚本测试，确保提测质量。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<ol start="4">
+<li><strong>4）上线阶段</strong><ol>
+<li>问题：发布频率高、定位问题耗时、部署系统时长</li>
+<li>解决问题：<ol>
+<li>对同一时间的发布系统做适当合并；</li>
+<li>与业务约定发布频率，控制发布周期；</li>
+<li>系统依赖治理，缩短部署时长；</li>
+<li>针对排查问题耗时，提供相应的问题排查工具。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="2、研发的生产效能"><a href="#2、研发的生产效能" class="headerlink" title="2、研发的生产效能"></a>2、研发的生产效能</h3><h4 id="1）全链路技术规范"><a href="#1）全链路技术规范" class="headerlink" title="1）全链路技术规范"></a>1）全链路技术规范</h4><p><img src="/img/eff1.png" height="auto" width="90%"></p>
+<p>每一个过程，通过规范文档统一标准，并通过宣传和考试的方式，让大家都熟知内容。并通过典型案例通晒，强化规范内容的价值。</p>
+<h4 id="2）全链路业务可配置"><a href="#2）全链路业务可配置" class="headerlink" title="2）全链路业务可配置"></a>2）全链路业务可配置</h4><ol>
+<li>页面可配置</li>
+<li>逻辑可配置</li>
+<li>服务&amp;流程可配置</li>
+</ol>
+<h4 id="3）统一横向支撑工具"><a href="#3）统一横向支撑工具" class="headerlink" title="3）统一横向支撑工具"></a>3）统一横向支撑工具</h4><p>拉通团队内部共性的支撑工具，共建一份。比如excel批量导入导出，审批流，通知工具等。</p>
+<h4 id="4）非功能性代码"><a href="#4）非功能性代码" class="headerlink" title="4）非功能性代码"></a>4）非功能性代码</h4><ol>
+<li>应用脚手架：一键生成应用工程</li>
+<li>代码规范的模板：错误码模板、日志模板、工程结构等</li>
+<li>中间件</li>
+<li>通用工具类</li>
+<li>业务标准拦截：用户登录、服务异常、基础埋点</li>
+<li>稳定性：限流</li>
+</ol>
+<h4 id="5）部署交付：部署手册指导；统一的问题排查工具"><a href="#5）部署交付：部署手册指导；统一的问题排查工具" class="headerlink" title="5）部署交付：部署手册指导；统一的问题排查工具"></a>5）部署交付：部署手册指导；统一的问题排查工具</h4><h4 id="6）接口文档化：web层统一遵循swagger规范等"><a href="#6）接口文档化：web层统一遵循swagger规范等" class="headerlink" title="6）接口文档化：web层统一遵循swagger规范等"></a>6）接口文档化：web层统一遵循swagger规范等</h4><h4 id="7）系统协作的清晰边界"><a href="#7）系统协作的清晰边界" class="headerlink" title="7）系统协作的清晰边界"></a>7）系统协作的清晰边界</h4><p>我们在落地过程中，往往会存在系统调用，系统依赖等问题，建议在启动初期，把这些关键问题定义出来，然后寻找TL或pm协调解决。</p>
+<h3 id="3、研发的协作效能"><a href="#3、研发的协作效能" class="headerlink" title="3、研发的协作效能"></a>3、研发的协作效能</h3><p>通过流程规范和模板，约定大家的协作模式</p>
+<h4 id="1）日常答疑的协作流程"><a href="#1）日常答疑的协作流程" class="headerlink" title="1）日常答疑的协作流程"></a>1）日常答疑的协作流程</h4><h4 id="2）项目过程管理"><a href="#2）项目过程管理" class="headerlink" title="2）项目过程管理"></a>2）项目过程管理</h4><p><img src="/img/eff2.png" height="auto" width="90%"></p>
+<h4 id="3）日常需求排期"><a href="#3）日常需求排期" class="headerlink" title="3）日常需求排期"></a>3）日常需求排期</h4><ol>
+<li>约定需求排期周期，固定时间，并沟通需求通过协作管理工具；</li>
+<li>后续可通过协作管理工具，分析统计数据。</li>
+</ol>
+<h3 id="4、研发的人员效能"><a href="#4、研发的人员效能" class="headerlink" title="4、研发的人员效能"></a>4、研发的人员效能</h3><h4 id="1）学习与培训"><a href="#1）学习与培训" class="headerlink" title="1）学习与培训"></a>1）学习与培训</h4><ol>
+<li>通过持续的学习，或借力其他团队的方式，提升技术水平；</li>
+<li>通过沉淀团队规范，文档，案例等方案，让大家补齐知识；</li>
+<li>通过复盘总结，沉淀典型案例，内部分享，避免重复采坑。</li>
+</ol>
+<h4 id="2）检查和考试"><a href="#2）检查和考试" class="headerlink" title="2）检查和考试"></a>2）检查和考试</h4><h2 id="研发效能衡量关键指标"><a href="#研发效能衡量关键指标" class="headerlink" title="研发效能衡量关键指标"></a>研发效能衡量关键指标</h2><ol>
+<li>需求交付周期，需求交付数量</li>
+<li>代码提交量</li>
+<li>测试阶段bug数量</li>
+<li>线上故障和事故</li>
+</ol>
+<p><br><br><a href="https://mp.weixin.qq.com/s/rg-NHLYljH8e6OWZpHtfmg" target="_blank" rel="noopener">文章来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

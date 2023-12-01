@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        CommonJS和ES6 Module - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用介绍"><span class="toc-text">使用介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CommonJS"><span class="toc-text">CommonJS</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6-Module"><span class="toc-text">ES6 Module</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#使用-1"><span class="toc-text">使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行原理"><span class="toc-text">运行原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CommonJS-1"><span class="toc-text">CommonJS</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#模块查找、加载、解析"><span class="toc-text">模块查找、加载、解析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#模块重复引用和循环引用"><span class="toc-text">模块重复引用和循环引用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ES6-Module-1"><span class="toc-text">ES6 Module</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#查找、加载、解析"><span class="toc-text">查找、加载、解析</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#模块重复引用和循环引用-1"><span class="toc-text">模块重复引用和循环引用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#两者区别"><span class="toc-text">两者区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#加载运行的时机"><span class="toc-text">加载运行的时机</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#模块导出的值不一样"><span class="toc-text">模块导出的值不一样</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        CommonJS和ES6 Module
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-04-16 10:09:23</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#commonjs" title="commonjs">commonjs</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#es6 module" title="es6 module">es6 module</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="使用介绍"><a href="#使用介绍" class="headerlink" title="使用介绍"></a>使用介绍</h3><h4 id="CommonJS"><a href="#CommonJS" class="headerlink" title="CommonJS"></a>CommonJS</h4><h5 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h5><ol>
+<li>使用场景：<strong>nodejs服务器端居多</strong></li>
+<li><p>导出</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 导出一个对象</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    name: <span class="string">"蛙人"</span>,</span><br><span class="line">    age: <span class="number">24</span>,</span><br><span class="line">    sex: <span class="string">"male"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 导出任意值</span></span><br><span class="line"><span class="built_in">module</span>.exports.name = <span class="string">"蛙人"</span></span><br><span class="line"><span class="built_in">module</span>.exports.sex = <span class="literal">null</span></span><br><span class="line"><span class="built_in">module</span>.exports.age = <span class="literal">undefined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 混合导出</span></span><br><span class="line">exports.name = <span class="string">"蛙人"</span></span><br><span class="line"><span class="built_in">module</span>.exports.age = <span class="number">24</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>导入</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="built_in">module</span>.exports.name = <span class="string">"蛙人"</span></span><br><span class="line"><span class="built_in">module</span>.exports.age = <span class="number">24</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="built_in">require</span>(<span class="string">"./index.js"</span>)</span><br><span class="line"><span class="built_in">console</span>.log(data) <span class="comment">// &#123; name: "蛙人", age: 24 &#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="ES6-Module"><a href="#ES6-Module" class="headerlink" title="ES6 Module"></a>ES6 Module</h4><h5 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h5><ol>
+<li>使用场景：后来ES6版本正式加入了ES Module模块，成为浏览器和服务器通用的模块解决方案</li>
+<li><p>导出</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 导出变量</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">"蛙人"</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> age = <span class="number">24</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 导出方法也可以</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> test = <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果有多个的话</span></span><br><span class="line"><span class="keyword">const</span> name = <span class="string">"蛙人"</span></span><br><span class="line"><span class="keyword">const</span> sex = <span class="string">"male"</span></span><br><span class="line"><span class="keyword">export</span> &#123; name, sex &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>导入</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index,js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">"蛙人"</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> age = <span class="number">24</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; name, age &#125; <span class="keyword">from</span> <span class="string">'./index.js'</span> <span class="comment">//这里的花括号跟解构不一样</span></span><br><span class="line"><span class="built_in">console</span>.log(name, age) <span class="comment">// "蛙人" 24</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果里面全是单个导出，我们就想全部直接导入则可以这样写</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> all <span class="keyword">from</span> <span class="string">'./index.js'</span></span><br><span class="line"><span class="built_in">console</span>.log(all) <span class="comment">// &#123;name: "蛙人", age: 24&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>混合导入</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index,js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">"蛙人"</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> age = <span class="number">24</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    msg: <span class="string">"蛙人"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> msg, &#123; name, age &#125; <span class="keyword">from</span> <span class="string">'./index.js'</span></span><br><span class="line"><span class="built_in">console</span>.log(msg) <span class="comment">// &#123; msg: "蛙人" &#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="运行原理"><a href="#运行原理" class="headerlink" title="运行原理"></a>运行原理</h3><h4 id="CommonJS-1"><a href="#CommonJS-1" class="headerlink" title="CommonJS"></a>CommonJS</h4><h5 id="模块查找、加载、解析"><a href="#模块查找、加载、解析" class="headerlink" title="模块查找、加载、解析"></a>模块查找、加载、解析</h5><ol>
+<li>对于核心模块，node将其已经编译成二进制代码，直接书写标识符fs、http就可以</li>
+<li>对于自己写的文件模块，需要用‘./’’../‘开头，require会将这种相对路径转化为真实路径，找到模块</li>
+<li>对于第三方模块，也就是使用npm下载的包，就会用到paths这个变量，会依次查找当前路径下的node_modules文件夹，如果没有，则在父级目录查找no_modules，一直到根目录下，找到为止。</li>
+</ol>
+<h5 id="模块重复引用和循环引用"><a href="#模块重复引用和循环引用" class="headerlink" title="模块重复引用和循环引用"></a>模块重复引用和循环引用</h5><ol>
+<li>重复引用问题。<ol>
+<li>模块加载是以绝对路径为key写入cache（require.cache）中，缓存可以解决重复查找和重复加载的问题。</li>
+</ol>
+</li>
+<li>循环引用问题。<ol>
+<li>我们可以看到，在 CommonJS 规范中，当遇到 require() 语句时，会执行 require 模块中的代码，并缓存执行的结果，当下次再次加载时不会重复执行，而是直接取缓存的结果。正因为此，出现循环依赖时才不会出现无限循环调用的情况。虽然这种模块加载机制可以避免出现循环依赖时报错的情况，但稍不注意就很可能使得代码并不是像我们想象的那样去执行。</li>
+<li>CommonJS通过模块缓存来解决：每一个模块都先加入缓存再执行，每次遇到require都先检查缓存，这样就不会出现死循环；借助缓存，输出的值也很简单就能找到了。</li>
+</ol>
+</li>
+</ol>
+<h4 id="ES6-Module-1"><a href="#ES6-Module-1" class="headerlink" title="ES6 Module"></a>ES6 Module</h4><h5 id="查找、加载、解析"><a href="#查找、加载、解析" class="headerlink" title="查找、加载、解析"></a>查找、加载、解析</h5><h5 id="模块重复引用和循环引用-1"><a href="#模块重复引用和循环引用-1" class="headerlink" title="模块重复引用和循环引用"></a>模块重复引用和循环引用</h5><ol>
+<li>重复引用问题。<ol>
+<li>模块加载是以绝对路径为key写入cache（require.cache）中，缓存可以解决重复查找和重复加载的问题。</li>
+</ol>
+</li>
+<li>循环引用问题。<ol>
+<li>跟 CommonJS 模块一样，ES6 不会再去执行重复加载的模块。ES Module借助模块地图，已经进入过的模块标注为获取中，遇到import语句会去检查这个地图，已经标注为获取中的则不会进入，地图中的每一个节点是一个模块记录，上面有导出变量的内存地址，导入时会做一个连接——即指向同一块内存。</li>
+</ol>
+</li>
+</ol>
+<h3 id="两者区别"><a href="#两者区别" class="headerlink" title="两者区别"></a>两者区别</h3><h4 id="加载运行的时机"><a href="#加载运行的时机" class="headerlink" title="加载运行的时机"></a>加载运行的时机</h4><ul>
+<li><p>Commonjs是运行时候加载。因为导出是个对象，只有在运行时候才能生成，所以使用时可以放在地方。对外是动态定义。</p>
+</li>
+<li><p>ES6 Module是编译时候加载。编译时候就确定模块依赖关系以及输入、输出的变量。对外导出只是个静态定义。所以使用的时候import必须放在文件的最开始，且前面不允许有其他逻辑代码。</p>
+</li>
+</ul>
+<h4 id="模块导出的值不一样"><a href="#模块导出的值不一样" class="headerlink" title="模块导出的值不一样"></a>模块导出的值不一样</h4><ul>
+<li><p>commonjs是值的拷贝（注意浅拷贝基本数据类型和对象数据类型区别）， 可以修改导出的值，这在代码出错时，不好排查引起变量污染</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dep.js</span></span><br><span class="line"><span class="keyword">let</span> a = <span class="number">1</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    a: a</span><br><span class="line">&#125;</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> a += <span class="number">1</span>, <span class="number">500</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// app.js</span></span><br><span class="line"><span class="keyword">let</span> a = <span class="built_in">require</span>(<span class="string">'dep'</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(a) <span class="comment">// 输出：1</span></span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>es6是值的引用, 值都是可读的，不能修改</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dep.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> a = <span class="number">1</span></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> a += <span class="number">1</span>, <span class="number">500</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// app.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; a &#125; <span class="keyword">from</span> <span class="string">'dep'</span></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(a)   <span class="comment">//输出：2</span></span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><br></p>
+<p><a href="https://juejin.cn/post/6938581764432461854#heading-17" target="_blank" rel="noopener">参考文章1</a></p>
+<p><a href="https://es6.ruanyifeng.com/#docs/module" target="_blank" rel="noopener">参考文章2</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

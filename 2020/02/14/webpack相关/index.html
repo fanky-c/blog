@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        webpack相关 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack核心概念"><span class="toc-text">webpack核心概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack流程"><span class="toc-text">webpack流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始化"><span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编译"><span class="toc-text">编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输出"><span class="toc-text">输出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack原理"><span class="toc-text">webpack原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack模块打包原理"><span class="toc-text">webpack模块打包原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack打包出来的代码为啥能在浏览器上运行"><span class="toc-text">webpack打包出来的代码为啥能在浏览器上运行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#webpack最终精简代码"><span class="toc-text">webpack最终精简代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack优化"><span class="toc-text">webpack优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#打包速度优化"><span class="toc-text">打包速度优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#缩小文件查找范围"><span class="toc-text">缩小文件查找范围</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#减小编译的文件内容"><span class="toc-text">减小编译的文件内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#充分利用电脑多核性能"><span class="toc-text">充分利用电脑多核性能</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目代码优化"><span class="toc-text">项目代码优化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#懒加载"><span class="toc-text">懒加载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tree-shaking"><span class="toc-text">tree shaking</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码合并和分离-splitChunks"><span class="toc-text">代码合并和分离(splitChunks)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack插件"><span class="toc-text">webpack插件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插件相关概念"><span class="toc-text">插件相关概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插件创建流程"><span class="toc-text">插件创建流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用案例"><span class="toc-text">使用案例</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        webpack相关
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-02-14 16:17:30</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#webpack优化" title="webpack优化">webpack优化</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#webpack原理" title="webpack原理">webpack原理</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="webpack核心概念"><a href="#webpack核心概念" class="headerlink" title="webpack核心概念"></a>webpack核心概念</h2><ol>
+<li>entry : webpack项目入口</li>
+<li>module ： webpack一个模块对应一个文件， webpack从entry开始递归找出所有依赖模块</li>
+<li>chunk ： 代码块， 一个chunk由多个模块组成， 主要用于代码合并和分割</li>
+<li>loader ： 模块转换器， 用于将制定的模块内容转换为所需要的内容</li>
+<li>plugins ： 拓展插件， 用于在webpack构建过程中特定的时机广播对应的事件， 插件可以监听这些事件发生，做特定的事情</li>
+</ol>
+<h2 id="webpack流程"><a href="#webpack流程" class="headerlink" title="webpack流程"></a>webpack流程</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><ol>
+<li>初始化相关参数： 从webpack.config.js和shell语句中读取</li>
+</ol>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><ol>
+<li>开始编译： 用上一步读取到的配置参数初始化compiler对象， 加载所有的插件， 通过执行对象run方法进行编译</li>
+<li>确定入口： 根据entry找出所有的入口文件</li>
+<li>编译模块： 从入口文件出发， 调用所有的配置loader(从右到左，从下到上)对模块进行编译，再找出该模块依赖的模块，进行递归处理</li>
+<li>完成编译： 经过上一步， 得到每个模块被编译之后的最终内容以及他们的依赖关系<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3></li>
+<li>输出资源： 根据入口和模块之间的依赖关系， 组装一个个包含多个模块的chunk, 再将每个chunk转换一个单独的文件到输出列表中， 这一步是修改输出内容的最后一步</li>
+<li>输出完成：根据上一步确定好输出内容之后， 根据webpack.config.js配置确定输出文件的路径和名称， 将文件写入磁盘(fs)</li>
+</ol>
+<h2 id="webpack原理"><a href="#webpack原理" class="headerlink" title="webpack原理"></a>webpack原理</h2><ol>
+<li>读取文件分析模块依赖</li>
+<li>对模块进行解析执行(深度遍历)</li>
+<li>对不同的模块使用相应的loader</li>
+<li>编译模块，生成抽象语法树AST</li>
+<li>循环遍历AST树，拼接输出js<blockquote>
+<p>webpack输出的js文件：1. <strong>webpack_require</strong>是模块加载函数， 2. 每个模块都有唯一的id(0, 1, 2,…)， 3. <strong>webpack_require</strong>.e是异步加载模块函数（Promise实现）， 4. webpackJsonp用于从异步加载的文件中安装模块</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="webpack模块打包原理"><a href="#webpack模块打包原理" class="headerlink" title="webpack模块打包原理"></a>webpack模块打包原理</h2><h3 id="webpack打包出来的代码为啥能在浏览器上运行"><a href="#webpack打包出来的代码为啥能在浏览器上运行" class="headerlink" title="webpack打包出来的代码为啥能在浏览器上运行"></a>webpack打包出来的代码为啥能在浏览器上运行</h3><ol>
+<li>webpack对于ES模块/CommonJS模块的实现，是基于自己实现的webpack_require，所以代码能跑在浏览器中。</li>
+<li>从 webpack2 开始，已经内置了对 ES6、CommonJS、AMD 模块化语句的支持。但不包括新的ES6语法转为ES5代码，这部分工作还是留给了babel及其插件。</li>
+<li>在webpack中可以同时使用ES6模块和CommonJS模块。 因为 module.exports很像export default，所以ES6模块可以很方便兼容 CommonJS：import XXX from ‘commonjs-module’。反过来CommonJS兼容ES6模块，需要额外加上default：require(‘es-module’).default。</li>
+</ol>
+<h3 id="webpack最终精简代码"><a href="#webpack最终精简代码" class="headerlink" title="webpack最终精简代码"></a>webpack最终精简代码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">modules</span>) </span>&#123; </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  主要实现功能：</span></span><br><span class="line"><span class="comment">     *  1. 定义模块缓存</span></span><br><span class="line"><span class="comment">     *  2. 实现浏览器支持的require方法</span></span><br><span class="line"><span class="comment">     *     1. 根据moduleId判断是否已缓存模块， 如果有缓存就返回缓存模块</span></span><br><span class="line"><span class="comment">     *     2. 缓存模块相关信息</span></span><br><span class="line"><span class="comment">     *     3. 调用模块函数</span></span><br><span class="line"><span class="comment">     *     4. 标记已加载</span></span><br><span class="line"><span class="comment">     *     5. 返回module.exports</span></span><br><span class="line"><span class="comment">     *  3. 实现异步加载方法</span></span><br><span class="line"><span class="comment">     *     1. require.ensure() 通过回调函数执行接下来的流程</span></span><br><span class="line"><span class="comment">     *     2. webpack4 推荐 import(需要配合<span class="doctag">@babel</span>/plugin-syntax-dynamic-import插件)  通过promise执行接下来的流程</span></span><br><span class="line"><span class="comment">     *  4. ...</span></span><br><span class="line"><span class="comment">     * **/</span></span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">__webpack_require__</span>(<span class="params">moduleId</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 判断是否已缓存模块</span></span><br><span class="line">        <span class="keyword">if</span>(installedModules[moduleId]) &#123;</span><br><span class="line">            <span class="keyword">return</span> installedModules[moduleId].exports;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//缓存模块</span></span><br><span class="line">        <span class="keyword">var</span> <span class="built_in">module</span> = installedModules[moduleId] = &#123;</span><br><span class="line">            i: moduleId,</span><br><span class="line">            l: <span class="literal">false</span>,</span><br><span class="line">            exports: &#123;&#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">//调用模块函数</span></span><br><span class="line">        modules[moduleId].call(<span class="built_in">module</span>.exports, <span class="built_in">module</span>, <span class="built_in">module</span>.exports, __webpack_require__);</span><br><span class="line">        <span class="comment">//标记模块为已加载</span></span><br><span class="line">        <span class="built_in">module</span>.l = <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">// 返回module.exports</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">module</span>.exports;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)(&#123;</span><br><span class="line">    <span class="string">"./src/bar.js"</span>:</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">module, exports, __webpack_require__</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//bar.js代码</span></span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="string">"./src/index.js"</span>:</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">module, exports, __webpack_require__</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//index.js代码</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="webpack优化"><a href="#webpack优化" class="headerlink" title="webpack优化"></a>webpack优化</h2><h3 id="打包速度优化"><a href="#打包速度优化" class="headerlink" title="打包速度优化"></a>打包速度优化</h3><h4 id="缩小文件查找范围"><a href="#缩小文件查找范围" class="headerlink" title="缩小文件查找范围"></a>缩小文件查找范围</h4><ol>
+<li>include指定查找范围、exclude排除文件查找范围</li>
+</ol>
+<h4 id="减小编译的文件内容"><a href="#减小编译的文件内容" class="headerlink" title="减小编译的文件内容"></a>减小编译的文件内容</h4><ol>
+<li>动态链接库DLL（webpack4可以用splitChunks, 不然代码会重复</li>
+</ol>
+<h4 id="充分利用电脑多核性能"><a href="#充分利用电脑多核性能" class="headerlink" title="充分利用电脑多核性能"></a>充分利用电脑多核性能</h4><ol>
+<li>多进程之HappyPack。 HappyPack就能让Webpack把任务分解给多个子进程去并发的执行，子进程处理完后再把结果发送给主进程，其中子进程的个数为cpu的个数减去1,需要在loader处修改如下</li>
+</ol>
+<h3 id="项目代码优化"><a href="#项目代码优化" class="headerlink" title="项目代码优化"></a>项目代码优化</h3><h4 id="懒加载"><a href="#懒加载" class="headerlink" title="懒加载"></a>懒加载</h4><ol>
+<li>require.ensure();</li>
+<li>import();</li>
+</ol>
+<h4 id="tree-shaking"><a href="#tree-shaking" class="headerlink" title="tree shaking"></a>tree shaking</h4><ol>
+<li>目的：消除无用到的代码， 推荐使用方法 { name } form ‘./module.js’ </li>
+<li>原理：ES6引入模块是静态分析，所以编译的时候知道我们加载了哪些代码；进而分析哪些变量未用到，从而删除掉</li>
+<li>有一些副作用（babel转换代码、自执行函数、函数里面使用外部变量</li>
+</ol>
+<p><img src="/img/treeShaking.webp" width="95%"></p>
+<h4 id="代码合并和分离-splitChunks"><a href="#代码合并和分离-splitChunks" class="headerlink" title="代码合并和分离(splitChunks)"></a>代码合并和分离(splitChunks)</h4><ol>
+<li>分离部分第三方库（vue、vuex、vue-router）功能，类似于动态链接库DLL</li>
+<li>合并公共代码（common</li>
+</ol>
+<h2 id="webpack插件"><a href="#webpack插件" class="headerlink" title="webpack插件"></a>webpack插件</h2><h3 id="插件相关概念"><a href="#插件相关概念" class="headerlink" title="插件相关概念"></a>插件相关概念</h3><ol>
+<li>Tapable: webpack自己写的基础类Tapable, Compiler、Compilation等都是继承于Tabable类</li>
+<li>Compiler: Webpack 环境所有的的配置信息，包含 options，loaders，plugins 这些信息</li>
+<li>Compilation: 包含了当前的模块资源、编译生成资源、变化的文件等</li>
+</ol>
+<h3 id="插件创建流程"><a href="#插件创建流程" class="headerlink" title="插件创建流程"></a>插件创建流程</h3><ol>
+<li>创建一个javascript构造函数</li>
+<li>在他的原型定义apply方法</li>
+<li>指定触发webpack的事件钩子</li>
+<li>在钩子里面实现自己的业务逻辑</li>
+<li>功能实现完成，调用webpack提供的callback</li>
+</ol>
+<h3 id="使用案例"><a href="#使用案例" class="headerlink" title="使用案例"></a>使用案例</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//webpack1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">AddHeadTextPlugin</span>(<span class="params">options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.options = options;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">AddHeadTextPlugin.prototype.apply = <span class="function"><span class="keyword">function</span> (<span class="params">compiler</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> self = <span class="keyword">this</span>;</span><br><span class="line">  compiler.plugin(<span class="string">'emit'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">compilation, callback</span>)</span>&#123;</span><br><span class="line">      <span class="keyword">let</span> outputfile = compilation.options.output;</span><br><span class="line">      <span class="keyword">let</span> assets = compilation.assets;</span><br><span class="line">      <span class="keyword">let</span> keys = <span class="built_in">Object</span>.keys(assets);</span><br><span class="line"></span><br><span class="line">      callback();</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  compiler.plugin(<span class="string">'done'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">compilation</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        前端服务灰度发布 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#灰度发布优点"><span class="toc-text">灰度发布优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前端灰度发布的要素"><span class="toc-text">前端灰度发布的要素</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-放量规则"><span class="toc-text">1. 放量规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-资源新旧版本"><span class="toc-text">2. 资源新旧版本</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#灰度实现的原理"><span class="toc-text">灰度实现的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#灰度发布的几种形式"><span class="toc-text">灰度发布的几种形式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#前端灰度发布"><span class="toc-text">前端灰度发布</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#后端灰度发布"><span class="toc-text">后端灰度发布</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        前端服务灰度发布
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-01-27 21:18:24</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#金丝雀发布" title="金丝雀发布">金丝雀发布</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#灰度发布" title="灰度发布">灰度发布</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="灰度发布优点"><a href="#灰度发布优点" class="headerlink" title="灰度发布优点"></a>灰度发布优点</h3><ol>
+<li>提前收集用户意见，完善产品功能</li>
+<li>控制未知异常影响最小范围</li>
+</ol>
+<h3 id="前端灰度发布的要素"><a href="#前端灰度发布的要素" class="headerlink" title="前端灰度发布的要素"></a>前端灰度发布的要素</h3><h4 id="1-放量规则"><a href="#1-放量规则" class="headerlink" title="1. 放量规则"></a>1. 放量规则</h4><ol>
+<li>按照用户某些特征进行放量： 年龄、国家、城市、注册id等等</li>
+<li>常用的放量规则：用户注册有一个自增的序列号，当灰度放量的时候可以根据这个序列号座位灰度特征</li>
+</ol>
+<h4 id="2-资源新旧版本"><a href="#2-资源新旧版本" class="headerlink" title="2. 资源新旧版本"></a>2. 资源新旧版本</h4><ol>
+<li>明确给用户展示不同版本的页面，可以是前端静态版本号形式</li>
+</ol>
+<h3 id="灰度实现的原理"><a href="#灰度实现的原理" class="headerlink" title="灰度实现的原理"></a>灰度实现的原理</h3><ol>
+<li>用户访问网站</li>
+<li>判断是否为灰度用户（有一定规则）</li>
+<li>命中用户就展示新版本， 未命中就展示老版本</li>
+</ol>
+<h3 id="灰度发布的几种形式"><a href="#灰度发布的几种形式" class="headerlink" title="灰度发布的几种形式"></a>灰度发布的几种形式</h3><h4 id="前端灰度发布"><a href="#前端灰度发布" class="headerlink" title="前端灰度发布"></a>前端灰度发布</h4><ol>
+<li>ssr服务端渲染<ol>
+<li>用户访问网站</li>
+<li>ssr服务获取用户特征</li>
+<li>灰度规则服务返回灰度名单</li>
+<li>ssr服务返回前端展示</li>
+</ol>
+</li>
+<li>前后端半分离，入口页面托管在服务端（nodejs、php）</li>
+<li>前后端分离<ol>
+<li>前端代码写2套内容，在页面渲染之前发起异步获取灰度规则</li>
+<li>通过修改nginx配置来灰度<ol>
+<li>2套代码，分别部署</li>
+<li>通过nginx加权轮询来控制百分比灰度</li>
+</ol>
+</li>
+<li>nginx+lua脚本+灰度规则</li>
+</ol>
+</li>
+</ol>
+<h4 id="后端灰度发布"><a href="#后端灰度发布" class="headerlink" title="后端灰度发布"></a>后端灰度发布</h4><ol>
+<li>类似前端ssr服务端渲染</li>
+</ol>
+<p><br><br><a href="https://mp.weixin.qq.com/s/-nZZX0I3PZvEUpUXwmb1MQ" target="_blank" rel="noopener">文章来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

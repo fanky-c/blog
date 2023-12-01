@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        linux常用的命令行 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#系统信息"><span class="toc-text">系统信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件和目录"><span class="toc-text">文件和目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件搜索"><span class="toc-text">文件搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件的权限"><span class="toc-text">文件的权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看文件内容"><span class="toc-text">查看文件内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文本处理"><span class="toc-text">文本处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件传输"><span class="toc-text">文件传输</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#打包压缩"><span class="toc-text">打包压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络"><span class="toc-text">网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进程"><span class="toc-text">进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#软链接-和-硬链接"><span class="toc-text">软链接 和 硬链接</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        linux常用的命令行
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-07-09 18:17:51</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#linux命令行" title="linux命令行">linux命令行</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#linux操作" title="linux操作">linux操作</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="系统信息"><a href="#系统信息" class="headerlink" title="系统信息"></a>系统信息</h3><ol>
+<li>df -h  容易阅读的方式显示磁盘分区使用情况</li>
+<li>df /etc/dhcp  显示指定文件所在分区的磁盘使用情况</li>
+</ol>
+<h3 id="文件和目录"><a href="#文件和目录" class="headerlink" title="文件和目录"></a>文件和目录</h3><ol>
+<li>rm -rf dir 删除一个叫做 ‘dir’ 的目录并同时删除其内容 </li>
+<li>mv dir new_dir 重命名/移动 一个目录 </li>
+<li>cp file1 file2 复制一个文件</li>
+<li>cp /dir/* . 复制一个<strong>目录下的所有文件</strong>到当前工作目录 </li>
+<li>cp /dir . 复制一个目录到当前目录</li>
+<li>tree 显示文件和目录由根目录开始的树形结构</li>
+<li>mkdir -p dir 创建目录</li>
+<li>ls -al 显示文件(隐藏文件)和目录的详细资料 </li>
+</ol>
+<h3 id="文件搜索"><a href="#文件搜索" class="headerlink" title="文件搜索"></a>文件搜索</h3><ol>
+<li>find / -name file1 从 ‘/‘ 开始进入根文件系统搜索文件和目录</li>
+<li>find /home/user1 -name *.bin 在目录 ‘/home/user1’ 中搜索带有’.bin’ 结尾的文件</li>
+<li>find /usr/bin -type f -mtime -10 搜索在10天内被创建或者修改过的文件 </li>
+</ol>
+<h3 id="文件的权限"><a href="#文件的权限" class="headerlink" title="文件的权限"></a>文件的权限</h3><ol>
+<li>ls -lh 显示权限</li>
+<li>chown -R user directory 改变一个目录的所有人属性并同时改变改目录下所有文件的属性</li>
+<li>chown user file 改变一个文件的所有人属性</li>
+<li>chmod ugo+rwx directory 设置目录的所有人(u)、群组(g)以及其他人(o)以读（r ）、写(w)和执行(x)的权限 </li>
+</ol>
+<h3 id="查看文件内容"><a href="#查看文件内容" class="headerlink" title="查看文件内容"></a>查看文件内容</h3><ol>
+<li>cat file 从第一个字节开始正向查看文件的内容 </li>
+<li>tac file 从最后一行开始反向查看一个文件的内容</li>
+<li>more file 查看一个长文件的内容 </li>
+<li>tail -f /var/log/messages 实时查看被添加到一个文件中的内容 </li>
+<li>tail -2 file 查看一个文件的最后两行 </li>
+<li>head -2 file 查看一个文件的前两行</li>
+</ol>
+<h3 id="文本处理"><a href="#文本处理" class="headerlink" title="文本处理"></a>文本处理</h3><ol>
+<li>grep Aug /var/log/messages 在文件 ‘/var/log/messages’中查找关键词”Aug”</li>
+<li>grep ^Aug /var/log/messages 在文件 ‘/var/log/messages’中查找以”Aug”开始的词汇</li>
+<li>sed ‘s/stringa1/stringa2/g’ example.txt 将example.txt文件中的 “string1” 替换成 “string2”</li>
+<li>sed -n ‘/stringa1/p’ 查看只包含词汇 “string1”的行    </li>
+</ol>
+<h3 id="文件传输"><a href="#文件传输" class="headerlink" title="文件传输"></a>文件传输</h3><ol>
+<li>curl <a href="https://baidu.com" target="_blank" rel="noopener">https://baidu.com</a>   curl命令是一个利用URL规则在shell终端命令行下工作的文件传输工具；它支持文件的上传和下载，所以是综合传输工具，但按传统，习惯称curl为下载工具。</li>
+<li>tftp 218.28.188.288   ftp命令用于传输文件</li>
+</ol>
+<h3 id="打包压缩"><a href="#打包压缩" class="headerlink" title="打包压缩"></a>打包压缩</h3><ol>
+<li>zip file1.zip file1 创建一个zip格式的压缩包 </li>
+<li>zip -r file1.zip file1 file2 dir1 将几个文件和目录同时压缩成一个zip格式的压缩包</li>
+<li>unzip file1.zip 解压一个zip格式压缩包 </li>
+</ol>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><ol>
+<li>ssh 202.102.240.88  安全连接客户端, 可以给予ssh加密协议实现安全的远程登录服务器，实现对服务器的远程管理。</li>
+<li>ping baidu.com/202.102.240.88     测试主机间网络连通性</li>
+<li>netstat -a          显示网络状态</li>
+<li>ipconfig            显示或设置网络设备</li>
+</ol>
+<h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><ol>
+<li>ps -a | grep helloworld 查看特定进程  </li>
+<li>ps -ef  显示所有进程信息，连同命令行</li>
+<li>kill -9 pid 杀掉进程</li>
+<li>lsof -i:端口号  查看端口号被那个进程所占用</li>
+</ol>
+<h3 id="软链接-和-硬链接"><a href="#软链接-和-硬链接" class="headerlink" title="软链接 和 硬链接"></a>软链接 和 硬链接</h3><ol>
+<li>Linux 链接分两种，一种被称为硬链接（Hard Link），另一种被称为符号链接（Symbolic Link）。默认情况下，ln 命令产生硬链接</li>
+<li><p>验证硬链接和软链接关系</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">touch f1          <span class="comment">#创建一个测试文件f1    </span></span><br><span class="line">ln f1 f2          <span class="comment">#创建f1的一个硬连接文件f2</span></span><br><span class="line">ln -s f1 f3       <span class="comment">#创建f1的一个符号连接文件f3</span></span><br><span class="line">ls -li            <span class="comment"># -i参数显示文件的inode节点信息</span></span><br><span class="line">total 0</span><br><span class="line">9797648 -rw-r--r--  2 oracle oinstall 0 Apr 21 08:11 f1</span><br><span class="line">9797648 -rw-r--r--  2 oracle oinstall 0 Apr 21 08:11 f2</span><br><span class="line">9797649 lrwxrwxrwx  1 oracle oinstall 2 Apr 21 08:11 f3 -&gt; f1</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"I am f1 file"</span> &gt;&gt;f1</span><br><span class="line">cat f1</span><br><span class="line">I am f1 file</span><br><span class="line">cat f2</span><br><span class="line">I am f1 file</span><br><span class="line">cat f3</span><br><span class="line">I am f1 file</span><br><span class="line">rm -f f1</span><br><span class="line">cat f2</span><br><span class="line">I am f1 file</span><br><span class="line">cat f3</span><br><span class="line">cat: f3: No such file or directory</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>结论：</p>
+<ol>
+<li>当删除原始文件 f1 后，硬连接 f2 不受影响，但是符号连接 f3 文件无效</li>
+<li>删除符号连接f3,对f1,f2无影响；</li>
+<li>删除硬连接f2，对f1,f3也无影响；</li>
+<li>删除原文件f1，对硬连接f2没有影响，导致符号连接f3失效；</li>
+<li>同时删除原文件f1,硬连接f2，整个文件会真正的被删除。 </li>
+</ol>
+</li>
+</ol>
+<p><a href="https://www.cnblogs.com/fnlingnzb-learner/p/5831284.html" target="_blank" rel="noopener">资料来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

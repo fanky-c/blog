@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        macOs开发笔记 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-objective-c与javascript交互"><span class="toc-text">1: objective-c与javascript交互</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#用-Objective-C-取得与设定-JavaScript-对象"><span class="toc-text">用 Objective-C 取得与设定 JavaScript 对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用-Objective-C-调用-JavaScript-function"><span class="toc-text">用 Objective C 调用 JavaScript function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DOM"><span class="toc-text">DOM</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用-JavaScript-存取-Objective-C-的-Value"><span class="toc-text">用 JavaScript 存取 Objective C 的 Value</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用-JavaScript-调用-Objective-C-method"><span class="toc-text">用 JavaScript 调用 Objective C method</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-jsbridge"><span class="toc-text">2: jsbridge</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#OC端"><span class="toc-text">OC端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JS端"><span class="toc-text">JS端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#工作流"><span class="toc-text">工作流</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-ios本地缓存数据"><span class="toc-text">3: ios本地缓存数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#直接写文件方式"><span class="toc-text">直接写文件方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSUserDefaults"><span class="toc-text">NSUserDefaults</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#归档操作（NSkeyedArchiver）"><span class="toc-text">归档操作（NSkeyedArchiver）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#coreData"><span class="toc-text">coreData</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FMDB"><span class="toc-text">FMDB</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-页面之间通信"><span class="toc-text">4: 页面之间通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-文件操作"><span class="toc-text">5: 文件操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-多线程"><span class="toc-text">6: 多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#PThread-c框架，极少使用"><span class="toc-text">PThread(c框架，极少使用)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSThread"><span class="toc-text">NSThread</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GCD"><span class="toc-text">GCD</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSOperation"><span class="toc-text">NSOperation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dispatch-semaphore（信号量）"><span class="toc-text">dispatch_semaphore（信号量）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-property使用"><span class="toc-text">7: @property使用</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        macOs开发笔记
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-12-05 21:52:39</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#mac" title="mac">mac</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#xcode" title="xcode">xcode</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#oc" title="oc">oc</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#ios" title="ios">ios</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <ul>
+<li>入门参考：<a href="https://www.jianshu.com/p/be92a0a0f1a0" target="_blank" rel="noopener">https://www.jianshu.com/p/be92a0a0f1a0</a></li>
+<li>个人练习：<a href="https://github.com/fanky-c/OcTest" target="_blank" rel="noopener">https://github.com/fanky-c/OcTest</a></li>
+</ul>
+<h3 id="1-objective-c与javascript交互"><a href="#1-objective-c与javascript交互" class="headerlink" title="1: objective-c与javascript交互"></a>1: objective-c与javascript交互</h3><h4 id="用-Objective-C-取得与设定-JavaScript-对象"><a href="#用-Objective-C-取得与设定-JavaScript-对象" class="headerlink" title="用 Objective-C 取得与设定 JavaScript 对象"></a>用 Objective-C 取得与设定 JavaScript 对象</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">js:</span><br><span class="line">window.location.href = &apos;http://spring-studio.net&apos;;</span><br><span class="line"></span><br><span class="line">oc:</span><br><span class="line">[[webView windowScriptObject] setValue:@&quot;http://spring-studio.net&quot;forKeyPath:@&quot;location.href&quot;];</span><br></pre></td></tr></table></figure>
+<ol>
+<li>JS 虽然是 OO，但是并没有 class，所以将 JS 对象传到 Obj C 程序里头，除了基本字串会转换成 NSString、基本数字会转成 NSNumber，像是 Array 等其他对象，在 Objective-C 中，都是 WebScriptObject 这个 Class。意思就是，JS 的 Array 不会帮你转换成 NSArray。</li>
+<li>从 JS 里头传一个空对象给 Objective-C 程序，用的不是 Objective-C 里头原本表示「没有东西」的方式，像是 NULL、nil、NSNull 等，而是专属 WebKit 使用的 WebUndefined。</li>
+</ol>
+<h4 id="用-Objective-C-调用-JavaScript-function"><a href="#用-Objective-C-调用-JavaScript-function" class="headerlink" title="用 Objective C 调用 JavaScript function"></a>用 Objective C 调用 JavaScript function</h4><ol>
+<li><p>js调用oc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">oc:</span><br><span class="line">[[webView windowScriptObject] evaluateWebScript:@&quot;function x(x) &#123; return x + 1;&#125;&quot;];</span><br><span class="line"></span><br><span class="line">js:</span><br><span class="line">window.x(1);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>oc调用js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">oc:</span><br><span class="line">[[webView windowScriptObject] evaluateWebScript:[NSString stringWithFormat:@&quot;showPromoAd(&apos;%@&apos;,&apos;%@&apos;);&quot;,self.word, computerSerialNumber()]];</span><br><span class="line"></span><br><span class="line">js:</span><br><span class="line">function showPromoAd(word, id)&#123;&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h4><ol>
+<li>WebKit 里头，所有的 DOM 对象都继承自 DOMObject，DOMObject 又继承自 WebScriptObject，所以我们在取得了某个 DOM 对象之后，也可以从 Objective-C 程序中，要求这个 DOM 对象执行 JS 程序<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">js:</span><br><span class="line">document.querySelector(&apos;#s&apos;).focus();</span><br><span class="line"></span><br><span class="line">oc:</span><br><span class="line">DOMDocument *document = [[webView mainFrame] DOMDocument];</span><br><span class="line">[[document querySelector:@&quot;#s&quot;] callWebScriptMethod:@&quot;focus&quot;withArguments:nil];</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="用-JavaScript-存取-Objective-C-的-Value"><a href="#用-JavaScript-存取-Objective-C-的-Value" class="headerlink" title="用 JavaScript 存取 Objective C 的 Value"></a>用 JavaScript 存取 Objective C 的 Value</h4><ol>
+<li><p>要让网页中的 JS 程序可以调用 Objective-C 对象，方法是把某个 Objective-C 对象注册成 JS 中 window 对象的属性。之后，JS 便也可以调用这个对象的 method，也可以取得这个对象的各种 Value，只要是 KVC 可以取得的 Value，像是 NSString、NSNumber、NSDate、NSArray、NSDictionary、NSValue…等。JS 传 Array 到 Objective-C 时，还需要特别做些处理才能变成 NSArray，从 Obj C 传一个 NSArray 到 JS 时，会自动变成 JS Array。</p>
+</li>
+<li><p>首先我们要注意的是将 Objective-C 对象注册给 window 对象的时机，由于每次重新载入网页，window 对象的内容都会有所变动－毕竟每个网页都会有不同的 JS 程序，所以，我们需要在适当的时机做这件事情。我们首先要指定 WebView 的 frame loading delegate（用 setFrameLoadDelegate:），并且实作 webView:didClearWindowObject:forFrame:，WebView 只要更新了 windowScriptObject，就会调用这一段程序。</p>
+</li>
+</ol>
+<h4 id="用-JavaScript-调用-Objective-C-method"><a href="#用-JavaScript-调用-Objective-C-method" class="headerlink" title="用 JavaScript 调用 Objective C method"></a>用 JavaScript 调用 Objective C method</h4><ol>
+<li>Objective-C 的语法沿袭自 SmallTalk，Objective-C 的 selector，与 JS 的 function 语法有相当的差异。WebKit 预设的实事是，如果我们要在 JS 调用 Objective-C selector，就是把所有的参数往后面摆，并且把所有的冒号改成底线，而原来 selector 如果有底线的话，又要另外处理。</li>
+</ol>
+<h3 id="2-jsbridge"><a href="#2-jsbridge" class="headerlink" title="2: jsbridge"></a>2: jsbridge</h3><h4 id="OC端"><a href="#OC端" class="headerlink" title="OC端"></a>OC端</h4><ol>
+<li><p>引入依赖文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;WebViewJavascriptBridge.h&quot;</span><br><span class="line">...</span><br><span class="line">@property WebViewJavascriptBridge* bridge;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实例化一个对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.bridge = [WebViewJavascriptBridge bridgeForWebView:webView];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>OC端 注册一个方法+ 调用该方法的函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//供前端调用</span><br><span class="line">[self.bridge registerHandler:@&quot;OCTest&quot; handler:^(id data, WVJBResponseCallback responseCallback) &#123;</span><br><span class="line">    NSLog(@&quot;ObjC Echo called with: %@&quot;, data);</span><br><span class="line">    responseCallback(data);</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">//主动推送给前端</span><br><span class="line">[self.bridge callHandler:@&quot;JsTest&quot; data:nil responseCallback:^(id responseData) &#123;</span><br><span class="line">    NSLog(@&quot;ObjC received response: %@&quot;, responseData);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="JS端"><a href="#JS端" class="headerlink" title="JS端"></a>JS端</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setupWebViewJavascriptBridge</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.WebViewJavascriptBridge) &#123; <span class="keyword">return</span> callback(WebViewJavascriptBridge); &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.WVJBCallbacks) &#123; <span class="keyword">return</span> <span class="built_in">window</span>.WVJBCallbacks.push(callback); &#125;</span><br><span class="line">    <span class="built_in">window</span>.WVJBCallbacks = [callback];</span><br><span class="line">    <span class="keyword">var</span> WVJBIframe = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>);</span><br><span class="line">    WVJBIframe.style.display = <span class="string">'none'</span>;</span><br><span class="line">    WVJBIframe.src = <span class="string">'https://__bridge_loaded__'</span>;</span><br><span class="line">    <span class="built_in">document</span>.documentElement.appendChild(WVJBIframe);</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="built_in">document</span>.documentElement.removeChild(WVJBIframe) &#125;, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">setupWebViewJavascriptBridge(<span class="function"><span class="keyword">function</span>(<span class="params">bridge</span>) </span>&#123;</span><br><span class="line">	 <span class="comment">//主动调用</span></span><br><span class="line">    bridge.registerHandler(<span class="string">'JsTest'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data, responseCallback</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"JS Echo called with:"</span>, data)</span><br><span class="line">        responseCallback(data)</span><br><span class="line">    &#125;)</span><br><span class="line">	<span class="comment">//接受oc端主动推送的消息</span></span><br><span class="line">    bridge.callHandler(<span class="string">'OCTest'</span>, &#123;<span class="string">'key'</span>:<span class="string">'value'</span>&#125;, <span class="function"><span class="keyword">function</span> <span class="title">responseCallback</span>(<span class="params">responseData</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"JS received response:"</span>, responseData)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><ol>
+<li>分别在OC环境和javascript环境都保存一个bridge对象，里面维持着requestId,callbackId,以及每个id对应的具体实现。</li>
+<li>OC通过javascript环境的window.WebViewJavascriptBridge对象来找到具体的方法，然后执行。</li>
+<li>javascript通过改变iframe的src来出发webview的代理方法，从而实现把javascript消息发送给OC这个功能。</li>
+</ol>
+<h4 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h4><ol>
+<li>JS 端加入 src 为 https://<strong>bridge_loaded</strong> 的 iframe</li>
+<li>Native 端检测到 Request，检测如果是 <strong>bridge_loaded</strong> 则通过当前的 WebView 组件注入 WebViewJavascriptBridge_JS 代码</li>
+<li>注入代码成功之后会加入一个 messagingIframe，其 src 为 https://<strong>wvjb_queue_message</strong></li>
+<li>之后不论是 Native 端还是 JS 端都可以通过 registerHandler 方法注册一个两端约定好的 HandlerName 的处理，也都可以通过 callHandler 方法通过约定好的 HandlerName 调用另一端的处理（两端处理消息的实现逻辑对称）</li>
+</ol>
+<h3 id="3-ios本地缓存数据"><a href="#3-ios本地缓存数据" class="headerlink" title="3: ios本地缓存数据"></a>3: ios本地缓存数据</h3><h4 id="直接写文件方式"><a href="#直接写文件方式" class="headerlink" title="直接写文件方式"></a>直接写文件方式</h4><ol>
+<li>可以存储的对象有NSString、NSArray、NSDictionary、NSData、NSNumber，数据全部存放在一个属性列表文件（*.plist文件）中。</li>
+</ol>
+<h4 id="NSUserDefaults"><a href="#NSUserDefaults" class="headerlink" title="NSUserDefaults"></a>NSUserDefaults</h4><ol>
+<li>一般应用来存储应用设置信息，文件放在perference目录下。</li>
+</ol>
+<h4 id="归档操作（NSkeyedArchiver）"><a href="#归档操作（NSkeyedArchiver）" class="headerlink" title="归档操作（NSkeyedArchiver）"></a>归档操作（NSkeyedArchiver）</h4><ol>
+<li>不同于前面两种，它可以把自定义对象存放在文件中。</li>
+</ol>
+<h4 id="coreData"><a href="#coreData" class="headerlink" title="coreData"></a>coreData</h4><ol>
+<li>coreData是苹果官方iOS5之后推出的综合型数据库。</li>
+</ol>
+<h4 id="FMDB"><a href="#FMDB" class="headerlink" title="FMDB"></a>FMDB</h4><ol>
+<li>FMDB是iOS平台的SQLite数据库框架，FMDB以OC的方式封装了SQLite的C语言API，使用起来更加面向对象，省去了很多麻烦、冗余的C语言代码。</li>
+</ol>
+<h3 id="4-页面之间通信"><a href="#4-页面之间通信" class="headerlink" title="4: 页面之间通信"></a>4: 页面之间通信</h3><ol>
+<li>属性传值<ol>
+<li>正向传值：page1–&gt;page2</li>
+</ol>
+</li>
+<li><p>单例传值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+(instancetype)sharedInstance&#123;</span><br><span class="line">    static SharedInstance* _sharedInstance;</span><br><span class="line">    static dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">        _sharedInstance = [[SharedInstance alloc] init];</span><br><span class="line">    &#125;);</span><br><span class="line">    </span><br><span class="line">    return _sharedInstance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>NSUserDefaults</p>
+</li>
+<li>代理传值<ol>
+<li>A:代理方(遵守协议、实现协议方法)   </li>
+<li>B:委托方(制定持有协议，调用协议方法)</li>
+<li>C:中间通讯（delegate）</li>
+</ol>
+</li>
+<li>block传值</li>
+<li><p>通知传值–NSNotificationCenter</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//先监听</span><br><span class="line">[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateValue:) name:@&quot;postValue&quot; object:nil];</span><br><span class="line"></span><br><span class="line">-(void)updateValue:(NSNotification*)not&#123;</span><br><span class="line">    self.lable.text = not.userInfo[@&quot;val&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//发送广播</span><br><span class="line"> [[NSNotificationCenter defaultCenter] postNotificationName:@&quot;postValue&quot; object:nil userInfo:@&#123;@&quot;val&quot;:self.inputText&#125;];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a href="https://github.com/fanky-c/OcTest/tree/master/%E9%A1%B5%E9%9D%A2%E4%B9%8B%E9%97%B4%E4%BC%A0%E5%80%BC/%E9%A1%B5%E9%9D%A2%E4%B9%8B%E9%97%B4%E4%BC%A0%E5%80%BC" target="_blank" rel="noopener">github参考</a></p>
+</li>
+</ol>
+<h3 id="5-文件操作"><a href="#5-文件操作" class="headerlink" title="5: 文件操作"></a>5: 文件操作</h3><ol>
+<li>NSFileHandle：文件内容的读取和写入</li>
+<li>NSFileManager：文件的删除和创建等</li>
+<li><a href="https://github.com/fanky-c/OcTest/blob/master/IOS%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/IOS%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/ViewController.m" target="_blank" rel="noopener">参考</a></li>
+</ol>
+<h3 id="6-多线程"><a href="#6-多线程" class="headerlink" title="6: 多线程"></a>6: 多线程</h3><h4 id="PThread-c框架，极少使用"><a href="#PThread-c框架，极少使用" class="headerlink" title="PThread(c框架，极少使用)"></a>PThread(c框架，极少使用)</h4><ol>
+<li><a href="https://github.com/fanky-c/OcTest/blob/master/pThread/pThread/ViewController.m" target="_blank" rel="noopener">github参考</a></li>
+</ol>
+<h4 id="NSThread"><a href="#NSThread" class="headerlink" title="NSThread"></a>NSThread</h4><ol>
+<li><p>三种创建方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//方式一</span><br><span class="line">NSThread *thread1 = [[NSThread alloc] initWithTarget: self selector:@selector(runThread1) object:nil];</span><br><span class="line">[thread1 setName:@&quot;name_thread1&quot;]; //在selector方法里面获取当前线程[NSThread currentThread].name;</span><br><span class="line">[thread1 setThreadPriority:0.5]; //优先级：0-1</span><br><span class="line">[thread1 start];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//方式二</span><br><span class="line">[NSThread detachNewThreadSelector:@selector(runThread1) toTarget:self withObject:nil];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//方式三</span><br><span class="line">//回到主线程：performSelectorOnMainThread</span><br><span class="line">[self performSelectorInBackground:@selector(runThread1) withObject:nil];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a href="https://github.com/fanky-c/OcTest/blob/master/%E5%A4%9A%E7%BA%BF%E7%A8%8BNSThread/%E5%A4%9A%E7%BA%BF%E7%A8%8BNSThread/TicketMangager.m" target="_blank" rel="noopener">github参考</a></p>
+</li>
+</ol>
+<h4 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a>GCD</h4><ol>
+<li>介绍：<ol>
+<li>类似前端的new worker(), 把耗时较长的任务交给子线程处理，主线程处理ui操作，任务完成worker.postMessage()告诉给主线程。</li>
+</ol>
+</li>
+<li>使用方式：   <ol>
+<li>同步/异步、串行/并行</li>
+<li>dispath_get_global_queue &amp; dispatch_get_main_queue</li>
+<li>dispatch_group_async</li>
+<li>dispatch_once</li>
+<li>dispatch_after</li>
+</ol>
+</li>
+</ol>
+<ol start="2">
+<li><a href="https://github.com/fanky-c/OcTest/blob/master/%E5%A4%9A%E7%BA%BF%E7%A8%8B--GCD/%E5%A4%9A%E7%BA%BF%E7%A8%8B--GCD/ViewController.m" target="_blank" rel="noopener">github参考</a></li>
+</ol>
+<h4 id="NSOperation"><a href="#NSOperation" class="headerlink" title="NSOperation"></a>NSOperation</h4><ol>
+<li>实现方式:<ol>
+<li>NSInvocationOperation &amp; NSBlockOperation（同步阻塞）</li>
+<li>自定义类继承NSOperation</li>
+</ol>
+</li>
+<li><p>相关概念</p>
+<ol>
+<li>NSOperationQueue（异步队列）<ol>
+<li>addOperation</li>
+<li>setMaxConcurrentOperationCount</li>
+</ol>
+</li>
+<li>状态<ol>
+<li>ready、 cancelled、 executing、 finished、 asynchronous</li>
+</ol>
+</li>
+<li>依赖– addDependency</li>
+</ol>
+</li>
+<li><p>NSRunloop阻塞当然线程，让异步到达同步的效果。</p>
+</li>
+<li><p><a href="https://github.com/fanky-c/OcTest/blob/master/%E5%A4%9A%E7%BA%BF%E7%A8%8B--NSOperation/%E5%A4%9A%E7%BA%BF%E7%A8%8B--NSOperation/ViewController.m" target="_blank" rel="noopener">github参考</a>  </p>
+</li>
+</ol>
+<h4 id="dispatch-semaphore（信号量）"><a href="#dispatch-semaphore（信号量）" class="headerlink" title="dispatch_semaphore（信号量）"></a>dispatch_semaphore（信号量）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (NSInteger)methodSync &#123;</span><br><span class="line">    __block NSInteger result = 0;</span><br><span class="line">    dispatch_semaphore_t sema = dispatch_semaphore_create(0);</span><br><span class="line">    [self methodAsync:^(NSInteger value) &#123;</span><br><span class="line">        result = value;</span><br><span class="line">        dispatch_semaphore_signal(sema);</span><br><span class="line">    &#125;];</span><br><span class="line">   // 这里本来同步方法会立即返回，但信号量=0使得线程阻塞</span><br><span class="line">   // 当异步方法回调之后，发送信号，信号量变为1，这里的阻塞将被解除，从而返回正确的结果</span><br><span class="line">    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);</span><br><span class="line">    NSLog(@&quot;methodSync 结束 result:%ld&quot;, (long)result);</span><br><span class="line">    return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="7-property使用"><a href="#7-property使用" class="headerlink" title="7: @property使用"></a>7: @property使用</h3><ol>
+<li><p>使用方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//test.h</span><br><span class="line">@property(nonatomic, readwrite, strong) NSString *test;</span><br><span class="line"></span><br><span class="line">//test.m</span><br><span class="line">@synthesize test;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>属性分类</p>
+<ol>
+<li><strong>原子性</strong><ol>
+<li>atomic (默认、原子性) 只有一个线程访问实例，atmoic是线程安全的。</li>
+<li>nonatomic (非原子性)， 可以被多个线程访问，效率比atomic高，但是不能保证在多线程的安全性。</li>
+</ol>
+</li>
+<li><strong>存取器控制</strong><ol>
+<li>readwrite (默认) 表示该属性同时拥有setter和getter。</li>
+<li>readonly 表示只有getter没有setter。</li>
+</ol>
+</li>
+<li><strong>内存管理</strong><ol>
+<li>assign (默认) assign用于值类型，如int、float、double和NSInteger，CGFloat等表示单纯的复制。</li>
+<li>strong strong是在IOS引入ARC的时候引入的关键字，是retain的一个可选的替代。表示实例变量对传入的对象要有所有权关系，即强引用。strong跟retain的意思相同并产生相同的代码，但是语意上更好更能体现对象的关系。</li>
+<li>weak 在setter方法中，需要对传入的对象不进行引用计数加1的操作, 例如：IBOutlet、Delegate一般用的就是weak</li>
+<li>copy 与strong类似，但区别在于实例变量是对传入对象的副本拥有所有权，而非对象本身</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

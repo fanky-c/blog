@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        前端鉴权方式 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前端鉴权背景"><span class="toc-text">前端鉴权背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#鉴权方式"><span class="toc-text">鉴权方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-初窥：前端全局变量、sessionStorage、localStorage"><span class="toc-text">1. 初窥：前端全局变量、sessionStorage、localStorage</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-利弊"><span class="toc-text">a. 利弊</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-基础：前端存储cookie"><span class="toc-text">2. 基础：前端存储cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-介绍"><span class="toc-text">a. 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-原理"><span class="toc-text">b. 原理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-方案一：服务端session"><span class="toc-text">2. 方案一：服务端session</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-介绍-1"><span class="toc-text">a. 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-服务端存储"><span class="toc-text">b.服务端存储</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-问题"><span class="toc-text">c.问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-方案二：token"><span class="toc-text">3. 方案二：token</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-介绍-2"><span class="toc-text">a. 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-步骤"><span class="toc-text">b. 步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-编码"><span class="toc-text">c. 编码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#d-问题"><span class="toc-text">d. 问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-方案三：jwt"><span class="toc-text">4. 方案三：jwt</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-介绍和格式"><span class="toc-text">a. 介绍和格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-原理-1"><span class="toc-text">b. 原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-session和token的区别"><span class="toc-text">c. session和token的区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-sso-单点登录"><span class="toc-text">5. sso (单点登录)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-介绍-3"><span class="toc-text">a. 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-“假的”单点登录"><span class="toc-text">b. “假的”单点登录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-“真实”单点登录"><span class="toc-text">c. “真实”单点登录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#d-完整版sso"><span class="toc-text">d. 完整版sso</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#鉴权总结"><span class="toc-text">鉴权总结</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-HTTP-是无状态的，为了维持前后请求，需要前端存储标记"><span class="toc-text">1. HTTP 是无状态的，为了维持前后请求，需要前端存储标记</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-cookie-是一种完善的标记方式，通过-HTTP-头或-js-操作，有对应的安全策略，是大多数状态管理方案的基石"><span class="toc-text">2. cookie 是一种完善的标记方式，通过 HTTP 头或 js 操作，有对应的安全策略，是大多数状态管理方案的基石</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-session-是一种状态管理方案，前端通过-cookie-存储-id，后端存储数据，但后端要处理分布式问题"><span class="toc-text">3. session 是一种状态管理方案，前端通过 cookie 存储 id，后端存储数据，但后端要处理分布式问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-token-是另一种状态管理方案，相比于-session-不需要后端存储，数据全部存在前端，解放后端，释放灵活性"><span class="toc-text">4. token 是另一种状态管理方案，相比于 session 不需要后端存储，数据全部存在前端，解放后端，释放灵活性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-token-的编码技术，通常基于-base64，或增加加密算法防篡改，jwt-是一种成熟的编码方案"><span class="toc-text">5. token 的编码技术，通常基于 base64，或增加加密算法防篡改，jwt 是一种成熟的编码方案</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-在复杂系统中，token-可通过-service-token、refresh-token-的分权，同时满足安全性和用户体验"><span class="toc-text">6. 在复杂系统中，token 可通过 service token、refresh token 的分权，同时满足安全性和用户体验</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#7-session-和-token-的对比就是「用不用cookie」和「后端存不存」的对"><span class="toc-text">7. session 和 token 的对比就是「用不用cookie」和「后端存不存」的对</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#8-单点登录要求不同域下的系统「一次登录，全线通用」，通常由独立的-SSO-系统记录登录状态、下发-ticket，各业务系统配合存储和认证-ticket"><span class="toc-text">8. 单点登录要求不同域下的系统「一次登录，全线通用」，通常由独立的 SSO 系统记录登录状态、下发 ticket，各业务系统配合存储和认证 ticket</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        前端鉴权方式
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-08-22 17:39:32</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#前端鉴权" title="前端鉴权">前端鉴权</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#token" title="token">token</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#cookie" title="cookie">cookie</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#session" title="session">session</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#jwt" title="jwt">jwt</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#单点登录" title="单点登录">单点登录</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="前端鉴权背景"><a href="#前端鉴权背景" class="headerlink" title="前端鉴权背景"></a>前端鉴权背景</h2><p>原因：<strong>http请求无状态</strong></p>
+<h2 id="鉴权方式"><a href="#鉴权方式" class="headerlink" title="鉴权方式"></a>鉴权方式</h2><h3 id="1-初窥：前端全局变量、sessionStorage、localStorage"><a href="#1-初窥：前端全局变量、sessionStorage、localStorage" class="headerlink" title="1. 初窥：前端全局变量、sessionStorage、localStorage"></a>1. 初窥：前端全局变量、sessionStorage、localStorage</h3><h4 id="a-利弊"><a href="#a-利弊" class="headerlink" title="a. 利弊"></a>a. 利弊</h4><ol>
+<li>全局变量不利于持久化， 一刷新页面就没有</li>
+<li>sessionStorage、localStorage虽可以持久化，但操作麻烦，要前端存、前端手动带上给服务端</li>
+</ol>
+<h3 id="2-基础：前端存储cookie"><a href="#2-基础：前端存储cookie" class="headerlink" title="2. 基础：前端存储cookie"></a>2. 基础：前端存储cookie</h3><h4 id="a-介绍"><a href="#a-介绍" class="headerlink" title="a. 介绍"></a>a. 介绍</h4><p>相比sessionStorage、localStorage等本方式，借助 HTTP 头、浏览器能力，<strong>cookie 可以做到前端无感知</strong></p>
+<h4 id="b-原理"><a href="#b-原理" class="headerlink" title="b. 原理"></a>b. 原理</h4><ol>
+<li>在提供标记的接口，通过 HTTP 返回头的 Set-Cookie 字段，直接「种」到浏览器上</li>
+<li>浏览器发起请求时，会自动把 cookie 通过 HTTP 请求头的 Cookie 字段，带给接口</li>
+</ol>
+<h3 id="2-方案一：服务端session"><a href="#2-方案一：服务端session" class="headerlink" title="2. 方案一：服务端session"></a>2. 方案一：服务端session</h3><h4 id="a-介绍-1"><a href="#a-介绍-1" class="headerlink" title="a. 介绍"></a>a. 介绍</h4><p><img src="/img/session.webp" height="auto"></p>
+<ol>
+<li>浏览器登录发送账号密码，服务端查用户库，校验用户</li>
+<li>服务端把用户登录状态存为 Session，生成一个 sessionId</li>
+<li>通过登录接口返回，把 sessionId set 到 cookie 上</li>
+<li>此后浏览器再请求业务接口，sessionId 随 cookie 带上</li>
+<li>服务端查 sessionId 校验 session</li>
+<li>成功后正常做业务处理，返回结果</li>
+</ol>
+<h4 id="b-服务端存储"><a href="#b-服务端存储" class="headerlink" title="b.服务端存储"></a>b.服务端存储</h4><ol>
+<li>redis: 内存型数据库，性能好 </li>
+<li>mysql: 性能不高 </li>
+<li>应用内存: 重启就没了</li>
+</ol>
+<h4 id="c-问题"><a href="#c-问题" class="headerlink" title="c.问题"></a>c.问题</h4><ol>
+<li>服务端存放session</li>
+<li>分布式存储session</li>
+</ol>
+<h3 id="3-方案二：token"><a href="#3-方案二：token" class="headerlink" title="3. 方案二：token"></a>3. 方案二：token</h3><h4 id="a-介绍-2"><a href="#a-介绍-2" class="headerlink" title="a. 介绍"></a>a. 介绍</h4><p><img src="/img/token.webp" height="auto"></p>
+<ol>
+<li>用户登录，服务端校验账号密码，获得用户信息</li>
+<li>把用户信息、token 配置编码成 token，通过 cookie set 到浏览器</li>
+<li>此后用户请求业务接口，通过 cookie 携带 token</li>
+<li>接口校验 token 有效性，进行正常业务接口处理</li>
+</ol>
+<h4 id="b-步骤"><a href="#b-步骤" class="headerlink" title="b. 步骤"></a>b. 步骤</h4><ol>
+<li>存储方式： 前端cookie</li>
+<li>存储内部： 被编码过的有效期、使用现在、用户信息</li>
+</ol>
+<h4 id="c-编码"><a href="#c-编码" class="headerlink" title="c. 编码"></a>c. 编码</h4><ol>
+<li>base64</li>
+<li>签名防篡改  </li>
+</ol>
+<h4 id="d-问题"><a href="#d-问题" class="headerlink" title="d. 问题"></a>d. 问题</h4><ol>
+<li>新增cookie数量</li>
+<li>cookie格式没有规范<h3 id="4-方案三：jwt"><a href="#4-方案三：jwt" class="headerlink" title="4. 方案三：jwt"></a>4. 方案三：jwt</h3><h4 id="a-介绍和格式"><a href="#a-介绍和格式" class="headerlink" title="a. 介绍和格式"></a>a. 介绍和格式</h4>jwt(json web token)是一个开放标准，定义了一种传递 JSON 信息的方式。这些信息通过数字签名确保可信。<br><img src="/img/jwt.webp" height="auto" width="90%"></li>
+</ol>
+<h4 id="b-原理-1"><a href="#b-原理-1" class="headerlink" title="b. 原理"></a>b. 原理</h4><p><img src="/img/jwt1.webp" height="auto"></p>
+<ol>
+<li>access token：用来访问业务接口，由于有效期足够短，盗用风险小，也可以使请求方式更宽松灵活 </li>
+<li>refresh token ：用来获取 access token，有效期可以长一些，通过独立服务和严格的请求方式增加安全性；由于不常验证，也可以如前面的 session 一样处理</li>
+</ol>
+<h4 id="c-session和token的区别"><a href="#c-session和token的区别" class="headerlink" title="c. session和token的区别"></a>c. session和token的区别</h4><ol>
+<li>session：我们通常认为 session 是「种在 cookie 上、数据存在服务端」的认证方案</li>
+<li>token： token 是「客户端存哪都行、数据存在 token 里」的认证方案</li>
+</ol>
+<h3 id="5-sso-单点登录"><a href="#5-sso-单点登录" class="headerlink" title="5. sso (单点登录)"></a>5. sso (单点登录)</h3><h4 id="a-介绍-3"><a href="#a-介绍-3" class="headerlink" title="a. 介绍"></a>a. 介绍</h4><p>一次登录，全线通用」的能力，叫做「单点登录」</p>
+<h4 id="b-“假的”单点登录"><a href="#b-“假的”单点登录" class="headerlink" title="b. “假的”单点登录"></a>b. “假的”单点登录</h4><p>如果业务系统都在同一主域名下，比如wenku.baidu.com、tieba.baidu.com，就好办了。可以直接把 cookie domain 设置为主域名 baidu.com，百度也就是这么干的</p>
+<h4 id="c-“真实”单点登录"><a href="#c-“真实”单点登录" class="headerlink" title="c. “真实”单点登录"></a>c. “真实”单点登录</h4><p>a.com、b.com、c.com一次登录， 全系统可用<br><img src="/img/sso.webp" height="auto"></p>
+<ol>
+<li>用户进入 A 系统，没有登录凭证（ticket），A 系统给他跳到 SSO</li>
+<li>SSO 没登录过，也就没有 sso 系统下没有凭证（注意这个和前面 A ticket 是两回事），输入账号密码登录</li>
+<li>SSO 账号密码验证成功，通过接口返回做两件事：一是种下 sso 系统下凭证（记录用户在 SSO 登录状态）；二是下发一个 ticket</li>
+<li>客户端拿到 ticket，保存起来，带着请求系统 A 接口</li>
+<li>系统 A 校验 ticket，成功后正常处理业务请求</li>
+<li>此时用户第一次进入系统 B，没有登录凭证（ticket），B 系统给他跳到 SSO</li>
+<li>SSO 登录过，系统下有凭证，不用再次登录，只需要下发 ticket</li>
+<li>客户端拿到 ticket，保存起来，带着请求系统 B 接口</li>
+</ol>
+<h4 id="d-完整版sso"><a href="#d-完整版sso" class="headerlink" title="d. 完整版sso"></a>d. 完整版sso</h4><p><img src="/img/sso1.webp" height="auto"></p>
+<ol>
+<li>在 SSO 域下，SSO 不是通过接口把 ticket 直接返回，而是通过一个带 code 的 URL 重定向到系统 A 的接口上，这个接口通常在 A 向 SSO 注册时约定</li>
+<li>浏览器被重定向到 A 域下，带着 code 访问了 A 的 callback 接口，callback 接口通过 code 换取 ticket</li>
+<li>这个 code 不同于 ticket，code 是一次性的，暴露在 URL 中，只为了传一下换 ticket，换完就失效</li>
+<li>callback 接口拿到 ticket 后，在自己的域下 set cookie 成功</li>
+<li>在后续请求中，只需要把 cookie 中的 ticket 解析出来，去 SSO 验证就好</li>
+<li>访问 B 系统也是一样</li>
+</ol>
+<h2 id="鉴权总结"><a href="#鉴权总结" class="headerlink" title="鉴权总结"></a>鉴权总结</h2><h5 id="1-HTTP-是无状态的，为了维持前后请求，需要前端存储标记"><a href="#1-HTTP-是无状态的，为了维持前后请求，需要前端存储标记" class="headerlink" title="1. HTTP 是无状态的，为了维持前后请求，需要前端存储标记"></a>1. HTTP 是无状态的，为了维持前后请求，需要前端存储标记</h5><h5 id="2-cookie-是一种完善的标记方式，通过-HTTP-头或-js-操作，有对应的安全策略，是大多数状态管理方案的基石"><a href="#2-cookie-是一种完善的标记方式，通过-HTTP-头或-js-操作，有对应的安全策略，是大多数状态管理方案的基石" class="headerlink" title="2. cookie 是一种完善的标记方式，通过 HTTP 头或 js 操作，有对应的安全策略，是大多数状态管理方案的基石"></a>2. cookie 是一种完善的标记方式，通过 HTTP 头或 js 操作，有对应的安全策略，是大多数状态管理方案的基石</h5><h5 id="3-session-是一种状态管理方案，前端通过-cookie-存储-id，后端存储数据，但后端要处理分布式问题"><a href="#3-session-是一种状态管理方案，前端通过-cookie-存储-id，后端存储数据，但后端要处理分布式问题" class="headerlink" title="3. session 是一种状态管理方案，前端通过 cookie 存储 id，后端存储数据，但后端要处理分布式问题"></a>3. session 是一种状态管理方案，前端通过 cookie 存储 id，后端存储数据，但后端要处理分布式问题</h5><h5 id="4-token-是另一种状态管理方案，相比于-session-不需要后端存储，数据全部存在前端，解放后端，释放灵活性"><a href="#4-token-是另一种状态管理方案，相比于-session-不需要后端存储，数据全部存在前端，解放后端，释放灵活性" class="headerlink" title="4. token 是另一种状态管理方案，相比于 session 不需要后端存储，数据全部存在前端，解放后端，释放灵活性"></a>4. token 是另一种状态管理方案，相比于 session 不需要后端存储，数据全部存在前端，解放后端，释放灵活性</h5><h5 id="5-token-的编码技术，通常基于-base64，或增加加密算法防篡改，jwt-是一种成熟的编码方案"><a href="#5-token-的编码技术，通常基于-base64，或增加加密算法防篡改，jwt-是一种成熟的编码方案" class="headerlink" title="5. token 的编码技术，通常基于 base64，或增加加密算法防篡改，jwt 是一种成熟的编码方案"></a>5. token 的编码技术，通常基于 base64，或增加加密算法防篡改，jwt 是一种成熟的编码方案</h5><h5 id="6-在复杂系统中，token-可通过-service-token、refresh-token-的分权，同时满足安全性和用户体验"><a href="#6-在复杂系统中，token-可通过-service-token、refresh-token-的分权，同时满足安全性和用户体验" class="headerlink" title="6. 在复杂系统中，token 可通过 service token、refresh token 的分权，同时满足安全性和用户体验"></a>6. 在复杂系统中，token 可通过 service token、refresh token 的分权，同时满足安全性和用户体验</h5><h5 id="7-session-和-token-的对比就是「用不用cookie」和「后端存不存」的对"><a href="#7-session-和-token-的对比就是「用不用cookie」和「后端存不存」的对" class="headerlink" title="7. session 和 token 的对比就是「用不用cookie」和「后端存不存」的对"></a>7. session 和 token 的对比就是「用不用cookie」和「后端存不存」的对</h5><h5 id="8-单点登录要求不同域下的系统「一次登录，全线通用」，通常由独立的-SSO-系统记录登录状态、下发-ticket，各业务系统配合存储和认证-ticket"><a href="#8-单点登录要求不同域下的系统「一次登录，全线通用」，通常由独立的-SSO-系统记录登录状态、下发-ticket，各业务系统配合存储和认证-ticket" class="headerlink" title="8. 单点登录要求不同域下的系统「一次登录，全线通用」，通常由独立的 SSO 系统记录登录状态、下发 ticket，各业务系统配合存储和认证 ticket"></a>8. 单点登录要求不同域下的系统「一次登录，全线通用」，通常由独立的 SSO 系统记录登录状态、下发 ticket，各业务系统配合存储和认证 ticket</h5><p><a href="https://mp.weixin.qq.com/s/GlSpsx3KY6oPLzS3HzGXPw" target="_blank" rel="noopener">文章来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

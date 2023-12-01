@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        计算机和网络基础 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dns解析过程"><span class="toc-text">Dns解析过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#递归查询"><span class="toc-text">递归查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#迭代查询"><span class="toc-text">迭代查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Dns解析过程-1"><span class="toc-text">Dns解析过程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ping过程"><span class="toc-text">Ping过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#局域网（同一网段）"><span class="toc-text">局域网（同一网段）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#外网-（跨网段）"><span class="toc-text">外网 （跨网段）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#操作系统内存管理"><span class="toc-text">操作系统内存管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进程和线程"><span class="toc-text">进程和线程</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        计算机和网络基础
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-10-17 10:51:05</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#网络" title="网络">网络</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#计算机" title="计算机">计算机</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="Dns解析过程"><a href="#Dns解析过程" class="headerlink" title="Dns解析过程"></a>Dns解析过程</h3><h4 id="递归查询"><a href="#递归查询" class="headerlink" title="递归查询"></a>递归查询</h4><ol>
+<li>客户端(求问XXX的IP地址是多少)  –&gt; 本地DNS服务器 (我不知道，但是根域名服务器可能会知道，我替去问他吧)</li>
+<li>本地DNS服务器(求问XXX的IP地址是多少) –&gt; 根域名服务器 (不知道，但是A域名服务器可能会知道，我替去问他吧)</li>
+<li>根域名服务器(求问XXX的IP地址是多少)  –&gt; A顶级域名服务器 （查到XXX的IP地址是192.168.168.6）</li>
+<li>根域名服务器（查到XXX的IP地址是192.168.168.6） –&gt; 本地DNS服务器</li>
+<li>本地DNS服务器 （查到XXX的IP地址是192.168.168.6） –&gt; 客户端</li>
+</ol>
+<h4 id="迭代查询"><a href="#迭代查询" class="headerlink" title="迭代查询"></a>迭代查询</h4><ol>
+<li>客户端(求问XXX的IP地址是多少) –&gt; 本地dns服务器（我不知道，但是你可以问根域名服务器）</li>
+<li>客户端(求问XXX的IP地址是多少) –&gt; 根域名服务器 (我不知道， A顶级域名服务器可能会知道)</li>
+<li>客户端(求问XXX的IP地址是多少) –&gt; A顶级域名服务器 (查到XXX的IP地址是192.168.167.1)</li>
+</ol>
+<h4 id="Dns解析过程-1"><a href="#Dns解析过程-1" class="headerlink" title="Dns解析过程"></a>Dns解析过程</h4><ol>
+<li>浏览器缓存查询</li>
+<li>本地host文件是否映射</li>
+<li>本地dnf服务器是否缓存（电脑上网时IPv4或者IPv6设置中填写的那个DNS，但是最终都会到网络运营商）</li>
+<li>顶级服务器查询</li>
+<li>迭代/递归查询 </li>
+</ol>
+<p><img src="/img/dns.png" width="700" height="auto" alt="dns解析" align="center"></p>
+<h3 id="Ping过程"><a href="#Ping过程" class="headerlink" title="Ping过程"></a>Ping过程</h3><h4 id="局域网（同一网段）"><a href="#局域网（同一网段）" class="headerlink" title="局域网（同一网段）"></a>局域网（同一网段）</h4><ol>
+<li>主机A封装二层报文，查找自己的的MAC地址表，如果没有主机B的MAC地址就向外发送ARP广播包</li>
+<li>交换机收到报文，检索有没有保存主机B的MAC地址。 如果有会返回给A； 如果没有就向所有的端口发送ARP广播，其他主机收到纷纷丢弃，直到主机B收到报文就立即响应，同时学到主机A的MAC地址，并按同样的ARP报文格式返回给主机A。</li>
+<li>主机A学到了主机B的MAC地址，就把这个MAC地址封装到ICMP协议的二层报文中向主机B发送。</li>
+<li>当主机B收到了这个报文后，发现是主机A 的ICPM回显请求，就按同样的格式，返回一个值给主机A，这样就完成了同一网段内的ping过程。</li>
+</ol>
+<h4 id="外网-（跨网段）"><a href="#外网-（跨网段）" class="headerlink" title="外网 （跨网段）"></a>外网 （跨网段）</h4><ol>
+<li>主机A发现主机B和自己不是在同一网段，就去网关转发； 如果不知道网关mac地址，则发送一个ARP广播，学到网关的MAC地址，再发封装ICMP报文给网关路由器。</li>
+<li>当路由器收到主机A发过来的ICMP报文，发现自己的目的地址是其本身MAC地址，然后得到出口，加上自己的mac向主机B转发。</li>
+<li>主机B学习到路由器mac, 然后就将ICMP请求回复给主机A。</li>
+</ol>
+<p><a href="https://blog.csdn.net/guoweimelon/article/details/50859658" target="_blank" rel="noopener">参考来源</a></p>
+<h3 id="操作系统内存管理"><a href="#操作系统内存管理" class="headerlink" title="操作系统内存管理"></a>操作系统内存管理</h3><h3 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h3><ol>
+<li>进程是相互独立，线程是进程一个子集</li>
+<li>进程拥有独立资源， 线程共享内存和资源</li>
+<li>进程有独立的内存地址， 线程共享内存地址空间（共享进程上下文）</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

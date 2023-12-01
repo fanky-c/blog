@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        mysql日常命令行和优化规则 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#日常命令"><span class="toc-text">日常命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化规则"><span class="toc-text">优化规则</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#核心"><span class="toc-text">核心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#索引"><span class="toc-text">索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sql语句"><span class="toc-text">sql语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#优化总结"><span class="toc-text">优化总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql执行过程"><span class="toc-text">mysql执行过程</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        mysql日常命令行和优化规则
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-06-16 10:23:20</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#mysql" title="mysql">mysql</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#mysql命令" title="mysql命令">mysql命令</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#mysql优化" title="mysql优化">mysql优化</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="日常命令"><a href="#日常命令" class="headerlink" title="日常命令"></a>日常命令</h2><ol>
+<li>链接远程数据库</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -h主机地址 -P端口 -u用户名 -p用户密码</span><br><span class="line">mysql -h127<span class="number">.0</span><span class="number">.0</span><span class="number">.1</span> -P1234 -u<span class="string">"myname"</span> -p<span class="string">"test123"</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>显示所有库</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show databases;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>进入数据库</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use database_name;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>显示当前库中所有的表</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show tables;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>显示表字段</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">desc table_name;</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>创建表</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table table_name (name char(<span class="number">100</span>), path char(<span class="number">100</span>), count int(<span class="number">10</span>), firstName char(<span class="number">100</span>), firstMD5 char(<span class="number">100</span>), secondName char(<span class="number">100</span>), secondMD5 char(<span class="number">100</span>), thirdName char(<span class="number">100</span>), thirdMD5 char(<span class="number">100</span>));</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li>修改表名</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename table table_name_old to table_name_new</span><br></pre></td></tr></table></figure>
+<ol start="8">
+<li>插入数据</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into table_name (name, path, count, firstName, firstMD5, secondName, secondMD5, thirdName, thirdMD5) VALUES (<span class="string">'test'</span>, <span class="string">'test'</span>, <span class="number">1</span>, <span class="string">'name1'</span>, <span class="string">'md1'</span>, <span class="string">'name2'</span>, <span class="string">'md2'</span>, <span class="string">'name3'</span>, <span class="string">'md3'</span>);</span><br></pre></td></tr></table></figure>
+<ol start="9">
+<li>查询表中数据</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select * from table_name;</span><br><span class="line"></span><br><span class="line">select * from table_name where name = &apos;test&apos;;</span><br><span class="line"></span><br><span class="line">select * from table_name order by id limit 0,2;</span><br></pre></td></tr></table></figure>
+<ol start="9">
+<li>where、group by和having区别</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 1) 在SQL语句中，where子句并不是必须出现的</span><br><span class="line">// 2) where子句是对检索记录中每一行记录的过滤</span><br><span class="line">// 3) having子句出现在group by子句后面</span><br><span class="line">// 4) 如果在一句SQL语句中，where子句和group by……having子句同时都有的话，必须where子句在前，group by……having子句在后。（where先执行，再groupby分组；groupby先分组，having再执行）</span><br><span class="line">// 5) group by子句是对检索记录的分组，后面跟随的字段名是分组的依据。根据语法，在select子句中，除聚合函数语句外，SELECT子句中的每个列名称都必须在GROUP BY子句中作为分组的依据。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">select vend_id, count(*) , sales from products group by vend_id;</span><br><span class="line">这个语句，其中sales字段，在group by中没有，所以查询的结果，sales的值是错误的！</span><br></pre></td></tr></table></figure>
+<ol start="10">
+<li>更新表中某一行数据</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update table_name set folderName =&apos;Mary&apos; where id=1;</span><br></pre></td></tr></table></figure>
+<ol start="11">
+<li>删除表中某一行数据</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from table_name where folderName = &apos;test&apos;;</span><br></pre></td></tr></table></figure>
+<ol start="12">
+<li>添加表字段</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name add id int auto_increment not null primary key;</span><br></pre></td></tr></table></figure>
+<ol start="13">
+<li>删除字段</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table table_name drop folderName;</span><br></pre></td></tr></table></figure>
+<h2 id="优化规则"><a href="#优化规则" class="headerlink" title="优化规则"></a>优化规则</h2><h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><ol>
+<li>字段名不要使用‘key’ ‘index’ ‘like’‘time’ 等等关键字</li>
+<li>表字段尽量少，上限控制在20~50个，适当可以冗余(平衡范式和冗余)。</li>
+<li>不在数据库做强运算，不要使用存储过程、触发器等，数据库主要负责存储，不承担大量业务逻辑。</li>
+<li>拒绝大sql，大事务。批量删除时，请控制在操作行数1万以内的小事务。批量插入时，请控制并发，并发搞很容易死锁。</li>
+</ol>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><ol>
+<li>能不加的索引尽量不加，最好不超过字段数的20%(如：性别不加)，结合核心SQL优先考虑覆盖索引(<a href="https://my.oschina.net/BearCatYN/blog/476748" target="_blank" rel="noopener">https://my.oschina.net/BearCatYN/blog/476748</a>)</li>
+<li>字符字段必须建前缀索引。由于字符串很长，通常可以索引开始的几个字符，而不是全部值，以节约空间并得到好的性能。(<a href="http://www.educity.cn/wenda/402373.html" target="_blank" rel="noopener">http://www.educity.cn/wenda/402373.html</a>)</li>
+<li>不在索引列进行数学运算和函数运算(会导致无法使用索引 =&gt; 全表扫描)，如where id+1 = 100 和 id = 100 - 1，效率差很远</li>
+<li>自增列或全局ID做INNODB的主键</li>
+<li>尽量不用外键(由程序保证约束)，高并发的时候容易死锁。</li>
+</ol>
+<h3 id="sql语句"><a href="#sql语句" class="headerlink" title="sql语句"></a>sql语句</h3><ol>
+<li>尽量少用select *，只取需要数据列，为使用覆盖索引提供可能性，减少临时表生成，更安全</li>
+<li>用in()代替or，因为or的效率是O(n)，而in()的效率是O(Log n)。如：where a = 1 OR a = 100 与 where a IN (1, 100)</li>
+<li>尽量避免负向查找，如NOT、!=等</li>
+<li>减少COUNT(*)，使用COUNT(col)，前者资源开销大，尽量少用。</li>
+<li>大批量更新凌晨操作，避开高峰，零点附近往往定时任务量比较大，如果可以，尽量安排在03:00-07:00.</li>
+<li>LIMIT高效分页：传统的方法是select <em> from t limit 10000, 10，推荐的方法是select </em> from t where id &gt; 23423 limit 10。LIMIT的偏移量越大则越慢。还有一些高效的方法有：先取id来LIMIT偏移，减少整体的数据偏移；取到需要的id，与原表JOIN；程序取ID，然后用IN来填写。select <em> from t where id &gt;= (select id from t limit 10000, 1) limit 10 , select </em> from t INNER JOIN (select id from t limit 10000, 10) USING (id) , select id from t limit 10000, 10; select * from t where id in (123, 456…)</li>
+<li>尽量避免%前缀模糊查询，由于使用的是B+ Tree，前缀模糊使用不了索引，导致全表扫描(后缀模糊速度相对快很多)</li>
+</ol>
+<h3 id="优化总结"><a href="#优化总结" class="headerlink" title="优化总结"></a>优化总结</h3><ol>
+<li>SQL语句优化，尽量精简，去除非必要语句</li>
+<li>索引优化，让所有SQL都能够走索引</li>
+<li>如果是表的瓶颈问题，则分表，单表数据量维持在1000W以内</li>
+<li>如果是单库瓶颈问题，则分库，读写分离</li>
+<li>如果是物理机器性能问题，则分多个数据库节点</li>
+</ol>
+<h2 id="mysql执行过程"><a href="#mysql执行过程" class="headerlink" title="mysql执行过程"></a>mysql执行过程</h2><p><img src="/img/mysql.png" alt><br>绿色部分为SQL实际执行部分，主要分为两步：</p>
+<p>解析：词法解析-&gt;语法解析-&gt;逻辑计划-&gt;查询优化-&gt;物理执行计划，过程中会检查缓存是否可用，如果没有可用缓存则进入下一步mysql_execute_command执行</p>
+<p>执行：检查用户、表权限-&gt;表加上共享读锁-&gt;取数据到query_cache-&gt;取消共享读锁</p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>
