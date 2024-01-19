@@ -32,7 +32,7 @@ redis是key-value数据库， 支持数据持久化， 支持list、hash、set�
 ### a. 优势
 1. 因为redis为单线程，不存在多进程或者多线程导致的切换而消耗CPU
 2. 直接读取内存， 性能快
-   
+
 ### d. 劣势
 1. 无法发挥多核CPU性能，不过可以通过在单机开多个Redis实例来完善
 
@@ -57,18 +57,22 @@ redis是key-value数据库， 支持数据持久化， 支持list、hash、set�
 2. 热点数据永不过期
 3. 缓存服务集群化部署，避免服务单机故障
 
+<br>
+<img src="/img/redis.jpg" width="90%" >
+<br>
+
 ## 缓存更新策略
 1. 对一致性要求不高就设置缓存过期时间， 根据业务具体情况设置5分钟等
 2. 对一致性要求非常高：
    1. 先删除缓存，再更新数据库。 解决方案延时双删，步骤：
-     1. **线程1删除缓存，然后去更新数据库** 
+     1. **线程1删除缓存，然后去更新数据库**
      2. **线程2来读缓存，发现缓存已经被删除，所以直接从数据库中读取，这时候由于线程1还没有更新完成，所以读到的是旧值，然后把旧值写入缓存**
      3. **线程1，根据估算的时间，sleep，由于sleep的时间大于线程2读数据+写缓存的时间，所以缓存被再次删除**
      4. **如果还有其他线程来读取缓存的话，就会再次从数据库中读取到最新值**
-   
-   2. 先更新数据库，再删除缓存。  
+
+   2. 先更新数据库，再删除缓存。
      1. 解决方案引入消息队列（太复杂，不推荐）
-   
+
 ## redis常用命令
 
 1. 链接远程redis
@@ -76,7 +80,7 @@ redis是key-value数据库， 支持数据持久化， 支持list、hash、set�
  redis-cli -h 主机 -p 端口 -a 密码
 ```
 
-2. 选择具体数据库， 一共有16个 
+2. 选择具体数据库， 一共有16个
 ```js
  select 0
 ```
@@ -84,22 +88,22 @@ redis是key-value数据库， 支持数据持久化， 支持list、hash、set�
 3. 获取key value
 ```js
  get key ---> get NODE_BIGOLIVEE_BFF:abcdc
-```   
+```
 
 4. 获取hash value
 ```js
  hmget key NODE_BIGOLIVEE_BFF:abcdc
-```   
+```
 
 5. 获取redis key 过期时间
 ```js
  ttl NODE_BIGOLIVEE_BFF:abcdc
-```    
+```
 
 1. 设置redis key 过期时间
 ```js
  expire NODE_BIGOLIVEE_BFF:abcdc 30  // 设置30秒后过期
-```  
+```
 
 <br />
 <br />
