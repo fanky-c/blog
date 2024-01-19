@@ -155,6 +155,7 @@
     </div>
     <div class="post-content ">
         <h2 id="前端鉴权背景"><a href="#前端鉴权背景" class="headerlink" title="前端鉴权背景"></a>前端鉴权背景</h2><p>原因：<strong>http请求无状态</strong></p>
+<p><br><br><img src="/img/oauth2.jpg" width="90%"><br><br></p>
 <h2 id="鉴权方式"><a href="#鉴权方式" class="headerlink" title="鉴权方式"></a>鉴权方式</h2><h3 id="1-初窥：前端全局变量、sessionStorage、localStorage"><a href="#1-初窥：前端全局变量、sessionStorage、localStorage" class="headerlink" title="1. 初窥：前端全局变量、sessionStorage、localStorage"></a>1. 初窥：前端全局变量、sessionStorage、localStorage</h3><h4 id="a-利弊"><a href="#a-利弊" class="headerlink" title="a. 利弊"></a>a. 利弊</h4><ol>
 <li>全局变量不利于持久化， 一刷新页面就没有</li>
 <li>sessionStorage、localStorage虽可以持久化，但操作麻烦，要前端存、前端手动带上给服务端</li>
@@ -174,8 +175,8 @@
 <li>成功后正常做业务处理，返回结果</li>
 </ol>
 <h4 id="b-服务端存储"><a href="#b-服务端存储" class="headerlink" title="b.服务端存储"></a>b.服务端存储</h4><ol>
-<li>redis: 内存型数据库，性能好 </li>
-<li>mysql: 性能不高 </li>
+<li>redis: 内存型数据库，性能好</li>
+<li>mysql: 性能不高</li>
 <li>应用内存: 重启就没了</li>
 </ol>
 <h4 id="c-问题"><a href="#c-问题" class="headerlink" title="c.问题"></a>c.问题</h4><ol>
@@ -195,7 +196,7 @@
 </ol>
 <h4 id="c-编码"><a href="#c-编码" class="headerlink" title="c. 编码"></a>c. 编码</h4><ol>
 <li>base64</li>
-<li>签名防篡改  </li>
+<li>签名防篡改</li>
 </ol>
 <h4 id="d-问题"><a href="#d-问题" class="headerlink" title="d. 问题"></a>d. 问题</h4><ol>
 <li>新增cookie数量</li>
@@ -203,7 +204,7 @@
 </ol>
 <h4 id="b-原理-1"><a href="#b-原理-1" class="headerlink" title="b. 原理"></a>b. 原理</h4><p><img src="/img/jwt1.webp" height="auto"></p>
 <ol>
-<li>access token：用来访问业务接口，由于有效期足够短，盗用风险小，也可以使请求方式更宽松灵活 </li>
+<li>access token：用来访问业务接口，由于有效期足够短，盗用风险小，也可以使请求方式更宽松灵活</li>
 <li>refresh token ：用来获取 access token，有效期可以长一些，通过独立服务和严格的请求方式增加安全性；由于不常验证，也可以如前面的 session 一样处理</li>
 </ol>
 <h4 id="c-session和token的区别"><a href="#c-session和token的区别" class="headerlink" title="c. session和token的区别"></a>c. session和token的区别</h4><ol>

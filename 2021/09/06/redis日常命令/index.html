@@ -168,19 +168,20 @@
 <li>热点数据永不过期</li>
 <li>缓存服务集群化部署，避免服务单机故障</li>
 </ol>
+<p><br><br><img src="/img/redis.jpg" width="90%"><br><br></p>
 <h2 id="缓存更新策略"><a href="#缓存更新策略" class="headerlink" title="缓存更新策略"></a>缓存更新策略</h2><ol>
 <li>对一致性要求不高就设置缓存过期时间， 根据业务具体情况设置5分钟等</li>
 <li><p>对一致性要求非常高：</p>
 <ol>
 <li><p>先删除缓存，再更新数据库。 解决方案延时双删，步骤：</p>
 <ol>
-<li><strong>线程1删除缓存，然后去更新数据库</strong> </li>
+<li><strong>线程1删除缓存，然后去更新数据库</strong></li>
 <li><strong>线程2来读缓存，发现缓存已经被删除，所以直接从数据库中读取，这时候由于线程1还没有更新完成，所以读到的是旧值，然后把旧值写入缓存</strong></li>
 <li><strong>线程1，根据估算的时间，sleep，由于sleep的时间大于线程2读数据+写缓存的时间，所以缓存被再次删除</strong></li>
 <li><strong>如果还有其他线程来读取缓存的话，就会再次从数据库中读取到最新值</strong></li>
 </ol>
 </li>
-<li><p>先更新数据库，再删除缓存。  </p>
+<li><p>先更新数据库，再删除缓存。</p>
 <ol>
 <li>解决方案引入消息队列（太复杂，不推荐）</li>
 </ol>
@@ -192,24 +193,20 @@
 <li><p>链接远程redis</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 主机 -p 端口 -a 密码</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>选择具体数据库， 一共有16个 </p>
+<li><p>选择具体数据库， 一共有16个</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select <span class="number">0</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>获取key value</p>
-<pre><code class="js"><span class="keyword">get</span> key ---&gt; <span class="keyword">get</span> NODE_BIGOLIVEE_BFF:abcdc
-</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">get</span> key ---&gt; <span class="keyword">get</span> NODE_BIGOLIVEE_BFF:abcdc</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>获取hash value</p>
-<pre><code class="js">hmget key NODE_BIGOLIVEE_BFF:abcdc
-</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hmget key NODE_BIGOLIVEE_BFF:abcdc</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>获取redis key 过期时间</p>
-<pre><code class="js">ttl NODE_BIGOLIVEE_BFF:abcdc
-</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ttl NODE_BIGOLIVEE_BFF:abcdc</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>设置redis key 过期时间</p>
-<pre><code class="js">expire NODE_BIGOLIVEE_BFF:abcdc <span class="number">30</span>  <span class="comment">// 设置30秒后过期</span>
-</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expire NODE_BIGOLIVEE_BFF:abcdc <span class="number">30</span>  <span class="comment">// 设置30秒后过期</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p><br><br><br></p>
