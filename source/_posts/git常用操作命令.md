@@ -111,3 +111,7 @@ git merge dev
 # 查看状态
 git status
 ```
+
+<br>
+
+1、 [rebase 和 merge 的区别](https://mp.weixin.qq.com/s/cOXKqYw-bzX1eiwFVx6KMg)
