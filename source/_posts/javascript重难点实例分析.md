@@ -1131,3 +1131,296 @@ getMaxCount5(str);  // '出现最多的值是l，出现次数为7'
 
 假如存在一个字符串'helloJavaScripthellohtmlhellocss'，其中存在大量的重复字符，例如h、e、l等，去除重复的字符，只保留一个，得到的结果应该是'heloJavscriptm'。
 
+1. 算法1
+
+算法1的主要思想是使用key-value类型的对象存储，key表示唯一的字符，处理完后将所有的key拼接在一起即可得到去重后的结果。
+
+· 首先通过key-value形式的对象来存储数据，key表示不重复出现的字符，value为boolean类型的值，为true则表示字符出现过。
+
+· 然后遍历字符串，判断当前处理的字符是否在对象中，如果在，则不处理；如果不在，则将该字符添加到结果数组中。
+
+· 处理完字符串后，得到一个数组，转换为字符串后即可获得最终需要的结果。
+
+```js
+// 算法1
+function removeDuplicateChar1(str) {
+   // 结果数组
+   var result = [];
+   // key-value形式的对象
+   var json = {};
+   for (var i = 0; i < str.length; i++) {
+       // 当前处理的字符
+       var char = str[i];
+       // 判断是否在对象中
+       if(!json[char]) {
+           // value值设置为false
+           json[char] = true;
+           // 添加至结果数组中
+           result.push(char);
+       }
+   }
+   return result.join('');
+}
+
+var str = 'helloJavaScripthellohtmlhellocss';
+removeDuplicateChar1(str);  // 'heloJavscriptm'
+```
+
+2. 算法2
+
+算法2的主要思想是借助数组的filter()函数，然后在filter()函数中使用indexOf()函数判断。
+
+· 通过call()函数改变filter()函数的执行体，让字符串可以直接执行filter()函数。
+
+· 在自定义的filter()函数回调中，通过indexOf()函数判断其第一次出现的索引位置，如果与filter()函数中的index一样，则表示第一次出现，符合条件则return出去。这就表示只有第一次出现的字符会被成功过滤出来，而其他重复出现的字符会被忽略掉。
+
+· filter()函数返回的结果便是已经去重的字符数组，将其转换为字符串输出即为最终需要的结果。
+
+```js
+// 算法2
+function removeDuplicateChar2(str) {
+   // 使用call()函数改变ﬁlter函数的执行主体
+   let result = Array.prototype.ﬁlter.call(str, function (char, index, arr) {
+      // 通过indexOf()函数与index的比较，判断是否是第一次出现的字符
+      return arr.indexOf(char) === index;
+   });
+   return result.join('');
+}
+
+var str = 'helloJavaScripthellohtmlhellocss';
+removeDuplicateChar2(str);  // 'heloJavscriptm'
+```
+
+借助于ES6的语法，以上方法体的执行代码还可以简写成一行的形式。
+
+```js
+return Array.prototype.filter.call(str, (char, index, arr) => arr.indexOf
+(char) === index).join('');
+```
+
+
+3. 算法3
+
+算法3的主要思想是借助ES6中的Set数据结构，Set具有自动去重的特性，可以直接将数组元素去重。
+
+· 将字符串处理成数组，然后作为参数传递给Set的构造函数，通过new运算符生成一个Set的实例。
+
+· 将Set通过扩展运算符（...）转换成数组形式，最终转换成字符串获得需要的结果。
+
+```js
+// 算法3
+function removeDuplicateChar3(str) {
+   // 字符串转换的数组作为参数，生成Set的实例
+   let set = new Set(str.split(''));
+    // 将set重新处理为数组，然后转换成字符串
+   return [...set].join('');
+}
+
+var str = 'helloJavaScripthellohtmlhellocss';
+removeDuplicateChar3(str);  // 'heloJavscriptm'
+```
+
+##### 1.3.2.4  判断一个字符串是否为回文字符串
+
+回文字符串是指一个字符串正序和倒序是相同的，例如字符串'abcdcba'是一个回文字符串，而字符串'abcedba'则不是一个回文字符串。
+
+需要注意的是，这里不区分字符大小写，即a与A在判断时是相等的。
+
+给定两个字符串'abcdcba'和'abcedba'，经过一定的算法处理，分别会返回“true”和“false”。
+
+
+1. 算法1
+
+算法1的主要思想是将字符串按从前往后顺序的字符与按从后往前顺序的字符逐个进行比较，如果遇到不一样的值则直接返回“false”，否则返回“true”。
+
+```js
+// 算法1
+function isPalindromicStr1(str) {
+   // 空字符则直接返回“true”
+   if (!str.length) {
+       return true;
+   }
+   // 统一转换成小写，同时转换成数组
+   str = str.toLowerCase().split('');
+   var start = 0, end = str.length - 1;
+   // 通过while循环判断正序和倒序的字母
+   while(start < end) {
+      // 如果相等则更改比较的索引
+      if(str[start] === str[end]) {
+          start++;
+          end--;
+      } else {
+          return false;
+      }
+   }
+   return true;
+}
+
+var str1 = 'abcdcba';
+var str2 = 'abcedba';
+
+isPalindromicStr1(str1);  // true
+isPalindromicStr1(str2);  // false
+```
+
+2. 算法2
+
+算法2与算法1的主要思想相同，将正序和倒序的字符逐个进行比较，与算法1不同的是，算法2采用递归的形式实现。
+
+递归结束的条件有两种情况，一个是当字符串全部处理完成，此时返回“true”；另一个是当遇到首字符与尾字符不同，此时返回“false”。而其他情况会依次进行递归处理。
+
+```js
+// 算法2
+function isPalindromicStr2(str) {
+   // 字符串处理完成，则返回“true”
+   if(!str.length) {
+      return true;
+   }
+   // 字符串统一转换成小写
+   str = str.toLowerCase();
+   let end = str.length - 1;
+   // 当首字符和尾字符不同，直接返回“false”
+   if(str[0] !== str[end]) {
+      return false;
+   }
+   // 删掉字符串首尾字符，进行递归处理
+   return isPalindromicStr2(str.slice(1, end));
+}
+
+var str1 = 'abcdcba';
+var str2 = 'abcedba';
+
+isPalindromicStr2(str1);  // true
+isPalindromicStr2(str2);  // false
+```
+
+3. 算法3
+
+算法3的主要思想是将字符串进行逆序处理，然后与原来的字符串进行比较，如果相等则表示是回文字符串，否则不是回文字符串。
+
+```js
+// 算法3
+function isPalindromicStr3(str) {
+   // 字符串统一转换成小写
+   str = str.toLowerCase();
+   // 将字符串转换成数组
+   var arr = str.split('');
+   // 将数组逆序并转换成字符串
+    var reverseStr = arr.reverse().join('');
+    return str === reverseStr;
+}
+
+var str1 = 'abcdcba';
+var str2 = 'abcedba';
+
+isPalindromicStr3(str1);  // true
+isPalindromicStr3(str2);  // false
+```
+
+### 1.4 运算符
+
+#### 1.4.1 等于运算符
+不同于其他编程语言，JavaScript中相等的比较分为双等于（==）比较和三等于（===）比较。这是因为在Java、C等强类型语言中，一个变量在使用前必须声明变量类型，所以在比较的时候就无须判断变量类型，只需要有双等于即可。
+
+· 双等于运算符在比较时，会将两端的变量进行隐式类型转换，然后比较值的大小。
+
+· 三等于运算符在比较时，会优先比较数据类型，数据类型相同才去判断值的大小，如果类型不同则直接返回“false”。
+
+##### 1.4.1.1 三等于运算符
+
+① 如果比较的值类型不相同，则直接返回“false”。
+
+```js
+1 === '1'; // false
+true === 'true';  // false
+```
+
+需要注意的是，基本类型数据存在包装类型。在未使用new操作符时，简单类型的比较实际为值的比较，而使用了new操作符后，实际得到的是引用类型的值，在判断时会因为类型不同而直接返回“false”。
+
+```js
+1 === Number(1);  // true
+1 === new Number(1);  // false
+'hello' === String('hello');  // true
+'hello' === new String('hello'); // false
+```
+
+② 如果比较的值都是数值类型，则直接比较值的大小，相等则返回“true”，否则返回“false”。需要注意的是，如果参与比较的值中有任何一方为NaN，则返回“false”。
+
+```js
+23 === 23;   // true
+34 === NaN;  // false
+NaN === NaN; // false
+```
+
+③ 如果比较的值都是字符串类型，则判断每个位置的字符是否一样，如果一样则返回“true”，否则返回“false”。
+
+```js
+'kingx' === 'kingx';   // true
+'kingx' === 'kingx2';  // false
+```
+
+④ 如果比较的值都是Boolean类型，则两者同时为true或者false时，返回“true”，否则返回“false”。
+
+```js
+false === false;  // true
+true === false;   // false
+```
+
+⑤ 如果比较的值都是null或者undefined，则返回“true”；如果只有一方为null或者undefined，则返回“false”。
+
+```js
+null === null;   // true
+undeﬁned === undeﬁned;   // true
+null === undeﬁned;   // false
+```
+
+⑥ 如果比较的值都是引用类型，则比较的是引用类型的地址，当两个引用指向同一个地址时，则返回“true”，否则返回“false”。
+
+```js
+var a = [];
+var b = a;
+var c = [];
+console.log(a === b); // true
+console.log(a === c); // false
+console.log({} === {}); // false
+```
+
+实际上，如果不是通过赋值运算符（=）将定义的引用类型的值赋予变量，那么引用类型的值在比较后都会返回“false”，所以我们会发现空数组或者空对象的直接比较返回的是“false”。
+
+```js
+[] === [];  // false
+{} === {};  // false
+```
+
+引用类型变量的比较还有一个很明显的特点，即只要有一个变量是通过new操作符得到的，都会返回“false”，包括基本类型的包装类型。
+
+```js
+'hello' === new String('hello');  // false
+new String('hello') === new String('hello');  // false
+
+// 函数对象类型
+function Person(name) {
+   this.name = name;
+}
+var p1 = new Person('zhangsan');
+var p2 = new Person('zhangsan');
+console.log(p1 === p2);  // false
+```
+
+##### 1.4.1.2  双等于运算符
+
+## 2、引用数据类型
+
+
+## 3、函数
+
+
+## 4、对象
+
+## 5、DOM与事件
+
+
+## 6、Ajax
+
+
+## 7、ES6
