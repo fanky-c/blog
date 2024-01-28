@@ -475,5 +475,659 @@ if(!Number.isNaN) {
 ##### 1.2.3.2 浮点运算计算过程
 接下来以0.1 + 0.2 = 0.30000000000000004的运算为例，看看为什么会得到这个计算结果。
 
+首先将各个浮点数的小数位按照“乘2取整，顺序排列”的方法转换成二进制表示。
+
+具体做法是用2乘以十进制小数，得到积，将积的整数部分取出；然后再用2乘以余下的小数部分，又得到一个积；再将积的整数部分取出，如此推进，直到积中的小数部分为零为止。
+
+然后把取出的整数部分按顺序排列起来，先取的整数作为二进制小数的高位有效位，后取的整数作为低位有效位，得到最终结果。
+
+0.1转换为二进制表示的计算过程如下。
+
+```js
+0.1 * 2 = 0.2 //取出整数部分0
+
+0.2 * 2 = 0.4 //取出整数部分0
+
+0.4 * 2 = 0.8 //取出整数部分0
+
+0.8 * 2 = 1.6 //取出整数部分1
+
+0.6 * 2 = 1.2 //取出整数部分1
+
+0.2 * 2 = 0.4 //取出整数部分0
+
+0.4 * 2 = 0.8 //取出整数部分0
+
+0.8 * 2 = 1.6 //取出整数部分1
+
+0.6 * 2 = 1.2 //取出整数部分1
+```
+
+1.2取出整数部分1后，剩余小数为0.2，与这一轮运算的第一位相同，表示这将是一个无限循环的计算过程。
+
+```js
+0.2 * 2 = 0.4 //取出整数部分0
+
+0.4 * 2 = 0.8 //取出整数部分0
+
+0.8 * 2 = 1.6 //取出整数部分1
+
+0.6 * 2 = 1.2 //取出整数部分1
+...
+```
+因此0.1转换成二进制表示为0.0 0011 0011 0011 0011 0011 0011……（无限循环）。
+
+同理对0.2进行二进制的转换，计算过程与上面类似，直接从0.2开始，相比于0.1，少了第一位的0，其余位数完全相同，结果为0.0011 0011 0011 0011 0011 0011……（无限循环）。
+
+将0.1与0.2相加，然后转换成52位精度的浮点型表示。
+
+```js
+ 0.0001 1001 1001 1001 1001 1001  1001 1001 1001 1001 1001 1001 1001   (0.1)
++ 0.0011 0011 0011 0011 0011 0011 0011 0011 0011 0011 0011 0011 0011   (0.2)
+= 0.0100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100 1100
+```
+
+##### 1.2.3.3  解决方案
+
+这里提供一种方法，主要思路是将浮点数先乘以一定的数值转换为整数，通过整数进行运算，然后将结果除以相同的数值转换成浮点数后返回。
+
+下面提供一套用于做浮点数加减乘除运算的代码。
+
+```js
+const operationObj = {
+   /**
+    * 处理传入的参数，不管传入的是数组还是以逗号分隔的参数都处理为数组
+    * @param args
+    * @returns {*}
+    */
+   getParam(args) {
+      return Array.prototype.concat.apply([], args);
+   },
+
+   /**
+    * 获取每个数的乘数因子，根据小数位数计算
+    * 1.首先判断是否有小数点，如果没有，则返回1；
+    * 2.有小数点时，将小数位数的长度作为Math.pow()函数的参数进行计算
+    * 例如2的乘数因子为1，2.01的乘数因子为100
+    * @param x
+    * @returns {number}
+    */
+   multiplier(x) {
+      let parts = x.toString().split('.');
+      return parts.length < 2 ? 1 : Math.pow(10, parts[1].length);
+   },
+
+   /**
+    * 获取多个数据中最大的乘数因子
+    * 例如1.3的乘数因子为10，2.13的乘数因子为100
+    * 则1.3和2.13的最大乘数因子为100
+    * @returns {*}
+    */
+   correctionFactor() {
+       let args = Array.prototype.slice.call(arguments);
+       let argArr = this.getParam(args);
+       return argArr.reduce((accum, next) => {
+           let num = this.multiplier(next);
+           return Math.max(accum, num);
+       }, 1);
+   },
+
+   /**
+    * 加法运算
+    * @param args
+    * @returns {number}
+    */
+   add(...args) {
+       let calArr = this.getParam(args);
+       // 获取参与运算值的最大乘数因子
+       let corrFactor = this.correctionFactor(calArr);
+       let sum = calArr.reduce((accum, curr) => {
+           // 将浮点数乘以最大乘数因子，转换为整数参与运算
+           return accum + Math.round(curr * corrFactor);
+       }, 0);
+       // 除以最大乘数因子
+       return sum / corrFactor;
+   },
+
+   /**
+    * 减法运算
+    * @param args
+    * @returns {number}
+    */
+   subtract(...args) {
+       let calArr = this.getParam(args);
+       let corrFactor = this.correctionFactor(calArr);
+       let diﬀ = calArr.reduce((accum, curr, curIndex) => {
+          // reduce()函数在未传入初始值时，curIndex从1开始，第一位参与运算的值需要
+          // 乘以最大乘数因子
+          if (curIndex === 1) {
+              return Math.round(accum * corrFactor) - Math.round(curr * corrFactor);
+          }
+          // accum作为上一次运算的结果，就无须再乘以最大因子
+          return Math.round(accum) - Math.round(curr * corrFactor);
+       });
+     // 除以最大乘数因子
+       return diﬀ / corrFactor;
+   },
+
+   /**
+    * 乘法运算
+    * @param args
+    * @returns {*}
+    */
+   multiply(...args) {
+      let calArr = this.getParam(args);
+      let corrFactor = this.correctionFactor(calArr);
+      calArr = calArr.map((item) => {
+          // 乘以最大乘数因子
+          return item * corrFactor;
+      });
+      let multi = calArr.reduce((accum, curr) => {
+          return Math.round(accum) * Math.round(curr);
+      }, 1);
+      // 除以最大乘数因子
+      return multi / Math.pow(corrFactor, calArr.length);
+   },
+
+   /**
+    * 除法运算
+    * @param args
+    * @returns {*}
+    */
+   divide(...args) {
+       let calArr = this.getParam(args);
+       let quotient = calArr.reduce((accum, curr) => {
+           let corrFactor = this.correctionFactor(accum, curr);
+           // 同时转换为整数参与运算
+           return Math.round(accum * corrFactor) / Math.round(curr * corrFactor);
+       });
+       return quotient;
+   }
+};
+```
 
 ### 1.3 String类型
+JavaScript中的String类型（字符串类型）既可以通过双引号""表示，也可以通过单引号''表示，而且是完全等效的，这点与Java、PHP等语言在字符串的处理上是不同的。
+
+**如果是引用类型的数据，则在转换时总是会调用toString()函数，得到不同类型值的字符串表示；如果是基本数据类型，则会直接将字面值转换为字符串表示形式。例如null值和undefined值转换为字符串时，会直接返回字面值，分别是"null"和"undefined"。**
+
+#### 1.3.1 String类型的定义与调用
+
+在JavaScript中，有3种定义字符串的方式，分别是字符串字面量，直接调用String()函数与new String()构造函数。
+
+1. 字符串字面量
+
+```js
+var str = 'hello JavaScript';  // 正确写法
+var str2 = "hello html";       // 正确写法
+var str = 'hello css";         // 错误写法，首尾符号不一样
+```
+
+2.  直接调用String()函数
+
+① 如果是Number类型的值，则直接转换成对应的字符串。
+
+```js
+String(123);     // '123'
+String(123.12);  // '123.12'
+```
+
+② 如果是Boolean类型的值，则直接转换成'true'或者'false'。
+
+```js
+String(true);  // 'true'
+String(false); // 'false'
+```
+
+③ 如果值为null，则返回字符串'null'；
+
+```js
+String(null);  // 'null'
+```
+
+④ 如果值为undefined，则返回字符串'undefined'；
+
+```js
+String(undeﬁned); // 'undeﬁned'
+```
+
+⑤ 如果值为字符串，则直接返回字符串本身；
+
+```js
+String('this is a string');  // 'this is a string'
+```
+
+⑥ 如果值为引用类型，则会先调用toString()函数获取返回值，将返回值按照上述步骤①～⑤判断能否转换字符串类型，如果都不满足，则会调用对象的valueOf()函数获取返回值，并将返回值重新按照步骤①～⑤判断能否转换成字符串类型，如果也不满足，则会抛出类型转换的异常。
+
+以下是通过toString()函数将对象正确转换成String类型的示例:
+
+```js
+var obj = {
+   age: 21,
+   valueOf: function () {
+       return this.age;
+   },
+   toString: function () {
+       return 'good';
+   }
+};
+String(obj);  // 'good'
+```
+
+以下是通过valueOf()函数将对象正确转换成String类型的示例:
+
+```js
+var obj = {
+   age: '21',
+   valueOf: function () {
+       return this.age;
+   },
+   toString: function () {
+       return [];
+   }
+};
+String(obj);  // '21'
+```
+
+如果toString()函数和valueOf()函数返回的都是对象类型而无法转换成原生类型时，则会抛出类型转换的异常:
+
+```js
+var obj = {
+   age: '21',
+   valueOf: function () {
+       return [];
+   },
+   toString: function () {
+       return [];
+   }
+};
+String(obj);  // 抛出异常TypeError: Cannot convert object to primitive value
+```
+
+3. new String()构造函数
+
+new String()构造函数使用new运算符生成String类型的实例，对于传入的参数同样采用和上述String()函数一样的类型转换策略，最后的返回值是一个String类型对象的实例。
+
+```js
+new String('hello JavaScript'); // String {"hello JavaScript"}
+```
+
+4. 三者在作比较时的区别
+
+基本字符串在作比较时，只需要比较字符串的值即可；而在比较字符串对象时，比较的是对象所在的地址。
+
+```js
+var str = 'hello';
+var str2 = String(str);
+var str3 = String('hello');
+var str4 = new String(str);
+var str5 = new String(str);
+var str6 = new String('hello');
+
+str === str2;   // true
+str2 === str3;  // true
+str3 === str4;  // false
+str4 === str5;  // false
+str5 === str6;  // false
+```
+
+对于str4、str5和str6，因为是使用new运算符生成的String类型的实例，所以在比较时需要判断变量是否指向同一个对象，即内存地址是否相同，很明显str4、str5、str6都是在内存中新生成的地址，彼此各不相同。
+
+
+5. 函数的调用
+
+在String对象的原型链上有一系列的函数，例如indexOf()函数、substring()函数、slice()函数等，通过String对象的实例可以调用这些函数做字符串的处理。
+
+但是我们发现，采用字面量方式定义的字符串没有通过new运算符生成String对象的实例也能够直接调用原型链上的函数。
+
+这是为什么呢？
+
+**实际上基本字符串本身是没有字符串对象的函数，而在基本字符串调用字符串对象才有的函数时，JavaScript会自动将基本字符串转换为字符串对象，形成一种包装类型，这样基本字符串就可以正常调用字符串对象的方法了。**
+
+
+#### 1.3.2 String类型常见算法
+
+##### 1.3.2.1  字符串逆序输出
+
+给定一个字符串'abcdefg'，执行一定的算法后，输出的结果为'gfedcba'。
+
+1. 算法1
+
+算法1的主要思想是借助数组的reverse()函数。
+
+首先将字符串转换为字符数组，然后通过调用数组原生的reverse()函数进行逆序，得到逆序数组后再通过调用join()函数得到逆序字符串。
+
+```js
+// 算法1：借助数组的reverse()函数
+function reverseString1(str) {
+   return str.split('').reverse().join('');
+}
+```
+
+2. 算法2
+
+算法2的主要思想是利用字符串本身的charAt()函数。
+
+从尾部开始遍历字符串，然后利用charAt()函数获取字符并逐个拼接，得到最终的结果。charAt()函数接收一个索引数字，返回该索引位置对应的字符。
+
+```js
+// 算法2：利用charAt()函数
+function reverseString2(str) {
+   var result = '';
+   for(var i = str.length - 1; i >= 0; i--){
+       result += str.charAt(i);
+   }
+   return result;
+}
+```
+
+3. 算法3
+
+算法3的主要思想是通过递归实现逆序输出，与算法2的处理类似。
+
+递归从字符串最后一个位置索引开始，通过charAt()函数获取一个字符，并拼接到结果字符串中，递归结束的条件是位置索引小于0。
+
+```js
+// 算法3：递归实现
+function reverseString3(strIn,pos,strOut){
+   if(pos<0)
+      return strOut;
+   strOut += strIn.charAt(pos--);
+   return reverseString3(strIn,pos,strOut);
+}
+
+
+var str = 'abcdefg';
+var result = '';
+console.log(reverseString3(str, str.length - 1, result));
+```
+
+4. 算法4
+
+算法4的主要思想是通过call()函数来改变slice()函数的执行主体。
+
+调用call()函数后，可以让字符串具有数组的特性，在调用未传入参数的slice()函数后，得到的是一个与自身相等的数组，从而可以直接调用reverse()函数，最后再通过调用join()函数，得到逆序字符串。
+
+```js
+// 算法4: 利用call()函数
+function reverseString4(str) {
+   // 改变slice()函数的执行主体，得到一个数组
+   var arr = Array.prototype.slice.call(str);
+   // 调用reverse()函数逆序数组
+   return arr.reverse().join('');
+}
+```
+
+5. 算法5
+
+算法5的主要思想是借助栈的先进后出原则
+
+由于JavaScript并未提供栈的实现，我们首先需要实现一个栈的数据结构，然后在栈中添加插入和弹出的函数，利用插入和弹出方法的函数字符串逆序。
+
+首先，我们来看下基本数据结构——栈的实现。通过一个数组进行数据存储，通过一个top变量记录栈顶的位置，随着数据的插入和弹出，栈顶位置动态变化。
+
+栈的操作包括两种，分别是出栈和入栈。出栈时，返回栈顶元素，即数组中索引值最大的元素，然后top变量减1；入栈时，往栈顶追加元素，然后top变量加1。
+
+```js
+// 栈
+function Stack() {
+   this.data = []; // 保存栈内元素
+   this.top = 0;   // 记录栈顶位置
+}
+
+// 原型链增加出栈、入栈方法
+Stack.prototype = {
+   // 入栈:先在栈顶添加元素，然后元素个数加1
+   push: function push(element) {
+       this.data[this.top++] = element;
+   },
+   // 出栈：先返回栈顶元素，然后元素个数减1
+   pop: function pop() {
+       return this.data[--this.top];
+   },
+   // 返回栈内的元素个数，即长度
+   length: function () {
+       return this.top;
+   }
+};
+```
+
+```js
+// 算法5：自定义栈实现
+function reverseString5(str) {
+   //创建一个栈的实例
+   var s = new Stack();
+   //将字符串转成数组
+   var arr = str.split('');
+   var len = arr.length;
+   var result = '';
+   //将元素压入栈内
+   for(var i = 0; i < len; i++){
+      s.push(arr[i]);
+   }
+   //输出栈内元素
+   for(var j = 0; j < len; j++){
+      result += s.pop(j);
+   }
+   return result;
+}
+
+// 使用
+var str = 'abcdefg';
+console.log(reverseString5(str));
+```
+
+##### 1.3.2.2 统计字符串中出现次数最多的字符及出现的次数
+
+假如存在一个字符串'helloJavascripthellohtmlhellocss'，其中出现次数最多的字符是l，出现的次数是7次。
+
+1. 算法1
+
+算法1的主要思想是通过key-value形式的对象来存储字符串以及字符串出现的次数，然后逐个判断出现次数最大值，同时获取对应的字符，具体实现如下。
+
+· 首先通过key-value形式的对象来存储数据，key表示不重复出现的字符，value表示该字符出现的次数。
+
+· 然后遍历字符串的每个字符，判断是否出现在key中。如果在，直接将对应的value值加1；如果不在，则直接新增一组key-value，value值为1
+
+· 得到key-value对象后，遍历该对象，逐个比较value值的大小，找出其中最大的值并记录key-value，即获得最终想要的结果。
+
+```js
+// 算法1
+function getMaxCount(str) {
+   var json = {};
+   // 遍历str的每一个字符得到key-value形式的对象
+   for (var i = 0; i < str.length; i++) {
+       // 判断json中是否有当前str的值
+       if (!json[str.charAt(i)]) {
+           // 如果不存在，就将当前值添加到json中去
+           json[str.charAt(i)] = 1;
+       } else {
+           // 如果存在，则让value值加1
+           json[str.charAt(i)]++;
+       }
+   }
+   // 存储出现次数最多的值和出现次数
+   var maxCountChar = '';
+   var maxCount = 0;
+   // 遍历json对象，找出出现次数最大的值
+  for (var key in json) {
+      // 如果当前项大于下一项
+      if (json[key] > maxCount) {
+          // 就让当前值更改为出现最多次数的值
+          maxCount = json[key];
+          maxCountChar = key;
+      }
+   }
+   //最终返回出现最多的值以及出现次数
+   return '出现最多的值是' + maxCountChar + '，出现次数为' + maxCount;
+}
+var str = 'helloJavaScripthellohtmlhellocss';
+getMaxCount(str); // '出现最多的值是l，出现次数为7'
+```
+
+2. 算法2
+
+算法2同样会借助于key-value形式的对象来存储字符与字符出现的次数，但是在运算上有所差别。
+
+· 首先通过key-value形式的对象来存储数据，key表示不重复出现的字符，value表示该字符出现的次数。
+
+· 然后将字符串处理成数组，通过forEach()函数遍历每个字符。在处理之前需要先判断当前处理的字符是否已经在key-value对象中，如果已经存在则表示已经处理过相同的字符，则无须处理；如果不存在，则会处理该字符item。
+
+· 通过split()函数传入待处理字符，可以得到一个数组，该数组长度减1即为该字符出现的次数。
+
+· 获取字符出现的次数后，立即与表示出现最大次数和最大次数对应的字符变量maxCount和maxCountChar相比，如果比maxCount大，则将值写入key-value对象中，并动态更新maxCount和maxCountChar的值，直到最后一个字符处理完成。
+
+· 最后得到的结果即maxCount和maxCountChar两个值。
+
+```js
+// 算法2
+function getMaxCount2(str) {
+   var json = {};
+   var maxCount = 0, maxCountChar = '';
+   str.split('').forEach(function (item) {
+       // 判断json对象中是否有对应的key
+       if (!json.hasOwnProperty(item)) {
+           // 当前字符出现的次数
+           var number = str.split(item).length - 1;
+           // 直接与出现次数最大值比较，并进行更新
+           if(number > maxCount) {
+               // 写入json对象
+               json[item] = number;
+               // 更新maxCount与maxCountChar的值
+               maxCount = number;
+               maxCountChar = item;
+           }
+       }
+   });
+
+   return '出现最多的值是' + maxCountChar + '，出现次数为' + maxCount;
+}
+
+var str = 'helloJavaScripthellohtmlhellocss';
+getMaxCount2(str); // '出现最多的值是l，出现次数为7'
+```
+
+3. 算法3
+
+算法3的主要思想是对字符串进行排序，然后通过lastIndexOf()函数获取索引值后，判断索引值的大小以获取出现的最大次数。
+
+· 首先将字符串处理成数组，调用sort()函数进行排序，处理成字符串。
+
+· 然后遍历每个字符，通过调用lastIndexOf()函数，确定每个字符出现的最后位置，然后减去当前遍历的索引，就可以确定该字符出现的次数。
+
+· 确定字符出现的次数后，直接与次数最大值变量maxCount进行比较，如果比maxCount大，则直接更新maxCount的值，并同步更新maxCountChar的值；如果比maxCount小，则不做任何处理。
+
+· 计算完成后，将索引值设置为字符串出现的最后位置，进行下一轮计算，直到处理完所有字符。
+
+```js
+// 算法3
+function getMaxCount3(str) {
+   // 定义两个变量，分别表示出现最大次数和对应的字符
+   var maxCount = 0, maxCountChar = '';
+   // 先处理成数组，调用sort()函数排序,再处理成字符串
+   str = str.split('').sort().join('');
+   for (var i = 0, j = str.length; i < j; i++) {
+       var char = str[i];
+       // 计算每个字符串出现的次数
+       var charCount = str.lastIndexOf(char) - i + 1;
+       // 与次数最大值作比较
+       if (charCount > maxCount) {
+           // 更新maxCount和maxCountChar的值
+           maxCount = charCount;
+           maxCountChar = char;
+       }
+       // 变更索引为字符出现的最后位置
+       i = str.lastIndexOf(char);
+   }
+   return '出现最多的值是' + maxCountChar + '，出现次数为' + maxCount;
+}
+
+var str = 'helloJavaScripthellohtmlhellocss';
+getMaxCount3(str);  // '出现最多的值是l，出现次数为7'
+```
+
+4. 算法4
+
+算法4的主要思想是将字符串进行排序，然后通过正则表达式将字符串进行匹配拆分，将相同字符组合在一起，最后判断字符出现的次数。
+
+· 首先将字符串处理成数组，调用sort()函数进行排序，处理成字符串。
+
+· 然后设置正则表达式reg，对字符串使用match()函数进行匹配，得到一个数组，数组中的每个成员是相同的字符构成的字符串。
+
+· 遍历数组，依次将成员字符串长度值与maxCount值进行比较，动态更新maxCount与maxCountChar的值，直到数组所有元素处理完成。
+
+```js
+// 算法4
+function getMaxCount4(str) {
+   // 定义两个变量，分别表示出现最大次数和对应的字符
+   var maxCount = 0, maxCountChar = '';
+   // 先处理成数组，调用sort()函数排序,再处理成字符串
+   str = str.split('').sort().join('');
+   // 通过正则表达式将字符串处理成数组(数组每个元素为相同字符构成的字符串)
+   var arr = str.match(/(\w)\1+/g);
+   for (var i = 0; i < arr.length; i++) {
+       // length表示字符串出现的次数
+       var length = arr[i].length;
+       // 与次数最大值作比较
+       if (length > maxCount) {
+           // 更新maxCount和maxCountChar
+           maxCount = length;
+           maxCountChar = arr[i][0];
+       }
+   }
+   return '出现最多的值是' + maxCountChar + '，出现次数为' + maxCount;
+}
+
+var str = 'helloJavaScripthellohtmlhellocss';
+getMaxCount4(str);  // '出现最多的值是l，出现次数为7'
+```
+
+5. 算法5
+
+算法5的主要思想是借助replace()函数，主要实现方式如下。
+
+· 通过while循环处理，跳出while循环的条件是字符串长度为0。
+
+· 在while循环中，记录原始字符串的长度originCount，用于后面做长度计算处理。
+
+· 获取字符串第一个字符char，通过replace()函数将char替换为空字符串''，得到一个新的字符串，它的长度remainCount相比于originCount会小，其中的差值originCount - remainCount即为该字符出现的次数。
+
+· 确定字符出现的次数后，直接与maxCount进行比较，如果比maxCount大，则直接更新maxCount的值，并同步更新maxCountChar的值；如果比maxCount小，则不做任何处理。
+
+· 处理至跳出while循环，得到最终结果。
+
+```js
+// 算法5
+function getMaxCount5(str) {
+   // 定义两个变量，分别表示出现最大次数和对应的字符
+   var maxCount = 0, maxCountChar = '';
+   while (str) {
+       // 记录原始字符串的长度
+       var originCount = str.length;
+       // 当前处理的字符
+       var char = str[0];
+       var reg = new RegExp(char, 'g');
+       // 使用replace()函数替换处理的字符为空字符串
+       str = str.replace(reg, '');
+       var remainCount = str.length;
+       // 当前字符出现的次数
+       var charCount = originCount - remainCount;
+       // 与次数最大值作比较
+       if (charCount > maxCount) {
+          // 更新maxCount和maxCountChar的值
+          maxCount = charCount;
+          maxCountChar = char;
+       }
+   }
+   return '出现最多的值是' + maxCountChar + '，出现次数为' + maxCount;
+}
+
+var str = 'helloJavaScripthellohtmlhellocss';
+getMaxCount5(str);  // '出现最多的值是l，出现次数为7'
+```
+
+
+##### 1.3.2.3 去除字符串中重复的字符
+
+假如存在一个字符串'helloJavaScripthellohtmlhellocss'，其中存在大量的重复字符，例如h、e、l等，去除重复的字符，只保留一个，得到的结果应该是'heloJavscriptm'。
+
