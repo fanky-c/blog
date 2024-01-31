@@ -1412,6 +1412,149 @@ console.log(p1 === p2);  // false
 
 ① 如果比较的值类型相同，则采用与三等于运算符一样的规则。
 
+② 如果比较的值类型不同，则会按照下面的规则进行转换后再进行比较。
+
+· 如果比较的一方是null或者undefined，只有在另一方是null或者undefined的情况下才返回“true”，否则返回“false”。
+
+```js
+null == undeﬁned;      // true
+null == 1;             // false
+null == false;         // false
+undeﬁned == 0;         // false
+undeﬁned == false;      // false
+```
+
+· 如果比较的是字符串和数值类型数据，则会将字符串转换为数值后再进行比较，如果转换后的数值相等则返回“true”，否则返回“false”。
+
+```js
+1 == '1';     // true
+123 == '123'; // true
+```
+
+需要注意的是，如果字符串是十六进制的数据，会转换为十进制后再进行比较。
+
+```js
+'0x15' == 21;  // true
+```
+字符串'0x15'实际为十六进制数，转换为十进制后为1×16 + 5 = 21，与21比较后返回“true”。
+
+字符串并不支持八进制的数据，如果字符串以0开头，则0会直接省略，后面的值当作十进制返回。
+
+```js
+'020' == 16;  // false
+'020' == 20;  // true
+```
+· 如果任一类型是boolean值，则会将boolean类型的值进行转换，true转换为1，false转换为0，然后进行比较。
+
+```js
+'1' == true;    // true
+'0' == false;   // true
+'0.0' == false; // true
+'true' == true; // false
+```
+
+· 如果其中一个值是对象类型，另一个值是基本数据类型或者对象类型，则会调用对象的valueOf()函数或者toString()函数，将其转换成基本数据类型后再作比较，
+
+### 1.5 typeof
+typeof运算符在处理不同数据类型时会得到不同的结果。
+
+<img src="/img/typeof.png"  alt="typeof" height = "auto"/>
+
+#### 1.5.1 处理Undefined类型的值
+虽然Undefined类型的值只有一个undefined，但是typeof运算符在处理以下3种值时都会返回“undefined”。
+
+· undefined本身。
+
+· 未声明的变量。
+
+· 已声明未初始化的变量。
+
+```js
+var declaredButUndeﬁnedVariable;
+typeof undeﬁned === 'undeﬁned';    // true
+typeof declaredButUndeﬁnedVariable === 'undeﬁned';  // true，已声明未初始化的变量
+typeof undeclaredVariable === 'undeﬁned';  // true，未声明的变量
+```
+
+#### 1.5.2 处理Boolean类型的值
+Boolean类型的值只有两个，分别是true和false。typeof运算符在处理这两个值以及它们的包装类型时都会返回“boolean”，但是不推荐使用包装类型的写法。
+
+```js
+typeof true === 'boolean';          // true
+typeof false === 'boolean';         // true
+typeof Boolean(true) === 'boolean'; // true，不推荐这么写
+```
+
+#### 1.5.3 处理Number类型的值
+
+```js
+typeof 37 === 'number';        // true
+typeof 3.14 === 'number';      // true
+typeof Math.LN2 === 'number';  // true
+typeof Inﬁnity === 'number';   // true
+typeof NaN === 'number';       // true
+typeof Number(1) === 'number'; // true，不推荐这么写
+```
+
+#### 1.5.4 处理String类型的值
+
+ · 任何类型的字符串，包括空字符串和非空字符串。
+
+ · 返回值为字符串类型的表达式。
+
+ · 字符串类型的包装类型，例如String('hello')、String('hello' + 'world')，虽然它们也会返回“String”，但是并不推荐这么写。
+
+```js
+typeof "" === 'string';            // true
+typeof "bla" === 'string';         // true
+typeof (typeof 1) === 'string';    // true，因为typeof会返回一个字符串
+typeof String("abc") === 'string'; // true，不推荐这么写
+```
+
+#### 1.5.5 处理Symbol类型的值
+
+#### 1.5.6 处理Function类型的值
+
+· 函数的定义，包括函数声明或者函数表达式两种形式。
+
+· 使用class关键字定义的类，class是在ES6中新增的关键字，它不是一个全新的概念，原理依旧是原型继承，本质上仍然是一个Function。
+
+· 某些内置对象的特定函数，例如Math.sin()函数、Number.isNaN()函数等。
+
+· Function类型对象的实例，一般通过new关键字得到。
+
+```js
+var foo = function () {};
+function foo2() {}
+
+typeof foo === 'function';       // true，函数表达式
+typeof foo2 === 'function';      // true，函数声明
+typeof class C{} === 'function'; // true
+typeof Math.sin === 'function';  // true
+typeof new Function() === 'function';  // true，new操作符得到Function类型的实例
+```
+
+#### 1.5.7 处理Object类型的值
+
+· 对象字面量形式，例如{name: 'kingx'}。
+
+· 数组，例如[1, 2, 3]和Array(1, 2, 3)。
+
+· 所有构造函数通过new操作符实例化后得到的对象，例如new Date()、new function(){}，但是new Function(){}除外。
+
+· 通过new操作符得到的基本数据类型的包装类型对象，如new Boolean(true)、new Number(1)，但不推荐这么写。
+
+**细心的读者可能发现了，与基本数据类型的包装类型相关的部分，我们都有写“不推荐这么写”，这是为什么呢？因为涉及包装类型时，使用了new操作符与没有使用new操作符得到的值在通过typeof运算符处理后得到的结果是不一样的，很容易让人混淆。**
+
+```js
+typeof {a:1} === 'object';      // true，对象字面量
+typeof [1, 2, 4] === 'object';  // true，数组
+typeof new Date() === 'object'; // true，Date对象的实例
+// 下面的代码容易令人迷惑，不要使用！
+typeof new Boolean(true) === 'object';  // true
+typeof new Number(1) === 'object';      // true
+typeof new String("abc") === 'object';  // true
+```
 
 ## 2、引用数据类型
 
