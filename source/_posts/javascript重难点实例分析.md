@@ -1455,12 +1455,12 @@ undeﬁned == false;      // false
 
 · 如果其中一个值是对象类型，另一个值是基本数据类型或者对象类型，则会调用对象的valueOf()函数或者toString()函数，将其转换成基本数据类型后再作比较，
 
-### 1.5 typeof
+#### 1.4.2 typeof运算符
 typeof运算符在处理不同数据类型时会得到不同的结果。
 
 <img src="/img/typeof.png"  alt="typeof" height = "auto"/>
 
-#### 1.5.1 处理Undefined类型的值
+##### 1.4.2.1 处理Undefined类型的值
 虽然Undefined类型的值只有一个undefined，但是typeof运算符在处理以下3种值时都会返回“undefined”。
 
 · undefined本身。
@@ -1476,7 +1476,7 @@ typeof declaredButUndeﬁnedVariable === 'undeﬁned';  // true，已声明未�
 typeof undeclaredVariable === 'undeﬁned';  // true，未声明的变量
 ```
 
-#### 1.5.2 处理Boolean类型的值
+##### 1.4.2.2 处理Boolean类型的值
 Boolean类型的值只有两个，分别是true和false。typeof运算符在处理这两个值以及它们的包装类型时都会返回“boolean”，但是不推荐使用包装类型的写法。
 
 ```js
@@ -1485,7 +1485,7 @@ typeof false === 'boolean';         // true
 typeof Boolean(true) === 'boolean'; // true，不推荐这么写
 ```
 
-#### 1.5.3 处理Number类型的值
+##### 1.4.2.3 处理Number类型的值
 
 ```js
 typeof 37 === 'number';        // true
@@ -1496,7 +1496,7 @@ typeof NaN === 'number';       // true
 typeof Number(1) === 'number'; // true，不推荐这么写
 ```
 
-#### 1.5.4 处理String类型的值
+##### 1.4.2.4 处理String类型的值
 
  · 任何类型的字符串，包括空字符串和非空字符串。
 
@@ -1511,9 +1511,9 @@ typeof (typeof 1) === 'string';    // true，因为typeof会返回一个字符�
 typeof String("abc") === 'string'; // true，不推荐这么写
 ```
 
-#### 1.5.5 处理Symbol类型的值
+##### 1.4.2.5 处理Symbol类型的值
 
-#### 1.5.6 处理Function类型的值
+##### 1.4.2.6 处理Function类型的值
 
 · 函数的定义，包括函数声明或者函数表达式两种形式。
 
@@ -1534,7 +1534,7 @@ typeof Math.sin === 'function';  // true
 typeof new Function() === 'function';  // true，new操作符得到Function类型的实例
 ```
 
-#### 1.5.7 处理Object类型的值
+##### 1.4.2.7 处理Object类型的值
 
 · 对象字面量形式，例如{name: 'kingx'}。
 
@@ -1555,6 +1555,99 @@ typeof new Boolean(true) === 'object';  // true
 typeof new Number(1) === 'object';      // true
 typeof new String("abc") === 'object';  // true
 ```
+
+##### 1.4.2.8 使用typeof运算符注意事项
+
+**1、typeof运算符区分对待Object类型和Function类型**
+在实际使用过程中，有必要区分Object类型和Function类型，而typeof运算符就能帮我们实现。
+
+**2、typeof运算符对null的处理**
+使用typeof运算符对null进行处理，返回的是“object”，这是一个让大家都感到惊讶的结果。因为null是一个原生类型的数据，为什么typeof运算符会返回“object”呢？
+
+这是一个在JavaScript设计之初就存在的问题，这里简单介绍下。
+
+在JavaScript中，每种数据类型都会使用3bit表示。
+
+· 000表示Object类型的数据。
+
+· 001表示Int类型的数据。
+
+· 010表示Double类型的数据。
+
+· 100表示String类型的数据。
+
+· 110表示Boolean类型的数据。
+
+由于null代表的是空指针，大多数平台中值为0x00，因此null的类型标签就成了0，所以使用typeof运算符时会判断为object类型，返回“object”。
+
+**3、typeof运算符相关语法的括号**
+
+```js
+var number = 123;
+typeof (number + ' hello');  // "string"
+typeof number + ' hello';    // "number hello"
+typeof 1 / 0;     // "NaN"
+typeof (1 / 0);   // "number"
+```
+
+#### 1.4.3 逗号运算符
+小小的逗号在JavaScript中有很大的用处，一方面它是基本的分隔符，例如，函数传递多个参数时，使用逗号分隔。
+
+```js
+console.log('我喜欢去%s上学习%s', '面试厅', 'JavaScript');
+```
+另一方面它可以作为一个运算符，作用是将多个表达式连接起来，从左至右依次执行。
+
+##### 1.4.3.1 在for循环中批量执行表达式
+
+```js
+for (var i = 0, j = 10; i < 10, j < 20; i++, j++) {
+   console.log(i, j);
+}
+```
+一般在for循环的末尾处，只允许执行单个表达式。在这里我们通过逗号运算符，将i++和j++两个表达式视为同一个表达式，因此可以一次执行，处理i与j两个变量的递增。
+
+##### 1.4.3.2 用于简化代码
+
+```js
+if (x) {
+   foo();
+   return bar();
+} else {
+   return 1;
+}
+
+// 使用逗号运算符简写后
+x ? (foo(), bar()) : 1;
+```
+
+##### 1.4.3.3 用小括号保证逗号运算符的优先级
+在所有的运算符中，逗号运算符的优先级是最低的，因此对于某些涉及优先级的问题，我们需要使用到小括号，将含有逗号运算符的表达式括起来。
+
+```js
+var a = 20;
+var b = ++a, 10;
+console.log(b);  // Uncaught SyntaxError: Unexpected number
+```
+对于上面的语句，首先定义一个变量a，然后使用逗号运算符对变量a执行自增操作，同时返回“10”，并将其赋值给变量b。
+
+我们可能会认为最后输出b的值为10，但是运行后却抛出了异常，这是为什么呢？
+
+**在上面的代码中，同时出现了赋值运算符与逗号运算符，因为逗号运算符的优先级比较低，实际会先执行赋值运算符，即先执行var b = ++a语句，再去执行后面的10，它不是一个合法的语句，所以会抛出异常。**
+
+那么我们该怎么解决这个问题呢？
+
+那就是使用小括号，保证逗号运算符的优先级，将赋值语句后面的内容括起来，执行完含有逗号运算符的表达式后，再执行赋值语句。
+
+```js
+var a = 20;
+var b = (++a, 10);
+console.log(b);  // 10
+```
+
+#### 1.4.4 运算符优先级
+
+
 
 ## 2、引用数据类型
 
