@@ -1647,7 +1647,237 @@ console.log(b);  // 10
 
 #### 1.4.4 运算符优先级
 
+```js
+// 语句1
+a = b = c;  // a = b = 10;
 
+// 语句2
+a > b > c; // 6 > 4 > 3
+```
+在语句1中，将运算符OP1与OP2同时设置为赋值运算符，因为优先级相同，所以会从右到左依次运行
+
+```js
+b = 10;
+a = 10;
+```
+
+在语句2中，将运算符OP1与OP2同时设置为比较运算符，因为优先级相同，所以从左至右依次执行，
+
+```js
+6 > 4;    // true
+true > 3 // false
+```
+
+### 1.5 toString()函数 与 valueOf()函数
+
+#### 1.5.1 toString()函数
+toString()函数的作用是把一个逻辑值转换为字符串，并返回结果。Object类型数据的toString()函数默认的返回结果是"[object Object]"，当我们自定义新的类时，可以重写toString()函数，返回可读性更高的结果。
+
+#### 1.5.2 valueOf()函数
+valueOf()函数的作用是返回最适合引用类型的原始值，如果没有原始值，则会返回引用类型自身。Object类型数据的valueOf()函数默认的返回结果是"{}"，即一个空的对象字面量。
+
+如果一个引用类型的值既存在toString()函数又存在valueOf()函数，那么在做隐式转换时，会调用哪个函数呢？
+
+这里我们可以概括成两种场景，分别是引用类型转换为String类型，以及引用类型转换为Number类型。
+
+**1、 引用类型转换为String类型**
+
+一个引用类型的数据在转换为String类型时，一般是用于数据展示，转换时遵循以下规则。
+
+· 如果对象具有toString()函数，则会优先调用toString()函数。如果它返回的是一个原始值，则会直接将这个原始值转换为字符串表示，并返回该字符串。
+
+· 如果对象没有toString()函数，或者toString()函数返回的不是一个原始值，则会再去调用valueOf()函数，如果valueOf()函数返回的结果是一个原始值，则会将这个结果转换为字符串表示，并返回该字符串。
+
+· 如果通过toString()函数或者valueOf()函数都无法获得一个原始值，则会直接抛出类型转换异常。
+
+我们通过以下代码进行测试。
+
+```js
+var arr = [];
+
+arr.toString = function () {
+     console.log('执行了toString()函数');
+     return [];
+};
+
+arr.valueOf = function () {
+     console.log('执行了valueOf()函数');
+     return [];
+};
+
+console.log(String(arr));
+```
+
+上面代码执行后的结果如下所示。
+
+```js
+执行了toString()函数
+执行了valueOf()函数
+TypeError: Cannot convert Object to primitive value
+```
+执行String(arr)代码时，需要将arr转换为字符串，则会优先执行toString()函数，但是其返回值为空数组[]，并不能转换为原生数据；然后调用valueOf()函数，其返回值同样为空数组[]；那么在调用完toString()函数和valueOf()函数后，均无法获取到原生数据类型表示，则抛出异常TypeError，表示无法将对象类型转换为原生数据类型。
+
+**2、 引用类型转换为Number类型**
+
+一个引用类型的数据在转换为Number类型时，一般是用于数据运算，转换时遵循以下规则。
+
+· 如果对象具有valueOf()函数，则会优先调用valueOf()函数，如果valueOf()函数返回一个原始值，则会直接将这个原始值转换为数字表示，并返回该数字。
+
+· 如果对象没有valueOf()函数，或者valueOf()函数返回的不是原生数据类型，则会再去调用toString()函数，如果toString()函数返回的结果是一个原始值，则会将这个结果转换为数字表示，并返回该数字。
+
+· 如果通过toString()函数或者valueOf()函数都无法获得一个原始值，则会直接抛出类型转换异常。
+
+我们通过以下代码进行测试。
+
+```js
+var arr = [];
+
+arr.toString = function () {
+   console.log('执行了toString()函数');
+   return [];
+};
+
+arr.valueOf = function () {
+   console.log('执行了valueOf()函数');
+   return [];
+};
+
+console.log(Number(arr));
+// 执行了valueOf()函数
+// 执行了toString()函数
+// TypeError: Cannot convert Object to primitive value
+```
+
+了解了valueOf()函数和toString()函数的关系后，我们再用下面两组代码深入拓展一下其他相关知识。
+
+**拓展1**
+
+```js
+[] == 0; // true
+[1] == 1; // true
+[2] == 2; // true
+```
+在第一行中，空数组可以转换为数字0；在第二行和第三行中，只有一个数字元素的数组可以转换为该数字。这是为什么呢？
+
+因为数组继承了Object类型默认的valueOf()函数，这个函数返回的是数组自身，而不是原生数据类型，所以会继续调用toString()函数。数组调用toString()函数时会返回数组元素以逗号作为分隔符构成的字符串，那么空数组就转换为空字符串，而空字符串与数字0在非严格相等的情况下是相等的，即'' == 0，返回“true”。
+
+同样，只包含一个数字的数组[1]，转换后为字符串"1"，后判断"1" == 1，返回“true”。
+
+**拓展2**
+
+以下是另外一组Object类型的数据，请观察结果有什么不同。
+
+```js
+var obj = {
+     i: 10,
+     toString: function () {
+         console.log('toString');
+         return this.i;
+     },
+     valueOf: function () {
+         console.log('valueOf');
+         return this.i;
+     }
+};
+
++obj;  // valueOf
+'' + obj;  // valueOf
+String(obj);  // toString
+Number(obj);  // valueOf
+obj == '10';  // valueOf，true
+obj === '10'; // false
+```
+
+第一行执行代码为+obj，将对象obj转换为原始值，用于数据运算，优先调用valueOf()函数，获得原始值，结果为数字“10”。
+
+第二行执行代码为'' + obj，将对象obj转换为原始值，用于数据运算，优先调用valueOf()函数，获取原始值，并与字符串进行拼接，结果为字符串"10"。
+
+第五行执行代码为obj == '10'，将对象obj转换为原始值，用于数据运算，优先调用valueOf()函数，即将10与'10'进行比较，两者是相等的，结果为“true”；
+
+第六行执行代码为obj === '10'，因为两者数据类型不一致，直接返回“false”，并不会执行toString()函数或者valueOf()函数。
+
+### 1.6 javascript中常见的判空方法
+#### 1.6.1 判断变量为空对象
+
+（1）判断变量为null或者undefined
+
+判断一个变量是否为空时，可以直接将变量与null或者undefined相比较，需要注意双等于（==）和三等于（===）的区别。
+
+```js
+if(obj == null) {} // 可以判断null或者undeﬁned
+
+if(obj === undeﬁned) {} // 只能判断undeﬁned
+```
+
+（2）判断变量为空对象{}
+
+判断一个变量是否为空对象时，可以通过for...in语句遍历变量的属性，然后调用hasOwnProperty()函数，判断是否有自身存在的属性，如果存在则不为空对象，如果不存在自身的属性（不包括继承的属性），那么变量为空对象。
+
+```js
+// 判断变量为空
+function isEmpty(obj) {
+  for(let key in obj) {
+      if(obj.hasOwnProperty(key)) {
+         return false;
+      }
+  }
+  return true;
+}
+```
+
+我们通过以下语句来做测试。
+
+```js
+// 定义空的对象字面量
+var o = {};
+
+function Person() {}
+Person.prototype.name = 'kingx';
+// 通过new操作符获取对象
+var p = new Person();
+
+console.log(isEmpty(o));  // true
+console.log(isEmpty(p));  // true
+```
+
+#### 1.6.2 判断变量为空数组
+
+判断变量是否为空数组时，首先需要判断变量是否为数组，然后通过数组的length属性确定。
+
+```js
+arr instanceof Array && arr.length === 0
+```
+当以上两个条件都满足时，变量是一个空数组。
+
+#### 1.6.3 判断变量为空字符串
+
+```js
+str == '' || str.trim().length == 0;
+```
+
+#### 1.6.4 判断变量为0或者NaN
+
+当一个变量为Number类型时，判空即判断变量是否为0或者NaN，因为NaN与任何值比较都为false，所以我们可以通过取非运算符完成。
+
+```js
+!(Number(num) && num) == true;
+```
+
+#### 1.6.5 !x == true的所有情况
+
+本小节一开始就讲到!x为true时，会包含很多种情况，这里我们一起来总结下:
+
+· 变量为null。
+
+· 变量为undefined。
+
+· 变量为空字符串' '。
+
+· 变量为数字0，包括+0、-0。
+
+· 变量为NaN。
+
+### 1.7 javascript中switch语句
 
 ## 2、引用数据类型
 
