@@ -1879,8 +1879,272 @@ str == '' || str.trim().length == 0;
 
 ### 1.7 javascript中switch语句
 
+```js
+switch(expression) {
+   case value1:
+      statement1;
+      break;
+   case value2:
+      statement2;
+      break;
+   default:
+      statement;
+}
+```
+
+因为在JavaScript中对于case的比较是采用严格相等(===)的。
+
 ## 2、引用数据类型
 
+引用数据类型主要用于区别基本数据类型，描述的是具有属性和函数的对象。JavaScript中常用的引用数据类型包括Object类型、Array类型、Date类型、RegExp类型、Math类型、Function类型以及基本数据类型的包装类型，如Number类型、String类型、Boolean类型等。
+
+引用数据类型有不同于基本数据类型的特点，具体如下所示。
+
+· 引用数据类型的实例需要通过new操作符生成，有的是显式调用，有的是隐式调用。
+
+· 引用数据类型的值是可变的，基本数据类型的值是不可变的。
+
+· 引用数据类型变量赋值传递的是内存地址。
+
+· 引用数据类型的比较是对内存地址的比较，而基本数据类型的比较是对值的比较。
+
+### 2.1 Object类型及其实例和静态函数
+
+#### 2.1.1 深入了解JavaScript中的new操作符
+
+**new操作符在执行过程中会改变this的指向，**所以在了解new操作符之前，我们先解释一下this的用法。
+
+```js
+function Cat(name, age) {
+   this.name = name;
+   this.age = age;
+}
+
+// Cat {name: "miaomiao", age: 18}
+console.log(new Cat('miaomiao',18));
+```
+
+事实上我们并未通过return返回任何值，为什么输出的信息中会包含name和age属性呢？其中起作用的就是this这个关键字了。
+
+```js
+function Cat(name,age) {
+   console.log(this);  // Cat {}
+   this.name = name;
+   this.age = age;
+}
+new Cat('miaomiao',18);
+```
+
+**在JavaScript中，如果函数没有return值，则默认return this**
+
+```js
+function Cat(name, age) {
+   var Cat = {};
+   Cat.name = name;
+   Cat.age = age;
+   return Cat;
+}
+console.log(new Cat('miaomiao', 18));  // {name: "miaomiao", age: 18}
+```
+
+通过以上的分析，我们了解了构造函数中this的用法，那么它与new操作符之间有什么关系呢？
+
+```js
+let cat = new Cat();
+```
+
+从表面上看这行代码的主要作用是创建一个Cat对象的实例，并将这个实例值赋予cat变量，cat变量就会包含Cat对象的属性和函数。
+
+**其实，new操作符做了3件事情，如下代码所示:**
+
+```js
+1. var cat = {};
+2. cat.__proto__ = Cat.prototype;
+3. Cat.call(cat);
+```
+
+第一件事： 创建cat空对象；
+
+第二件事： 将空对象的\__proto__指向Cat对象的prototype的属性
+
+第三件事： 将Cat()函数中的this指向cat对象
+
+
+我们自定义一个类似new功能的函数，来具体讲解上面的3行代码。
+
+```js
+function Cat(name, age) {
+   this.name = name;
+   this.age = age;
+}
+function New() {
+   var obj = {};
+   var res = Cat.apply(obj, arguments);
+   return typeof res === 'object' ? res : obj;
+}
+console.log(New('mimi', 18));  //Object {name: "mimi", age: 18}
+```
+
+返回的结果中也包含name和age属性，这就证明了new运算符对this指向的改变。Cat.apply(obj, arguments)调用后Cat对象中的this就指向了obj对象，这样obj对象就具有了name和age属性。
+
+因此，不仅要关注new操作符的函数本身，也要关注它的原型属性。
+
+我们对上面的代码进行改动，在Cat对象的原型上增加一个sayHi()函数，然后通过New()函数返回的对象，去调用sayHi()函数，看看执行情况如何。
+
+```js
+function Cat(name, age) {
+   this.name = name;
+   this.age = age;
+}
+
+Cat.prototype.sayHi = function () {
+   console.log('hi')
+};
+
+function New() {
+   var obj = {};
+   var res = Cat.apply(obj, arguments);
+   return typeof res === 'object' ? res : obj;
+}
+console.log(New('mimi', 18).sayHi()); // Uncaught TypeError: New(...).sayHi is not a function
+```
+
+我们发现执行报错了，New()函数返回的对象并没有调用sayHi()函数，这是因为sayHi()函数是属于Cat原型的函数，只有Cat原型链上的对象才能继承sayHi()函数，那么我们该怎么做呢？
+
+这里需要用到的就是\__proto__属性，实例的\__proto__属性指向的是创建实例对象时，对应的函数的原型。设置obj对象的\__proto__值为Cat对象的prototype属性，那么obj对象就继承了Cat原型上的sayHi()函数，这样就可以调用sayHi()函数了。
+
+```js
+function Cat(name, age) {
+   this.name = name;
+   this.age = age;
+}
+
+Cat.prototype.sayHi = function () {
+   console.log('hi')
+};
+
+function New() {
+   var obj = {};
+   obj._ _proto_ _ = Cat.prototype;  // 核心代码，用于继承
+   var res = Cat.apply(obj, arguments);
+   return typeof res === 'object' ? res : obj;
+}
+console.log(New('mimi', 18).sayHi());
+```
+
+#### 2.1.2  Object类型的实例函数
+
+实例函数是指函数的调用是基于Object类型的实例的。代码如下所示。
+
+```js
+var obj = new Object();
+```
+
+所有实例函数的调用都是基于obj这个实例。
+
+Object类型中有几个很重要的实例函数，这里分别进行详细的讲解。
+
+**1、 hasOwnProperty(propertyName)函数**
+
+该函数的作用是判断对象自身是否拥有指定名称的实例属性，此函数不会检查实例对象原型链上的属性。
+
+
+**2、propertyIsEnumerable(propertyName)函数**
+
+该函数的作用是判断指定名称的属性是否为实例属性并且是否是可枚举的，如果是原型链上的属性或者不可枚举都将返回“false”。
+
+```js
+// 1.数组
+var array = [1, 2, 3];
+array.name = 'Array';
+console.log(array.propertyIsEnumerable('name')); // true ：name属性为实例属性
+console.log(array.propertyIsEnumerable('join')); // false ：join()函数继承自Array类型
+console.log(array.propertyIsEnumerable('length')); // false ：length属性继承自Array类型
+console.log(array.propertyIsEnumerable('toString')); // false ：toString()函数
+                                                    // 继承自Object
+
+// 2.自定义对象
+var Student = function (name) {
+   this.name = name;
+};
+// 定义一个原型函数
+Student.prototype.sayHello = function () {
+   alert('Hello' + this.name);
+};
+
+var a = new Student('tom');
+console.log(a.propertyIsEnumerable('name')); // true ：name为自身定义的实例属性
+console.log(a.propertyIsEnumerable('age'));  // false ：age属性不存在，返回false
+console.log(a.propertyIsEnumerable('sayHello')); // false ：sayHello属于原型函数
+
+// 设置name属性为不可枚举的
+Object.deﬁneProperty(a, 'name', {
+   enumerable: false
+});
+console.log(a.propertyIsEnumerable('name')); // false ：name设置为不可枚举
+```
+
+#### 2.1.3  Object类型的静态函数
+
+静态函数指的是方法的调用基于Object类型自身，不需要通过Object类型的实例。
+
+**1、 Object.create()函数**
+
+该函数的主要作用是创建并返回一个指定原型和指定属性的对象。语法格式如下所示。
+
+```js
+Object.create(prototype, propertyDescriptor)。
+```
+其中prototype属性为对象的原型，可以为null。若为null，则对象的原型为undefined。属性描述符的格式如下所示。
+
+```js
+// 建立一个自定义对象，设置name和age属性
+var obj = Object.create(null, {
+   name: {
+       value: 'tom',
+       writable: true,
+       enumerable: true,
+       conﬁgurable: true
+   },
+   age: {
+       value: 22
+   }
+});
+console.log(obj.name); // tom
+console.log(obj.age); // 22
+obj.age = 28;
+console.log(obj.age); // 22 ：age属性的writable默认为false，此属性为只读
+for (var p in obj) {
+   console.log(p); // name ：只输出name属性；age属性的enumerable默认为false，不能 通过for...in 枚举
+}
+```
+
+我们尝试用polyfill版本实现Object.create()函数，通过polyfill我们可以更清楚明白Object.create()函数的实现原理。
+
+```js
+Object.create = function (proto, propertiesObject) {
+   // 省去中间的很多判断
+   function F() {}
+   F.prototype = proto;
+   return new F();
+};
+```
+
+在create()函数中，首先声明一个函数为F()函数，然后将F()函数的prototype属性指向传入的proto参数，通过new操作符生成F()函数的实例。
+
+假如var f = new F()，f.\__proto__ === F.prototype。实际上生成的对象实例会把属性继承到其\__proto__属性上。
+
+
+**2、 Object.defineProperties()函数**
+
+**3、Object.getOwnPropertyNames()函数**
+
+**4、 Object.keys()函数**
+
+
+### 2.2 Array类型
+
+### 2.3 Date类型
 
 ## 3、函数
 
