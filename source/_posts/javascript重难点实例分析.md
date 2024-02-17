@@ -2134,15 +2134,445 @@ Object.create = function (proto, propertiesObject) {
 
 假如var f = new F()，f.\__proto__ === F.prototype。实际上生成的对象实例会把属性继承到其\__proto__属性上。
 
+我们再通过下面的实例来验证。
+
+```js
+var test = Object.create({x:123, y:345});
+console.log(test); // {}，实际生成的对象为一个空对象
+console.log(test.x); // 123
+console.log(test._ _proto_ _.x);  //  123
+console.log(test._ _proto_ _.x === test.x); // true
+```
+实际生成的test为一个空对象{}。但是我们可以访问其x属性，这是因为我们可以通过其\__proto__属性访问到x属性，所以我们通过test访问到x属性和y属性，实际是通过其\__proto__属性访问到的。
+
 
 **2、 Object.defineProperties()函数**
 
+该函数的主要作用是添加或修改对象的属性值，语法格式如下所示。
+
+```js
+Object.deﬁneProperties(obj, propertyDescriptor)
+```
+
+其中的属性描述符propertyDescriptor同Object.create()函数一样。例如，给一个空对象{}添加name和age属性，其代码如下所示。
+
+```js
+var obj = {};
+// 为对象添加name和age属性
+Object.deﬁneProperties(obj, {
+   name: {
+       value: 'tom',
+       enumerable: true
+   },
+   age: {
+       value: 22,
+       enumerable: true
+   }
+});
+for (var p in obj) {
+   console.log(p); // name age ：输出name和age属性
+}
+obj.age = 23;
+console.log(obj.age); // 22 ：age属性的writable默认为false，此属性为只读
+```
+
 **3、Object.getOwnPropertyNames()函数**
+
+该函数的主要作用是获取对象的所有实例属性和函数，不包含原型链继承的属性和函数，数据格式为数组。
+
+```js
+function Person(name, age, gender) {
+   this.name = name;
+   this.age = age;
+   this.gender = gender;
+   this.getName = function () {
+       return this.name;
+   }
+}
+
+Person.prototype.eat = function () {
+   return '吃饭';
+};
+
+var p = new Person();
+console.log(Object.getOwnPropertyNames(p)); //  ["name", "age", "gender", "getName"]
+```
 
 **4、 Object.keys()函数**
 
+该函数的主要作用是获取对象可枚举的实例属性，不包含原型链继承的属性，数据格式为数组。keys()函数区别于getOwnPropertyNames()函数的地方在于，keys()函数只获取可枚举类型的属性。
+
+```js
+var obj = {
+   name: 'tom',
+   age: 22,
+   sayHello: function () {
+       alert('Hello' + this.name);
+   }
+};
+// (1) getOwnPropertyNames()函数与keys()函数返回的内容都相同
+// ["name", "age", "sayHello"] ：返回对象的所有实例成员
+console.log(Object.getOwnPropertyNames(obj));
+// ["name", "age", "sayHello"] ：返回对象的所有可枚举成员
+console.log(Object.keys(obj));
+// 设置对象的name属性不可枚举
+Object.deﬁneProperty(obj, 'name', {
+   enumerable: false
+});
+// (2)keys()函数，只包含可枚举成员
+// ["name", "age", "sayHello"] ：返回对象的所有实例成员
+console.log(Object.getOwnPropertyNames(obj));
+
+// ["age", "sayHello"] ：返回对象的所有可枚举成员
+console.log(Object.keys(obj));
+```
 
 ### 2.2 Array类型
+
+#### 2.2.1  判断一个变量是数组还是对象
+
+```js
+var a = [1, 2, 3];
+console.log(typeof a); // object
+```
+
+**所以使用typeof运算符并不能直接判断一个变量是对象还是数组类型。实际上，typeof运算符在判断基本数据类型时会很有用，但是在判断引用数据类型时，却显得很吃力。**
+
+**1、instanceof运算符**
+
+**instanceof运算符用于通过查找原型链来检测某个变量是否为某个类型数据的实例，使用instanceof运算符可以判断一个变量是数组还是对象。**
+
+```js
+var a =  [1, 2, 3];
+console.log(a instanceof Array);  // true
+console.log(a instanceof Object); // true
+
+var b = {name: 'kingx'};
+console.log(b instanceof Array);  // false
+console.log(b instanceof Object); // true
+```
+
+封装
+
+```js
+// 判断变量是数组还是对象
+function getDataType(o) {
+   if (o instanceof Array) {
+       return 'Array'
+   } else if (o instanceof Object) {
+       return 'Object';
+   } else {
+       return 'param is not object type';
+   }
+}
+```
+
+**2、判断构造函数**
+
+判断一个变量是否是数组或者对象，**从另一个层面讲，就是判断变量的构造函数是Array类型还是Object类型。因为一个对象的实例都是通过构造函数生成的，所以，我们可以直接判断一个变量的constructor属性。**
+
+```js
+var a = [1, 2, 3];
+console.log(a.constructor === Array);  // true
+console.log(a.constructor === Object); // false
+
+var b = {name: 'kingx'};
+console.log(b.constructor === Array);  // false
+console.log(b.constructor === Object); // true
+```
+
+那么一个变量为什么会有constructor属性呢？这就要涉及原型链的知识了。
+
+每个变量都会有一个\__proto__属性，表示的是隐式原型。一个对象的隐式原型指向的是构造该对象的构造函数的原型，这里用数组来举例，代码如下所示。
+
+```js
+[]._ _proto_ _ === [].constructor.prototype;  // true
+[]._ _proto_ _ === Array.prototype;  // true
+```
+
+上面直接通过constructor属性判断的语句也可以改写成下面的形式。
+
+```js
+var a = [1, 2, 3];
+console.log(a._ _proto_ _.constructor === Array);  // true
+console.log(a._ _proto_ _.constructor === Object); // false
+```
+
+封装
+
+```js
+// 判断变量是数组还是对象
+function getDataType(o) {
+   // 获取构造函数
+   var constructor = o._ _proto_ _.constructor || o.constructor;
+   if (constructor === Array) {
+       return 'Array';
+   } else if (constructor === Object) {
+       return 'Object';
+   } else {
+       return 'param is not object type';
+   }
+}
+```
+
+**3、toString()函数**
+
+每种引用数据类型都会直接或间接继承自Object类型，因此它们都包含toString()函数。不同数据类型的toString()函数返回值也不一样，所以通过toString()函数就可以判断一个变量是数组还是对象。
+
+这里我们会借助call()函数，直接调用Object原型上的toString()函数，把主体设置为需要传入的变量，然后通过返回值进行判断。
+
+```js
+var a = [1, 2, 3];
+var b = {name: 'kingx'};
+
+console.log(Object.prototype.toString.call(a)); // [object Array]
+console.log(Object.prototype.toString.call(b)); // [object Object]
+```
+
+**4、Array.isArray()函数**
+
+```js
+// 下面的函数调用都返回“true”
+Array.isArray([]);
+Array.isArray([1]);
+Array.isArray(new Array());
+// 鲜为人知的事实：其实 Array.prototype 也是一个数组。
+Array.isArray(Array.prototype);
+
+// 下面的函数调用都返回“false”
+Array.isArray();
+Array.isArray({});
+Array.isArray(null);
+Array.isArray(undeﬁned);
+Array.isArray(17);
+Array.isArray('Array');
+Array.isArray(true);
+```
+
+#### 2.2.2  filter()函数过滤满足条件的数据
+**filter()函数用于过滤出满足条件的数据，返回一个新的数组，不会改变原来的数组。**它不仅可以过滤简单类型的数组，而且可以通过自定义方法过滤复杂类型的数组。
+
+filter()函数接收一个函数作为其参数，返回值为“true”的元素会被添加至新的数组中，返回值为“false”的元素则不会被添加至新的数组中，最后返回这个新的数组。如果没有符合条件的值则返回空数组。
+
+接下来我们可以具体看看filter()函数的使用场景。
+
+**1、针对简单类型的数组，找出数组中所有为奇数的数字**
+
+```js
+var ﬁlterFn = function (x) {
+   return x % 2;
+};
+```
+
+**2、针对复杂类型的数组，找出所有年龄大于18岁的男生**
+
+```js
+var ﬁlterFn = function (obj) {
+    return obj.age > 18 && obj.gender === '男';
+};
+```
+
+#### 2.2.3  reduce()函数累加器处理数组元素
+reduce()函数最主要的作用是做累加处理，即接收一个函数作为累加器，将数组中的每一个元素从左到右依次执行累加器，返回最终的处理结果。
+
+```js
+arr.reduce(callback[, initialValue]);
+```
+
+initialValue用作callback的第一个参数值，如果没有设置，则会使用数组的第一个元素值。callback会接收4个参数（accumulator、currentValue、currentIndex、array）。
+
+· accumulator表示上一次调用累加器的返回值，或设置的initialValue值。如果设置了initialValue，则accumulator=initialValue；否则accumulator=数组的第一个元素值。
+
+· currentValue表示数组正在处理的值。
+
+· currentIndex表示当前正在处理值的索引。如果设置了initialValue，则currentIndex从0开始，否则从1开始。
+
+· array表示数组本身。
+
+在掌握了reduce()函数的语法后，我们列举出了几种灵活运用reduce()函数的场景，看看它是如何解决对应问题的。
+
+**1、求数组每个元素相加的和**
+
+```js
+var arr = [1, 2, 3, 4, 5];
+var sum = arr.reduce(function (accumulator, currentValue) {
+   return accumulator + currentValue;
+}, 0);
+
+console.log(sum);
+```
+设置initialValue为0，在进行第一轮运算时，accumulator为0，currentValue从1开始，第一轮计算完成累加的值为0+1=1；在进入第二轮计算时，accumulator为1，currentValue为2，第二轮计算完成累加的值为1+2=3；以此类推，在进行5轮计算后最终的输出结果为“15”。
+
+**2、 统计数组中每个元素出现的次数**
+
+假如存在一个数组为[1, 2, 3, 2, 2, 5, 1]，通过一定的算法，统计出其中数字1出现的次数为2，2出现的次数为3，3出现的次数为1，5出现的次数为1。
+
+```js
+var countOccurrences = function(arr) {
+   return arr.reduce(function(accumulator, currentValue) {
+       accumulator[currentValue] ? accumulator[currentValue]++ :
+                              accumulator[currentValue] = 1;
+       return accumulator;
+   }, {});
+};
+
+// 测试代码
+countOccurrences([1, 2, 3, 2, 2, 5, 1]);
+```
+
+**3、多维度统计数据**
+我们在知道不同币值汇率的情况下，将一组人民币的值分别换算成美元和欧元的等量值。
+
+首先我们需要有一组人民币值，假设如下。
+
+```js
+var items = [{price: 10}, {price: 50}, {price: 100}];
+```
+
+此时查到人民币：美元汇率为1:0.1478，人民币：欧元汇率为1:0.1265。通过一定的算法，需要计算出这些人民币值对应的美元是23.792，对应的欧元是20.240。
+
+解决问题的思路如下。
+
+因为涉及不同汇率的计算，reduce()函数的第一个callback参数可以封装为一个reducers数组。数组中的每个元素实际为一个函数，利用reduce()函数单独完成一个汇率的计算。
+
+```js
+var reducers = {
+   totalInEuros : function(state, item) {
+       return state.euros += item.price * 0.1265;
+   },
+   totalInDollars : function(state, item) {
+       return state.dollars += item.price * 0.1487;
+   }
+};
+```
+
+上面的reducers通过一个manager()函数，利用object.keys()函数同时执行多个函数，每个函数完成各自的汇率计算。
+
+```js
+var manageReducers = function(reducers) {
+   return function(state, item) {
+       return Object.keys(reducers).reduce(
+               function(nextState, key) {
+                   reducers[key](state, item);
+                   return state;
+               },
+               {}
+       );
+   }
+};
+
+var bigTotalPriceReducer = manageReducers(reducers);
+var initialState = {euros: 0, dollars: 0};
+var totals = items.reduce(bigTotalPriceReducer, initialState);
+console.log(totals);
+```
+运行结束后得到的结果为“{euros: 20.240, dollars: 23.792}”，符合预期。
+
+
+#### 2.2.4 求数组的最大值和最小值
+
+**1、通过prototype属性扩展min()函数和max()函数**
+
+```js
+// 最小值
+Array.prototype.min = function() {
+   var min = this[0];
+   var len = this.length;
+   for (var i = 1; i < len; i++){
+        if (this[i] < min){
+            min = this[i];
+        }
+   }
+   return min;
+};
+//最大值
+Array.prototype.max = function() {
+   var max = this[0];
+   var len = this.length;
+   for (var i = 1; i < len; i++){
+       if (this[i] > max) {
+           max = this[i];
+       }
+   }
+   return max;
+};
+```
+**2、 借助Math对象的min()函数和max()函数**
+算法2的主要思想是通过apply()函数改变函数的执行体，将数组作为参数传递给apply()函数。这样数组就可以直接调用Math对象的min()函数和max()函数来获取返回值。
+
+```js
+// 最大值
+Array.max = function(array) {
+   return Math.max.apply(Math, array);
+};
+// 最小值
+Array.min = function(array) {
+   return Math.min.apply(Math, array);
+};
+```
+
+**3、算法二的优化**
+
+```js
+// 最大值
+Array.prototype.max = function() {
+   return Math.max.apply({}, this);
+};
+// 最小值
+Array.prototype.min = function() {
+   return Math.min.apply({}, this);
+};
+```
+
+**4、借助Array类型的reduce()函数**
+
+```js
+// 最大值
+Array.prototype.max = function () {
+   return this.reduce(function (preValue, curValue) {
+       // 比较后，返回大的值
+       return preValue > curValue ? preValue : curValue;
+   });
+};
+
+// 最小值
+Array.prototype.min = function () {
+   return this.reduce(function (preValue, curValue) {
+      // 比较后，返回小的值
+      return preValue > curValue ? curValue : preValue;
+   });
+};
+```
+
+**5、借助Array类型的sort()函数**
+算法5的主要思想是借助数组原生的sort()函数对数组进行排序，排序完成后首尾元素即是数组的最小、最大元素。
+
+**默认的sort()函数在排序时是按照字母顺序排序的，数字都会按照字符串处理，例如数字11会被当作"11"处理，数字8会被当作"8"处理。**在排序时是按照字符串的每一位进行比较的，因为"1"比"8"要小，所以"11"在排序时要比"8"小。对于数值类型的数组来说，这显然是不合理的，所以需要我们自定义排序函数。
+
+```js
+var sortFn = function (a, b) {
+   return a - b;
+ };
+var arr5 = [2, 4, 10, 7, 5, 8, 6];
+var sortArr = arr5.sort(sortFn);
+
+// 最小值
+console.log(sortArr[0]); // 2
+// 最大值
+console.log(sortArr[sortArr.length - 1]); // 10
+```
+
+**6、借助ES6的扩展运算符**
+算法6的主要思想是借助于ES6中增加的扩展运算符（...），将数组直接通过Math.min()函数与Math.max()函数的调用，找出数组中的最大值和最小值。
+
+```js
+var arr6 = [2, 4, 10, 7, 5, 8, 6]
+// 最小值
+console.log(Math.min(...arr6));
+// 最大值
+console.log(Math.max(...arr6));
+```
+
 
 ### 2.3 Date类型
 
