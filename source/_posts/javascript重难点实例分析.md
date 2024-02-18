@@ -2573,6 +2573,186 @@ console.log(Math.min(...arr6));
 console.log(Math.max(...arr6));
 ```
 
+#### 2.2.5 数组遍历的7种方法及兼容性处理（polyfill）
+
+**1、最原始的for循环**
+
+**2、基于forEach()函数的方法**
+
+```js
+var arr2 = [11, 22, 33];
+arr2.forEach(function (element, index, array) {
+   console.log(element);
+});
+
+// polyfill
+// forEach()函数兼容性处理
+Array.prototype.forEach = Array.prototype.forEach ||
+   function (fn, context) {
+       for (var k = 0, length = this.length; k < length; k++) {
+            if (typeof fn === "function"
+              && Object.prototype.hasOwnProperty.call(this, k)) {
+                fn.call(context, this[k], k, this);
+            }
+       }
+   };
+```
+
+**3、 基于map()函数的方法**
+
+map()函数在用于在数组遍历的过程中，将数组中的每个元素做处理，得到新的元素，并返回一个新的数组。map()函数并不会改变原数组，其接收的参数和forEach()函数一样。
+
+**需要注意的一点是，在map()函数的回调函数中需要通过return返回处理后的值，否则会返回“undefined”。例如下面：在没有通过return返回处理后的值的情况下，最终的结果为[undefined,undefined, undefined]。**
+
+```js
+var arr3 = [1, 2, 3];
+var arrayOfSquares = arr3.map(function (element) {
+   return element * element;
+});
+console.log(arrayOfSquares);
+
+// polyfill
+// map()函数兼容性处理
+Array.prototype.map = Array.prototype.map ||
+   function (fn, context) {
+       var arr = [];
+       if (typeof fn === "function") {
+           for (var k = 0, length = this.length; k < length; k++) {
+               if(typeof fn === "function"
+                 &&Object.prototype.hasOwnProperty.call(this, k)){
+                   arr.push(fn.call(context, this[k], k, this));
+               }
+           }
+       }
+       return arr;
+   };
+```
+
+**4、 基于filter()函数的方法**
+
+filter()函数是通过判断返回值是否为“true”来决定是否将返回值push至新的数组中。
+
+```js
+// ﬁlter()函数兼容性处理
+Array.prototype.ﬁlter = Array.prototype.ﬁlter ||
+   function (fn, context) {
+       var arr = [];
+       if (typeof fn === "function") {
+           for (var k = 0, length = this.length; k < length; k++) {
+                if(typeof fn === "function" && Object.prototype.hasOwnProperty.call(this, k)) {
+                   fn.call(context, this[k], k, this) && arr.push(this[k]);
+                }
+           }
+       }
+       return arr;
+   };
+```
+
+**5、 基于some()函数与every()函数的方法**
+
+some()函数与every()函数的相似之处在于都用于数组遍历的过程中，判断数组是否有满足条件的元素，满足条件则返回“true”，否则返回“false”。some()函数与every()函数的区别在于some()函数只要数组中某个元素满足条件就返回“true”，不会对后续元素进行判断；而every()函数是数组中每个元素都要满足条件时才返回“true”。
+
+```js
+// 定义判断的函数
+function isBigEnough(element, index, array) {
+   return element > 4;
+}
+// 测试some()函数
+var passed1 = [1, 2, 3, 4].some(isBigEnough);
+var passed2 = [1, 2, 3, 4, 5].some(isBigEnough);
+console.log(passed1); // false
+console.log(passed2); // true
+
+// 测试every()函数
+var passed3 = [2, 3, 4].every(isBigEnough);
+var passed4 = [5, 6].every(isBigEnough);
+console.log(passed3); // false
+console.log(passed4); // true
+
+// some()函数兼容性处理
+Array.prototype.some = Array.prototype.some ||
+   function (fn, context) {
+       var passed = false;
+       if (typeof fn === "function"
+         &&Object.prototype.hasOwnProperty.call(this, k)) {
+          for (var k = 0, length = this.length; k < length; k++) {
+               if (passed === true) break; // 如果有返回值为“true”，直接跳出循环
+               passed = !!fn.call(context, this[k], k, this);
+          }
+       }
+       return passed;
+   };
+
+
+// every()函数兼容性处理
+Array.prototype.every = Array.prototype.every ||
+   function (fn, context) {
+       var passed = true;
+        if (typeof fn === "function"
+         &&Object.prototype.hasOwnProperty.call(this, k)) {
+          for (var k = 0, length = this.length; k < length; k++) {
+              if (passed === false) break; // 如果有返回值为“false”，直接跳出循环
+              passed = !!fn.call(context, this[k], k, this);
+          }
+       }
+       return passed;
+   };
+```
+
+**6、 基于reduce()函数的方法**
+
+```js
+// reduce()函数兼容性处理
+Array.prototype.reduce = Array.prototype.reduce ||
+   function (callback, initialValue) {
+       var previous = initialValue, k = 0, length = this.length;
+       if (typeof initialValue === "undeﬁned") {
+           previous = this[0];
+           k = 1;
+       }
+       if (typeof callback === "function") {
+           for (k; k &lt; length; k++) {
+               //每轮计算完后，需要将计算后的返回值重新赋给累加函数的第一个参数
+               this.hasOwnProperty(k)
+               && (previous = callback(previous, this[k], k, this));
+           }
+       }
+       return previous;
+   };
+```
+
+**7、基于find()函数的方法**
+
+find()函数用于数组遍历的过程中，找到第一个满足条件的元素值时，则直接返回该元素值；如果都不满足条件，则返回“undefined”。
+
+```js
+var value = [1, 5, 10, 15].ﬁnd(function (element, index, array) {
+   return element > 9;
+});
+var value2 = [1, 5, 10, 15].ﬁnd(function (element, index, array) {
+   return element > 20;
+});
+
+console.log(value); // 10
+console.log(value2); // undeﬁned
+
+// polyfill
+Array.prototype.ﬁnd = Array.prototype.ﬁnd ||
+   function (fn, context) {
+       if (typeof fn === "function") {
+          for (var k = 0, length = this.length; k < length; k++) {
+               if (fn.call(context, this[k], k, this)) {
+                   return this[k];
+               }
+          }
+       }
+       return undeﬁned;
+   };
+```
+
+#### 2.2.6 数组去重的7种算法
+
+
 
 ### 2.3 Date类型
 
