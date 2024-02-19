@@ -2751,7 +2751,80 @@ Array.prototype.ﬁnd = Array.prototype.ﬁnd ||
 ```
 
 #### 2.2.6 数组去重的7种算法
+例如存在一个数组[1, 4, 5, 7, 4, 8, 1, 10, 4]，通过一定的算法，需要得到的数组为[1,4, 5, 7, 8, 10]。
 
+**1、遍历数组 / 利用对象键值对**
+
+```js
+// 遍历数组
+function arrayUnique(array) {
+   var result = [];
+   for (var i = 0; i < array.length; i++) {
+       if(result.indexOf(array[i]) === -1) {
+           result.push(array[i]);
+       }
+   }
+   return result;
+}
+
+// 对象键值对
+function arrayUnique2(array) {
+   var obj = {}, result = [], val, type;
+   for (var i = 0; i < array.length; i++) {
+       val = array[i];
+       type = typeof val;
+       if (!obj[val]) {
+           obj[val] = [type];
+           result.push(val);
+       } else if (obj[val].indexOf(type) < 0) {   // 判断数据类型是否存在
+           obj[val].push(type);
+           result.push(val);
+       }
+   }
+   return result;
+}
+var array2 = [1, 4, 5, 7, 4, 8, 1, 10, 4, '1'];
+console.log(arrayUnique2(array2));
+```
+
+**2、先排序，再去重**
+
+主要思想是借助原生的sort()函数对数组进行排序，然后对排序后的数组进行相邻元素的去重，将去重后的元素添加至新的数组中，返回这个新数组。
+
+```js
+function arrayUnique3(array) {
+   var result = [array[0]];
+   array.sort(function(a,b){return a-b});
+   for (var i = 0; i < array.length; i++) {
+       if (array[i] !== result[result.length - 1]) {
+           result.push(array[i]);
+       }
+   }
+   return result;
+}
+```
+**3、优先遍历数组**
+
+主要思想是利用双层循环，分别指定循环的索引i与j，j的初始值为i+1。在每层循环中，比较索引i和j的值是否相等，如果相等则表示数组中出现了相同的值，则需要更新索引i与j，操作为++i；同时将其赋值给j，再对新的索引i与j的值进行比较。循环结束后会得到一个索引值i，表示的是右侧没有出现相同的值，将其push到结果数组中，最后返回结果数组。
+
+```js
+function arrayUnique4(array) {
+   var result = [];
+   for (var i = 0, l = array.length; i < array.length; i++) {
+       for (var j = i + 1; j < l; j++) {
+            // 依次与后面的值进行比较，如果出现相同的值，则更改索引值
+            if (array[i] === array[j]) {
+                j = ++i; // i自身先加，再赋值给j
+            }
+       }
+       // 每轮比较完毕后，索引为i的值为数组中只出现一次的值
+       result.push(array[i]);
+   }
+   return result;
+ }
+```
+
+**4、基于reduce()函数**
 
 
 ### 2.3 Date类型
