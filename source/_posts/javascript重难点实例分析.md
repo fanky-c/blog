@@ -2826,6 +2826,132 @@ function arrayUnique4(array) {
 
 **4、基于reduce()函数**
 
+需要借助一个key-value对象。在reduce()函数的循环中判断key是否重复，如果为是，则将当前元素push至结果数组中。实际做法是设置initialValue为一个空数组[]，同时将initialValue作为最终的结果进行返回。在reduce()函数的每一轮循环中都会判断数据类型，如果数据类型不同，将表示为不同的值，如1和"1"，将作为不重复的值。
+
+```js
+function arrayUnique5(array) {
+   var obj = {}, type;
+   return array.reduce(function (preValue, curValue) {
+       type = typeof curValue;
+       if (!obj[curValue]) {
+           obj[curValue] = [type];
+           preValue.push(curValue);
+       }
+        // 判断数据类型是否存在
+       else if (obj[curValue].indexOf(type) < 0) {
+           obj[curValue].push(type);
+           preValue.push(curValue);
+       }
+       return preValue;
+   }, []);
+}
+var array5 = [1, 4, 5, 7, 4, 8, 1, 10, 4, '1'];
+console.log(arrayUnique5(array4)); // [1, 4, 5, 7, 8, 10, "1"]
+```
+
+**5、借助ES6的Set数据结构**
+
+主要思想是借助于ES6中新增的Set数据结构，它类似于数组，但是有一个特点，即成员都是唯一的，所以Set具有自动去重的功能。
+
+在ES6中，Array类型增加了一个from()函数，用于将类数组对象转化为数组，然后再结合Set可以完美实现数组的去重。
+
+```js
+function arrayUnique6(array) {
+   return Array.from(new Set(array));
+}
+var arr6 = [1, 4, 5, 7, 4, 8, 1, 10, 4, '1'];
+console.log(arrayUnique6(arr6)); // [1, 4, 5, 7, 8, 10, "1"]
+```
+
+**6、借助ES6的Map数据结构**
+
+主要思想是借助于ES6中新增的Map数据结构，它是一种基于key-value存储数据的结构，每个key都只对应唯一的value。如果将数组元素作为Map的key，那么判断Map中是否有相同的key，就可以判断出元素的重复性。
+
+Map还有一个特点是key会识别不同数据类型的数据，即1与"1"在Map中会作为不同的key处理，不需要通过额外的函数来判断数据类型。
+
+基于Map数据结构，通过filter()函数过滤，即可获得去重后的结果。
+
+```js
+function arrayUnique7(array) {
+   var map = new Map();
+   return array.ﬁlter((item) => !map.has(item) && map.set(item, 1));
+}
+var arr7 = [1, 4, 5, 7, 4, 8, 1, 10, 4, '1'];
+console.log(arrayUnique7(arr7)); //[1, 4, 5, 7, 8, 10, "1"]
+```
+
+#### 2.2.7 找出数组中出现次数最多的元素
+
+存在一个数组为[3, 5, 6, 5, 9, 8, 10, 5, 7, 7, 10, 7, 7, 10, 10, 10, 10, 10]，通过一定的算法，找出次数最多的元素为10，其出现次数为7次。
+
+**1、利用键值对**
+
+```js
+function ﬁndMost1(arr) {
+   if (!arr.length) return;
+   if (arr.length === 1) return 1;
+   var res = {};
+   // 遍历数组
+   for (var i = 0, l = arr.length; i < l; i++) {
+       if (!res[arr[i]]) {
+           res[arr[i]] = 1;
+       } else {
+          res[arr[i]]++;
+       }
+   }
+   // 遍历 res
+   var keys = Object.keys(res);
+   var maxNum = 0, maxEle;
+   for (var i = 0, l = keys.length; i < l; i++) {
+       if (res[keys[i]] > maxNum) {
+           maxNum = res[keys[i]];
+           maxEle = keys[i];
+       }
+   }
+   return '出现次数最多的元素为:' + maxEle + '，出现次数为:' + maxNum;
+}
+```
+
+**2、利用键值对优化版**
+
+```js
+function ﬁndMost2(arr) {
+   var h = {};
+   var maxNum = 0;
+   var maxEle = null;
+   for (var i = 0; i < arr.length; i++) {
+       var a = arr[i];
+       h[a] === undeﬁned ? h[a] = 1 : (h[a]++);
+       // 在当前循环中直接比较出现次数最大值
+       if (h[a] > maxNum) {
+           maxEle = a;
+           maxNum = h[a];
+       }
+   }
+   return '出现次数最多的元素为:' + maxEle + '，出现次数为:' + maxNum;
+}
+```
+
+**3、借助Array类型的reduce()函数**
+
+主要思想是使用Array类型的reduce()函数，优先设置初始的出现次数最大值maxNum为1，设置initialValue为一个空对象{}，每次处理中优先计算当前元素出现的次数，在每次执行完后与maxNum进行比较，动态更新maxNum与maxEle的值，最后获得返回的结果
+
+```js
+function ﬁndMost3(arr) {
+   var maxEle;
+   var maxNum = 1;
+   var obj = arr.reduce(function (p, k) {
+       p[k] ? p[k]++ : p[k] = 1;
+       if (p[k] > maxNum) {
+          maxEle = k;
+          maxNum++;
+       }
+       return p;
+   }, {});
+   return '次数最多的元素为:' + maxEle + '，次数为:' + obj[maxEle];
+}
+```
+
 
 ### 2.3 Date类型
 
