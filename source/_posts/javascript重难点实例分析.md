@@ -3127,6 +3127,205 @@ console.log("两者时间差为：" + result2 + "小时。"); // 60小时
 
 ### 3.1 函数的定义和调用
 
+#### 3.1.1 函数的定义
+
+**1、 函数声明**
+
+```js
+function sum (num1, num2){
+  return num1 + num2;
+}
+```
+
+**2、函数表达式**
+
+```js
+// 函数表达式
+var sum = function (num1, num2) {
+   return num1 + num2;
+};
+```
+
+ 或者
+
+```js
+// 具有函数名的函数表达式
+var sum = function foo(num1, num2) {
+   return num1 + num2;
+};
+```
+
+其中foo是函数名称，它实际是函数内部的一个局部变量，在函数外部是无法直接调用的，示例如下。
+
+```js
+console.log(foo(1, 3)); // ReferenceError: foo is not deﬁned
+```
+
+在调用foo时，会直接抛出foo未定义的异常。
+
+
+**3、Function()构造函数**
+
+```js
+// 其中的参数，除了最后一个参数是执行的函数体，其他参数都是函数的形参。
+var add = new Function("a", "b", "return a + b");
+```
+
+相比于函数声明和函数表达式这两种方式，Function()构造函数的使用比较少，主要有以下两个原因。
+
+第一个原因是Function()构造函数每次执行时，都会解析函数主体，并创建一个新的函数对象，所以当在一个循环或者频繁执行的函数中调用Function()构造函数时，效率是非常低的。
+
+第二个原因是使用Function()构造函数创建的函数，并不遵循典型的作用域，它将一直作为顶级函数执行。所以在一个函数A内部调用Function()构造函数时，其中的函数体并不能访问到函数A中的局部变量，而只能访问到全局变量。
+
+
+**4、函数表达式的应用场景**
+
+**（1）函数递归**
+
+**（2）代码模块化**
+
+```js
+var person = (function () {
+   var _name = "";
+   return {
+      getName: function () {
+          return _name;
+      },
+      setName: function (newName) {
+          _name = newName;
+      }
+   };
+}());
+person.setName('kingx');
+person.getName();   // 'kingx'
+```
+
+**5、函数声明与函数表达式的区别**
+
+**（1）函数名称**
+
+在使用函数声明时，是必须设置函数名称的，这个函数名称相当于一个变量，以后函数的调用也会通过这个变量进行。
+
+而对于函数表达式来说，函数名称是可选的，我们可以定义一个匿名函数表达式，并赋给一个变量，然后通过这个变量进行函数的调用。
+
+```js
+// 函数声明，函数名称sum必须设置
+function sum(num1, num2) {
+   return num1 + num2;
+}
+// 没有函数名称的匿名函数表达式
+var sum = function (num1, num2) {
+   return num1 + num2;
+};
+
+// 具有函数名的函数表达式，其中foo为函数名称
+var sum = function foo(num1, num2) {
+   return num1 + num2;
+};
+```
+
+**（2）函数提升**
+
+对于函数声明，存在函数提升，所以即使函数的调用在函数的声明之前，仍然可以正常执行。
+
+对于函数表达式，不存在函数提升，所以在函数定义之前，不能对其进行调用，否则会抛出异常。
+
+#### 3.1.2 函数的调用
+
+**函数的调用存在5种模式，分别是函数调用模式，方法调用模式，构造器调用模式，call()函数、apply()函数调用模式，匿名函数调用模式。这5种模式在使用时都有很明显的特征**
+
+**1、函数调用模式**
+待写
+
+**2、方法调用模式**
+
+方法调用模式会优先定义一个对象obj，然后在对象内部定义值为函数的属性property，通过对象obj.property()来进行函数的调用
+
+```js
+// 定义对象
+var obj = {
+   name: 'kingx',
+   // 定义getName属性，值为一个函数
+   getName: function () {
+      return this.name;
+   }
+};
+obj.getName();  // 通过对象进行调用
+```
+
+**3、构造器调用模式**
+
+构造器调用模式会定义一个函数，在函数中定义实例属性，在原型上定义函数，然后通过new操作符生成函数的实例，再通过实例调用原型上定义的函数。
+
+```js
+// 定义函数对象
+function Person(name) {
+   this.name = name;
+}
+// 原型上定义函数
+Person.prototype.getName = function () {
+   return this.name;
+};
+// 通过new操作符生成实例
+var p = new Person('kingx');
+// 通过实例进行函数的调用
+p.getName();
+```
+
+**4、call()函数、apply()函数调用模式**
+
+通过call()函数或者apply()函数可以改变函数执行的主体，使得某些不具有特定函数的对象可以直接调用该特定函数。
+
+```js
+// 定义一个函数
+function sum(num1, num2) {
+   return num1 + num2;
+}
+// 定义一个对象
+var person = {};
+// 通过call()函数与apply()函数调用sum()函数
+sum.call(person, 1, 2);
+sum.apply(person, [1, 2]);
+```
+
+**5、匿名函数调用模式**
+
+模式一
+
+```js
+// 通过函数表达式定义匿名函数，并赋给变量sum
+var sum = function(num1, num2){
+   return num1 + num2;
+};
+// 通过sum()函数进行匿名函数调用
+sum(1, 2);
+```
+
+模式二
+
+```js
+(function (num1, num2) {
+   return num1 + num2;
+})(1, 2);  // 3
+```
+需要注意的是，如果前半部分的函数声明没有使用小括号括住，则直接进行函数的调用时，会抛出语法异常。例如：
+
+```js
+// 因为JavaScript解释器在解析语句时，会将function关键字当作函数声明的开始，函数的声明是需要有函数名称的，而上面的代码却并没有函数名称，所以会抛出语法异常。
+function (num1, num2) {
+   return num1 + num2;
+}(1, 2);   // Uncaught SyntaxError: Unexpected token (
+
+// 不会报错
+function sum(num1, num2) {
+   console.log(num1 + num2);
+}(1, 2);
+
+```
+
+
+#### 3.1.3 自执行函数
+
 ### 3.2 函数参数
 
 ### 3.3 构造函数
