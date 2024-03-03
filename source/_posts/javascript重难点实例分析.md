@@ -3311,24 +3311,281 @@ sum(1, 2);
 需要注意的是，如果前半部分的函数声明没有使用小括号括住，则直接进行函数的调用时，会抛出语法异常。例如：
 
 ```js
-// 因为JavaScript解释器在解析语句时，会将function关键字当作函数声明的开始，函数的声明是需要有函数名称的，而上面的代码却并没有函数名称，所以会抛出语法异常。
+// 因为JavaScript解释器在解析语句时，会将function关键字当作函数声明的开始，
+// 函数的声明是需要有函数名称的，而上面的代码却并没有函数名称，所以会抛出语法异常。
 function (num1, num2) {
    return num1 + num2;
 }(1, 2);   // Uncaught SyntaxError: Unexpected token (
+
 
 // 不会报错
 function sum(num1, num2) {
    console.log(num1 + num2);
 }(1, 2);
 
-```
+// 立即执行 (使用小括号将整个语句全部括起来，当作一个完整的函数表达式调用)
+(function sum(num1, num2) {
+   console.log(num1 + num2);
+}(1, 2));
 
+```
 
 #### 3.1.3 自执行函数
 
+自执行函数即函数定义和函数调用的行为先后连续产生。它需要以一个函数表达式的身份进行函数调用，上面的匿名函数调用也属于自执行函数的一种。
+
+接下来我们一起看看自执行函数的多种表现形式。
+
+```js
+function (x) {
+   alert(x);
+}(5); // 抛出异常，Uncaught SyntaxError: Unexpected token (
+
+var aa = function (x) {
+   console.log(x);
+}(1); // 1
+
+true && function (x) {
+   console.log(x);
+}(2); // 2
+
+0, function (x) {
+   console.log(x);
+}(3); // 3
+
+!function (x) {
+   console.log(x);
+}(4); // 4
+
+~function (x) {
+   console.log(x);
+}(5); // 5
+
+-function (x) {
+   console.log(x);
+}(6); // 6
+
++function (x) {
+   console.log(x);
+}(7); // 7
+
+new function (){
+   console.log(8); // 8
+};
+
+new function (x) {
+   console.log(x);
+}(9); // 9
+```
+
 ### 3.2 函数参数
 
+#### 3.2.1 形参和实参
+
+形参和实参的区别有以下几点。
+
+1、形参出现在函数的定义中，只能在函数体内使用，一旦离开该函数则不能使用；实参出现在主调函数中，进入被调函数后，实参也将不能被访问
+
+```js
+function fn1() {
+   var param = 'hello';
+   fn2(param);
+   console.log(arg);   // 在主调函数中不能访问到形参arg，会抛出异常
+}
+function fn2(arg) {
+   console.log(arg);   // 在函数体内能访问到形参arg，输出“hello”
+   console.log(param); // 在函数体内不能访问到实参param，会抛出异常
+}
+fn1();
+```
+
+2、在强类型语言中，定义的形参和实参在数量、数据类型和顺序上要保持严格一致，否则会抛出“类型不匹配”的异常。
+
+3、在函数调用过程中，数据传输是单向的，即只能把实参的值传递给形参，而不能把形参的值反向传递给实参。因此在函数执行时，形参的值可能会发生变化，但不会影响到实参中的值。
+
+```js
+var arg = 1;
+function fn(param) {
+   param = 2;
+}
+fn(arg);
+console.log(arg); // 输出“1”，实参arg的值仍然不变
+```
+
+4、当实参是基本数据类型的值时，实际是将实参的值复制一份传递给形参，在函数运行结束时形参被释放，而实参中的值不会变化。当实参是引用类型的值时，实际是将实参的内存地址传递给形参，即实参和形参都指向相同的内存地址，此时形参可以修改实参的值，但是不能修改实参的内存地址。
+
+下面的代码段定义了一个实参arg为一个对象，name属性值为kingx，在调用fn()函数时，首先修改了形参param的name属性值为kingx2，此时形参param与实参arg指向的是同一个内存地址（假设为A），因此arg的值也会发生变化。
+
+然后将形参param重新赋值为一个空对象，表示的是将形参param指向了一个新的内存地址（假设为B），但是这并不会影响实参arg的值，它仍然指向原来的内存地址A，因此最后的输出结果为“{name: "kingx2"}”。
+
+```js
+var arg = {name: 'kingx'};
+function fn(param) {
+   param.name = 'kingx2';
+   param = {};
+}
+fn(arg);
+console.log(arg); // {name: "kingx2"}
+```
+
+#### 3.2.2 arguments对象性质
+
+arguments对象是所有函数都具有的一个内置局部变量，表示的是函数实际接收的参数，是一个类数组结构。
+
+**之所以说arguments对象是一个类数组结构，是因为它除了具有length属性外，不具有数组的一些常用方法。**
+
+下面会分析arguments对象所具有的性质。
+
+**1、可通过索引访问**
+
+```js
+function sum(num1, num2) {
+   console.log(arguments[0]);  // 3
+   console.log(arguments[1]);  // 4
+   console.log(arguments[2]);  // undeﬁned
+}
+
+sum(3, 4);
+```
+
+**2、由实参决定**
+
+arguments对象的值由实参决定，而不是由定义的形参决定，形参与arguments对象占用独立的内存空间。
+
+· arguments对象的length属性在函数调用的时候就已经确定，不会随着函数的处理而改变。
+
+· 指定的形参在传递实参的情况下，arguments对象与形参值相同，并且可以相互改变。
+
+· 指定的形参在未传递实参的情况下，arguments对象对应索引值返回“undefined”。
+
+· 指定的形参在未传递实参的情况下，arguments对象与形参值不能相互改变。
+
+```js
+function foo(a, b, c) {
+   console.log(arguments.length);  // 2
+
+   arguments[0] = 11;
+   console.log(a);   // 11
+
+   b = 12;
+   console.log(arguments[1]);  // 12
+
+   arguments[2] = 3;
+   console.log(c);  // undeﬁned
+
+   c = 13;
+   console.log(arguments[2]);  // 3
+
+   console.log(arguments.length);  // 2
+}
+
+foo(1, 2);
+```
+
+**3、特殊的arguments.callee属性**
+
+arguments对象有一个很特殊的属性callee，表示的是当前正在执行的函数，在比较时是严格相等的。
+
+```js
+function create() {
+   return function (n) {
+       if (n <= 1)
+           return 1;
+       return n * arguments.callee(n - 1);
+   };
+}
+var result = create()(5); // returns 120 (5 * 4 * 3 * 2 * 1)
+```
+
+尽管arguments.callee属性可以用于获取函数本身去做递归调用，但是我们并不推荐广泛使用arguments.callee属性，其中有一个主要原因是使用arguments.callee属性后会改变函数内部的this值
+
+```js
+var sillyFunction = function (recursed) {
+   if (!recursed) {
+       console.log(this);  // Window {}
+       return arguments.callee(true);
+   }
+   console.log(this);  // Arguments {}
+};
+sillyFunction();
+```
+
+#### 3.2.3 arguments对象的应用
+
+1、实参的个数判断
+
+```js
+function f(x, y, z) {
+   // 检查传递的参数个数是否正确
+   if (arguments.length !== 3) {
+       throw new Error("期望传递的参数个数为3，实际传递个数为" + arguments.length);
+   }
+   // ...do something
+}
+f(1, 2); // Uncaught Error: 期望传递的参数个数为3，实际传递个数为2
+```
+
+2、任意个数的参数处理
+
+```js
+function joinStr(seperator) {
+   // arguments对象是一个类数组结构，可以通过call()函数间接调用slice()函数，得到一个数组
+   var strArr = Array.prototype.slice.call(arguments, 1);
+   // strArr数组直接调用join()函数
+   return strArr.join(seperator);
+}
+
+joinStr('-', 'orange', 'apple', 'banana'); // orange-apple-banana
+joinStr(',', 'orange', 'apple', 'banana'); // orange,apple,banana
+```
+
+3、模拟函数重载
+
+**函数重载表示的是在函数名相同的情况下，通过函数形参的不同参数类型或者不同参数个数来定义不同的函数**
+
+我们都知道在JavaScript中是没有函数重载的，主要有以下几点原因。
+
+· JavaScript是一门弱类型的语言，变量只有在使用时才能确定数据类型，通过形参是无法确定数据类型的。
+
+· 无法通过函数的参数个数来指定调用不同的函数，函数的参数个数是在函数调用时才确定下来的。
+
+· 使用函数声明定义的具有相同名称的函数，后者会覆盖前者。
+
+那么遇到这种情况，我们该如何写出一个通用的函数，来实现任意个数字的加法运算求和呢？
+
+答案就是使用arguments对象处理传递的参数。
+
+首先通过call()函数间接调用数组的slice()函数以得到函数参数的数组；
+
+然后调用数组的reduce()函数进行多个值的求和并返回。
+
+```js
+// 通用求和函数
+function sum() {
+   // 通过call()函数间接调用数组的slice()函数得到函数参数的数组
+   var arr = Array.prototype.slice.call(arguments);
+   // 调用数组的reduce()函数进行多个值的求和
+   return arr.reduce(function (pre, cur) {
+       return pre + cur;
+   }, 0)
+}
+
+sum(1, 2);       // 3
+sum(1, 2, 3);    // 6
+sum(1, 2, 3, 4); // 10
+```
+
 ### 3.3 构造函数
+
+在函数中存在一类比较特殊的函数——构造函数。当我们创建对象的实例时，通常会使用到构造函数，例如对象和数组的实例化可以通过相应的构造函数Object()和Array()完成。
+
+构造函数与普通函数在语法的定义上没有任何区别，主要的区别体现在以下3点。
+
+**1、 构造函数的函数名的第一个字母通常会大写。**
+
+**2、 在函数体内部使用this关键字，表示要生成的对象实例，构造函数并不会显式地返回任何值，而是默认返回“this”。**
+
+**3、 作为构造函数调用时，必须与new操作符配合使用。**
 
 ### 3.4 变量提升与函数提升
 
