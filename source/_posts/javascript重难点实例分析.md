@@ -3587,7 +3587,145 @@ sum(1, 2, 3, 4); // 10
 
 **3、 作为构造函数调用时，必须与new操作符配合使用。**
 
+```js
+// 构造函数
+function Person(name, age) {
+   this.name = name;
+   this.age = age;
+   this.sayName = function () {
+       alert(this.name);
+   };
+}
+var person = new Person('kingx', '12');
+person.sayName(); // 'kingx'
+```
+
+**一个函数在当作普通函数使用时，函数内部的this会指向window。**
+
+```js
+Person('kingx', '12');
+window.sayName(); // 'kingx'
+```
+
+**使用构造函数可以在任何时候创建我们想要的对象实例，构造函数在执行时会执行以下4步：**
+
+**1、 通过new操作符创建一个新的对象，在内存中创建一个新的地址。**
+
+**2、 为构造函数中的this确定指向。**
+
+**3、 执行构造函数代码，为实例添加属性。**
+
+**4、 返回这个新创建的对象。**
+
+以前面生成person实例的代码为例。
+
+第一步：为person实例在内存中创建一个新的地址。
+
+第二步：确定person实例的this指向，指向person本身。
+
+第三步：为person实例添加name、age和sayName属性，其中sayName属性值是一个函数。
+
+第四步：返回这个person实例。
+
+
+```js
+var person1 = new Person();
+var person2 = new Person();
+console.log(person1.sayName === person2.sayName); // false
+```
+
+**事实上，当我们在创建对象的实例时，对于相同的函数并不需要重复创建，而且由于this的存在，总是可以在实例中访问到它具有的属性。**因此，我们需要使用一种更好的方式来处理函数类型的属性。大家可能会想到设置全局访问的函数，这样就可以被所有实例访问到，而不用重复创建。
+
+但是这样也会存在一个问题，如果为一个对象添加的所有函数都处理成全局函数，这样会污染到全局作用域空间，而且也无法完成对一个自定义类型对象的属性和函数的封装，因此这不是一个好的解决办法。
+
+**这里就要引入原型的概念了!!!**
+
+
 ### 3.4 变量提升与函数提升
+
+在JavaScript中，会存在一些比较奇怪的现象。例如，一个函数体内，变量在定义之前就可以被访问到，而不会抛出异常。
+
+```js
+function fn() {
+   console.log(a); // 输出“undeﬁned”，不会抛出异常
+   var a = 1;
+}
+```
+
+```js
+fn();  // 函数正常执行，输出“函数得到调用”
+function fn() {
+   console.log('函数得到调用');
+}
+```
+
+#### 3.4.1 作用域
+
+**在JavaScript中，一个变量的定义与调用都是会在一个固定的范围中的，这个范围我们称之为作用域。作用域可以分为：全局作用域、函数作用域和块级作用域。**
+
+需要注意的是块级作用域是在ES6中新增的，需要使用特定的let或者const关键字定义变量。
+
+```js
+// 全局作用域内的变量a
+var a = 'global variable';
+
+function foo() {
+   // 函数作用域内的变量b
+   var b = 'function variable';
+
+   console.log(a);  // global variable
+   console.log(b);  // function variable
+}
+
+// 块级作用域内的变量c
+{
+   let c = 'block variable';
+   console.log(c);  // block variable
+}
+
+console.log(c);  // Uncaught ReferenceError: c is not deﬁned
+```
+
+#### 3.4.2 变量提升
+
+变量提升是将变量的声明提升到函数顶部的位置，而变量的赋值并不会被提升。
+
+需要注意的一点是，会产生提升的变量必须是通过var关键字定义的，而不通过var关键字定义的全局变量是不会产生变量提升的。
+
+通过下面的代码可以发现，变量v的定义未使用var关键字，那么它是一个全局变量，不会产生变量提升，直接进行输出，抛出一个变量v未定义的异常。
+
+```js
+(function () {
+   console.log(v);  // Uncaught ReferenceError: v is not deﬁned
+   v = 'Hello JavaScript';
+})();
+```
+
+**1、代码段1的执行过程**
+
+在全局对象window上定义一个变量v，并赋值为Hello World。然后定义一个立即执行函数，这个立即执行函数的作用域为window。在函数内部引用变量v，然后会顺着作用域寻找，最终会在window上找到这个变量v，因此输出“Hello World”。
+
+**2、代码段2的执行过程**
+
+代码段2中出现了变量提升，在立即执行函数的内部，变量v的定义会提升到函数顶部，实际执行过程的代码如下所示。
+
+```js
+var v = 'Hello World';
+
+(function () {
+  var v;   // 变量的声明得到提升
+  console.log(v);
+  v = 'Hello JavaScript';  // 变量的赋值并未提升
+})();
+```
+
+同代码段1的分析，在window上定义一个变量v，赋值为Hello World，而且在立即执行函数的内部同样定义了一个变量v，但是赋值语句并未提升，因此v为undefined。在输出时，会优先在函数内部作用域中寻找变量，而变量已经在内部作用域中定义，因此直接输出“undefined”。
+
+
+#### 3.4.3 函数提升
+
+#### 3.4.4 变量提升与函数提升的应用
+
 
 ### 3.5 闭包
 
@@ -3595,13 +3733,16 @@ sum(1, 2, 3, 4); // 10
 
 ### 3.7 call、apply、bind函数的使用和区别
 
-
 ## 4、对象
 
 ## 5、DOM与事件
 
+待补充
+
 
 ## 6、Ajax
+
+待补充
 
 
 ## 7、ES6
