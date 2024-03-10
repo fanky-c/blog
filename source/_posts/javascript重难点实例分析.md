@@ -3856,8 +3856,250 @@ JavaScript每段代码的执行都会存在于一个执行上下文环境中，�
 · 闭包作为一个函数返回时，其执行上下文环境不会被销毁，仍处于执行上下文环境中。
 
 
+```js
+function fn() {
+   var max = 10;
+   return function bar(x)
+         if (x > max) {
+            console.log(x);
+         }
+   };
+}
+var f1 = fn();
+f1(11);  // 11
+```
+
+当代码执行到第10行时，调用f1()函数，注意此时是一个关键的节点，因为f1()函数中包含了对max变量的引用，而max变量是存在于外部函数fn()中的，此时fn()函数执行上下文环境并不会被直接销毁，依然存在于执行上下文环境中。
+
+等到第10行代码执行结束后，bar()函数执行完毕，bar()函数执行上下文环境才会被销毁，同时因为max变量引用会被释放，fn()函数执行上下文环境也一同被销毁。
+
+最后全局上下文环境执行完毕，栈被清空，流程执行结束。
+
+**从分析就可以看出闭包所存在的最大的一个问题就是消耗内存，如果闭包使用越来越多，内存消耗将越来越大**
 
 #### 3.5.3 闭包的用途
+
+##### 3.5.3.1 结果缓存
+
+在开发过程中，我们可能会遇到这样的场景，假如有一个处理很耗时的函数对象，每次调用都会消耗很长时间。
+
+我们可以将其处理结果在内存中缓存起来。这样在执行代码时，如果内存中有，则直接返回；如果内存中没有，则调用函数进行计算，更新缓存并返回结果。
+
+因为闭包不会释放外部变量的引用，所以能将外部变量值缓存在内存中。
+
+```js
+var cachedBox = (function () {
+   // 缓存的容器
+   var cache = {};
+   return {
+       searchBox: function (id) {
+           // 如果在内存中，则直接返回
+           if(id in cache) {
+              return '查找的结果为:' + cache[id];
+           }
+           // 经过一段很耗时的dealFn()函数处理
+           var result = dealFn(id);
+           // 更新缓存的结果
+           cache[id] = result;
+           // 返回计算的结果
+           return '查找的结果为:' + result;
+       }
+   };
+})();
+
+// 处理很耗时的函数
+function dealFn(id) {
+   console.log('这是一段很耗时的操作');
+   return id;
+}
+
+// 两次调用searchBox()函数
+console.log(cachedBox.searchBox(1)); // 第一次显示：这是一段很耗时的操作
+console.log(cachedBox.searchBox(1)); // 第二次： 直接显示结果
+```
+
+##### 3.5.3.2 封装
+
+在JavaScript中提倡的模块化思想是希望将具有一定特征的属性封装到一起，只需要对外暴露对应的函数，并不关心内部逻辑的实现。
+
+```js
+var stack = (function () {
+   // 使用数组模仿栈的实现
+   var arr = [];
+   // 栈
+   return {
+       push: function (value) {
+           arr.push(value);
+       },
+       pop: function () {
+           return arr.pop();
+       },
+       size: function () {
+           return arr.length;
+       }
+   };
+})();
+stack.push('abc');
+stack.push('def');
+console.log(stack.size());  // 2
+stack.pop();
+console.log(stack.size());  // 1
+```
+
+接下来我们将通过几道练习题加深大家对闭包的理解。
+
+**1、ul中有若干个li，每次单击li，输出li的索引值**
+
+```js
+<ul>
+   <li>1</li>
+   <li>2</li>
+   <li>3</li>
+   <li>4</li>
+   <li>5</li>
+</ul>
+<script>
+   var lis = document.getElementsByTagName('ul')[0].children;
+   for (var i = 0; i < lis.length; i++) {
+       lis[i].onclick = function () {
+           console.log(i);
+       };
+   }
+</script>
+```
+
+但是真正运行后却发现，结果并不如自己所想，每次单击后输出的并不是索引值，而一直都是“5”。
+
+**这是为什么呢？因为在我们单击li，触发li的click事件之前，for循环已经执行结束了，而for循环结束的条件就是最后一次i++执行完毕，此时i的值为5，所以每次单击li后返回的都是“5”。**
+
+```js
+<script>
+   var lis = document.getElementsByTagName('ul')[0].children;
+   for (var i = 0; i < lis.length; i++) {
+       (function (index) {
+           lis[index].onclick = function () {
+               console.log(index);
+           };
+       })(i);
+   }
+</script>
+```
+
+**在每一轮的for循环中，我们将索引值i传入一个匿名立即执行函数中，在该匿名函数中存在对外部变量lis的引用，因此会形成一个闭包。而闭包中的变量index，即外部传入的i值会继续存在于内存中，所以当单击li时，就会输出对应的索引index值。**
+
+**2、定时器问题**
+
+**定时器setTimeout()函数和for循环在一起使用**，总会出现一些意想不到的结果，我们看看下面的代码。
+
+```js
+var arr = ['one', 'two', 'three'];
+for(var i = 0; i < arr.length; i++) {
+   setTimeout(function () {
+       console.log(arr[i]);
+   }, i * 1000);
+}
+```
+
+但是运行过后，我们却会发现结果是每隔一秒输出一个“undefined”，这是为什么呢？
+
+通过闭包可以解决这个问题，代码如下所示。
+
+```js
+var arr = ['one', 'two', 'three'];
+for(var i = 0; i < arr.length; i++) {
+   (function (time) {
+       setTimeout(function () {
+           console.log(arr[time]);
+       }, time * 1000);
+   })(i);
+}
+```
+
+**通过立即执行函数将索引i作为参数传入，在立即函数执行完成后，由于setTimeout()函数中有对arr变量的引用，其执行上下文环境不会被销毁，因此对应的i值都会存在内存中。**所以每次执行setTimeout()函数时，i都会是数组对应的索引值0、1、2，从而间隔一秒输出“one”“two”“three”。
+
+
+**3、作用域链问题**
+
+闭包往往会涉及作用域链问题，尤其是包含this属性时。
+
+```js
+var name = 'outer';
+var obj = {
+   name: 'inner',
+   method: function () {
+       return function () {
+           return this.name;
+       }
+   }
+};
+console.log(obj.method()());  // outer
+```
+
+在调用obj.method()函数时，会返回一个匿名函数，而该匿名函数中返回的是this.name，因为引用到了this属性，在匿名函数中，this相当于一个外部变量，所以会形成一个闭包。
+
+在JavaScript中，this指向的永远是函数的调用实体，而匿名函数的实体是全局对象window，因此会输出全局变量name的值“outer”。
+
+```js
+var name = 'outer';
+var obj = {
+   name: 'inner',
+   method: function () {
+       // 用_this保存obj中的this
+       var _this = this;
+       return function () {
+           return _this.name;
+       }
+   }
+};
+console.log(obj.method()());  // inner
+```
+
+**4、多个相同函数名问题**
+
+```js
+// 第一个foo()函数
+function foo(a, b) {
+   console.log(b);
+   return {
+      // 第二个foo()函数
+       foo: function (c) {
+          // 第三个foo()函数
+          return foo(c, a);
+       }
+   }
+}
+var x = foo(0); x.foo(1); x.foo(2); x.foo(3);
+var y = foo(0).foo(1).foo(2).foo(3);
+var z = foo(0).foo(1); z.foo(2); z.foo(3);
+```
+在完成这道题目之前，我们需要搞清楚这3个foo()函数的指向。
+
+首先最外层的foo()函数是一个具名函数，返回的是一个具体的对象。
+
+第二个foo()函数是最外层foo()函数返回对象的一个属性，该属性指向一个匿名函数。
+
+第三个foo()函数是一个被返回的函数，该foo()函数会沿着原型链向上查找，而foo()函数在局部环境中并未定义，最终会指向最外层的第一个foo()函数，因此第三个和第一个foo()函数实际是指向同一个函数。
+
+第一行输出结果为“undefined，0，0，0”。
+
+第二行输出结果为“undefined，0，1，2”。
+
+第三行输出结果为“undefined，0，1，1”。
+
+
+#### 3.5.4 小结
+
+##### 3.5.4.1 闭包的优点
+
+· 保护函数内变量的安全，实现封装，防止变量流入其他环境发生命名冲突，造成环境污染。
+
+· 在适当的时候，可以在内存中维护变量并缓存，提高执行效率。
+
+##### 3.5.4.2 闭包的缺点
+
+· 消耗内存：通常来说，函数的活动对象会随着执行上下文环境一起被销毁，但是，由于闭包引用的是外部函数的活动对象，因此这个活动对象无法被销毁，这意味着，闭包比一般的函数需要消耗更多的内存。
+
+· 泄漏内存：在IE9之前，如果闭包的作用域链中存在DOM对象，则意味着该DOM对象无法被销毁，造成内存泄漏。
 
 ### 3.6 this使用
 
