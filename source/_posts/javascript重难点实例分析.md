@@ -4366,15 +4366,218 @@ console.log(n.m);
 
 ### 3.7 call、apply、bind函数的使用和区别
 
+JavaScript中，每个函数都包含两个非继承而来的函数apply()和call()，这两个函数的作用是一样的，都是为了改变函数运行时的上下文而存在的，实际就是改变函数体内this的指向。
+
 #### 3.7.1 call()函数的基本使用
+
+call()函数调用一个函数时，会将该函数的执行对象上下文改变为另一个对象。其语法如下所示。
+
+```js
+//  function为需要调用的函数。
+//  thisArg表示的是新的对象上下文，函数中的this将指向thisArg，如果thisArg为null或者undefined，则this会指向全局对象。
+//  arg1，arg2，...表示的是函数所接收的参数列表。
+
+function.call(thisArg, arg1, arg2, ...)
+```
+
+```js
+// 定义一个add()函数
+function add(x, y) {
+   return x + y;
+}
+// 通过call()函数进行add()函数的调用
+function myAddCall(x, y) {
+   // 调用add()函数的call()函数
+   return add.call(this, x, y);
+}
+console.log(myAddCall(10, 20));    //输出“30”
+```
+
+myAddCall()函数自身是不具备运算能力的，但是我们在myAddCall()函数中，通过调用add()函数的call()函数，并传入this值，将执行add()函数的主体改变为myAddCall()函数自身，然后传入参数x和y，这就使得myAddCall()函数拥有add()函数计算求和的能力。在实际计算时，就为10 + 20 = 30。
 
 #### 3.7.2 apply()函数的基本使用
 
+```js
+//定义一个add()函数
+function add(x, y) {
+   return x + y;
+}
+// 通过apply()函数进行add()函数的调用
+function myAddApply(x, y) {
+   // 调用add()函数的apply()函数
+   return add.apply(this, [x, y]);
+}
+console.log(myAddApply(10, 20));    //输出“30”
+```
+
 #### 3.7.3 bind()函数的基本使用
+
+bind()函数与call()函数接收的参数是一样的。**其返回值是原函数的副本，并拥有指定的this值和初始参数。**
+
+```js
+//定义一个add()函数
+function add(x, y) {
+   return x + y;
+}
+// 通过bind()函数进行add()函数的调用
+function myAddBind(x, y) {
+   // 通过bind()函数得到一个新的函数
+   var bindAddFn = add.bind(this, x, y);
+   // 执行新的函数
+   return bindAddFn();
+}
+console.log(myAddBind(10, 20));    //输出“30”
+```
 
 #### 3.7.4 call、apply、bind的函数比较
 
+三者的相同之处是：都会改变函数调用的执行主体，修改this的指向。
+
+不同之处表现在以下两点。
+
+1、第一点是关于函数立即执行，call()函数与apply()函数在执行后会立即调用前面的函数，而bind()函数不会立即调用，它会返回一个新的函数，可以在任何时候进行调用。
+
+2、第二点是关于参数传递，call()函数与bind()函数接收的参数相同，第一个参数表示将要改变的函数执行主体，即this的指向，从第二个参数开始到最后一个参数表示的是函数接收的参数；而对于apply()函数，第一个参数与call()函数、bind()函数相同，第二个参数是一个数组，表示的是接收的所有参数，如果第二个参数不是一个有效的数组或者arguments对象，则会抛出一个TypeError异常。
+
 #### 3.7.5 call、apply、bind的函数用法
+
+**1、求数组中的最大项和最小项**
+
+Array数组本身没有max()函数和min()函数，无法直接获取到最大值和最小值，但是Math却有求最大值和最小值的max()函数和min()函数。我们可以使用apply()函数来改变Math.max()函数和Math.min()函数的执行主体，然后将数组作为参数传递给Math.max()函数和Math.min()函数。
+
+```js
+// 原生用法
+Math.max(1,2,3)
+
+
+// 修改用法
+var arr = [3, 5, 7, 2, 9, 11];
+// 求数组中的最大值, 思考下如何用call？
+console.log(Math.max.apply(null, arr));  // 11
+
+// 求数组中的最小值
+console.log(Math.min.apply(null, arr));  // 2
+```
+
+**2、类数组对象转换为数组对象**
+
+函数的参数对象arguments是一个类数组对象，自身不能直接调用数组的方法，但是我们可以借助call()函数，让arguments对象调用数组的slice()函数，从而得到一个真实的数组，后面就能调用数组的函数。
+
+
+任意个数字的求和的代码如下所示。
+
+```js
+// 任意个数字的求和
+function sum() {
+   // 将传递的参数转换为数组
+   var arr = Array.prototype.slice.call(arguments);
+   // 调用数组的reduce()函数
+   return arr.reduce(function (pre, cur) {
+       return pre + cur;
+   }, 0)
+}
+
+sum(1, 2);       // 3
+sum(1, 2, 3);    // 6
+sum(1, 2, 3, 4); // 10
+```
+
+**3、用于继承**
+
+之前我们将会讲到继承的几种实现方式，其中的构造继承就会用到call()函数。
+
+```js
+// 父类
+function Animal(age) {
+   // 属性
+   this.age = age;
+   // 实例函数
+   this.sleep = function () {
+       return this.name + '正在睡觉！';
+   }
+}
+// 子类
+function Cat(name, age) {
+   // 使用call()函数实现继承
+   Animal.call(this, age);
+   this.name = name || 'tom';
+}
+
+var cat = new Cat('tony', 11);
+console.log(cat.sleep());  // tony正在睡觉！
+console.log(cat.age);  // 11
+```
+
+其中关键的语句是子类中的Animal.call(this, age)，在call()函数中传递this，表示的是将Animal构造函数的执行主体转换为Cat对象，从而在Cat对象的this上会增加age属性和sleep函数，子类实际相当于如下代码。
+
+```js
+function Cat(name, age) {
+   // 来源于对父类的继承
+  this.age = age;
+   this.sleep = function () {
+       return this.name + '正在睡觉！';
+   };
+   // Cat自身的实例属性
+   this.name = name || 'tom';
+}
+```
+
+**4、执行匿名函数**
+
+假如存在这样一个场景，有一个数组，数组中的每个元素是一个对象，对象是由不同的属性构成，现在我们想要调用一个函数，输出每个对象的各个属性值。
+
+```js
+var animals = [
+   {species: 'Lion', name: 'King'},
+   {species: 'Whale', name: 'Fail'}
+];
+
+for (var i = 0; i < animals.length; i++) {
+   (function (i) {
+       this.print = function () {
+           console.log('#' + i + ' ' + this.species + ': ' + this.name);
+       };
+       this.print();
+   }).call(animals[i], i);
+}
+```
+
+在上面的代码中，在call()函数中传入animals[i]，这样匿名函数内部的this就指向animals[i]，在调用print()函数时，this也会指向animals[i]，从而能输出speices属性和name属性。
+
+
+**5、bind()函数配合setTimeout**
+
+**在默认情况下，使用setTimeout()函数时，this关键字会指向全局对象window。**当使用类的函数时，需要this引用类的实例，我们可能需要显式地把this绑定到回调函数以便继续使用实例。
+
+```js
+// 定义一个函数
+function LateBloomer() {
+   this.petalCount = Math.ceil(Math.random() * 12) + 1;
+}
+// 定义一个原型函数
+// 输出：I am a beautiful ﬂower with 4 petals!
+LateBloomer.prototype.bloom = function () {
+   // 在一秒后调用实例的declare()函数，很关键的一句
+   window.setTimeout(this.declare.bind(this), 1000);
+};
+
+// 输出： I am a beautiful ﬂower with undeﬁned petals!
+// LateBloomer.prototype.bloom = function () {
+//    window.setTimeout(this.declare, 1000);
+// };
+
+
+// 定义原型上的declare()函数
+LateBloomer.prototype.declare = function () {
+   console.log('I am a beautiful ﬂower with ' + this.petalCount + ' petals!');
+};
+// 生成LateBloomer的实例
+var ﬂower = new LateBloomer();
+ﬂower.bloom();  // 1秒后，调用declare()函数
+```
+
+
+
 
 ## 4、对象
 
