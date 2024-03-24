@@ -4101,9 +4101,280 @@ var z = foo(0).foo(1); z.foo(2); z.foo(3);
 
 · 泄漏内存：在IE9之前，如果闭包的作用域链中存在DOM对象，则意味着该DOM对象无法被销毁，造成内存泄漏。
 
-### 3.6 this使用
+```js
+function closure() {
+   var element = document.getElementById("elementID");
+   element.onclick = function () {
+       console.log(element.id);
+   };
+}
+```
+
+在closure()函数中，给一个element元素绑定了click事件，而在这个click事件中，输出了element元素的id属性，即在onclick()函数的闭包中存在了对外部元素element的引用，那么该element元素在网页关闭之前会一直存在于内存之中，不会被释放。如果这样的事件处理的函数很多，将会导致大量内存被占用，进而严重影响性能。
+
+如果这样的事件处理的函数很多，将会导致大量内存被占用，进而严重影响性能。
+
+对应的解决办法是：先将需要使用的属性使用临时变量进行存储，然后在事件处理函数时使用临时变量进行操作；此时闭包中虽然不直接引用element元素，但是对id值的调用仍然会导致element元素的引用被保存，此时应该手动将element元素设置为null。
+
+```js
+function closure() {
+   var element = document.getElementById("elementID");
+   // 使用临时变量存储
+   var id = element.id;
+   element.onclick = function () {
+       console.log(id);
+   };
+   // 手动将元素设置为null
+   element = null;
+}
+```
+
+### 3.6 this使用详解
+
+当我们想要创建一个构造函数的实例时，需要使用new操作符，函数执行完成后，函数体中的this就指向了这个实例，通过下面这个实例可以访问到绑定在this上的属性。
+
+```js
+function Person(name) {
+   this.name = name;
+}
+var p = new Person('kingx');
+console.log(p.name);  // 'kingx'
+```
+
+假如我们将Person()函数当作一个普通的函数执行，其中的this又会指向谁呢？从哪个对象上可以访问到定义的name属性的值呢？
+
+事实上，在window对象上，我们可以访问到name属性的值，这表明函数体中的this指向了window对象。
+
+```js
+function Person(name) {
+   this.name = name;
+}
+Person('kingx');  // 当作普通的函数进行调用
+console.log(window.name); // 'kingx'
+```
+
+其实this这个概念并不是JavaScript所特有的，在java、c++等面向对象的语言中也存在this关键字。它们中的this概念很好理解，this指向的是当前类的实例对象。**而在JavaScript中，this的指向是随着宿主环境的变化而变化的，在不同的地方调用，返回的可能是不同的结果。**
+
+**在JavaScript中，this指向的永远是函数的调用者。**
+
+#### 3.6.1 this指向全局对象
+
+当函数没有所属对象而直接调用时，this指向的是全局对象，来看下面这段代码。
+
+```js
+var value = 10;
+var obj = {
+   value: 100,
+   method: function () {
+       var foo = function () {
+           console.log(this.value);  // 10
+           console.log(this);  // Window对象
+       };
+       foo();
+       return this.value;
+   }
+};
+obj.method();
+```
+
+当我们调用obj.method()函数时，foo()函数被执行，但是此时foo()函数的执行是没有所属对象的，因此this会指向全局的window对象，在输出this.value时，实际是输出window.value，因此输出“10”。
+
+而method()函数的返回值是this.value，method()函数的调用体是obj对象，此时this就指向obj对象，而obj.value = 100，因此调用obj.method()函数后会返回“100”。
+
+#### 3.6.2 this指向所属对象
+
+同样沿用场景1中的代码，我们修改最后一行代码，输出obj.method()函数的返回值。
+
+```js
+console.log(obj.method()); // 100
+```
+
+obj.method()函数的返回值是this.value，method()函数的调用体是obj对象，此时this就指向obj对象，而obj.value = 100，因此会输出“100”。
+
+
+#### 3.6.3 this指向对象实例
+
+当通过new操作符调用构造函数生成对象的实例时，this指向该实例。
+
+```js
+// 全局变量
+var number = 10;
+function Person() {
+   // 复写全局变量
+   number = 20;
+   // 实例变量
+   this.number = 30;
+}
+// 原型函数
+Person.prototype.getNumber = function () {
+   return this.number;
+};
+// 通过new操作符获取对象的实例
+var p = new Person();
+console.log(p.getNumber()); // 30
+```
+
+#### 3.6.4 this指向call()函数、apply()函数、bind()函数调用后重新绑定的对象
+
+通过call()函数、apply()函数、bind()函数可以改变函数执行的主体，如果函数中存在this关键字，则this也将会指向call()函数、apply()函数、bind()函数处理后的对象。
+
+```js
+// 全局变量
+var value = 10;
+var obj = {
+   value: 20
+};
+// 全局函数
+var method = function () {
+   console.log(this.value);
+};
+
+method();  // 10
+method.call(obj);  // 20
+method.apply(obj); // 20
+
+var newMethod = method.bind(obj);
+newMethod();  // 20
+```
+
+而在调用method.call(obj)时，将method()函数调用的主体改为obj对象，此时this指向的是obj对象，输出obj.value值，因此输出“20”。
+
+apply()函数和bind()函数都会产生同样的效果，将函数指向的实体改为obj对象，因此后两个输出值也为“20”。
+
+call()函数、apply()函数在改变函数的执行主体后，会立即调用该函数；而bind()函数在改变函数的执行主体后，并没有立即调用，而是可以在任何时候调用
+
+在处理DOM事件处理程序中的this时，call()函数、apply()函数、bind()函数显得尤为有用，我们以bind()函数为例进行说明。
+
+```js
+var user = {
+   data: [
+       {name: "kingx1", age: 11},
+       {name: "kingx2", age: 12}
+   ],
+   clickHandler: function (event) {
+       // 随机生成整数0或1
+       var randomNum = ((Math.random() * 2 | 0) + 1) - 1;
+       // 从data数组里随机获取name属性和age属性，并输出
+       console.log(this.data[randomNum].name + " " + this.data[randomNum].age);
+   }
+};
+
+var button = document.getElementById('btn');
+button.onclick = user.clickHandler;
+```
+
+但是当我们单击button按钮时，却会抛出异常。
+
+```js
+Uncaught TypeError: Cannot read property '1' of undeﬁned
+```
+
+这是为什么呢？
+
+我们来看下异常信息栈便可以很好理解产生这种情况的原因。我们调用了一个undefined对象属性名为1的值，就是代码中this.data[1]的部分，间接可以表示出data为undefined。
+
+这是因为当我们单击button按钮，触发click回调函数时，clickHandler()函数中的this指向的是button对象，而不是user对象，而button对象中是没有data属性的，因此data为undefined，从而抛出异常。
+
+为了解决这个问题，我们需要将click回调函数中的this指向改变为user对象，而通过bind()函数可以达到这个目的。
+
+button.onclick = user.clickHandler.bind(user);
+
+修改完成后，再次单击button按钮，控制台会输出对应的结果。
+
+```js
+kingx2 43
+kingx1 37
+```
+
+#### 3.6.5 闭包中的this
+
+**函数的this变量只能被自身访问，其内部函数无法访问。因此在遇到闭包时，闭包内部的this关键字无法访问到外部函数的this变量。**
+
+```js
+  var user = {
+      sport: 'basketball',
+      data: [
+          {name: "kingx1", age: 11},
+          {name: "kingx2", age: 12}
+      ],
+      clickHandler: function () {
+        // 此时的this指向的是user对象
+          this.data.forEach(function (person) {
+             console.log(this);  // [object Window]
+             console.log(person.name + ' is playing ' + this.sport);
+         })
+     }
+ };
+ user.clickHandler();
+```
+
+在调用user.clickHandler()函数时，会执行到第9行代码，此时的this会指向user对象，因此可以访问到data属性，并进行forEach循环。**forEach循环实际是一个匿名函数，用于接收一个person参数，**表示每次遍历的数组中的值。
+
+输出结果：
+
+```js
+kingx1 is playing undeﬁned
+kingx2 is playing undeﬁned
+```
+
+可以使用临时变量将clickHandler()函数的this提前进行存储，对其使用user对象，而在匿名函数中，使用临时变量访问sport属性，而不是直接用this访问。
+
+```js
+var user = {
+   sport: 'basketball',
+   data: [
+       {name: "kingx1", age: 11},
+       {name: "kingx2", age: 12}
+   ],
+   clickHandler: function () {
+       // 使用临时变量_this保存this
+       var _this = this;
+       this.data.forEach(function (person) {
+           // 通过_this访问sport属性
+           console.log(person.name + ' is playing ' + _this.sport);
+       })
+   }
+};
+user.clickHandler();
+
+// kingx1 is playing basketball
+// kingx2 is playing basketball
+```
+
+
+接下来我们通过一道题加深对this的理解。
+
+```js
+function f(k) {
+   this.m = k;
+   return this;
+}
+
+var m = f(1);
+var n = f(2);
+
+console.log(m.m);
+console.log(n.m);
+```
+
+在执行f(1)的时候，因为f()函数的调用没有所属对象，所以this指向window，然后this.m=k语句执行后，相当于window.m = 1。通过return语句返回“window”，而又将返回值“window”赋值给全局变量m，因此变成了window.m = window，覆盖前面的window.m = 1。
+
+在执行f(2)的时候，this同样指向window，此时window.m已经变成2，即window.m = 2，覆盖了window.m = window。通过return语句将window对象返回并赋值给n，此时window.n=window。
+
+先看m.m的输出，m.m=(window.m).m，实际为2.m，2是一个数值型常量，并不存在m属性，因此返回“undefined”。再看n.m的输出，n.m=(window.n).m=window.m=2，因此输出“2”。
+
 
 ### 3.7 call、apply、bind函数的使用和区别
+
+#### 3.7.1 call()函数的基本使用
+
+#### 3.7.2 apply()函数的基本使用
+
+#### 3.7.3 bind()函数的基本使用
+
+#### 3.7.4 call、apply、bind的函数比较
+
+#### 3.7.5 call、apply、bind的函数用法
 
 ## 4、对象
 
