@@ -4576,10 +4576,116 @@ var ﬂower = new LateBloomer();
 ﬂower.bloom();  // 1秒后，调用declare()函数
 ```
 
-
-
-
 ## 4、对象
+
+JavaScript虽然是一门弱类型语言，但它同样是一门面向对象的语言，严格来说它是一门基于原型的面向对象的语言
+
+### 4.1 对象的属性和访问方式
+#### 4.1.1 对象的属性
+
+对象的属性可以分为数据属性和访问器属性
+
+**1、数据属性**
+
+数据属性具有4个描述其行为的特性，因为这些特性是内部值，所以ECMA-262规范将其放在了两对方括号中。
+
+· [[Configurable]]：表示属性能否删除而重新定义，或者是否可以修改为访问器属性，默认值为true。
+
+· [[Enumerable]]：表示属性是否可枚举，可枚举的属性能够通过for...in循环返回，默认值为true。
+
+· [[Writable]]：表示属性值能否被修改，默认值为true。
+
+· [[Value]]：表示属性的真实值，属性的读取和写入均通过此属性完成，默认值为undefined。
+
+```js
+// 定义对象 name属性的[[Configurable]]、[[Enumerable]]、[[Writable]]特性值都为true，[[Value]]特性值为'kingx'。
+var person = {
+   name: 'kingx'
+};
+```
+
+如果需要修改数据属性默认的特性，则必须使用Object.defineProperty()函数，语法如下。
+
+```js
+// 其中target表示目标对象，property表示将要修改特性的属性，第三个参数是一个描述符对象，描述符对象的属性必须为configurable、enumerable、writable、value
+Object.deﬁneProperty(target, property, {
+   conﬁgurable: true,
+   enumerable: false,
+   writable: false,
+   value: 'kingx'
+});
+```
+
+**2、访问器属性**
+
+访问器属性同样包含4个特性，分别是[[Configurable]]、[[Enumerable]]、[[Get]]和[[Set]]。
+
+· [[Configurable]]：表示属性能否删除而重新定义，或者是否可以修改为访问器属性，默认值为true。
+
+· [[Enumerable]]：表示属性是否可枚举，可枚举的属性能够通过for...in循环返回，默认值为true。
+
+· [[Get]]：在读取属性值时调用的函数（一般称为getter()函数），负责返回有效的值，默认值为undefined。
+
+· [[Set]]：在写入属性值时调用的函数（一般称为setter()函数），负责处理数据，默认值为undefined。
+
+如果需要修改访问器属性默认的特性，则必须使用Object.defineProperty()函数。
+
+getter()函数和setter()函数的存在在一定程度上可以实现对象的私有属性，私有属性不对外暴露。如果想要读取和写入私有属性的值，则需要通过设置额外属性的getter()函数和setter()函数来实现
+
+```js
+  var person = {
+     _age: 10
+  };
+  Object.deﬁneProperty(person, "age", {
+      get: function(){
+          return this._age;
+      },
+      set: function(newValue) {
+          if (newValue > 10) {
+             this._age = newValue;
+             console.log('设置成功');
+     }
+ }
+ });
+ console.log(person.age); // 10
+ person.age = 9;
+ console.log(person.age); // 10
+ person.age = 19; // “设置成功”
+ console.log(person.age); // 19
+```
+
+#### 4.1.2 属性访问方式
+
+（1）使用“。”来访问属性
+
+（2）使用“[]”来访问属性
+
+**点操作符是静态的，只能是一个以属性名称命名的简单描述符，而且无法修改；而中括号操作符是动态的，可以传递字符串或者变量，并且支持在运行时修改。点操作符不能以数字作为属性名，而中括号操作符可以。**
+
+
+### 4.2 对象的创建
+#### 4.2.1 基于Object()构造函数
+
+#### 4.2.2 基于对象字面量
+
+#### 4.2.3 基于工厂方法模式
+
+#### 4.2.4 基于构造函数模式
+
+#### 4.2.5 基于原型对象的模式
+
+#### 4.2.6 构造函数和原型混合的模式
+
+#### 4.2.7 基于动态原型模式
+
+### 4.3 对象克隆
+
+### 4.4 原型对象
+
+### 4.5 继承
+
+### 4.6 instanceof运算符
+
 
 ## 5、DOM与事件
 
