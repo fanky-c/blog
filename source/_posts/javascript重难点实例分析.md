@@ -4887,6 +4887,188 @@ console.log(person2.getName()); // kingx3
 
 ### 4.3 对象克隆
 
+针对不同的数据类型，浅克隆和深克隆会有不同的表现，主要表现于基本数据类型和引用数据类型在内存中存储的值不同。
+
+对于基本数据类型的值，变量存储的是值本身，存放在栈内存的简单数据段中，可以直接进行访问。
+
+对于引用类型的值，变量存储的是值在内存中的地址，地址指向内存中的某个位置。如果有多个变量同时指向同一个内存地址，则其中一个变量对值进行修改时，会影响到其他的变量。
+
+
+#### 4.3.1 对象浅克隆
+
+浅克隆由于只克隆对象最外层的属性，如果对象存在更深层的属性，则不进行处理，这就会导致克隆对象和原始对象的深层属性仍然指向同一块内存
+
+**1、简单的引用复制**
+
+```js
+/**
+  * JavaScript实现对象浅克隆——引用复制
+ */
+function shallowClone(origin) {
+   var result = {};
+   // 遍历最外层属性
+   for (var key in origin) {
+       // 判断是否是对象自身的属性
+       if (origin.hasOwnProperty(key)) {
+           result[key] = origin[key];
+       }
+   }
+   return result;
+}
+```
+
+**2、ES6的Object.assign()函数**
+
+在ES6中，Object对象新增了一个assign()函数，用于将源对象的可枚举属性复制到目标对象中。
+
+```js
+var origin = {
+   a: 1,
+   b: [2, 3, 4],
+   c: {
+      d: 'name'
+   }
+};
+// 通过Object.assign()函数克隆对象
+var result = Object.assign({}, origin);
+console.log(origin);  // { a: 1, b: [ 2, 3, 4 ], c: { d: 'name' } }
+console.log(result);  // { a: 1, b: [ 2, 3, 4 ], c: { d: 'name' } }
+```
+
+**浅克隆实现方案都会存在一个相同的问题，即如果原始对象是引用数据类型的值，则对克隆对象的值的修改会影响到原始对象的值。**
+
+#### 4.3.2 对象深克隆
+
+**1、JSON序列化和反序列化**
+
+如果一个对象中的全部属性都是可以序列化的，那么我们可以先使用JSON.stringify()函数将原始对象序列化为字符串，再使用JSON.parse()函数将字符串反序列化为一个对象，这样得到的对象就是深克隆后的对象。
+
+```js
+var origin = {
+   a: 1,
+   b: [2, 3, 4],
+   c: {
+       d: 'name'
+   }
+};
+// 先反序列化为字符串，再序列化为对象，得到深克隆后的对象
+var result = JSON.parse(JSON.stringify(origin));
+
+console.log(origin); // { a: 1, b: [ 2, 3, 4 ], c: { d: 'name' } }
+console.log(result); // { a: 1, b: [ 2, 3, 4 ], c: { d: 'name' } }
+```
+
+这种方法能够解决大部分JSON类型对象的深克隆问题，但是对于以下几个问题不能很好地解决。
+
+1. 无法实现对函数、RegExp等特殊对象的克隆。
+2. 对象的constructor会被抛弃，所有的构造函数会指向Object，原型链关系断裂。
+3. 对象中如果存在循环引用，会抛出异常。
+
+
+关于循环引用，我们同样列举一个特定的实例。
+
+定义一个原始对象，为原始对象添加一个属性指向自身，形成循环引用。
+
+```js
+var origin = {
+   a: 'name'
+};
+origin.b = origin;
+// TypeError: Converting circular structure to JSON
+var result = JSON.parse(JSON.stringify(origin));
+```
+
+**2、自定义实现深克隆**
+
+```js
+/**
+ * 类型判断
+ */
+(function (_) {
+   // 列举出可能存在的数据类型
+   var types = 'Array Object String Date RegExp Function Boolean Number Null Undeﬁned'.split(' ');
+
+   function type() {
+       // 通过调用toString()函数，从索引为8时截取字符串，得到数据类型的值
+       return Object.prototype.toString.call(this).slice(8, -1);
+   }
+
+   for (var i = types.length; i--;) {
+        _['is' + types[i]] = (function (self) {
+           return function (elem) {
+               return type.call(elem) === self;
+           };
+       })(types[i]);
+   }
+   return _;
+})(_ = {});
+
+/**
+  * 深克隆实现方案
+  * @param source 待克隆的对象
+  * @returns {*} 返回克隆后的对象
+  */
+function deepClone(source) {
+   // 维护两个储存循环引用的数组
+   var parents = [];
+   var children = [];
+   // 用于获得正则表达式的修饰符,/igm
+   function getRegExp(reg) {
+       var result = '';
+       if (reg.ignoreCase) {
+           result += 'i';
+       }
+       if (reg.global) {
+           result += 'g';
+       }
+       if (reg.multiline) {
+           result += 'm';
+   }
+       return result;
+   }
+   // 便于递归的_clone()函数
+   function _clone(parent) {
+       if (parent === null) return null;
+       if (typeof parent !== 'object') return parent;
+       var child, proto;
+       // 对数组做特殊处理
+       if (_.isArray(parent)) {
+           child = [];
+       } else if (_.isRegExp(parent)) {
+           // 对正则对象做特殊处理
+           child = new RegExp(parent.source, getRegExp(parent));
+           if (parent.lastIndex) child.lastIndex = parent.lastIndex;
+       } else if (_.isDate(parent)) {
+           // 对Date对象做特殊处理
+           child = new Date(parent.getTime());
+       } else {
+           // 处理对象原型
+           proto = Object.getPrototypeOf(parent);
+           // 利用Object.create切断原型链
+           child = Object.create(proto);
+       }
+       // 处理循环引用
+       var index = parents.indexOf(parent);
+       if (index !== -1) {
+           // 如果父数组存在本对象，说明之前已经被引用过，直接返回此对象
+           return children[index];
+       }
+       // 没有引用过，则添加至parents和children数组中
+       parents.push(parent);
+       children.push(child);
+       // 遍历对象属性
+       for (var prop in parent) {
+           if (parent.hasOwnProperty(prop)) {
+               // 递归处理
+               child[prop] = _clone(parent[prop]);
+           }
+       }
+       return child;
+   }
+   return _clone(source);
+}
+```
+
 ### 4.4 原型对象
 
 ### 4.5 继承
