@@ -5070,11 +5070,171 @@ function deepClone(source) {
 ```
 
 ### 4.4 原型对象
+在3.3节构造函数中，我们留下了一个问题，**即单纯通过构造函数创建实例会导致函数在不同实例中重复创建，这该如何解决呢？**
+
+```js
+function Person(name, age) {
+   this.name = name;
+   this.age = age;
+}
+Person.prototype.sayName = function () {
+   console.log(this.name);
+};
+
+var person1 = new Person();
+var person2 = new Person();
+console.log(person1.sayName === person2.sayName); // true
+```
+
+因此使用prototype属性就很好地解决了单纯通过构造函数创建实例会导致函数在不同实例中重复创建的问题。
+
+#### 4.4.1 原型对象、构造函数、实例之间的关系
+
+* 1、原型对象、构造函数和实例之间的关系是什么样的？
+
+* 2、使用原型对象创建了对象的实例后，实例的属性读取顺序是什么样的？
+
+* 3、假如重写了原型对象，会带来什么样的问题？
+
+##### 1、原型对象、构造函数和实例之间的关系
+
+每一个函数在创建时都会被赋予一个prototype属性。在默认情况下，所有的原型对象都会增加一个constructor属性，指向prototype属性所在的函数，即构造函数。
+
+当我们通过new操作符调用构造函数创建一个实例时，实例具有一个__proto__属性，指向构造函数的原型对象，因此__proto__属性可以看作是一个连接实例与构造函数的原型对象的桥梁。
+
+```js
+function Person(){}
+Person.prototype.name = 'Nicholas';
+Person.prototype.age = 29;
+Person.prototype.job = 'Software Engineer';
+Person.prototype.sayName = function(){
+   console.log(this.name);
+};
+var person1 = new Person();
+var person2 = new Person();
+```
+
+<br>
+  <img src="/img/prototype_proto_.jpeg"  alt="构造函数、原型对象和实例关系" height = "auto"/>
+<br>
+
+构造函数Person有个prototype属性，指向的是Person的原型对象。在原型对象中有constructor属性和另外4个原型对象上的属性，其中constructor属性指向构造函数本身
+
+通过new操作符创建的两个实例person1和person2，都具有一个__proto__属性（上图中的[[Prototype]]即__proto__属性），指向的是Person的原型对象。
+
+##### 2、实例的属性读取顺序
+
+当我们通过对象的实例读取某个属性时，是有一个搜索过程的。它会先在实例本身去找指定的属性，如果找到了，则直接返回该属性的值；如果没找到，则会继续沿着原型对象寻找；如果在原型对象中找到了该属性，则返回该属性的值。
+
+```js
+function Person() {
+   this.name = 'kingx';
+}
+Person.prototype.name = 'Nicholas';
+Person.prototype.age = 29;
+Person.prototype.job = 'Software Engineer';
+Person.prototype.sayName = function(){
+   console.log(this.name);
+};
+var person1 = new Person();
+console.log(person1.name);  // kingx
+```
+
+改造：
+
+```js
+function Person() {
+   // 这里的name是实例属性
+   this.name = 'kingx';
+}
+// 这里的name是原型对象上的属性
+Person.prototype.name = 'Nicholas';
+var person1 = new Person();
+// 删除实例的实例属性
+delete person1.name;
+console.log(person1.name); // Nicholas，输出的是原型对象上的属性的值
+```
+
+##### 3、实例的属性读取顺序
+
+在之前的代码中，每次为原型对象添加一个属性或者函数时，都需要手动写上Person.prototype，这是一种冗余的写法。我们可以将所有需要绑定在原型对象上的属性写成一个对象字面量的形式，并赋值给prototype属性。
+
+```js
+function Person() {}
+Person.prototype = {
+   constructor: Person,  // 重要
+   name: 'Nicholas',
+   age: 29,
+   job: 'Software Engineer',
+   sayName: function () {
+       console.log(this.name);
+   }
+};
+```
+
+将一个对象字面量赋给prototype属性的方式实际是重写了原型对象，等同于切断了构造函数和最初原型之间的关系。因此有一点需要注意的是，如果仍然想使用constructor属性做后续处理，则应该在对象字面量中增加一个constructor属性，指向构造函数本身，否则原型的constructor属性会指向Object类型的构造函数，从而导致constructor属性与构造函数的脱离。
+
+```js
+function Person() {}
+Person.prototype = {
+   name: 'Nicholas',
+   sayName: function () {
+       console.log(this.name);
+   }
+ };
+Person.prototype.constructor === Object; // true
+Person.prototype.constructor === Person; // false
+```
+
+通过结果，我们发现Person的原型对象的constructor属性不再指向Person()构造函数，而是指向Object类型的构造函数了。
+
+由于重写原型对象会切断构造函数和最初原型之间的关系，因此会带来一个隐患，那就是如果在重写原型对象之前，已经生成了对象的实例，则该实例将无法访问到新的原型对象中的函数。
+
+```js
+function Person() {}
+
+// 先生成一个实例person1
+var person1 = new Person();
+
+// 重写对象的原型
+Person.prototype = {
+   name: 'Nicholas',
+   sayName: function () {
+       console.log(this.name);
+   }
+};
+
+// 再生成一个实例person2
+var person2 = new Person();
+
+person1.sayName(); // TypeError: person1.sayName is not a function
+person2.sayName(); // Nicholas
+```
+
+上面的实例就是在提醒我们，如果想要重写原型对象，需要保证不要在重写完成之前生成对象的实例，否则会出现异常。
+
+#### 4.4.2 原型链
+
 
 ### 4.5 继承
+#### 4.5.1 原型链继承
+
+#### 4.5.2 构造继承
+
+#### 4.5.3 复制继承
+
+#### 4.5.4 组合继承
+
+#### 4.5.5 寄生组合继承
 
 ### 4.6 instanceof运算符
+#### 4.6.1 instanceof运算符常规用法
 
+#### 4.6.2 instanceof运算符用于继承判断
+
+#### 4.6.3 instanceof运算符的复杂用法
+
+#### 4.6.4 instanceof运算符的复杂用法的详细处理过程
 
 ## 5、DOM与事件
 
