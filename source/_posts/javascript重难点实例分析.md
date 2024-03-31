@@ -5455,9 +5455,233 @@ console.log(cat1.introduce);  // undeﬁned
 
 #### 4.5.2 构造继承
 
+**构造继承的主要思想是在子类的构造函数中通过call()函数改变this的指向，调用父类的构造函数，从而能将父类的实例的属性和函数绑定到子类的this上。**
+
+```js
+// 父类
+function Animal(age) {
+   // 属性
+   this.name = 'Animal';
+   this.age = age;
+   // 实例函数
+   this.sleep = function () {
+       return this.name + '正在睡觉！';
+   }
+}
+// 父类原型函数
+Animal.prototype.eat = function (food) {
+   return this.name + '正在吃：' + food;
+};
+
+// 子类
+function Cat(name) {
+   // 核心，通过call()函数实现Animal的实例的属性和函数的继承
+   Animal.call(this);
+   this.name = name || 'tom';
+}
+// 生成子类的实例
+var cat = new Cat('tony');
+// 可以正常调用父类实例函数
+console.log(cat.sleep());  // tony正在睡觉！
+// 不能调用父类原型函数
+console.log(cat.eat());  // TypeError: cat.eat is not a function
+```
+
+##### 4.5.2.1 构造函数的优点
+
+（1）可解决子类实例共享父类属性的问题
+
+call()函数实际是改变了父类Animal构造函数中this的指向，调用后this指向了子类Cat，相当于将父类的type、age和sleep等属性和函数直接绑定到了子类的this中，成了子类实例的属性和函数，因此生成的子类实例中是各自拥有自己的type、age和sleep属性和函数，不会相互影响。
+
+
+
+（2）创建子类的实例时，可以向父类传递参数
+
+在call()函数中，我们可以传递参数，这个时候参数是传递给父类的，我们就可以对父类的属性进行设置，同时由子类继承下来。
+
+```js
+function Cat(name, parentAge) {
+   // 在子类生成实例时，传递参数给call()函数，间接地传递给父类，然后被子类继承
+   Animal.call(this, parentAge);
+   this.name = name || 'tom';
+}
+// 生成子类实例
+var cat = new Cat('tony', 11);
+console.log(cat.age);  // 11，因为子类继承了父类的age属性
+```
+
+（3）可以实现多继承
+
+在子类的构造函数中，可以通过多次调用call()函数来继承多个父对象，每调用一次call()函数就会将父类的实例的属性和函数绑定到子类的this中。
+
+
+##### 4.5.2.2 构造函数的缺点
+
+（1）实例只是子类的实例，并不是父类的实例
+
+因为我们并未通过原型对象将子类与父类进行串联，所以生成的实例与父类并没有关系，这样就失去了继承的意义。
+
+```js
+var cat = new Cat('tony');
+console.log(cat instanceof Cat);    // true，实例是子类的实例
+console.log(cat instanceof Animal); // false，实例并不是父类的实例
+```
+
+（2）只能继承父类实例的属性和函数，并不能继承原型对象上的属性和函数
+
+子类的实例并不能访问到父类原型对象上的属性和函数。
+
+（3）无法复用父类的实例函数
+
+由于父类的实例函数将通过call()函数绑定到子类的this中，因此子类生成的每个实例都会拥有父类实例函数的引用，这会造成不必要的内存消耗，影响性能。
+
+
 #### 4.5.3 复制继承
 
+**复制继承的主要思想是首先生成父类的实例，然后通过for...in遍历父类实例的属性和函数，并将其依次设置为子类实例的属性和函数或者原型对象上的属性和函数。**
+
+```js
+// 父类
+function Animal(parentAge) {
+   // 实例属性
+   this.name = 'Animal';
+   this.age = parentAge;
+   // 实例函数
+   this.sleep = function () {
+       return this.name + '正在睡觉！';
+   }
+}
+// 原型函数
+Animal.prototype.eat = function (food) {
+   return this.name + '正在吃：' + food;
+};
+// 子类
+function Cat(name, age) {
+   var animal = new Animal(age);
+   // 父类的属性和函数，全部添加至子类中
+   for (var key in animal) {
+       // 实例属性和函数
+       if (animal.hasOwnProperty(key)) {
+           this[key] = animal[key];
+       } else {
+           // 原型对象上的属性和函数
+           Cat.prototype[key] = animal[key];
+       }
+   }
+   // 子类自身的属性
+   this.name = name;
+}
+// 子类自身原型函数
+Cat.prototype.eat = function (food) {
+   return this.name + '正在吃：' + food;
+};
+
+var cat = new Cat('tony', 12);
+console.log(cat.age);  // 12
+console.log(cat.sleep()); // tony正在睡觉！
+console.log(cat.eat('猫粮')); // tony正在吃：猫粮
+```
+
+##### 4.5.3.1  复制继承的优点
+
+（1）支持多继承
+
+只需要在子类的构造函数中生成多个父类的实例，然后通过相同的for...in处理即可。
+
+（2）能同时继承实例的属性和函数与原型对象上的属性和函数
+
+（3）可以向父类构造函数中传递值
+
+在生成子类的实例时，可以在构造函数中传递父类的属性值，然后在子类构造函数中，直接将值传递给父类的构造函数。
+
+```js
+function Cat(name, age) {
+   var animal = new Animal(age);
+   // 代码省略
+}
+// 以下的参数12就是传递给父类的参数
+var cat = new Cat('tony', 12);
+```
+
+##### 4.5.3.2  复制继承的缺点
+
+（1）父类的所有属性都需要复制，消耗内存
+
+（2）实例只是子类的实例，并不是父类的实例
+
+实际上我们只是通过遍历父类的属性和函数并将其复制至子类上，并没有通过原型对象串联起父类和子类，因此子类的实例不是父类的实例。
+
+```js
+console.log(cat instanceof Cat);   // true
+console.log(cat instanceof Animal);// false
+```
+
 #### 4.5.4 组合继承
+
+**组合继承的主要思想是组合了构造继承和原型继承两种方法，一方面在子类的构造函数中通过call()函数调用父类的构造函数，将父类的实例的属性和函数绑定到子类的this中；另一方面，通过改变子类的prototype属性，继承父类的原型对象上的属性和函数。**
+
+```js
+// 父类
+function Animal(parentAge) {
+   // 实例属性
+   this.name = 'Animal';
+   this.age = parentAge;
+   // 实例函数
+   this.sleep = function () {
+      return this.name + '正在睡觉！';
+   };
+   this.feature = ['fat', 'thin', 'tall'];
+}
+// 原型函数
+Animal.prototype.eat = function (food) {
+   return this.name + '正在吃：' + food;
+};
+// 子类
+function Cat(name) {
+   // 通过构造函数继承实例的属性和函数
+   Animal.call(this);
+   this.name = name;
+}
+// 通过原型继承原型对象上的属性和函数
+Cat.prototype = new Animal();
+Cat.prototype.constructor = Cat;
+
+var cat = new Cat('tony');
+console.log(cat.name);   // tony
+console.log(cat.sleep()); // tony正在睡觉！
+console.log(cat.eat('猫粮'));  // tony正在吃：猫粮
+```
+
+##### 4.5.4.1 组合继承的优点
+
+（1）既能继承父类实例的属性和函数，又能继承原型对象上的属性和函数
+
+一方面，通过Animal.call(this)可以将父类实例的属性和函数绑定到Cat构造函数的this中；另一方面，通过Cat.prototype = new Animal()可以将父类的原型对象上的属性和函数绑定到Cat的原型对象上。
+
+
+（2）既是子类的实例，又是父类的实例
+
+```js
+console.log(cat instanceof Cat);   // true
+console.log(cat instanceof Animal);// true
+```
+
+（3）不存在引用属性共享的问题
+
+因为在子类的构造函数中已经将父类的实例属性指向了子类的this，所以即使后面将父类的实例属性绑定到子类的prototype属性中，也会因为构造函数作用域优先级比原型链优先级高，所以不会出现引用属性共享的问题。
+
+（4）可以向父类的构造函数中传递参数
+
+通过call()函数可以向父类的构造函数中传递参数。
+
+
+##### 4.5.4.2 组合继承的缺点
+
+**组合继承的缺点为父类的实例属性会绑定两次。**
+
+在子类的构造函数中，通过call()函数调用了一次父类的构造函数；在改写子类的prototype属性、生成父类的实例时调用了一次父类的构造函数。
+
+通过两次调用，父类实例的属性和函数会进行两次绑定，一次会绑定到子类的构造函数的this中，即实例属性和函数，另一次会绑定到子类的prototype属性中，即原型对象上的属性和函数，但是实例属性优先级会比原型对象上的属性优先级高，因此实例属性会覆盖原型对象上的属性。
 
 #### 4.5.5 寄生组合继承
 
