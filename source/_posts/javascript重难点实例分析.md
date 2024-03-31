@@ -5314,7 +5314,144 @@ console.log('p.b:', p.b);  // b
 ### 4.5 继承
 继承作为面向对象语言的三大特性之一，可以在不影响父类对象实现的情况下，使得子类对象具有父类对象的特性；同时还能在不影响父类对象行为的情况下扩展子类对象独有的特性，为编码带来了极大的便利。
 
+```js
+// 定义一个父类Animal
+function Animal(name) {
+   // 属性
+   this.type = 'Animal';
+   this.name = name || '动物';
+   // 实例函数
+   this.sleep = function () {
+       console.log(this.name + '正在睡觉！');
+   }
+}
+// 原型函数
+Animal.prototype.eat = function (food) {
+   console.log(this.name + '正在吃：' + food);
+};
+```
+
 #### 4.5.1 原型链继承
+
+**原型链继承的主要思想是：重写子类的prototype属性，将其指向父类的实例。**
+
+```js
+// 子类Cat
+function Cat(name) {
+   this.name = name;
+}
+
+// 原型继承
+Cat.prototype = new Animal();
+
+// 很关键的一句，将Cat的构造函数指向自身
+Cat.prototype.constructor = Cat;
+
+var cat = new Cat('加菲猫');
+console.log(cat.type);    // Animal
+console.log(cat.name);    // 加菲猫   读取子类name属性
+console.log(cat.sleep()); // 加菲猫正在睡觉！
+console.log(cat.eat('猫粮'));  // 加菲猫正在吃：猫粮
+```
+
+在子类Cat中，我们没有增加type属性，因此会直接继承父类Animal的type属性，输出字符串“Animal”。
+
+在子类Cat中，我们增加了name属性，在生成子类Cat的实例时，name属性值会覆盖父类Animal的name属性值，因此输出字符串“加菲猫”，而并不会输出父类Animal的name属性“动物”。
+
+**同样因为Cat的prototype属性指向了Animal类型的实例，因此在生成实例cat时，会继承实例函数和原型函数，在调用sleep()函数和eat()函数时，this指向了实例cat，**从而输出“加菲猫正在睡觉！”和“加菲猫正在吃：猫粮”。
+
+##### 4.5.1.1 原型链继承的优点
+
+（1）简单，易于实现
+
+（2）继承关系纯粹
+
+```js
+// 生成的实例既是子类的实例，也是父类的实例。
+console.log(cat instanceof Cat);    // true,是子类的实例
+console.log(cat instanceof Animal); // true,是父类的实例
+```
+
+（3）可通过子类直接访问父类原型链属性和函数
+
+通过原型链继承的子类，可以直接访问到父类原型链上新增的函数和属性。
+
+继续沿用前面的代码，我们通过在父类的原型链上添加属性和函数进行测试
+
+```js
+// 父类原型链上增加属性
+Animal.prototype.bodyType = 'small';
+// 父类原型链上增加函数
+Animal.prototype.run = function () {
+   return this.name + '正在奔跑';
+};
+// 结果验证
+console.log(cat.bodyType);  // small
+console.log(cat.run());     // 加菲猫正在奔跑
+```
+
+##### 4.5.1.2 原型链继承的缺点
+
+（1）子类的所有实例将共享父类的属性
+
+在使用原型链继承时，是直接改写了子类Cat的prototype属性，将其指向一个Animal的实例，那么所有生成Cat对象的实例都将共享Animal实例的属性。
+
+```js
+// 生成一个Animal的实例animal
+var animal = new Animal();
+// 通过改变Cat的原型链，所有的Cat实例将共享animal中的属性
+Cat.prototype = animal;
+```
+
+这就会带来一个很严重的问题，如果父类Animal中有个值为引用数据类型的属性，那么改变Cat某个实例的属性值将会影响其他实例的属性值。
+
+```js
+// 定义父类
+function Animal() {
+   this.feature = ['fat', 'thin', 'tall'];
+}
+// 定义子类
+function Cat() {}
+// 原型链继承
+Cat.prototype = new Animal();
+Cat.prototype.constructor = Cat;
+// 生成
+var cat1 = new Cat();
+var cat2 = new Cat();
+// 先输出两个实例的feature值
+console.log(cat1.feature);  // [ 'fat', 'thin', 'tall' ]
+console.log(cat2.feature);  // [ 'fat', 'thin', 'tall' ]
+// 改变cat1实例的feature值
+cat1.feature.push('small');
+// 再次输出两个实例的feature值，发现cat2实例也受到影响
+console.log(cat1.feature);  // [ 'fat', 'thin', 'tall', 'small' ]
+console.log(cat2.feature);  // [ 'fat', 'thin', 'tall', 'small' ]
+```
+
+（2）在创建子类实例时，无法向父类的构造函数传递参数
+
+在通过new操作符创建子类的实例时，会调用子类的构造函数，而在子类的构造函数中并没有设置与父类的关联，从而导致无法向父类的构造函数传递参数。
+
+（3）无法实现多继承
+
+由于子类Cat的prototype属性只能设置为一个值，如果同时设置为多个值的话，后面的值会覆盖前面的值，导致Cat只能继承一个父类，而无法实现多继承。
+
+
+（4）为子类增加原型对象上的属性和函数时，必须放在new Animal()函数之后
+
+
+如果想要为子类新增原型对象上的属性和函数，那么需要在这个语句之后进行添加。因为如果在这个语句之前设置了prototype属性，后面执行的语句会直接重写prototype属性，导致之前设置的全部失效。
+
+```js
+Cat.prototype = new Animal();
+// 先设置prototype属性
+Cat.prototype.introduce = 'this is a cat';
+// 原型链继承
+Cat.prototype = new Animal();
+// 生成子类实例
+var cat1 = new Cat();
+console.log(cat1.introduce);  // undeﬁned
+```
 
 #### 4.5.2 构造继承
 
