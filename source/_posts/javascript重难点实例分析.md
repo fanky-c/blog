@@ -5100,7 +5100,7 @@ console.log(person1.sayName === person2.sayName); // true
 
 每一个函数在创建时都会被赋予一个prototype属性。在默认情况下，所有的原型对象都会增加一个constructor属性，指向prototype属性所在的函数，即构造函数。
 
-当我们通过new操作符调用构造函数创建一个实例时，实例具有一个__proto__属性，指向构造函数的原型对象，因此__proto__属性可以看作是一个连接实例与构造函数的原型对象的桥梁。
+当我们通过new操作符调用构造函数创建一个实例时，实例具有一个\__proto__属性，指向构造函数的原型对象，因此\__proto__属性可以看作是一个连接实例与构造函数的原型对象的桥梁。
 
 ```js
 function Person(){}
@@ -5120,7 +5120,7 @@ var person2 = new Person();
 
 构造函数Person有个prototype属性，指向的是Person的原型对象。在原型对象中有constructor属性和另外4个原型对象上的属性，其中constructor属性指向构造函数本身
 
-通过new操作符创建的两个实例person1和person2，都具有一个__proto__属性（上图中的[[Prototype]]即__proto__属性），指向的是Person的原型对象。
+通过new操作符创建的两个实例person1和person2，都具有一个\__proto__属性（上图中的[[Prototype]]即\__proto__属性），指向的是Person的原型对象。
 
 ##### 2、实例的属性读取顺序
 
@@ -5155,7 +5155,7 @@ delete person1.name;
 console.log(person1.name); // Nicholas，输出的是原型对象上的属性的值
 ```
 
-##### 3、实例的属性读取顺序
+##### 3、假如重写了原型对象，会带来什么样的问题
 
 在之前的代码中，每次为原型对象添加一个属性或者函数时，都需要手动写上Person.prototype，这是一种冗余的写法。我们可以将所有需要绑定在原型对象上的属性写成一个对象字面量的形式，并赋值给prototype属性。
 
@@ -5211,12 +5211,109 @@ person1.sayName(); // TypeError: person1.sayName is not a function
 person2.sayName(); // Nicholas
 ```
 
-上面的实例就是在提醒我们，如果想要重写原型对象，需要保证不要在重写完成之前生成对象的实例，否则会出现异常。
+**上面的实例就是在提醒我们，如果想要重写原型对象，需要保证不要在重写完成之前生成对象的实例，否则会出现异常。**
 
 #### 4.4.2 原型链
 
+在前面有讲过，**对象的每个实例都具有一个\__proto__属性，指向的是构造函数的原型对象，而原型对象同样存在一个\__proto__属性指向上一级构造函数的原型对象，就这样层层往上，直到最上层某个原型对象为null。**
+
+**在JavaScript中几乎所有的对象都具有\__proto__属性，由\__proto__属性连接而成的链路构成了JavaScript的原型链，原型链的顶端是Object.prototype，它的\__proto__属性为null。**
+
+我们通过实例来看看一个简单的原型链过程。首先定义一个构造函数，并生成一个实例。
+
+```js
+function Person() {}
+var person = new Person();
+
+person._ _proto_ _ === Person.prototype; // true
+
+// 指向链路
+person._ _proto_ _._ _proto_ _ === Person.prototype._ _proto_ _ === Object.prototype;
+
+// 指向链路
+person._ _proto_ _._ _proto_ _._ _proto_ _ === Object.prototype._ _proto_ _ === null;
+```
+
+<br>
+  <img src="/img/prototype_proto_1.jpeg"  alt="构造函数、原型对象和实例关系" height = "auto"/>
+<br>
+
+##### 4.4.2.1 原型链的特点
+
+1、特点一：由于原型链的存在，属性查找的过程不再是只查找自身的原型对象，而是会沿着整个原型链一直向上，直到追溯到Object.prototype
+
+2、特点2：由于属性查找会经历整个原型链，因此查找的链路越长，对性能的影响越大。
+
+##### 4.4.2.2  属性区分
+
+对象属性的寻找往往会涉及整个原型链，那么该怎么区分属性是实例自身的还是从原型链中继承的呢？
+
+在使用for...in运算符遍历对象的属性时，一般可以配合hasOwnProperty()函数一起使用，检测是否是对象自身的属性，然后做后续处理。
+
+```js
+function Person(name) {
+   // 实例属性name
+   this.name = name;
+}
+// 原型对象上的属性age
+Person.prototype.age = 12;
+var person = new Person('kingx');
+
+console.log(person.hasOwnProperty('name')); // true
+console.log(person.hasOwnProperty('age')); // false
+
+
+for (var prop in person) {
+   if (person.hasOwnProperty(prop)) {
+       // do something
+   }
+}
+```
+
+##### 4.4.2.3 内置构造函数
+
+JavaScript中有一些特定的内置构造函数，如String()构造函数、Number()构造函数、Array()构造函数、Object()构造函数等。它们本身的__proto__属性都统一指向Function.prototype。
+
+它们本身的\__proto__属性都统一指向Function.prototype。
+
+```js
+String._ _proto_ _ === Function.prototype; // true
+Number._ _proto_ _ === Function.prototype; // true
+Array._ _proto_ _ === Function.prototype;  // true
+Date._ _proto_ _ === Function.prototype;   // true
+Object._ _proto_ _ === Function.prototype; // true
+Function._ _proto_ _ === Function.prototype; // true
+```
+
+##### 4.4.2.4 \__protot__属性
+
+在JavaScript的原型链体系中，最重要的莫过于\__proto__属性，只有通过它才能将原型链串联起来。
+
+<br>
+  <img src="/img/prototype_proto_2.png"  alt="构造函数、原型对象和实例关系" height = "auto"/>
+<br>
+
+但是我们在调用str.substring(1, 3)时，却不会报错，这是为什么呢？
+
+因为\__proto__属性可以沿着原型链找到String.prototype中的函数，而substring()函数就在其中。
+
+了解了以上内容后，我们再通过下面这段代码，加深对原型链知识的理解。
+
+```js
+Function.prototype.a = 'a';
+Object.prototype.b = 'b';
+
+function Person() {}
+
+var p = new Person();
+
+console.log('p.a:', p.a);  // undefined
+console.log('p.b:', p.b);  // b
+```
 
 ### 4.5 继承
+继承作为面向对象语言的三大特性之一，可以在不影响父类对象实现的情况下，使得子类对象具有父类对象的特性；同时还能在不影响父类对象行为的情况下扩展子类对象独有的特性，为编码带来了极大的便利。
+
 #### 4.5.1 原型链继承
 
 #### 4.5.2 构造继承
