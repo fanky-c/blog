@@ -5685,14 +5685,232 @@ console.log(cat instanceof Animal);// true
 
 #### 4.5.5 寄生组合继承
 
+事实上4.5.4组合继承的方案已经足够好，但是针对其存在的缺点，我们仍然可以进行优化。
+
+在进行子类的prototype属性的设置时，可以去掉父类实例的属性和函数。
+
+```js
+// 子类
+function Cat(name) {
+   // 继承父类的实例属性和函数
+   Animal.call(this);
+   this.name = name;
+}
+// 立即执行函数
+(function () {
+   // 设置任意函数Super()
+   var Super = function () {};
+
+   // 关键语句，Super()函数的原型指向父类Animal的原型，去掉父类的实例属性
+   Super.prototype = Animal.prototype;
+
+   Cat.prototype = new Super();
+   Cat.prototype.constructor = Cat;
+})();
+```
+
+关键语句，只取父类Animal的prototype属性，过滤掉Animal的实例属性，从而避免了父类的实例属性绑定两次。
+
+寄生组合继承的方式是实现继承最完美的一种，但是实现起来较为复杂，一般不太容易想到。
+
+在大多数情况下，使用组合继承的方式就已经足够，当然能够使用寄生组合继承更好。
+
 ### 4.6 instanceof运算符
+
+4.4节讲到了原型链中属性的查找过程需要确定对象实例的\__proto__属性的指向，那么我们该如何确定一个对象是不是某个构造函数的实例，从而确定它的原型链呢？这就需要运用本节将要讲到的instanceof运算符的知识点了。
+
+**我们讲过typeof运算符，在判断一个变量的类型时，我们总是优先使用它。但是使用typeof运算符时，存在一个比较大的问题，即对于任何引用数据类型的值都会返回“object”，从而无法判断对象的具体类型**
+
+```js
+target instanceof constructor
+```
+
+上面的代码表示的是构造函数constructor()的prototype属性是否出现在target对象的原型链中，说得通俗一点就是，target对象是不是构造函数constructor()的实例。
+
 #### 4.6.1 instanceof运算符常规用法
+
+```js
+var stringObject = new String('hello world');
+stringObject instanceof String;  // true
+```
+
+上面两行代码是判断变量stringObject是否是String类型的实例，因为变量stringObject是通过new操作符，由String的构造函数生成的，所以变量stringObject是String类型的实例，最终返回“true”。
+
+
+```js
+function Foo() {}
+
+let foo = new Foo();
+
+// 很明显，foo是由Foo()构造函数通过new操作符生成的，所以结果为“true”。
+foo instanceof Foo // true
+```
 
 #### 4.6.2 instanceof运算符用于继承判断
 
+instanceof运算符除了前面介绍的常规用法外，还有很重要的一点就是可以在继承关系中，判断一个实例对象是否属于它的父类。
+
+```js
+// 定义构造函数
+function C(){}
+function D(){}
+
+// 生成C()构造函数实例
+var o = new C();
+o instanceof C; // true
+o instanceof D; // false，因为D.prototype属性不在o的原型链上
+o instanceof Object; // true，因为Object.prototype属性在o的原型链上
+
+D.prototype = new C(); // 继承
+var o2 = new D();  // 生成D()构造函数的一个实例o2。
+o2 instanceof D; // true
+o2 instanceof C; // true，因为通过继承关系，C.prototype出现在o2的原型链上
+```
+
+需要注意的一点是，如果一个表达式obj instanceof Foo返回“true”，并不意味着这个表达式会永远返回“true”，我们可以有两种方法改变这个结果。
+
+第一种方法是改变Foo.prototype属性值，使得改变后的Foo. prototype不在实例obj的原型链上。
+
+```js
+// 现在我们修改D.prototype属性，将其指向一个空对象。
+D.prototype = {};
+var o3 = new D();
+
+o3 instanceof D; // true
+
+// 因为D.prototype属性指向了一个空对象，那么C()构造函数的prototype属性将不再处于实例o3的原型链上，因此返回“false”。
+o3 instanceof C; // false
+```
+
+第二种方法是改变实例obj的原型链，使得改变后的Foo()构造函数不在实例obj的原型链上。
+
+在目前的ECMAScript规范中，某个对象实例的原型是只读而不能修改的，但是该规范提供了一个非标准的\__proto__属性，用于访问其构造函数的原型对象。
+
+```js
+o3._ _proto_ _ = {};
+// 因为对实例o3的原型链进行了修改，D.prototype属性并不在实例o3的原型链上，所以返回“false”。
+o3 instanceof D; // false
+```
 #### 4.6.3 instanceof运算符的复杂用法
 
+```js
+Object instanceof Object;  //true
+Function instanceof Function;  //true
+Number instanceof Number;  //false
+String instanceof String;  //false
+Function instanceof Object;  //true
+Foo instanceof Function;  //true
+Foo instanceof Foo;  //false
+```
+
+看完上面这段代码，大家是不是又疑惑重重呢？为什么Object()构造函数和Function()构造函数在使用instanceof运算符处理自身的时候会返回“true”，而Number()构造函数和String()构造函数在使用instanceof运算符处理自身的时候返回“false”呢？
+
+接下来我们将通过底层原理来看看instanceof运算符是怎么进行处理的。
+
+```js
+/**
+ * instanceof 运算符实现原理
+ * @param L 表示左表达式
+ * @param R 表示右表达式
+ * @returns {boolean}
+ */
+function instance_of(L, R) {
+   var O = R.prototype; // 取 R 的显示原型
+   L = L._ _proto_ _; // 取 L 的隐式原型
+   while (true) {
+       if (L === null)
+           return false;
+       if (O === L) // 这里是重点：当 O 严格等于 L 时，返回“true”
+           return true;
+       L = L._ _proto_ _;  // 如果不相等则重新取L的隐式原型
+   }
+}
+```
+
+对上面代码的理解如下。
+
+1. 获取右表达式R的prototype属性为O，左表达式的\__proto__隐式原型为L。
+2. 首先判断左表达式\__proto__隐式原型L是否为空，如果为空，则直接返回“false”。实际上只有Object.prototype.\__proto__属性为null，即到了原型链的最顶层。
+3.  然后判断O与L是否严格相等，需要注意的是只有在严格相等的时候，才返回“true”。
+4. 如果不相等，则递归L的\__proto__属性，直到L为null或者O===L，得到最终结果。
+
+在了解instanceof运算符的执行机制之后，再结合上一节中讲到的基于prototype属性的原型链，就可以对任何instanceof运算符的操作处理得更加游刃有余。
+
 #### 4.6.4 instanceof运算符的复杂用法的详细处理过程
+
+##### 4.6.4.1 Object instanceof Object
+
+基于instanceof运算符的原理，需要区分运算符左侧值和右侧值
+
+```js
+// 将左、右侧值进行赋值
+ObjectL = Object, ObjectR = Object;
+// 根据原理获取对应值
+L = ObjectL._ _proto_ _ = Function.prototype;
+R = ObjectR.prototype;
+// 执行第一次判断
+L != R;
+// 继续寻找L._ _pro_ _
+L = L._ _proto_ _ = Function.prototype._ _proto_ _ = Object.prototype;
+// 执行第二次判断
+L === R;
+```
+
+因此Object instanceof Object返回“true”。
+
+##### 4.6.4.2  Function instanceof Function
+
+```js
+// 将左、右侧值进行赋值
+FunctionL = Function, FunctionR = Function;
+// 根据原理获取对应值
+L = FunctionL._ _proto_ _ = Function.prototype;
+R = FunctionR.prototype = Function.prototype;
+// 执行第一次判断成功，返回“true”
+L === R;
+```
+
+因此Function instanceof Function返回“true”。
+
+##### 4.6.4.3 Foo instanceof Foo
+
+```js
+// 将左、右侧值进行赋值
+FooL = Foo, FooR = Foo;
+// 根据原理获取对应值
+L = FooL._ _proto_ _ = Function.prototype;
+R = FooR.prototype = Foo.prototype;
+// 第一次判断失败，返回“false”
+L !== R;
+// 继续寻找L._ _proto_ _
+L = L._ _proto_ _ = Function.prototype._ _proto_ _ = Object.prototype;
+// 第二次判断失败，返回“false”
+L !== R;
+// 继续寻找L._ _proto_ _
+L = L._ _proto_ _ = Object.prototype._ _proto_ _ = null;
+// L为null,返回“false”
+L === null;
+```
+
+##### 4.6.4.5 String instanceof String
+
+```js
+// 将左、右侧值进行赋值
+StringL = String, StringR = String;
+// 根据原理获取对应值
+L = StringL._ _proto_ _ = Function.prototype;
+R = StringR.prototype = String.prototype;
+// 第一次判断失败，返回“false”
+L !== R;
+// 继续寻找L._ _proto_ _
+L = L._ _proto_ _ = Function.prototype._ _proto_ _ = Object.prototype;
+// 第二次判断失败，返回“false”
+L !== R;
+// 继续寻找L._ _proto_ _
+L = L._ _proto_ _ = Object.prototype._ _proto_ _ = null;
+// L为null，返回“false”
+L === null;
+```
 
 ## 5、DOM与事件
 
