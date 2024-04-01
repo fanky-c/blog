@@ -5892,7 +5892,7 @@ L = L._ _proto_ _ = Object.prototype._ _proto_ _ = null;
 L === null;
 ```
 
-##### 4.6.4.5 String instanceof String
+##### 4.6.4.4 String instanceof String
 
 ```js
 // 将左、右侧值进行赋值
@@ -5923,3 +5923,32 @@ L === null;
 
 
 ## 7、ES6
+### 7.1 let和const关键字
+
+### 7.2 解构赋值
+
+### 7.3 扩展运算符和rest运算符
+
+### 7.4 模版字符串
+
+### 7.5 箭头函数
+
+### 7.6 ES6对于对象的扩展
+
+### 7.7 symbol类型
+
+### 7.8 set和map数据结构
+
+### 7.9 proxy
+
+### 7.10 reflect
+
+### 7.11 promise
+
+### 7.12 iterator与for...of循环
+
+### 7.13 generator()函数
+
+### 7.14 class
+
+### 7.15 module
