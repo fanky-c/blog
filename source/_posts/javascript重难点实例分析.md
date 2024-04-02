@@ -5925,7 +5925,228 @@ L === null;
 ## 7、ES6
 ### 7.1 let和const关键字
 
+其实在ES6之前，只存在全局作用域和函数作用域，并不存在块级作用域，这就会导致变量提升的问题。
+
+```js
+{
+    let a = 1;
+    console.log(a); // 1
+}
+console.log(a); // ReferenceError: a is not deﬁned
+```
+
+#### 7.1.1 let关键字
+
+let关键字用于声明变量，和var关键字的用法类似。但是与var不同的是，let声明的变量只能在let所在的代码块内有效，即在块级作用域内有效，而var声明的变量在块级作用域外仍然有效。
+
+```js
+{
+    var a = 1;
+    let b = 2;
+}
+console.log(a);  // 1
+console.log(b);  // ReferenceError: b is not deﬁned
+```
+
+**1、 let关键字的特性**
+
+（1）不存在变量提升
+
+（2）存在暂时性死区
+
+在使用let声明变量之前，该变量都是不可访问的。
+
+```js
+if (true) {
+    // 暂时性死区开始
+    param = 'kingx';
+    console.log(param); // ReferenceError: param is not deﬁned
+    // ……
+    // 暂时性死区结束
+    let param;
+}
+
+// 或者
+typeof param;  // ReferenceError: param is not deﬁned
+let param;
+
+
+// 而针对非let或const声明的变量，使用typeof运算符确实是绝对安全的，处理一个未声明的变量时会返回“undefined”。
+
+typeof param1; // undeﬁned
+```
+
+（3）不能重复声明
+
+（4）不再是全局对象的属性
+
+在ES6以前，在浏览器环境的全局作用域下，使用var声明的变量、函数表达式或者函数声明均是window对象的属性。
+
+
+**2、 let关键字的好处**
+
+（1）不会导致for循环索引值泄露
+
+```js
+var arr = [];
+for (var i = 0; i < 10; i++) {
+    arr[i] = function () {
+        console.log(i);
+    };
+}
+arr[1]();  // 10
+```
+我们发现通过var定义的索引i值，在调用函数时，最终会输出“10”，这是为什么呢？
+
+因为通过var声明的索引i是一个全局变量，每一次循环，全局变量i都会发生改变。而数组arr所有成员里面的i都指向同一个i，当循环结束后，全局变量i的值已经变为10。
+
+最终在调用成员函数时，每个函数都闭包了全局变量i，因此会输出“10”。
+
+```js
+var arr = [];
+for (let i = 0; i < 10; i++) {
+    arr[i] = function () {
+        console.log(i);
+    };
+}
+arr[1]();  // 1
+```
+
+这是因为通过let定义的索引值i，只在当前循环内有效，实际上每一轮循环中的i都是一个新的变量，而且最关键的是JavaScript引擎能够记住上一轮循环的值，所以在本轮循环开始时，会基于上一轮循环计算，从而索引i的值会递增。
+
+因此在调用arr数组的成员函数时，会输出正确的索引i值。
+
+为什么通过let声明的变量i在循环体外，仍然可以访问呢？这是因为arr数组的每个成员都是一个函数，对变量i的引用构成了一个闭包，所以在循环体外调用函数时仍然可以访问到i。
+
+
+```js
+for (let i = 0; i < 2; i++) {
+    let i = 'kingx';
+    console.log(i); // 输出两次'kingx'
+}
+```
+
+根据let的特点，如果在同一个代码块中同时使用let定义了具有相同名称的变量，则会直接抛出异常。
+
+而在上面的例子中，小括号内和循环体内同时使用let声明了变量i，但是在循环体内仍然可以输出变量i的值，就表明这两个变量i是处在两个独立的父子作用域中的。
+
+（2）避免出现变量提升导致的变量覆盖问题
+
+```js
+var arg1 = 'kingx';
+function foo() {
+    console.log(arg1);  // undeﬁned
+    if (false) {
+        var arg1 = 'kingx2';
+    }
+}
+foo(); // undeﬁned
+```
+
+在上面的实例中，定义了一个全局变量arg1，在foo()函数中想要输出变量arg1，但是由于变量提升的存在，if代码块内的变量arg1会被提升至foo()函数顶部，导致输出arg1时覆盖了外层的全局变量arg1，因此输出“undefined”。
+
+（3）代替立即执行函数IIFE
+
+```js
+// I IFE 写法
+(function () {
+   var arg = ...;
+    ...
+}());
+// 块级作用域写法
+{
+    let arg = ...;
+    ...
+}
+```
+
+#### 7.1.2 const关键字
+
+**使用const声明常量时，在声明时就必须初始化。如果只声明，不初始化，则会抛出异常。**
+
+我们所讲的使用const声明的变量不能被修改，严格意义来说是保存变量值的内存地址不能被修改。
+
+```js
+const person = {
+    age: 12
+};
+person.name = 'kingx';
+person.age = 13;
+console.log(person); // { age: 13, name: 'kingx' }
+person = {age: 12}; // TypeError: Assignment to constant variable.
+```
+
 ### 7.2 解构赋值
+
+#### 7.2.1 数组的解构赋值
+
+```js
+let [, , num3] = [12, 34, 56];
+console.log(num3); // 56
+```
+
+**1、数组解构默认值**
+
+```js
+let [
+    num1 = 1,
+    num2 = 2,
+    num3 = 3
+] = [null, ''];
+
+console.log(num1);  // null
+console.log(num2);  // ''
+console.log(num3);  // 3
+```
+
+**2、交换变量**
+
+```js
+var a = 1;
+var b = 2;
+// 使用数组的解构赋值交换变量
+[b, a] = [a, b];
+
+console.log(a);  // 2
+console.log(b);  // 1
+```
+
+**3、解析函数返回的数组**
+
+```js
+function fn() {
+    return [12, 34];
+}
+
+let [num1, num2] = fn();
+
+console.log(num1); // 12
+console.log(num2); // 34
+```
+
+**4、嵌套数组的解构**
+
+```js
+let [num1, num2, [num3]] = [12, [34, 56], [78, 89]];
+
+console.log(num1); // 12
+console.log(num2); // [34, 56]
+console.log(num3); // 78
+```
+
+**5、函数参数解构**
+
+```js
+function foo([arg1, arg2]) {
+    console.log(arg1); // 2
+    console.log(arg2); // 3
+}
+foo([2, 3]);
+```
+
+上述实例中，foo()函数的实参为[2, 3]，形参为[arg1, arg2]，使用数组的解构赋值时，得到变量arg1的值为“2”，变量arg2的值为“3”。
+
+#### 7.2.2 对象的解构赋值
 
 ### 7.3 扩展运算符和rest运算符
 
