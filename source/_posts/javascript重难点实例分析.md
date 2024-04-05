@@ -6148,11 +6148,495 @@ foo([2, 3]);
 
 #### 7.2.2 对象的解构赋值
 
+在ES6中，对象同样可以进行解构赋值。数组的解构赋值是基于数组元素的索引，只要左右两侧的数组元素索引相同，便可以进行解构赋值。但是在对象中，属性是没有顺序的，这就要求右侧解构对象的属性名和左侧定义对象的变量名必须相同，这样才可以进行解构。
+
+```js
+let {m, n, o} = {m: 'kingx', n: 12};
+console.log(m); // kingx
+console.log(n); // 12
+
+// 未匹配到的变量名在解构时会赋值“undefined”。
+console.log(o); // undeﬁned
+```
+
+```js
+let {m: name, n: age} = {m: 'kingx', n: 12};
+console.log(name); // kingx
+console.log(m);   //  ReferenceError: m is not deﬁned
+console.log(age); // 12
+```
+
+**1、对象解构的默认值**
+
+```js
+let {m, n = 1, o = true} = {m: ‘kingx’, o: null};
+console.log(m); // kingx
+console.log(n); // 1
+console.log(o); // null，因为null与undeﬁned不严格相等，默认值并未生效
+```
+
+当属性名和变量名不相同时，默认值是赋给变量的。
+
+```js
+let {m, n: age = 1} = {m: 'kingx'};
+console.log(m);   // kingx
+console.log(age); // 1
+console.log(n);   // ReferenceError: n is not deﬁned
+```
+
+**2、嵌套对象的解构**
+
+嵌套的对象同样可以进行解构，解构时从最外层对象向内部逐层进行，每一层对象值都遵循相同的解构规则。
+
+```js
+let obj = {
+    p: [
+        'Hello',
+        {y: 'World'}
+    ]
+};
+let {p: [x, {y: name}]} = obj;
+console.log(x); // Hello
+console.log(name); // World
+console.log(y); // ReferenceError: y is not deﬁned
+```
+
+**当父层对象对应的属性不存在，而解构子层对象时，会出错并抛出异常。**
+
+```js
+let obj = {
+    m: {
+        n: 'kingx'
+    }
+};
+
+let {o: {n}} = obj;
+console.log(n); //TypeError: Cannot match against 'undeﬁned' or 'null'.
+```
+
+因为在obj对象中，外层的属性名是m，而在左侧的对象中，外层属性名是o，两者并不匹配，所以o会解构得到“undefined”。而对undefined再次解构想要获取n属性时，相当于调用undefined.n，会抛出异常。
+
+**3、选择性解构对象的属性**
+
+```js
+let { min, max } = Math;
+console.log(min(1, 3));  // 1
+console.log(max(1, 3));  // 3
+```
+
+**4、函数参数解构**
+
+当函数的参数是一个复杂的对象类型时，我们可以通过解构去获得想要获取的值并赋给变量。
+
+```js
+function whois({displayName: displayName, fullName: {ﬁrstName: name}})
+{
+    console.log(displayName + "is" + name);
+}
+
+const user = {
+    id: 42,
+    displayName: "jdoe",
+    fullName: {
+        ﬁrstName: "John",
+        lastName: "Doe"
+    }
+};
+
+whois(user); // jdoe is John
+```
+
 ### 7.3 扩展运算符和rest运算符
+
+在ES6中新增了两种运算符，一种是扩展运算符，另一种是rest运算符。这两种运算符可以很好地解决函数参数和数组元素长度未知情况下的编码问题，使得代码能更加健壮和简洁。
+
+
+#### 7.3.1 扩展运算符
+
+扩展运算符用3个点表示（...），用于将一个数组或类数组对象转换为用逗号分隔的值序列。
+
+它的基本用法是拆解数组和字符串。
+
+```js
+const array = [1, 2, 3, 4];
+console.log(...array); // 1 2 3 4
+
+const str = "string";
+console.log(...str); // s t r i n g
+```
+
+**1、扩展运算符代替apply()函数**
+
+扩展运算符可以代替apply()函数，将数组转换为函数参数。
+
+例如，获取数组最大值时，使用apply()函数的写法如下所示。
+
+```js
+let arr = [1, 4, 6, 8, 2];
+console.log(Math.max.apply(null, arr)); // 8
+
+// 如果使用扩展运算符，可以如下面所示的代码这样写，实现简化代码。
+console.log(Math.max(...arr)); // 8
+```
+
+
+自定义一个add()函数，用于接收两个参数，并返回两个参数相加的和。当传递的参数是一个数组时，如果使用apply()函数，写法如下。
+
+```js
+function add (num1, num2) {
+  return num1 + num2;
+}
+const arr = [1, 3];
+add.apply(null, arr); // 4
+
+// 如果使用扩展运算符，写法如下。
+add(...arr); // 4
+```
+
+**2、扩展运算符代替concat()函数合并数组**
+
+```js
+let arr1 = [1, 2, 3];
+let arr2 = [4, 5, 6];
+console.log(arr1.concat(arr2)); // [ 1, 2, 3, 4, 5, 6 ]
+
+// 如果使用扩展运算符，写法如下。
+console.log([...arr1, ...arr2]); // [ 1, 2, 3, 4, 5, 6 ]
+```
+
+**3、扩展运算符转换Set，得到去重的数组**
+
+Set具有自动的去重性质，我们可以再次使用扩展运算符将Set结构转换成数组。
+
+```js
+let arr = [1, 2, 4, 6, 2, 7, 4];
+console.log([...new Set(arr)]); // [ 1, 2, 4, 6, 7 ]
+```
+
+**4、扩展运算符用于对象克隆**
+
+```js
+let obj = {name: 'kingx'};
+var obj2 = {...obj};
+obj2.name = 'kingx2';
+console.log(obj); // {name: "kingx"}
+```
+
+我们再来看看下面这个例子，这是克隆对象的属性值为引用数据类型的场景。
+
+```js
+let obj3 = {
+    name: 'kingx',
+    address: {province: 'guangdong', city: 'guangzhou'}
+};
+let obj4 = {...obj3};
+obj4.name = 'kingx3';
+obj4.address.city = 'shenzhen';
+console.log(obj3);
+// {name: "kingx", address: {province: "guangdong", city: "shenzhen"}}
+```
+
+在上面的实例中，obj3对象包含name和address两个属性，其中address属性值为引用数据类型。在使用扩展运算符副本后得到obj4对象，对obj4对象的name属性和address.city属性进行修改然后输出obj3对象，发现name属性值并未修改，而address.city值变为了shenzhen。表明对克隆后对象的值进行更改后，影响到了被克隆的对象，这就意味着使用扩展运算符的克隆并不是严格的深克隆。
+
+
+
+当数组的元素为基本数据类型时，可以实现深克隆，而数组中出现引用数据类型元素的时候，就不再是深克隆。
+
+```js
+let arr1 = [1, 3, 4, 6];  // 可以进行深克隆
+let arr2 = [1, 3, [4, 6]]; // 不可以进行深克隆
+```
+
+**使用扩展运算符对数组或对象进行克隆时，如果数组的元素或者对象的属性是基本数据类型，则支持深克隆；如果是引用数据类型，则不支持深克隆。归根结底是因为引用数据类型的克隆只是复制了引用的地址，克隆后的对象仍然共享同一个引用地址。**
+
+#### 7.3.2 rest运算符
+
+rest运算符同样使用3个点表示（...），其作用与扩展运算符相反，用于将以逗号分隔的值序列转换成数组。
+
+**1、rest运算符与解构组合使用**
+
+```js
+let arr = ['one', 'two', 'three', 'four'];
+let [arg1, ...arg2] = arr;
+console.log(arg1);  // one
+console.log(arg2);  // [ 'two', 'three', 'four' ]
+```
+
+需要注意的是，如果想要使用rest运算符进行解构，则rest运算符对应的变量应该放在最后一位，否则就会抛出异常。因为如果rest运算符不是放在最后一位，变量并不知道要读取多少个数值。
+
+```js
+let arr = ['one', 'two', 'three', 'four'];
+
+// SyntaxError: Rest element must be last element in array
+let [...arg1, arg2] = arr;
+```
+
+```js
+let {x, y, ...z} = {x: 1, y: 2, a: 3, b: 4};
+console.log(x); // 1
+console.log(y); // 2
+console.log(z); // {a: 3, b: 4}
+```
+
+**2、rest运算符代替arguments处理函数参数**
+
+在ES6之前，如果我们不确定传入的参数长度，可以统一使用arguments来获取所有传递的参数。
+
+```js
+function foo() {
+    for (let arg of arguments) {
+        console.log(arg);
+    }
+}
+foo('one', 'two', 'three', 'four');// 输出'one', 'two', 'three', 'four'
+```
+
+函数的参数是一个使用逗号分隔的值序列，可以使用rest运算符处理成一个数组，从而确定最终传入的参数，以代替arguments的使用。
+
+```js
+function foo(...args) {
+    for (let arg of args) {
+        console.log(arg);
+    }
+}
+foo('one', 'two', 'three', 'four');// 输出'one', 'two', 'three', 'four'
+```
+
+通过以上对扩展运算符和rest运算符的讲解，我们知道其实两者是互为逆运算的，扩展运算符是将数组分割成独立的序列，而rest运算符是将独立的序列合并成一个数组。
+
+**既然两者都是通过3个点（…）来表示的，那么如何去判断这3个点（…）属于哪一种运算符呢？我们可以遵循下面的规则。**
+
+**· 当3个点（…）出现在函数的形参上或者出现在赋值等号的左侧，则表示它为rest运算符。**
+
+**· 当3个点（…）出现在函数的实参上或者出现在赋值等号的右侧，则表示它为扩展运算符。**
 
 ### 7.4 模版字符串
 
+#### 7.4.1 字符串原生输出
+
+```js
+// 传统字符串方案
+var str = 'Hello, my name is kingx, ' +
+          'I am working in Beijng.';
+console.log(str); // Hello, my name is kingx, I am working in Beijng.
+```
+
+而使用模板字符串语法，会保留字符串内部的空白、缩进和换行符。
+
+```js
+let str2 = `Hello, my name is kingx,
+            I am working in Beijng.`;
+console.log(str2);
+// 以下是输出结果
+Hello, my name is kingx,
+            I am working in Beijng.
+```
+
+#### 7.4.2  字符串变量值传递
+
+**1、模板字符串中传递表达式**
+
+```js
+// 数学运算
+let x = 1,
+    y = 2;
+console.log(`${x} + ${y * 2} = ${x + y * 2}`); // 1 + 4 = 5
+
+// 属性引用和数学运算
+let obj = {x: 1, y: 2};
+console.log(`${obj.x + obj.y}`); // 3
+
+// 函数调用
+function fn() {
+    return "Hello World";
+}
+console.log(`foo ${fn()} bar`); // foo Hello World bar
+```
+
+**2、模板字符串中传递复杂引用数据类型的变量**
+
+```js
+const tmpl = function (addrs) {
+    return `
+        <table>
+            ${addrs.map(addr => `
+                <tr><td>${addr.provice}</td></tr>
+                <tr><td>${addr.city}</td></tr>
+            `).join('')}
+        </table>
+    `;
+};
+const addrs = [{
+    provice: '湖北省',
+    city: '武汉市'
+}, {
+    provice: '广东省',
+    city: '广州市'
+}];
+console.log(tmpl(addrs));
+```
+
+输出的字符串结果如下所示。
+
+```html
+</table>
+    <tr><td>湖北省</td></tr>
+    <tr><td>武汉市</td></tr>
+    <tr><td>广东省</td></tr>
+    <tr><td>广州市</td></tr>
+</table>
+```
+
 ### 7.5 箭头函数
+
+```js
+// ES6语法
+const foo = v => v;
+
+// 等同于传统语法
+var foo = function (v) {
+    return v;
+};
+```
+
+#### 7.5.1 不绑定this
+
+**在3.6节中我们有讲解过this的指向问题，得出的结论是：this永远指向函数的调用者。但是在箭头函数中，this指向的是定义时所在的对象，而不是使用时所在的对象。**
+
+```js
+function Timer() {
+    this.s1 = 0;
+    this.s2 = 0;
+    // 箭头函数
+    setInterval(() => this.s1++, 1000);
+    // 普通函数
+    setInterval(function () {
+        this.s2++;
+    }, 1000);
+}
+
+let timer = new Timer();
+
+setTimeout(() => console.log('s1: ', timer.s1), 3100); // 3.1秒后输出s1: 3
+setTimeout(() => console.log('s2: ', timer.s2), 3100); // 3.1秒后输出s2: 0
+```
+
+在最后的结果中会发现s1和s2输出的值是不一样的。
+
+在生成Timer的实例timer后，通过setTimeout()函数在3.1秒后输出timer的s1变量，此时setInterval()函数已经执行了3次，由于this.s1++是处在箭头函数中的，这里的this就指向timer，此时timer.s1值为“3”。
+
+而this.s2++是处在普通函数中的，这里的this指向的是全局对象window，实际上相当于window.s2++，结果是window.s2 = 3，而在最后一行的输出结果中，timer.s2仍然为“0”。
+
+在上文中，我们有讲到“this指向的是定义时所在的对象”。**从严格意义上讲，箭头函数中不会创建自己的this，而是会从自己作用域链的上一层继承this。**
+
+我们可以通过下面这个实例来理解。
+
+```js
+const Person = {
+    'name': 'kingx',
+    'age': 18,
+    'sayHello': function () {
+        setTimeout(() => {
+            console.log('我叫' + this.name + '，我今年' + this.age + '岁!')
+        }, 1000);
+    }
+};
+Person.sayHello(); // 我叫kingx，我今年18岁!
+
+const Person2 = {
+    'name': 'little bear',
+    'age': 18,
+    'sayHello': () => {
+        setTimeout(() => {
+            console.log('我叫' + this.name + '，我今年' + this.age + '岁!')
+        }, 1000);
+    }
+};
+Person2.sayHello(); // 我叫undeﬁned，我今年undeﬁned岁!
+```
+
+在第一段代码中，sayHello()函数通过function关键字进行定义，在执行Person.sayHello()函数时，sayHello()函数中的this会指向函数的调用体，即Person本身；在调用setTimeout()函数时，由于其函数体部分是通过箭头函数定义的，内部的this会继承至父作用域的this，因此setTimeout()函数内部的this会指向Person，从而输出结果“我叫kingx,我今年18岁!”。
+
+
+在第二段代码中，sayHello()函数通过箭头函数定义，在执行Person2.sayHello()函数时，sayHello()函数中的this会指向外层作用域，而Person2的父作用域就是全局作用域window；在调用setTimeout()函数时，由于其函数体部分是通过箭头函数定义的，内部的this会继承至sayHello()函数所在的作用域的this，即window，而window上并没有定义name和age属性，因此输出结果“我叫undefined,我今年undefined岁!”。
+
+**从这里的实例可以看出，对象函数使用箭头函数是不合适的。**
+
+#### 7.5.2 不支持call()函数与apply()函数的特性
+
+我们都知道通过调用call()函数与apply()函数可以改变一个函数的执行主体，即改变被调用函数中this的指向。但是箭头函数却不能达到这一点，因为箭头函数并没有自己的this，而是继承父作用域中的this。
+
+也就是说，在调用call()函数和apply()函数时，如果被调用函数是一个箭头函数，则不会改变箭头函数中this的指向。
+
+```js
+let adder = {
+  base : 1,
+
+  add: function(a) {
+    var f = v => v + this.base;
+    return f(a);
+  },
+
+  addThruCall: function(a) {
+    var f = v => v + this.base;
+    var b = {
+      base : 2
+    };
+    return f.call(b, a);
+  }
+};
+
+console.log(adder.add(1));         // 2
+console.log(adder.addThruCall(1)); // 2
+```
+
+在上面的实例中，执行adder.add(1)时，add()函数内部通过箭头函数的形式定义了f()函数，f()函数中的this会继承至父作用域，即adder，那么this.base = 1，因此执行adder.add(1)相当于执行1 + 1的操作，结果输出“2”。
+
+执行adder.addThruCall(1)时，addThruCall()函数内部通过箭头函数定义了f()函数，其中的this指向了adder。虽然在返回结果时，通过call()函数调用了f()函数，但是并不会改变f()函数中this的指向，this仍然指向adder，而且会接收参数a，因此执行adder.addThruCall(1)相当于执行1 + 1的操作，结果输出“2”。
+
+**因此在使用call()函数和apply()函数调用箭头函数时，需要谨慎。**
+
+#### 7.5.3 不绑定arguments
+
+在普通的function()函数中，我们可以通过arguments对象来获取到实际传入的参数值，但是在箭头函数中，我们却无法做到这一点。
+
+```js
+const fn = () => {
+    console.log(arguments);
+};
+fn(1, 2); // Uncaught ReferenceError: arguments is not deﬁned
+```
+
+通过上面的代码可以看出，在浏览器环境下，在箭头函数中使用arguments时，会抛出异常。因为无法在箭头函数中使用arguments，同样也就无法使用caller和callee属性。
+
+虽然我们无法通过arguments来获取实参，但是我们可以借助rest运算符（...）来达到这个目的。
+
+```js
+const fn = (...args) => {
+    console.log(args);
+};
+fn(1, 2); // [1, 2]
+```
+
+#### 7.5.4 支持嵌套
+
+箭头函数支持嵌套的写法，假如我们需要实现这样一个场景：有一个参数会以管道的形式经过两个函数处理，第一个函数处理完的输出将作为第二个函数的输入，两个函数运算完后输出最后的结果。
+
+
+```js
+const pipeline = (...funcs) =>
+      val => funcs.reduce((a, b) => b(a), val);
+const plus1 = a => a + 1;
+const mult2 = a => a * 2;
+const addThenMult = pipeline(plus1, mult2);
+addThenMult(5);  // 12
+```
+
+我们先看第5行代码，这里调用了pipeline()函数，并传入plus1和mult2两个参数，返回的是一个函数，在函数中使用reduce()函数先后调用传入的两个处理函数。
+
+在执行第6行代码时，pipeline()函数中的val为5，在第一次执行reduce()函数时，a为5，b为plus1()函数，实际相当于执行5 + 1 = 6，并返回了计算结果。
+
+在第二次执行reduce()函数时，a为上一次返回的结果6，b为mult2()函数，实际相当于执行6×2 = 12，因此最后输出“12”。
 
 ### 7.6 ES6对于对象的扩展
 
