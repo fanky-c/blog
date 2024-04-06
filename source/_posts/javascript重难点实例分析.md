@@ -6499,7 +6499,9 @@ var foo = function (v) {
 };
 ```
 
-#### 7.5.1 不绑定this
+#### 7.5.1 箭头函数的特点
+
+##### 7.5.1.1 不绑定this
 
 **在3.6节中我们有讲解过this的指向问题，得出的结论是：this永远指向函数的调用者。但是在箭头函数中，this指向的是定义时所在的对象，而不是使用时所在的对象。**
 
@@ -6562,7 +6564,7 @@ Person2.sayHello(); // 我叫undeﬁned，我今年undeﬁned岁!
 
 **从这里的实例可以看出，对象函数使用箭头函数是不合适的。**
 
-#### 7.5.2 不支持call()函数与apply()函数的特性
+##### 7.5.1.2 不支持call()函数与apply()函数的特性
 
 我们都知道通过调用call()函数与apply()函数可以改变一个函数的执行主体，即改变被调用函数中this的指向。但是箭头函数却不能达到这一点，因为箭头函数并没有自己的this，而是继承父作用域中的this。
 
@@ -6596,7 +6598,7 @@ console.log(adder.addThruCall(1)); // 2
 
 **因此在使用call()函数和apply()函数调用箭头函数时，需要谨慎。**
 
-#### 7.5.3 不绑定arguments
+##### 7.5.1.3 不绑定arguments
 
 在普通的function()函数中，我们可以通过arguments对象来获取到实际传入的参数值，但是在箭头函数中，我们却无法做到这一点。
 
@@ -6618,7 +6620,7 @@ const fn = (...args) => {
 fn(1, 2); // [1, 2]
 ```
 
-#### 7.5.4 支持嵌套
+##### 7.5.1.4 支持嵌套
 
 箭头函数支持嵌套的写法，假如我们需要实现这样一个场景：有一个参数会以管道的形式经过两个函数处理，第一个函数处理完的输出将作为第二个函数的输入，两个函数运算完后输出最后的结果。
 
@@ -6638,9 +6640,457 @@ addThenMult(5);  // 12
 
 在第二次执行reduce()函数时，a为上一次返回的结果6，b为mult2()函数，实际相当于执行6×2 = 12，因此最后输出“12”。
 
+#### 7.5.2 箭头函数不适用的场景
+
+##### 7.5.2.1 不适合作为对象的函数
+
+**我们有讲到箭头函数并不会绑定this，如果使用箭头函数定义对象字面量的函数，那么其中的this将会指向外层作用域，并不会指向对象本身，因此箭头函数并不适合作为对象的函数。**
+
+##### 7.5.2.2 不能作为构造函数，不能使用new操作符
+
+构造函数是通过new操作符生成对象实例的，生成实例的过程也是通过构造函数给实例绑定this的过程，而箭头函数没有自己的this。因此不能使用箭头函数作为构造函数，也就不能通过new操作符来调用箭头函数。
+
+```js
+// 普通函数
+function Person(name) {
+    this.name = name;
+}
+var p = new Person('kingx'); // 正常
+
+
+// 箭头函数
+let Person = (name) => {
+    this.name = name
+};
+let p = new Person('kingx'); // Uncaught TypeError: Person is not a constructor
+```
+
+##### 7.5.2.3 没有prototype属性
+
+因为在箭头函数中是没有this的，也就不存在自己的作用域，因此箭头函数是没有prototype属性的。
+
+```js
+let a = () => {
+   return 1;
+};
+
+function b(){
+   return 2;
+}
+console.log(a.prototype);  // undeﬁned
+console.log(b.prototype);  // {constructor: ƒ}
+```
+
+##### 7.5.2.4 不适合将原型函数定义成箭头函数
+
+在给构造函数添加原型函数时，如果使用箭头函数，其中的this会指向全局作用域window，而并不会指向构造函数，因此并不会访问到构造函数本身，也就无法访问到实例属性，这就失去了作为原型函数的意义。
+
+```js
+function Person(name) {
+   this.name = name
+}
+Person.prototype.sayHello = () => {
+   console.log(this);  // window
+   console.log(this.name);  // undeﬁned
+};
+
+let p1 = new Person('kingx');
+p1.sayHello();
+```
+在上面的代码中，Person()构造函数增加了一个原型函数sayHello()，因为sayHello()函数是通过箭头函数定义的，所以其中的this会指向全局作用域window，从而无法访问到实例的name属性，输出“undefined”。
+
 ### 7.6 ES6对于对象的扩展
 
+对象是JavaScript中重要的数据结构，而ES6对它进行了重大的升级，包括数据结构本身和对象新增的函数，为开发带来了极大的便利。
+
+#### 7.6.1 属性简写
+
+```js
+const name = 'kingx';
+const age = 12;
+const obj = {name, age}; // { name: 'kingx', age: 12 }
+// 等同于
+const obj = {
+    name: name,
+    age: age
+};
+
+
+
+const obj = {
+    method: function () {
+        return 'Hello';
+    }
+};
+// 等同于
+const obj = {
+    method() {
+        return 'Hello';
+    }
+};
+```
+
+#### 7.6.2 属性遍历
+
+到ES6为止，一共有5种方法可以实现对象属性的遍历，具体方法如下所示。
+
+· for...in。
+
+· Object.keys(obj)。
+
+· Object.getOwnPropertyNames(obj)。
+
+· Object.getOwnPropertySymbols(obj)。
+
+· Reflect.ownKeys(obj)。
+
+
+定义一个拥有实例属性、继承属性的对象，其中包含Symbol属性、可枚举属性、不可枚举属性，覆盖全部的场景，用来测试这5种属性遍历方法的差异。
+
+```js
+// 定义父类
+function Animal(name, type) {
+    this.name = name;
+    this.type = type;
+}
+// 定义子类
+function Cat(age, weight) {
+    this.age = age;
+    this.weight = weight;
+    this[Symbol('one')] = 'one';
+}
+
+// 子类继承父类
+Cat.prototype = new Animal();
+Cat.prototype.constructor = Cat;
+
+// 生成子类的实例
+let cat = new Cat(12, '10kg');
+
+// 实例增加可枚举属性
+Object.deﬁneProperty(cat, 'color', {
+    conﬁgurable: true,
+    enumerable: true,
+    value: 'blue',
+    writable: true
+});
+
+// 实例增加不可枚举属性
+Object.deﬁneProperty(cat, 'height', {
+    conﬁgurable: true,
+    enumerable: false,
+    value: '20cm',
+    writable: true
+});
+```
+
+实例cat具有的属性如下所示。
+
+```html
+实例属性: age, weight, Symbol('one'), color
+继承属性: name, type
+可枚举属性：age, weight, color
+不可枚举属性: height
+Symbol属性: Symbol('one')
+```
+
+（1）for...in【for...in用于遍历对象自身和继承的可枚举属性（不包含Symbol属性）。】
+
+```js
+for (let key in cat) {
+   console.log(key);
+}
+// 'age', 'weight', 'color', 'name', 'type'
+```
+
+（2）Object.keys()函数【Object.keys()函数返回一个数组，包含对象自身所有可枚举属性，不包含继承属性和Symbol属性。】
+
+```js
+Object.keys(cat); // [ 'age', 'weight', 'color' ]
+```
+
+（3）Object.getOwnPropertyNames()函数【Object.getOwnPropertyNames()函数返回一个数组，包含对象自身所有可枚举属性和不可枚举属性，不包含继承属性和Symbol属性。】
+
+```js
+Object.getOwnPropertyNames(cat); // [ 'age', 'weight', 'color', 'height' ]
+```
+
+（4）Object.getOwnPropertySymbols()函数 【Object.getOwnPropertySymbols()函数返回一个数组，包含对象自身所有Symbol属性，不包含其他属性。】
+
+```js
+Object.getOwnPropertySymbols(cat); // [ Symbol('one') ]
+```
+
+（5）Reflect.ownKeys()函数【Reflect.ownKeys()函数返回一个数组，包含可枚举属性、不可枚举属性以及Symbol属性，不包含继承属性。】
+
+```js
+Reﬂect.ownKeys(cat); // [ 'age', 'weight', 'color', 'height', Symbol('one') ]
+```
+
+#### 7.6.3  新增Object.assign()函数
+
+Object.assign()函数用于将一个或者多个对象的可枚举属性赋值给目标对象，然后返回目标对象。
+
+首先我们创建一个同时拥有可枚举属性、不可枚举属性、继承属性、Symbol属性的对象。
+
+```js
+let obj = Object.create({a: 1}, {  // a是继承属性
+    b: {
+        value: 2  // b是不可枚举属性
+    },
+    c: {
+        value: 3,
+        enumerable: true,  // c是可枚举属性
+    },
+    [Symbol('one')]: {    // Symbol属性
+        value: 'one',
+        enumerable: true
+    }
+});
+```
+
+```js
+console.log(Object.assign({}, obj));
+
+// 得到结果
+{c: 3, Symbol(one): "one"}
+```
+##### 7.6.3.1 对象克隆
+
+使用Object.assign()函数进行克隆时，进行的是浅克隆。如果属性是基本数据类型，则会复制它的值；如果属性是引用数据类型，则会复制它的引用。
+
+```js
+function cloneObj(source) {
+    return Object.assign({}, source);
+}
+let source = {
+    name: 'kingx',
+    age: 18
+};
+let result = cloneObj(source);
+console.log(result); // { name: 'kingx', age: 18 }
+```
+
+##### 7.6.3.2 给对象添加属性
+
+```js
+// 传统的写法
+function Person(name, age, address) {
+    this.name = name;
+    this.age = age;
+    this.address = address;
+}
+// Object.assign()写法
+function Person(name, age, address) {
+    Object.assign(this, {name, age, address});
+}
+```
+
+##### 7.6.3.3 给对象添加函数
+
+```js
+// 传统写法
+Person.prototype.getName = function () {
+    return this.name;
+};
+Person.prototype.getAge = function () {
+    return this.age;
+};
+// Object.assign()写法
+Object.assign(Person.prototype, {
+    getName() {
+        return this.name;
+    },
+    getAge() {
+        return this.age;
+    }
+});
+```
+
+##### 7.6.3.4 合并对象
+
+```js
+// 多个对象合并到一个目标对象中
+const merge = (target, ...sources) => Object.assign(target, ...sources);
+
+// 多个对象合并为一个新对象并返回
+const merge = (...sources) => Object.assign({}, ...sources);
+```
+
 ### 7.7 symbol类型
+
+在传统的JavaScript中，对象的属性名都是由字符串构成的。这样就会带来一个问题，假如一个对象继承了另一个对象的属性，我们又需要定义新的属性时，很容易造成属性名的冲突。
+
+为了解决这个问题，ES6引入了一种新的基本数据类型Symbol，它表示的是一个独一无二的值。
+
+**至此JavaScript中就一共存在6种基本数据类型，分别是Undefined类型、Null类型、Boolean类型、String类型、Number类型、Symbol类型。**
+
+#### 7.7.1 Symbol类型的特性
+
+**1. Symbol值的唯一性**
+
+```js
+const a = Symbol();
+const b = Symbol();
+const c = Symbol('one');
+const d = Symbol('one');
+console.log(a === b);  // false
+console.log(c === d);  // false
+```
+
+**2. 不能使用new操作符**
+
+Symbol函数并不是一个构造函数，因此不能通过new操作符创建Symbol值。
+
+```js
+let s1 = new Symbol(); // TypeError: Symbol is not a constructor
+```
+
+**3. 不能参与类型运算**
+
+```js
+let s4 = Symbol('hello');
+s4.toString(); // Symbol(hello)
+'s4 content is: ' + s4; // TypeError: Cannot convert a Symbol value to a string
+```
+
+**4. 可以使用同一个Symbol值**
+
+那就是使用Symbol.for()函数，它接收一个字符串作为参数，然后搜索有没有以该参数作为名称的Symbol值。如果有，就返回这个Symbol值，否则就新建并返回一个以该字符串为名称的Symbol值。
+
+```js
+let s1 = Symbol.for('one');
+let s2 = Symbol.for('one');
+
+s1 === s2; // true
+```
+
+Symbol.for()函数与Symbol()函数这两种写法，都会生成新的Symbol值。它们的区别是，前者会被登记在全局环境中以供搜索，而后者不会。Symbol.for()函数不会每次调用就返回一个新的Symbol类型的值，而是会先检查给定的key是否已经存在，如果不存在才会新建一个值。例如，调用“Symbol.for("cat")”10 次，每次都会返回同一个Symbol值，但是调用“Symbol("cat")”10次，会返回 10 个不同的Symbol值。
+
+```js
+Symbol.for("bar") === Symbol.for("bar"); // true
+Symbol("bar") === Symbol("bar");  // false
+```
+
+#### 7.7.2 Symbol类型的用法
+
+##### 7.7.2.1 用作对象属性名
+
+由于每一个Symbol值都是不相等的，它会经常用作对象的属性名，尤其是当一个对象由多个模块组成时，这样能够避免属性名被覆盖的情况。
+
+```js
+// 新增一个symbol属性
+let PROP_NAME = Symbol();
+
+// 第一种写法
+let obj = {};
+obj[PROP_NAME] = 'Hello';
+
+// 第二种写法
+let obj = {
+    [PROP_NAME]: 'Hello'
+};
+
+// 第三种写法
+let obj = {};
+Object.deﬁneProperty(obj, PROP_NAME, {
+    value: 'Hello'
+});
+```
+
+需要注意的是，不能通过点运算符为对象添加Symbol属性。
+
+```js
+const PROP_NAME = Symbol();
+const obj = {};
+
+obj.PROP_NAME = 'Hello!';
+console.log(obj[PROP_NAME]);  // undeﬁned
+console.log(obj['PROP_NAME']); // 'Hello'
+```
+
+在上面的实例中，我们在通过点运算符为obj增加PROP_NAME属性时，这个PROP_NAME实际是一个字符串，并不是一个Symbol变量。因此我们通过中括号输出PROP_NAME变量对应的值时，得到的是“undefined”；而通过中括号输出'PROP_NAME'字符串值时，得到的是字符串'Hello'。
+
+
+##### 7.7.2.2 用于属性区分
+
+我们可能会遇到这样一种场景，即通过区分两个属性来做对应的处理。
+
+```js
+// 求图形的面积(传统写法)
+function getArea(shape, options) {
+    let area = 0;
+    switch (shape) {
+        case 'triangle':
+            area = .5 * options.width * options.height;
+            break;
+        case 'rectangle':
+            area = options.width * options.height;
+            break;
+    }
+    return area;
+}
+console.log(getArea('triangle', { width: 100, height: 100 }));  // 5000
+console.log(getArea('rectangle', { width: 100, height: 100 })); // 10000
+```
+
+在上面的写法中，字符串'triangle'和'rectangle'会强耦合在代码中。而事实上，我们仅想区分各种不同的形状，并不关心每个形状使用什么字符串表示，我们只需要知道每个变量的值是独一无二的即可，此时使用Symbol就会很合适。
+
+```js
+// 事先声明两个Symbol值，用于作判断 (Symbol写法)
+let shapeType = {
+    triangle: Symbol('triangle'),
+    rectangle: Symbol('rectangle')
+};
+
+function getArea(shape, options) {
+    let area = 0;
+    switch (shape) {
+        case shapeType.triangle:
+            area = .5 * options.width * options.height;
+            break;
+        case shapeType.rectangle:
+            area = options.width * options.height;
+            break;
+    }
+    return area;
+}
+
+console.log(getArea(shapeType.triangle, { width: 100, height: 100 }));  // 5000
+console.log(getArea(shapeType.rectangle, { width: 100, height: 100 })); // 10000
+```
+
+##### 7.7.2.3 用于属性名遍历
+
+使用Symbol作为属性名时，不能通过Object.keys()函数或者for...in来枚举，这样我们可以将一些不需要对外操作和访问的属性通过Symbol来定义。
+
+```js
+let obj = {
+    [Symbol('name')]: 'Hello',
+    age: 18,
+    title: 'Engineer'
+};
+console.log(Object.keys(obj));   // ['age', 'title']
+
+
+for (let p in obj) {
+    console.log(p);  // 分别会输出：'age' 和 'title'
+}
+console.log(Object.getOwnPropertyNames(obj));   // ['age', 'title']
+
+// 因为Symbol属性不会出现在属性遍历的过程中，所以在使用JSON.stringify()函数将对象转换为JSON字符串时，Symbol值也不会出现在结果中。
+JSON.stringify(obj);  // {"age":18,"title":"Engineer"}
+```
+
+当我们需要获取Symbol属性时，可以使用专门针对Symbol的API。
+
+```js
+// 使用Object的API
+Object.getOwnPropertySymbols(obj); // [Symbol(name)]
+
+// 使用新增的反射API
+Reﬂect.ownKeys(obj); // [Symbol(name), 'age', 'title']
+```
 
 ### 7.8 set和map数据结构
 
