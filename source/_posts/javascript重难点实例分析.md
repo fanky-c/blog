@@ -7093,6 +7093,164 @@ Reﬂect.ownKeys(obj); // [Symbol(name), 'age', 'title']
 ```
 
 ### 7.8 set和map数据结构
+#### 7.8.1 Set数据结构
+
+ES6中新增了一种数据结构Set，表示的是一组数据的集合，类似于数组，但是Set的成员值都是唯一的，没有重复。
+
+Set本身是一个构造函数，可以接收一个数组或者类数组对象作为参数。下面讲解Set实例的属性和函数。
+
+（1）属性
+
+· Set.prototype.constructor：构造函数，默认就是Set函数。
+
+· Set.prototype.size：返回实例的成员总数。
+
+（2）函数
+
+· Set.prototype.add(value)：添加一个值，返回Set结构本身。
+
+· Set.prototype.delete(value)：删除某个值，返回布尔值。
+
+· Set.prototype.has(value)：返回布尔值，表示是否是成员。
+
+· Set.prototype.clear()：清除所有成员，无返回值。
+
+
+需要注意的是，向Set实例中添加新的值时，不会发生类型转换。这可以理解为使用add()函数添加新值时，新值与Set实例中原有值是采用严格相等（===）进行比较的，只有在严格相等的比较结果为不相等时，才会将新值添加到Set实例中。
+
+```js
+let set = new Set();
+set.add(1);
+set.add('1');
+console.log(set);  // Set { 1, '1' }
+```
+
+但是上述规则对于NaN是一个特例，NaN与NaN在进行严格相等的比较时是不相等的，但是在Set内部，NaN与NaN是严格相等的，因此一个Set实例中只可以添加一个NaN。
+
+```js
+let set = new Set();
+set.add(NaN);
+set.add(NaN);
+console.log(set); // Set { NaN }
+```
+##### 7.8.1.1 Set的常见用法
+
+（1）单一数组的去重
+
+```js
+let arr = [1, 3, 4, 2, 3, 2, 5];
+console.log(new Set(arr)); // Set { 1, 3, 4, 2, 5 }
+```
+
+（2）多个数组的合并去重
+
+```js
+let arr1 = [1, 2, 3, 4];
+let arr2 = [2, 3, 4, 5, 6];
+let set1 = new Set([...arr1, ...arr2]);
+console.log(set1); // Set { 1, 2, 3, 4, 5, 6 }
+```
+
+（3）Set与数组的转换
+
+Set与数组都拥有便利的数据处理函数，对于两者的相互转换也非常简单。我们可以选择合适的时机对两者进行转换，并调用对应的函数。
+
+将数组转换为Set时，只需要通过Set的构造函数即可；将Set转换为数组时，通过Array.from()函数或者扩展运算符即可。
+
+```js
+let arr = [1, 3, 5, 7];
+// 将数组转换为Set
+let set = new Set(arr);
+console.log(set);  // Set { 1, 3, 5, 7 }
+
+let set = new Set();
+set.add('a');
+set.add('b');
+
+// 将Set转换为数组，通过Array.from()函数
+let arr = Array.from(set);
+console.log(arr);  // [ 'a', 'b' ]
+
+// 将Set转换为数组，通过扩展运算符
+let arr2 = [...set];
+console.log(arr2);  // [ 'a', 'b' ]
+```
+
+##### 7.8.1.2 Set的遍历
+
+针对Set数据结构，我们可以使用传统的forEach()函数进行遍历。forEach()函数的第一个参数表示的是Set中的每个元素，第二个参数表示的是元素的索引，从0开始。
+
+```js
+let set5 = new Set([4, 5, 'hello']);
+
+set5.forEach((item, index) => {
+   console.log(item, index);
+});
+
+// 4 4
+// 5 5
+// hello hello
+```
+
+除了forEach()函数外，我们还可以使用以下3种函数对Set实例进行遍历。
+
+· keys()：返回键名的遍历器。
+
+· values()：返回键值的遍历器。
+
+· entries()：返回键值对的遍历器。
+
+通过上述函数获得的对象都是遍历器对象Iterator，然后通过for...of循环可以获取每一项的值。
+
+因为Set实例的键和值是相等的，所以keys()函数和values()函数实际返回的是相同的值。
+
+```js
+let set = new Set(['red', 'green', 'blue']);
+
+for (let item of set.keys()) {
+    console.log(item);
+}
+// red
+// green
+// blue
+
+for (let item of set.values()) {
+    console.log(item);
+}
+// red
+// green
+// blue
+
+for (let item of set.entries()) {
+    console.log(item);
+}
+// ["red", "red"]
+// ["green", "green"]
+// ["blue", "blue"]
+```
+
+#### 7.8.2 Map数据结构
+
+ES6还增加了另一种数据结构Map，与传统的对象字面量类似，它的本质是一种键值对的组合。但是与对象字面量不同的是，对象字面量的键只能是字符串，对于非字符串类型的值会采用强制类型转换成字符串，而Map的键却可以由各种类型的值组成。
+
+```js
+// 传统的对象类型
+const data = {};
+const element = document.getElementById('home');
+data[element] = 'ﬁrst';
+console.log(data); // {[object HTMLDivElement]: "ﬁrst"}
+```
+
+```js
+// Map
+const map = new Map();
+const element = document.getElementById('home');
+map.set(element, 'ﬁrst');
+console.log(map);  // {div#home => "ﬁrst"}
+```
+
+在上面的实例中，采用的是Map处理方案，将DOM元素作为键添加到实例map中，在输出时会发现，键的值为DOM元素的真实值，并没有转换为字符串的值。
+
 
 ### 7.9 proxy
 
