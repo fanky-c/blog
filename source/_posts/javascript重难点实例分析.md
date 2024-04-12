@@ -7313,10 +7313,222 @@ console.log(map); // Map { [ 0 ] => '1' }
 
 ##### 7.8.2.1 Map的遍历
 
+与Set一样，Map的遍历同样可以采用4种函数，分别是forEach()函数、keys()函数、values()函数、entries()函数。
+
+对于forEach()函数，第一个参数表示的是值，第二个参数表示的是键。
+
+```js
+const map = new Map();
+map.set('name', 'kingx');
+map.set('age', 12);
+
+map.forEach(function (item, key) {
+    console.log(item, key);
+});
+// kingx name
+// 12 age
+```
+
+keys()函数返回的是键的集合，values()函数返回的是值的集合，entries()函数返回的键值对的集合。
+
+```js
+for (let key of map.keys()) {
+    console.log(key);
+}
+// name
+// age
+
+for (let value of map.values()) {
+    console.log(value);
+}
+// kingx
+// 12
+
+for (let obj of map.entries()) {
+    console.log(obj);
+}
+// [ 'name', 'kingx' ]
+// [ 'age', 12 ]
+```
+
+
 ##### 7.8.2.2 Map与其他数据结构的转换
 
+1、Map转换为数组，可以通过扩展运算符实现。
+
+```js
+//Map转换为数组
+const map = new Map();
+map.set('name', 'kingx');
+map.set('age', 12);
+
+const arr = [...map];
+console.log(arr); // [ [ 'name', 'kingx' ], [ 'age', 12 ] ]
+```
+
+2、数组转换为Map，可以通过Map构造函数实现，使用new操作符生成Map的实例。
+
+```js
+//Map转换为对象
+const arr = [[ 'name', 'kingx' ], [ 'age', 12 ]];
+const map = new Map(arr);
+console.log(map);  // Map { 'name' => 'kingx', 'age' => 12 }
+```
+
+3、Map转换为对象，如果Map的实例的键是字符串，则可以直接转换；如果键不是字符串，则会先转换成字符串然后再进行转换。
+
+```js
+// Map转换为对象
+function mapToObj(map) {
+    let obj = {};
+    for(let [key, value] of map) {
+        obj[key] = value;
+    }
+    return obj;
+}
+console.log(mapToObj(map));  // { name: 'kingx', age: 12 }
+```
+
+4、对象转换为Map，只需要遍历对象的属性并通过set()函数添加到Map的实例中即可。
+
+```js
+// 对象转换为Map
+function objToMap(obj) {
+    let map = new Map();
+    for (let k of Object.keys(obj)) {
+        map.set(k, obj[k]);
+    }
+    return map;
+}
+console.log(objToMap({yes: true, no: false}));
+// Map {"yes" => true, "no" => false}
+```
+
+5、Map转换为JSON字符串时，有两种情况，第一种是当Map的键名都是字符串时，可以先将Map转换为对象，然后调用JSON.stringify()函数。
+
+```js
+// Map转换为JSON，通过对象
+function mapToJson(strMap) {
+    // 先将map转换为对象，然后转换为JSON
+    return JSON.stringify(mapToObj(strMap));
+}
+let myMap = new Map().set('yes', true).set('no', false);
+console.log(mapToJson(myMap)); // {"yes":true,"no":false}
+```
+
+6、第二种是当Map的键名有非字符串时，我们可以先将Map转换为数组，然后调用JSON.stringify()函数。
+
+```js
+// Map转换为JSON,通过数组
+function mapToArrayJson(map) {
+    // 先通过扩展运算符转换为数组，再转换为JSON
+    return JSON.stringify([...map]);
+}
+let myMap2 = new Map().set(true, 7).set({foo: 3}, ['abc']);
+mapToArrayJson(myMap2); // [[true,7],[{"foo":3},["abc"]]]
+```
+
+7、JSON转换为Map。JSON字符串是由一系列键值对构成，键一般都为字符串。我们可以直接通过调用JSON.parse()函数先将JSON字符串转换为对象，然后再转换为Map。
+
+```js
+// JSON转换为Map
+function jsonToMap(jsonStr) {
+    // 先转换为JSON对象，再转换为Map
+    return objToMap(JSON.parse(jsonStr));
+}
+jsonToMap('{"yes": true, "no": false}'); // Map { 'yes' => true, 'no' => false }
+```
+
+8、Set转换为Map，Set中以数组形式存在的数据可以直接通过Map的构造函数转换为Map。
+
+```js
+// Set转换为Map
+function setToMap(set) {
+    return new Map(set);
+}
+const set = new Set([
+    ['foo', 1],
+    ['bar', 2]
+]);
+console.log(setToMap(set)); // Map { 'foo' => 1, 'bar' => 2 }
+```
+
+9、Map转换为Set，可以将遍历Map本身获取到的键和值构成一个数组，然后通过add()函数添加至set实例中。
+
+```js
+// Map实例转换为Set
+function mapToSet(map) {
+    let set = new Set();
+    for (let [k,v] of map) {
+        set.add([k, v])
+    }
+    return set;
+}
+const map14 = new Map()
+    .set('yes', true)
+    .set('no', false);
+mapToSet(map14); // Set { [ 'yes', true ], [ 'no', false ] }
+```
 
 ### 7.9 proxy
+
+ES6中新增了Proxy对象，从字面上看可以理解为代理器，主要用于改变对象的默认访问行为，实际表现是在访问对象之前增加一层拦截，任何对对象的访问行为都会通过这层拦截。在拦截中，我们可以增加自定义的行为。
+
+Proxy的基本语法如下所示。
+
+```js
+const proxy = new Proxy(target, handler);
+```
+
+它实际是一个构造函数，接收两个参数，一个是目标对象target；另一个是配置对象handler，用来定义拦截的行为。
+
+proxy、target和handler之间的关系是什么样的呢？
+
+通过Proxy构造函数可以生成实例proxy，任何对proxy实例的属性的访问都会自动转发至target对象上，我们可以针对访问的行为配置自定义的handler对象，因此外界通过proxy访问target对象的属性时，都会执行handler对象自定义的拦截操作。
+
+```js
+// 定义目标对象
+const person = {
+    name: 'kingx',
+    age: 23
+};
+// 定义配置对象
+let handler = {
+    get: function (target, prop, receiver) {
+        console.log("你访问了person的属性");
+        return target[prop];
+    }
+};
+
+// 生成Proxy的实例
+const p = new Proxy(person, handler);
+
+// 执行结果
+console.log(p.name);
+// 你访问了person的属性
+// kingx
+```
+
+在使用Proxy时，有几点需要注意的内容。
+
+**（1）必须通过代理实例访问**
+
+如果需要配置对象的拦截行为生效，那么必须是对代理实例的属性进行访问，而不是直接对目标对象进行访问。
+
+如果直接通过目标对象person访问name属性，则不会触发拦截行为。
+
+```js
+console.log(person.name); // kingx
+```
+
+**（2）配置对象不能为空对象**
+
+如果需要配置对象的拦截行为生效，那么配置对象不能为空对象。如果为空对象，则代表没有设置任何拦截，实际是对目标对象的访问。另外配置对象不能为null，否则会抛出异常。
+
+
+#### 7.9.1 Proxy实例函数及其基本使用
+
+#### 7.9.2 Proxy使用场景
 
 ### 7.10 reflect
 
