@@ -8156,9 +8156,328 @@ console.log(obj); // { _name: 'kingx', name: [Getter/Setter], age: 24 }
 console.log(receiver); // { test: 'test', _name: 'kingx2' }
 ```
 
+然后第一次调用Reflect.set()函数，修改age属性的值为24，操作成功。
+
+第二次调用Reflect.set()函数，修改name属性的值为'kingx'，此时并未传递第四个参数，所以this指向第一个参数obj，执行成功后obj的值为“{ _name: 'kingx',name: [Getter/Setter], age: 24 }”。
+
+第三次调用Reflect.set()函数，修改name属性值为'kingx2'，此时传递了第四个参数为一个对象receiver，则this就指向这个新对象receiver，而不再是obj对象。因此在设置name时，执行了this._name = name，实际是为receiver对象新增了一个_name属性，值为'kingx2'，在执行完后，obj对象的值依然不变，而receiver对象的值变为“{ test: 'test', _name: 'kingx2' }”。
+
 #### 7.10.2 Reflect与Proxy
 
+ES6在设计的时候就将Reflect对象和Proxy对象绑定在一起了，Reflect对象的函数与Proxy对象的函数一一对应，因此在Proxy对象中调用Reflect对象对应的函数是一个明智的选择。
+
+例如我们使用Proxy对象拦截属性的读取、设置和删除操作、并配合Reflect对象实现时，可以编写如下所示的代码。
+
+```js
+let target = {
+    name: 'kingx'
+};
+const proxy = new Proxy(target, {
+    get(target, prop) {
+        console.log(`读取属性${prop}的值为${target[prop]}`);
+        return Reﬂect.get(target, prop);
+    },
+    set(target, prop, value) {
+        console.log(`设置属性${prop}的值为${value}`);
+        return Reﬂect.set(target, prop, value);
+    },
+    deleteProperty(target, prop) {
+        console.log('删除属性: ' + prop);
+        return Reﬂect.deleteProperty(target, prop);
+    }
+});
+
+proxy.name; // 读取属性name的值为'kingx'
+proxy.name = 'kingx2'; // 设置属性name的值为'kingx2'
+delete proxy.name; // 删除属性: name
+```
+
+有一个最经典的案例就是可以实现观察者模式。
+
+观察者模式的表现是：一个目标对象管理所有依赖于它的观察者对象，当自身的状态有变更时，会主动向所有观察者发出通知。
+
+按照观察者模式的表现，我们可以设想这样一个场景：有一个目标对象和两个观察者对象，在修改目标对象的属性时通知所有的观察者，其中一个观察者获得修改后的值“开心地笑了”，另一个观察者获得修改后的值“伤心地哭了”。
+
+代码的编写思路如下。
+
+· 定义目标对象。
+
+· 定义观察者队列，用于包含所有的观察者对象。
+
+· 定义两个观察者对象。
+
+· 定义Proxy的set()函数，用于拦截目标对象属性修改的操作。在拦截到set操作后，使用Reflect.set()函数修改属性，然后通知所有的观察者执行各自的操作。
+
+· 定义为目标对象添加观察者的函数。
+
+· 通过Proxy构造函数生成代理的实例。
+
+根据以上的分析，我们可以得到以下的代码。
+
+```js
+// 目标对象
+const target = {
+    name: 'kingx'
+};
+// 观察者队列，包含所有的观察者对象
+const queueObservers = new Set();
+// 第一个观察者对象
+function observer1(prop, value) {
+    console.log(`目标对象的${prop}属性值变为${value}，观察者1开心地笑了`);
+}
+// 第二个观察者对象
+function observer2(prop, value) {
+    console.log(`目标对象的${prop}属性值变为${value}，观察者2伤心地哭了`);
+}
+// Proxy的set()函数，用于拦截目标对象属性修改的操作
+function set(target, prop, value) {
+    // 使用Reﬂect.set()函数修改属性
+    const result = Reﬂect.set(target, prop, value);
+    // 执行通知函数，通知所有的观察者
+    result ? queueObservers.forEach(fn => fn(prop, value)) : '';
+    return result;
+}
+// 为目标对象添加观察者
+const observer = (fn) => queueObservers.add(fn);
+// 通过Proxy生成目标对象的代理的函数
+const observable = (target) => new Proxy(target, {set});
+// 获取代理
+const proxy = observable(target);
+
+observer(observer1);
+observer(observer2);
+
+proxy.name = 'kingx2';
+```
+
+当最后我们执行proxy.name = 'kingx2'后，进入了Proxy的set()函数中，成功地修改了name属性值，并且通知观察者执行各自的操作，第一个观察者输出的结果如下所示。
+
+```html
+目标对象的name属性值变为kingx2，观察者1开心地笑了
+```
+
+第二个观察者输出的结果如下所示。
+
+```html
+目标对象的name属性值变为kingx2，观察者2伤心地哭了
+```
+
 ### 7.11 promise
+#### 7.11.1 Promise诞生的原因
+
+```js
+// 第一个请求
+$.ajax({
+    url: 'url1',
+    success: function () {
+        // 第二个请求
+        $.ajax({
+            url: 'url2',
+            success: function () {
+                // 第三个请求
+                $.ajax({
+                    url: 'url3',
+                    success: function () {
+                        // 第四个请求
+                        $.ajax({
+                            url: 'url4',
+                            success: function () {
+                                // 成功地回调
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+})
+```
+
+一个行为所产生的异步请求可能比这个还要多，这就会导致代码的嵌套太深，引发“回调地狱”。
+
+“回调地狱”存在以下几个问题。
+
+· 代码臃肿，可读性差。
+
+· 代码耦合度高，可维护性差，难以复用。
+
+· 回调函数都是匿名函数，不方便调试。
+
+那么有什么方法能够避免在处理异步请求时，产生“回调地狱”的问题呢？
+
+Promise就应运而生了，它为异步编程提供了一种更合理、更强大的解决方案。
+
+#### 7.11.2 Promise的生命周期
+
+每一个Promise对象都有3种状态，即pending（进行中）、fulfilled（已成功）和rejected（已失败）。
+
+Promise在创建时处于pending状态，状态的改变只有两种可能，一种是在Promise执行成功时，由pending状态改变为fulfilled状态；另一种是在Promise执行失败时，由pending状态改变为rejected状态。
+
+状态一旦改变，就不能再改变，状态改变一次后得到的就是Promise的终态。
+
+
+#### 7.11.3 Promise的基本用法
+
+Promise对象本身是一个构造函数，可以通过new操作符生成Promise的实例。
+
+```js
+const promise = new Promise((resolve, reject) => {
+    // 异步请求处理
+    if(/ 异步请求标识 /) {
+        resolve();
+    } else {
+        reject();
+    }
+});
+```
+
+Promise执行的过程是：在接收的函数中处理异步请求，然后判断异步请求的结果，如果结果为“true”，则表示异步请求执行成功，调用resolve()函数，resolve()函数一旦执行，Promise的状态就从pending变为fulfilled；如果结果为“false”，则表示异步请求执行失败，调用reject()函数，reject()函数一旦执行，Promise的状态就从pending变为rejected。
+
+resolve()函数和reject()函数可以传递参数，作为后续.then()函数或者.catch()函数执行时的数据源。
+
+需要注意的是Promise在创建后会立即调用，然后等待执行resolve()函数或者reject()函数来确定Promise的最终状态。
+
+```js
+let promise = new Promise(function(resolve, reject) {
+    console.log('Promise');
+    resolve();
+});
+promise.then(function() {
+    console.log('resolved');
+});
+console.log('Hello');
+```
+在上面的代码中，会先后输出 “Promise” “Hello” “resolved”。
+
+· 首先是Promise的创建，会立即执行，输出“Promise”。
+
+· 然后是执行resolve()函数，这样的话就会触发then()函数指定回调函数的执行，但是它需要等当前线程中的所有同步代码执行完毕，因此会先执行最后一行同步代码，输出“Hello”。
+
+· 最后是当所有同步代码执行完毕后，执行then()函数，输出“resolved”。
+
+当一个Promise的实例创建好后，我们该如何进行成功或者失败的异步处理呢？
+
+这就需要调用then()函数和catch()函数了。
+
+**1、then()函数**
+
+Promise在原型属性上添加了一个then()函数，表示在Promise实例状态改变时执行的回调函数。
+
+then()函数返回的是一个新Promise实例，因此可以使用链式调用then()函数，在上一轮then()函数内部return的值会作为下一轮then()函数接收的参数值。
+
+```js
+const promise = new Promise((resolve, reject) => {
+     resolve(1);
+});
+// then()函数链式调用
+promise.then((result) => {
+    console.log(result);  // 1
+    return 2;
+}).then((result) => {
+    console.log(result);  // 2
+    return 3;
+}).then((result) => {
+    console.log(result);  // 3
+    return 4;
+}).then((result) => {
+    console.log(result);  // 4
+});
+```
+
+需要注意的是，在then()函数中不能返回Promise实例本身，否则会出现Promise循环引用的问题，抛出异常。
+
+```js
+const promise = Promise.resolve()
+    .then(() => {
+        return promise;
+    });
+
+// TypeError: Chaining cycle detected for promise #<Promise>
+```
+
+**2、catch()函数**
+
+catch()函数与then()函数是成对存在的，then()函数是Promise执行成功之后的回调，
+而catch()函数是Promise执行失败之后的回调，它所接收的参数就是执行reject()函数时传递的参数。
+
+我们可以通过在Promise中手动抛出一个异常，来测试catch()函数的用法。
+
+```js
+const promise = new Promise((resolve, reject) => {
+    try {
+        throw new Error('test');
+    } catch(err) {
+            reject(err);
+    }
+});
+promise
+    .catch((err) => {
+         console.log(err); // Error: test
+    });
+```
+
+因为promise实例在创建后会立即执行，所以进入try语句后会抛出一个异常，从而被catch()函数捕获到，在catch()函数中调用reject()函数，并传递Error信息。一旦reject()函数被执行，就会触发promise实例的catch()函数，从而能在catch()函数的回调函数中输出err的信息。
+
+事实上只要在Promise执行过程中出现了异常，就会被自动抛出，并触发reject(err)，而不用我们去使用try...catch，在catch()函数中手动调用reject()函数。
+
+因此前面的代码可以改写成如下所示的代码。
+
+```js
+const promise = new Promise((resolve, reject) => {
+    throw new Error('test');
+});
+
+promise
+    .catch((err) => {
+        console.log(err); // Error: test
+    });
+```
+
+另外我们再拿一个空指针引用的异常来进行测试。
+
+```js
+const promise = new Promise((resolve, reject) => {
+    null.name;
+});
+promise
+    .catch((err) => {
+        console.log(err); // TypeError: Cannot read property 'name' of null
+    });
+```
+
+在Promise接收的函数体中引用null的name属性时，会抛出一个异常。这个异常会被自动捕获，而且会自动执行reject()函数，从而会触发catch()函数并传递异常值，在函数体中将其输出.
+
+需要注意的是，如果一个Promise的状态已经变成fulfilled成功状态，再去抛出异常，是无法触发catch()函数的。这是因为Promise的状态一旦改变，就会永久保持该状态，不会再次改变。
+
+```js
+const promise = new Promise((resolve, reject) => {
+    resolve(1);
+    throw new Error('test');
+});
+promise
+    .then((result) => {
+        console.log(result);  // 1
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+```
+在上面代码的Promise函数体中，调用resolve()函数，并传递一个参数1，会直接触发promise的then()函数，而不会执行下面的抛出异常的throw语句，从而输出“1”，整个Promise执行过程结束。
+
+
+在ES6中不仅为Promise的原型对象添加了then()函数和catch()函数等异步处理函数，**还为Promise对象自身添加了一系列的静态函数，用来处理多Promise实例同时运行的情况。**接下来我们选择几个重点的静态函数来讲解。
+
+**1、Promise.all()函数**
+
+**2、Promise.race()函数**
+
+**3、Promise.resolve()函数**
+
+**4、Promise.reject()函数**
+
+
+
+#### 7.11.4 Promise的用法实例
 
 ### 7.12 iterator与for...of循环
 
