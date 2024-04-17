@@ -8469,12 +8469,120 @@ promise
 
 **1、Promise.all()函数**
 
+then()函数和catch()函数是Promise原型链中的函数，因此每个Promise的实例可以进行共享，而all()函数是Promise本身的静态函数，用于将多个Promise实例包装成一个新的Promise实例。
+
+```js
+const p = Promise.all([p1, p2, p3]);
+```
+
+返回的新Promise实例p的状态由3个Promise实例p1、p2、p3共同决定，总共会出现以下两种情况。
+
+· 只有p1、p2、p3全部的状态都变为fulfilled成功状态，p的状态才会变为fulfilled状态，此时p1、p2、p3的返回值组成一个数组，作为p的then()函数的回调函数的参数。
+
+· 只要p1、p2、p3中有任意一个状态变为rejected失败状态，p的状态就变为rejected状态，此时第一个被reject的实例的返回值会作为p的catch()函数的回调函数的参数。
+
+需要注意的是，作为参数的Promise实例p1、p2、p3，如果已经定义了catch()函数，那么当其中一个Promise状态变为rejected时，并不会触发Promise.all()函数的catch()函数。
+
+```js
+const p1 = new Promise((resolve, reject) => {
+    resolve('success');
+})
+    .then(result => result)
+    .catch(e => e);
+
+const p2 = new Promise((resolve, reject) => {
+    throw new Error('error');
+})
+    .then(result => result)
+        .catch(e => e);
+
+Promise.all([p1, p2])
+    .then(result => console.log(result)) // ['success', Error: error]
+    .catch(e => console.log(e));
+```
+
+在上面代码的实例p2中抛出了一个异常，p2的状态变为rejected，但是由于p2有自己的catch()函数，所以这个异常会在p2实例内部被消化，并不会继续向外抛到Promise.all()函数中。
+
+p2实例执行完catch()函数后，p2的状态实际是变为fulfilled，只不过它的返回值是Error的信息。
+
+
+如果想要Promise.all()函数能触发catch()函数，那么就不要在p1、p2实例中定义catch()函数
+
+```js
+const p1 = new Promise((resolve, reject) => {
+    resolve('success');
+})
+    .then(result => result);
+
+const p2 = new Promise((resolve, reject) => {
+    throw new Error('error');
+})
+    .then(result => result);
+
+Promise.all([p1, p2])
+    .then(result => console.log(result))
+    .catch(e => console.log(e)); // 抛出异常，Error: error
+```
+
 **2、Promise.race()函数**
+
+Promise.race()函数作用于多个Promise实例上，返回一个新的Promise实例，表示的是如果多个Promise实例中有任何一个实例的状态发生改变，那么这个新实例的状态就随之改变，而最先改变的那个Promise实例的返回值将作为新实例的回调函数的参数。
+
+```js
+const p = Promise.race([p1, p2, p3]);
+```
+
+当p1、p2、p3这3个Promise实例中有任何一个执行成功或者失败时，由Promise.race()函数生成的实例p的状态就与之保持一致，并且最先那个执行完的实例的返回值将会成为p的回调函数的参数。
+
+
+使用Promise.race()函数可以实现这样一个场景：假如发送一个Ajax请求，在3秒后还没有收到请求成功的响应时，会自动处理成请求失败。
+
+```js
+const p1 = ajaxGetPromise('/testUrl');
+const p2 = new Promise(function (resolve, reject) {
+      setTimeout(() => reject(new Error('request timeout')), 3000)
+});
+const p = Promise.race([p1, p2]);
+p.then(console.log).catch(console.error);
+```
 
 **3、Promise.resolve()函数**
 
+Promise提供了一个静态函数resolve()，用于将传入的变量转换为Promise对象，它等价于在Promise函数体内调用resolve()函数。
+
+Promise.resolve()函数执行后，Promise的状态会立即变为fulfilled，然后进入then()函数中做处理。
+
+```js
+Promise.resolve('hello');
+// 等价于
+new Promise(resolve => resolve('hello'));
+```
+
+在Promise.resolve(param)函数中传递的参数param，会作为后续then()函数的回调函数接收的参数。
+
+```js
+Promise.resolve('success').then(result => console.log(result));
+```
+
+执行上面的代码后，会输出字符串“success”。
+
 **4、Promise.reject()函数**
 
+Promise.reject()函数用于返回一个状态为rejected的Promise实例，函数在执行后Promise的状态会立即变为rejected，从而会立即进入catch()函数中做处理，等价于在Promise函数体内调用reject()函数。
+
+```js
+const p = Promise.reject('出错了');
+// 等价于
+const p = new Promise((resolve, reject) => reject('出错了'));
+```
+
+在Promise. reject (param)函数中传递的参数param，会作为后续catch()函数的回调函数接收的参数。
+
+```js
+Promise.reject('fail').catch(result => console.log(result));
+```
+
+执行上面的代码后，会输出字符串“fail”。
 
 
 #### 7.11.4 Promise的用法实例
