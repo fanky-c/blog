@@ -8586,6 +8586,172 @@ Promise.reject('fail').catch(result => console.log(result));
 
 
 #### 7.11.4 Promise的用法实例
+##### 7.11.4.1 场景1：Promise代码与同步代码在一起执行
+
+```js
+const promise = new Promise((resolve, reject) => {
+    console.log(1);
+    resolve();
+    console.log(2);
+});
+promise.then(() => {
+    console.log(3);
+});
+console.log(4);
+
+// 结果 1 2 4 3
+```
+
+在上面的代码中，考察的是对Promise对象执行时机的理解，大致会分为以下几个过程。
+
+
+· Promise在创建后会立即执行，所有同步代码按照书写的顺序从上往下执行，包括Promise外的同步代码，因此会先输出“1 2 4”。
+
+· resolve()函数或者reject()函数会在同步代码执行完毕后再去执行。
+
+· 当resolve()函数或者reject()函数执行后，进入then()函数或者catch()函数中执行，实例中调用了resolve()函数，会进行到then()函数中，因此会再输出“3”。
+
+
+##### 7.11.4.2 场景2：同一个Promise实例内，resolve()函数和reject()函数先后执行
+
+```js
+const promise2 = new Promise((resolve, reject) => {
+    resolve('success1');
+    reject('error');
+    resolve('success2');
+});
+
+promise2
+    .then((res) => {
+        console.log('then: ', res);
+    })
+    .catch((err) => {
+        console.log('catch: ', err);
+    });
+
+// 结果 then: success1
+```
+
+一个Promise的实例只能有一次状态的变更，当执行了resolve()函数后，后续其他的reject()函数和resolve()函数都不会执行，然后Promise进入then()函数中做处理。
+
+##### 7.11.4.3 场景3：同一个Promise实例自身重复执行
+
+我们生成一个Promise的实例，针对这个实例重复调用then()函数，在then()函数中输出一个时间差值，看看最终的输出结果是什么。
+
+```js
+const promise3 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log('once');
+        resolve('success');
+    }, 1000);
+});
+const start = Date.now();
+promise3.then((res) => {
+    console.log(res, Date.now() - start);
+});
+promise3.then((res) => {
+    console.log(res, Date.now() - start);
+});
+```
+
+同一个Promise的实例只能有一次状态变换的过程，在状态变换完成后，如果成功会触发所有的then()函数，如果失败会触发所有的catch()函数。
+
+在上面的代码中，第1～6行生成promise3实例，通过setTimeout()函数延迟执行resolve()函数，会继续向下执行到第7行代码，得到一个start时间戳。
+
+当等待一秒后，执行第2行的setTimeout()函数，首先输出一个字符串'once'，然后执行resolve()函数并传递字符串'success'，开始进入第8行的then()函数中，计算当前时间戳与start时间戳的差值。
+
+由于Promise的状态只能改变一次，第10行的then()函数与第8行的then()函数都会执行，而且会接收相同的参数，然后重新计算时间戳的差值。
+
+如果大家在运行后得到的结果不同也是正常情况，这取决于运行的环境，很可能会相差几毫秒。
+
+```js
+once
+success 1001
+success 1002
+```
+
+##### 7.11.4.4 场景4：在then()函数中返回一个异常
+
+在场景4中，我们会在一个Promise实例的then()函数中返回一个异常，然后链式调用then()函数和catch()函数，在函数中输出关键信息，看看最终的输出结果是什么。
+
+```js
+Promise.resolve()
+    .then(() => {
+        console.log(1);
+        // new Error() 和 throw 的区别 ？
+        return new Error('error!!!');
+    })
+    .then((res) => {
+        console.log(2);
+        console.log('then: ', res);
+    })
+    .catch((err) => {
+        console.log(3);
+        console.log('catch: ', err);
+    });
+```
+
+很多人看到代码中出现了new Error()函数就会想当然地认为会执行后面的catch()函数，其实不是这样的。
+
+在then()函数中用return关键字返回了一个“Error”，依然会按照正常的流程走下去，进入第二个then()函数，并将Error实例作为参数传递，不会执行后续的catch()函数。
+
+这个不同于使用throw抛出一个Error，如果是throw抛出一个Error则会被catch()函数捕获。
+
+结果：
+
+```html
+1
+2
+Error: error!!!
+    at Promise.resolve.then (<anonymous>:4:16)
+```
+
+##### 7.11.4.5 场景5：then()函数接收的参数不是一个函数
+
+在之前的内容中，我们讲过then()函数接收的参数是函数的形式，而在场景5中，如果then()函数接收的参数不是一个函数，会产生什么样的情况呢？
+
+```js
+Promise.resolve(1)
+    .then(2)
+    .then(Promise.resolve(3))
+    .then(console.log);
+```
+
+很多人乍一看这段代码，会想当然地以为返回“3”，但是结果却不是这样的。
+
+这段代码的运行结果是只输出一个“1”，为什么会这样呢？
+
+何为值穿透现象？简单点理解就是传递的值会被直接忽略掉，继续执行链式调用后续的函数。
+
+场景5中，第一个then()函数接收一个值“2”，第二个then()函数接收一个Promise，都不是需要的函数形式，因此这两个then()函数会发生值穿透现象。
+
+而第三个then()函数因为接收到console.log()函数，因此会执行，此时接收的是最开始的resolve(1)的值，因此场景5最终会输出“1”。
+
+##### 7.11.4.6 场景6：两种方法处理rejected状态的Promise
+
+处理Promise失败的方法有两种，一种是使用then()函数的第二个参数，另一种是使用catch()函数。
+
+```js
+Promise.resolve()
+    .then(function success (res) {
+        throw new Error('error');
+    }, function fail1 (e) {
+        console.error('fail1: ', e);
+    })
+    .catch(function fail2 (e) {
+        console.error('fail2: ', e);
+    });
+```
+
+虽然这两种方法都能处理Promise状态变为rejected时的回调，但是then()函数的第二个函数却不能捕获第一个函数中抛出的异常，而catch()函数却能捕获到第一个函数中抛出的异常。
+
+结果如下所示
+
+```html
+fail2: Error: error
+```
+
+**这也是我们推荐使用catch()函数去处理Promise状态异常回调的原因。**
 
 ### 7.12 iterator与for...of循环
 
