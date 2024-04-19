@@ -8754,7 +8754,246 @@ fail2: Error: error
 **这也是我们推荐使用catch()函数去处理Promise状态异常回调的原因。**
 
 ### 7.12 iterator与for...of循环
+#### 7.12.1 iterator概述
+Iterator称为遍历器，是ES6为不同数据结构遍历所新增的统一访问接口，它有以下几个作用。
 
+· 为任何部署了Iterator接口的数据结构提供统一的访问机制。
+
+· 使得数据结构的成员能够按照某种次序排列。
+
+· 为新的遍历方式for...of提供基础。
+
+一个合法的Iterator接口都会具有一个next()函数，在遍历的过程中，依次调用next()函数，返回一个带有value和done属性的对象。value值表示当前遍历到的值，done值表示迭代是否结束，true表示迭代完成，Iterator执行结束；false表示迭代未完成，继续执行next()函数，进入下一轮遍历中，直到done值为true。
+
+为了增进对Iterator遍历过程的理解，我们可以先使用数组来模拟Iterator接口的实现。
+
+```js
+function makeIterator(array) {
+    let index = 0;
+    return {
+        next: function () {
+            if (index < array.length) {
+                return {
+                    value: array[index++],
+                    done: false
+                };
+            } else {
+                return {
+                    value: undeﬁned,
+                    done: true
+                };
+            }
+        }
+    };
+}
+const arr = ['one', 'two'];
+const iter = makeIterator(arr);
+iter.next(); // {value: "one", done: false}
+iter.next(); // {value: "two", done: false}
+iter.next(); // {value: undeﬁned, done: true}
+```
+
+#### 7.12.2 默认iterator接口
+
+```js
+// 对象默认不能使用for...of循环
+const obj = {
+    name: 'kingx',
+    age: 11
+};
+for (let key of obj) {
+    console.log(key); // TypeError: obj[Symbol.iterator] is not a function
+}
+// 数组能正常使用for...of循环
+const arr = ['one', 'two'];
+for (let key in arr) {
+    console.log(key); // 0, 1
+}
+```
+
+原生具备Iterator接口的数据结构有以下几个。
+
+· Array。
+
+· Map。
+
+· Set。
+
+· String。
+
+· 函数的arguments对象。
+
+· NodeList对象。
+
+那么问题来了，如果我们想要自定义一些可以使用for...of循环的数据结构，那么该怎么做呢？
+
+方法就是为数据结构添加上Iterator接口，Iterator接口是部署在Symbol.iterator属性上的，它是一个函数，因此我们只需要对特定的数据结构加上Symbol.iterator属性即可。
+
+接下来我们就通过自定义的手段，为对象类型的数据添加Iterator接口，使得它也可以使用for...of循环，具体代码如下所示。
+
+```js
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+}
+// 在原型中添加[Symbol.iterator]属性
+Person.prototype[Symbol.iterator] = function () {
+    // 设置变量，记录遍历的次数
+    let count = 0;
+    // 通过Object.keys()函数获取实例自身的所有属性
+   let propArr = Object.keys(this);
+    return {
+        next: function () {
+            // 每执行一次遍历，count值加1
+            // 当count值小于属性的长度时，表示仍然可以遍历，设置done值为false
+            if (count < propArr.length) {
+                let index = count++;
+                return {
+                    value: propArr[index],
+                    done: false
+                };
+            } else {
+                // 当count值等于属性的长度时，遍历结束，设置done值为true
+                return {
+                    value: undeﬁned,
+                    done: true
+                }
+            }
+        }
+    }
+};
+const person = new Person('kingx', 12);
+for (let key of person) {
+    console.log(key, ':', person[key]);
+}
+```
+
+#### 7.12.3 for...of循环
+
+**1、数组结构使用for...of循环**
+
+```js
+const arr = ['one', 'two', 'three'];
+for (let key of arr) {
+    console.log(key); // one, two, three
+}
+```
+**2、Set数据结构和Map数据结构使用for...of循环**
+
+对于Set结构的数据，for...of循环会返回Set中的每个值。
+
+```js
+let set = new Set(['one', 'two', 'three']);
+for (let key of set) {
+    console.log(key); // one, two, three
+}
+```
+
+对于Map结构的数据，for...of循环在执行每轮循环时，会将Map中的每个键和对应的值组合成一个数组进行返回。
+
+```js
+let map = new Map();
+map.set('name', 'kingx');
+map.set('age', 12);
+map.set('address', 'beijing');
+for (let prop of map) {
+    console.log(prop);
+}
+
+// 结果
+// [ 'name', 'kingx' ]
+// [ 'age', 12 ]
+// [ 'address', 'beijing' ]
+```
+
+**3、NodeList结构使用for...of循环**
+
+```js
+<p>这是第一个段落</p>
+<p>这是第二个段落</p>
+<p>这是第三个段落</p>
+
+<script>
+    const pList = document.querySelectorAll(‘p’);
+    for (let p of pList) {
+        console.log(p.innerText);
+    }
+</script>
+```
+
+**4、函数参数arguments对象使用for...of循环**
+
+```js
+function foo() {
+    for (let arg of arguments) {
+        console.log(arg);
+    }
+}
+foo('name', 'age', 'address');
+```
+
+**5、特定函数的返回值使用for...of循环**
+
+· Object.entries()函数：返回一个遍历器对象，由键、值构成的对象数组。
+
+· Object.keys()函数：返回一个遍历器对象，由所有的键构成的数组。
+
+· Object.values()函数：返回一个遍历器对象，由所有的值构成的数组。
+
+#### 7.12.4 for...of循环与其他循环方式对比
+
+for...of循环与forEach()函数循环和for...in循环进行比较。
+
+forEach()函数循环的主要问题在于无法跳出循环，不支持break和continue关键字，如果使用了break或continue关键字则会抛出异常，使用return关键字会跳过当前循环，但仍会执行后续的循环。
+
+```js
+const arr = ['one', 'two', 'three'];
+arr.forEach(function (item, index) {
+    if (index === 1) {
+        return item; // 这里如果使用break和continue关键字，会抛出异常
+                     // 使用return关键字会跳过当前循环
+    }
+    console.log(item);
+});
+// 上面代码输出的结果为“one”“three”。
+```
+for...in循环的主要问题在于，它主要是为遍历对象设计的，对数组遍历并不友好，主要存在以下两个问题。
+
+第一个问题是，在使用for...in循环遍历数组时，返回的键是字符串表示的数组的索引，如“0”“1”“2”，并不是数组项的值。
+
+第二个问题是，通过手动给数组实例添加的属性，同样会被遍历出来，而事实上我们并不希望这些额外的属性被遍历出来。
+
+```js
+const arr = ['one', 'two', 'three'];
+arr.name = 'myArr';
+for (let key in arr) {
+    console.log(key, typeof key);
+}
+/** 结果：
+   0 string
+   1 string
+   2 string
+   name string
+ */
+```
+
+
+相比于forEach()函数循环和for...in循环，for...of循环就有一些显著的优点。
+
+优点1：和for...in循环有同样的语法，但没有for...in循环的缺点，遍历数组时，返回的是数组每项的值，而且给数组实例新增的属性并不会被遍历出来。
+
+优点2：在for...of循环中，可以使用break、continue和return等关键字。
+
+```js
+const arr = ['one', 'two', 'three'];
+for (let key of arr) {
+    if (key === 'two') {
+        break;
+    }
+    console.log(key);
+}
+// one
+```
 ### 7.13 generator()函数
 
 ### 7.14 class
