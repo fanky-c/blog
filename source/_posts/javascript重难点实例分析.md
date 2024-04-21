@@ -8995,7 +8995,245 @@ for (let key of arr) {
 // one
 ```
 ### 7.13 generator()函数
+#### 7.13.1 Generator()函数的概述与特征
+
+**1、Generator()函数的概述**
+Generator()函数是ES6提供的一种异步编程解决方案。
+
+Generator()函数从语法上可以理解为是一个状态机，函数内部维护多个状态，函数执行的结果返回一个部署了Iterator接口的对象，通过这个对象可以依次获取Generator()函数内部的每一个状态。
+
+**2、Generator()函数的特征**
+
+Generator()函数本质上也是一个函数，调用方法也与普通函数相同，但是相比较于普通的函数，有以下两个明显的特征。
+
+· function关键字与函数名之间有一个星号（*）。
+
+· 函数体内部使用yield关键字来定义不同的内部状态。
+
+案例
+
+```js
+function* helloworldGenerator() {
+    console.log('Generator执行');
+    yield 'hello';
+    yield 'world';
+}
+
+const hw = helloworldGenerator();
+console.log('这是测试执行先后顺序的语句');
+hw.next();
+
+// 执行结果
+// 这是测试执行先后顺序的语句
+// Generator执行
+```
+
+代码中定义的helloWorldGenerator()函数在执行后，函数体并没有直接执行，而是返回一个部署了Iterator接口的对象，直到调用next()函数时，才开始从函数头部向下执行，直到遇到yield表达式或者return语句才会停止。
+
+**3、Generator()函数中的yield表达式与next()函数的关系**
+
+Generator()函数返回的是部署了Iterator接口的对象，而该对象是通过调用next()函数来遍历内部状态的，所以在没有调用下一轮next()函数时，函数处于暂停状态，而这个暂停状态就是通过yield表达式来体现的，因此Generator()函数对异步的控制是通过yield表达式来实现的。
+
+通过Iterator接口的next()函数执行过程可以看出next()函数与yield表达式的关系。
+
+· next()函数的返回值是一个具有value和done属性的对象，next()函数调用后，如果遇到yield表达式，就会暂停后面的操作，并将yield表达式执行的结果作为value值进行返回，此时done属性的值为false。
+
+· 当再次执行next()函数时，会再继续往下执行，直到遇到下一个yield表达式。
+
+· 当所有的yield语句执行完毕时，会直接运行至函数末尾，如果有return语句，将return语句的表达式值作为value值返回；如果没有return语句，则value以undefined值进行返回，这两种情况下的done属性的值都为true，遍历结束。
+
+```js
+function* helloworldGenerator() {
+    yield 'hello';
+    yield 'world';
+    return 'success';
+}
+
+const hw = helloworldGenerator();
+hw.next();  // {value: "hello", done: false}
+hw.next();  // {value: "world", done: false}
+hw.next();  // {value: "success", done: true}
+```
+
+return与yield语句都能将后面的表达式作为next()函数的返回值，但是它们也是有差异的，主要表现在以下几个方面。
+
+· 当遇到yield语句时，程序的执行会暂停，而return语句却不会，一旦return语句执行，整个函数执行结束，后面的yield语句都会失效。
+
+· return语句如果没有返回值，那么next()函数的返回值为“{ value:undefined,done: true }”。yield语句如果没有接表达式，next()函数的返回值中value值同样为“undefined”，而done属性的值为“false”。
+
+· Generator()函数能有多个yield语句，但是只能有一个return语句。
+
+
+yield语句本身没有返回值，如果将其赋给一个变量，则该变量的值为undefined。如果我们想要使用上一轮yield表达式的结果，则需要借助next()函数，next()函数携带的参数可以作为上一轮yield表达式的返回值。
+
+```js
+  function* foo(x) {
+      let y = 3 * (yield (x + 2));
+      let z = yield (y / 4);
+      return (x + y + z);
+  }
+
+ let a = foo(5);
+ a.next(); // { value:7, done:false }
+ a.next(); // { value:NaN, done:false }
+ a.next(); // { value:NaN, done:true }
+
+ let b = foo(5);
+ b.next(); // { value:7, done:false }
+ b.next(8); // { value:6, done:false }
+ b.next(9); // { value:38, done:true }
+```
+
+**4、for...of循环遍历Generator()函数的返回值**
+
+Generator()函数的返回值是一个部署了Iterator接口的对象，刚好可以使用for...of循环进行遍历，并且不需要手动调用next()函数，遍历的结果就是yield表达式的返回值。
+
+```js
+function* testGenerator() {
+    yield 'hello';
+    yield 'world';
+}
+
+const t = testGenerator();
+for (let key of t) {
+    console.log(key); // 先后输出"hello""world"
+}
+```
+
+对象类型的值在默认情况下是不能使用for...of循环进行遍历的，但是借助于Generator()函数可以实现for...of循环的遍历。
+
+主要思路是给对象的Symbol.iterator属性设置一个Generator()函数，在Generator()函数内通过yield控制遍历的返回值。
+
+```js
+function* propGenerator() {
+    let propArr = Object.keys(this);
+    for (let prop of propArr) {
+     // 通过yield控制每轮循环的返回值为由属性名和属性值构成的数组
+        yield [prop, this[prop]];
+    }
+}
+let obj = {
+    name: 'kingx',
+    age: 12
+};
+
+// 为obj对象添加Symbol.iterator属性
+obj[Symbol.iterator] = propGenerator;
+// 对yield的返回值
+for (let [key, value] of obj) {
+    console.log(key, ':', value);
+}
+
+// 结果
+// name : kingx
+// age : 12
+```
+#### 7.13.2 Generator()函数注意事项
+
+**1、默认情况下不能使用new关键字**
+
+**2、yield表达式会延迟执行**
+
+在Generator()函数中，yield表达式只有在调用next()函数时才会去执行，因此起到了延迟执行的效果。
+
+```js
+function* testGenerator() {
+    yield 1 + 2;
+}
+const tg = testGenerator();
+tg.next(); // {value: 3, done: false}
+```
+
+**3、yield表达式只能在Generator()函数中调用**
+
+
+**4、yield表达式需要小括号括起来**
+
+当一个yield表达式出现在其他表达式中时，需要用小括号将yield表达式括起来，否则会抛出语法异常。
+
+```js
+function* demo() {
+    console.log('Hello' + yield 123); // 抛出SyntaxError异常
+    console.log('Hello' + (yield 123)); // 正确
+}
+```
+
+**5、Generator()函数中的this特殊处理**
+
+在默认情况下，不能使用new关键字生成Generator的实例，因此Generator()函数中的this是无效的。
+
+```js
+function* testGenerator() {
+    this.name = 'kingx';
+    yield 'hello';
+    yield 'world';
+}
+
+const t = testGenerator();
+t.next();
+console.log(t.name);  // undeﬁned
+```
+
+在this上绑定的name属性不会生效，访问的时候会返回“undefined”。
+
+如果既想使用Generator()函数的特性，又想使用this的特性，那该怎么做呢？
+
+```js
+function* testGenerator() {
+    this.name = 'kingx';
+    yield 'hello';
+    yield 'world';
+}
+// 使用call()函数改变执行主体为testGenerator的prototype属性
+let t = testGenerator.call(testGenerator.prototype);
+t.next();
+console.log(t.name);  // kingx
+```
+
+**6、 Generator()函数嵌套使用**
+
+一般的写法如下所示。
+
+```js
+function* fn1() {
+    yield 'test1';
+}
+function* fn2() {
+    yield 'test2';
+    // 手动遍历嵌套的Generator()函数
+    for(let key of fn1()) {
+          console.log(key);
+    }
+    yield 'test3';
+}
+
+let f = fn2();
+for (let key of f) {
+    console.log(key);
+}
+```
+为了解决这个问题，ES6提供了一种新的写法，那就是使用yield* 表达式，以支持Generator()函数的嵌套使用。
+
+上面实例使用yield* 表达式的写法后的代码如下所示。
+
+```js
+function* fn1() {
+    yield 'test1';
+}
+function* fn2() {
+    yield 'test2';
+    // 调用另外一个Generator()函数，使用yield*关键字
+    yield* fn1();
+    yield 'test3';
+}
+
+let f = fn2();
+for (let key of f) {
+    console.log(key);
+}
+```
 
 ### 7.14 class
+
 
 ### 7.15 module
