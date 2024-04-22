@@ -9234,6 +9234,156 @@ for (let key of f) {
 ```
 
 ### 7.14 class
+#### 7.14.1 Class基本用法
+
+传统的JavaScript中只有对象，没有类概念，跟面向对象语言差异很大。为了让JavaScript具有更接近面向对象语言的写法，ES6引入了Class（类）的概念，通过class关键字定义类。
+
+不管是ES5还是ES6的写法，想要生成对象的实例，都需要通过new关键字调用构造函数，但是在具体实现上有一些差异。
+
+**ES5需要定义构造函数，在构造函数中定义实例属性，然后在prototype原型上添加原型属性或者函数。**
+
+**ES6则使用class关键字定义类的名称，然后在类的constructor构造函数中定义实例属性，原型属性在class内部直接声明并赋值，原型函数的声明与构造函数处于同一层级，并且省略function关键字。**
+
+下面是分别使用ES5和ES6的写法来生成对象实例的代码。
+
+```js
+// ES5的写法
+function Person1(name, age) {
+    // 实例属性
+    this.name = name;
+    this.age = age;
+}
+// 原型属性
+Person1.prototype.publicCount = 1;
+// 原型函数
+Person1.prototype.getName = function () {
+    return this.name;
+};
+const p1 = new Person1('kingx', 12);
+console.log(p1.getName()); // kingx
+
+
+// ES6的写法
+class Person2 {
+    // 原型属性
+    publicCount = 1;
+    constructor(name, age) {
+   // 实例属性
+        this.name = name;
+        this.age = age;
+    }
+    // 原型函数
+    getName() {
+        return this.name;
+    }
+}
+const p2 = new Person2('kingx', 12);
+console.log(p2.getName()); // kingx
+```
+
+class的本质还是一个函数，只不过是函数的另一种写法，这种写法可以让对象的原型属性和函数更加清晰。
+
+```js
+console.log(typeof Person2); // function
+```
+
+事实上，class中的所有属性和函数都是定义在prototype属性中的，但是我们却没有使用过prototype属性，这是为什么呢？其实这是因为ES6将prototype相关的操作封装在了class中，避免我们直接去使用prototype属性。
+
+我们以前面代码中的getName属性做测试。
+
+```js
+console.log(p2.getName === Person2.prototype.getName); // true
+```
+
+p2实例的getName属性与Person2类原型中的getName属性是严格相等的。
+
+**1、class重点理解的内容**
+
+在class内部有两点内容需要重点理解，一个是constructor()函数，一个是静态属性和函数，接下来将详细讲解。
+
+1、constructor()函数
+
+constructor()函数是一个类必须具有的函数，可以手动添加，如果没有手动添加，则会自动隐式添加一个空的constructor()函数。
+
+constructor()函数默认会返回当前对象的实例，即默认的this指向，我们可以手动修改返回值。
+
+```js
+class Person3 {
+    constructor(name) {
+        this.name = name;
+        return {};
+    }
+    getName() {
+        return this.name;
+    }
+}
+const p = new Person3('kingx');
+console.log(p.getName()); // TypeError: p.getName is not a function
+```
+
+2、静态属性和函数
+
+静态属性和函数同样存在于类内部，使用static关键字修饰时，静态属性和函数无法被实例访问，只能通过类自身使用。
+
+```js
+class Foo {
+    static classProp = 'staticProp';
+    static classMethod() {
+        return 'hello';
+    }
+}
+// 类自身可以正常访问静态属性和函数
+Foo.classProp;  // 'staticProp'
+Foo.classMethod(); // 'hello'
+
+const foo = new Foo();
+// 通过实例访问静态属性，返回undeﬁned
+foo.classProp; // undeﬁned
+// 通过实例访问静态函数，抛出异常
+foo.classMethod(); // TypeError: foo.classMethod is not a function
+```
+
+静态函数中的this指向的是类本身，而不是类的实例，也正因为静态函数和实例函数中的this是隔离的，所以同一个类中可以存在函数名相同的静态函数和实例函数。
+
+```js
+class MyClassroom {
+    constructor(number) {
+        this.number = number;
+    }
+    // 静态函数，包含的this关键字指向的是类本身，而不是实例
+    static get1() {
+        return this.number;
+    }
+    // 实例函数，包含的this指向实例
+    get1() {
+        return this.number;
+    }
+}
+
+console.log(MyClassroom.get1()); // undeﬁned
+// 为类本身添加变量
+MyClassroom.number = 60;
+console.log(MyClassroom.get1()); // 60
+
+const classroom = new MyClassroom(20);
+console.log(classroom.get1()); // 20
+```
+
+**2、Class使用示例**
+
+
+**3、Class使用注意点**
+
+#### 7.14.2 Class继承
 
 
 ### 7.15 module
+#### 7.15.1 Module概述
+
+#### 7.15.2 export命令
+
+#### 7.15.3 import命令
+
+#### 7.15.4 export default命令
+
+#### 7.15.5 Module加载的实质
