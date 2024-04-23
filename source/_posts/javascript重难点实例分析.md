@@ -9371,11 +9371,195 @@ console.log(classroom.get1()); // 20
 
 **2、Class使用示例**
 
+下面我们使用Class定义一个类，来完成一个简单的版本控制功能，主要有以下操作。
+
+· 使用一个二维数组作为所有历史提交记录的集合，数组的每个元素为一个一维数组，表示某次commit时记录的信息。
+
+· 使用一个一维数组装下用户所有的历史修改值，当调用commit()函数时，会将历史修改值添加至历史记录对应的二维数组中。
+
+· 当调用revert()函数时，会回滚到最近一次commit的版本。
+
+```js
+class VersionedArray {
+    constructor() {
+        super();
+        // 所有的历史提交值
+        this.arr = [];
+        // 初始状态空的二维数组
+        this.history = [[]];
+    }
+    commit() {
+        // 每次commit时，先执行slice()函数获取一次，然后添加到history二维数组中
+        this.history.push(this.arr.slice());
+    }
+    revert() {
+        // 执行revert()函数时，会将距离最近一次commit、新增的但是没有commit的内容全部清空
+        // 返回到上一次commit的状态
+        this.arr.splice(0, this.arr.length, ...this.history[this.history.length - 1]);
+    }
+}
+
+let x = new VersionedArray();
+
+// 第一次修改了1
+x.arr.push(1);
+
+// 第二次修改了2
+x.arr.push(2);
+console.log(x.arr); // [1, 2]
+// 此时并没有commit，历史记录仍然为空
+console.log(x.history); // [[]]
+// 执行commit()函数，添加至历史记录中
+x.commit();
+console.log(x.history); // [[], [1, 2]]
+
+// 第三次修改了3
+x.arr.push(3);
+console.log(x.arr); // [1, 2, 3]
+// 再次执行commit()函数，将当前arr值添加至历史记录中
+x.commit();
+console.log(x.history); // [ [], [ 1, 2 ], [ 1, 2, 3 ] ]
+
+// 第四次修改了4
+x.arr.push(4);
+// 由于没有commit，直接回滚到最近的一个历史版本
+x.revert();
+console.log(x.arr); // [1, 2, 3]
+```
 
 **3、Class使用注意点**
 
+**（1）只能与new关键字配合使用**
+
+```js
+class Person {}
+
+const p1 = new Person(); // 正常
+const p2 = Person(); // TypeError: Class constructor Person cannot be invoked without 'new'
+```
+
+**（2）不存在变量提升**
+
+之前章节有讲过let关键字和const关键字声明的变量不存在变量提升，class定义的类同样不存在变量提升，因此如果在定义类之前去使用它，会抛出引用异常。
+
+```js
+const p = new Person(); // ReferenceError: Person is not deﬁned
+class Person {}
+```
+
+**（3）在类中声明函数时，不要加function关键字**
+
+```js
+class Person3 {
+    getName function() {  // SyntaxError: Unexpected token function
+        return 'kingx';
+    }
+}
+```
+
+**（4）this指向会发生变化**
+
+类内部的this默认指向的是类的实例，在调用实例函数时，一定要注意this的指向性问题。如果单独使用实例函数时，this的指向会发生变化，很容易带来一定的问题。
+
+```js
+class Person4 {
+    constructor(name) {
+        this.name = name;
+    }
+    getName() {
+        return this.name;
+    }
+}
+const p = new Person4('kingx');
+let { getName } = p;
+getName(); // TypeError: Cannot read property 'name' of undeﬁned
+```
+
+在上面的代码中，生成Person4对象的实例p，然后使用解构获取到getName()函数，在调用时抛出类型异常。
+
+这是因为getName()函数是在全局环境中执行的，this指向的是全局环境，而在ES6的class关键字中使用了严格模式。在严格模式下this不能指向全局环境，而是指向undefined，所以getName()函数在执行时，this实际为undefined，通过undefined引用name属性就会抛出异常。
+
+为了解决上述问题，我们可以在构造函数中使用bind关键字重新绑定this。
+
+```js
+class Person4 {
+    constructor(name) {
+        this.name = name;
+        // 重新绑定getName()函数中this的指向为当前实例
+        this.getName = this.getName.bind(this);
+    }
+    getName() {
+        return this.name;
+    }
+}
+const p = new Person4('kingx');
+let { getName } = p;
+getName(); // kingx
+```
+
+在上面的代码中，使用bind关键字重新绑定了getName()函数在调用时内部的this，使其指向实例p，因此在执行getName()函数时，输出结果为“kingx”。
+
 #### 7.14.2 Class继承
 
+ES6新增了extends关键字，可以快速实现类的继承。
+
+在子类的constructor构造函数中，需要首先调用super()函数执行父类的构造函数，再执行子类的函数修饰this。
+
+```js
+// 父类
+class Animal {
+    constructor(type) {
+        this.type = type;
+    }
+}
+
+// 子类
+class Cat extends Animal {
+    constructor(name, type) {
+        // 优先调用super()函数执行父类构造函数
+        super(type);
+        this.name = name;
+    }
+    getName() {
+        return this.name;
+    }
+}
+
+const cat = new Cat('tom', 'cat');
+console.log(cat.type); // cat
+console.log(cat.getName()); // tom
+```
+
+使用extends关键字不仅可以继承自定义的类，还可以继承原生的内置构造函数
+
+```js
+class MyArr extends Array {
+    constructor() {
+        super();
+    }
+    pushItem(item) {
+          //因为继承了Array()构造函数，所以可以直接通过this访问到数组的push()函数
+        this.push(item);
+    }
+}
+
+let arr = new MyArr();
+arr.pushItem({name: 'kingx'});
+```
+
+父类的静态函数无法被实例继承，但可以被子类继承。子类在访问时同样是通过本身去访问，而不是通过子类实例去访问。
+
+```js
+class Parent {
+    static staticMethod() {
+        return 'hello';
+    }
+}
+class Child extends Parent {}
+
+// 通过子类本身可以访问到父类的静态函数，输出“hello”
+console.log(Child.staticMethod());
+```
 
 ### 7.15 module
 #### 7.15.1 Module概述
