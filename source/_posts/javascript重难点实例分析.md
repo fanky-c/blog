@@ -9564,9 +9564,187 @@ console.log(Child.staticMethod());
 ### 7.15 module
 #### 7.15.1 Module概述
 
+ES6提供了模块化的设计，可以将具有某一类特定功能的代码放在一个文件里，在使用时，只需要引入特定的文件，便可以降低文件之间的耦合性。
+
+相比于早期制定的CommonJS规范，
+
+* CommonJS在运行时完成模块的加载，而ES6模块是在编译时完成模块的加载，效率要更高。
+* CommonJS模块是对象，而ES6模块可以是任何数据类型，通过export命令指定输出的内容，并通过import命令引入即可。
+* CommonJS模块会在require加载时完成执行，而ES6的模块是动态引用，只在执行时获取模块中的值。
+
+
 #### 7.15.2 export命令
 
+##### 7.15.2.1 export命令的特性
+
+export命令的一些特性需要大家重点理解。
+
+**（1）export的是接口，而不是值**
+
+不能直接通过export输出变量值，而是需要对外提供接口，必须与模块内部的变量建立一一对应的关系，例如以下写法都是错误的。
+
+```js
+let obj = {};
+let a = 1;
+function foo() {}
+
+export obj;  // 错误写法
+export a;  // 错误写法
+export foo; // 错误写法
+```
+
+需要修改成对象被括起来或者直接导出的形式。
+
+```js
+let obj = {};
+function foo() {}
+
+export let a = 1; // 正确写法
+export {obj}; // 正确写法
+export {foo}; // 正确写法
+```
+
+**（2）export值的实时性**
+
+export对外输出的接口，在外部模块引用时，是实时获取的，并不是import那个时刻的值。
+
+假如在文件中export一个变量，然后通过定时器修改这个变量的值，那么在其他文件中不同时刻使用import的变量，值也会不同。
+
+```js
+// 导出文件export1.js
+const name = 'kingx2';
+// 一秒后修改变量name的值
+setTimeout(() => name = 'kingx3', 1000);
+export {name};
+
+// 导入文件import1.js
+import {name} from './export1.js';
+console.log(name); // kingx2
+setTimeout(() => {
+  console.log(name); // 'kingx3'
+}, 1000);
+```
+
+##### 7.15.2.2 export命令的常见用法
+
+**（1）使用as关键字设置别名**
+
+如果不想对外暴露内部变量的真实名称，可以使用as关键字设置别名，同一个属性可以设置多个别名。
+
+在外部文件进行引入时，通过name和name2两个变量都可以访问到“kingx”值。
+
+```js
+const _name = 'kingx';
+export {_name as name};
+export {_name as name2};
+```
+
+**（2）相同变量名只能够export一次**
+
+```js
+const _name = ‘kingx’;
+const name = 'kingx';
+
+export {_name as name};
+export {name}; // 抛出异常，name作为对外输出的变量，只能export一次
+```
+
+**（3）尽量统一export**
+
+如果文件export的内容有很多，建议都放在文件末尾处统一进行export，这样对export的内容能一目了然。
+
 #### 7.15.3 import命令
+
+如果想要在HTML页面中使用import命令，需要在script标签上使用代码type="module"。
+
+```js
+<script type="module"></script>
+```
+
+##### 7.15.3.1 import命令的特性
+
+**（1）与export的变量名相同**
+
+import命令引入的变量需要放在一个大括号里，括成对象的形式，而且import的变量名必须与export的变量名一致。
+
+这点特性在使用了export default命令时会有新的表现形式，在后面我们会具体讲到。
+
+```js
+// export.js
+const _name = 'kingx';
+export {_name as name};
+
+// import.js
+import {_name} from './export.js'; // 抛出异常
+import {name} from './export.js'; // 引入正常
+```
+
+**（2）相同变量名的值只能import一次**
+
+```js
+// export1.js
+export const name = 'kingx';
+
+// export2.js
+export const name = 'cat';
+
+// 同时从两个模块中引入name变量，会抛出异常。
+import {name} from './export1.js';
+import {name} from './export2.js'; // 抛出异常
+```
+
+**（3）import命令具有提升的效果**
+
+import命令具有提升的效果，会将import的内容提升到文件头部。
+
+```js
+// export.js
+export const name = 'kingx';
+
+// import.js
+console.log(name);  // kingx
+import {name} from './export.js';
+```
+
+在上面的代码中，import语句出现在输出语句的后面，但是仍然能正常输出。本质上是因为import是在编译期运行的，在执行输出代码之前已经执行了import语句。
+
+**（4）多次import时，只会一次加载**
+
+每个模块只加载一次，每个JS文件只执行一次，如果在同一个文件中多次import相同的模块，则只会执行一次模块文件，后续直接从内存读取。
+
+```js
+// export.js
+console.log('开始执行');
+export const name = 'kingx';
+export const age = 12;
+
+// import.js
+import {name} from './export.js';
+import {age} from './export.js';
+```
+
+**（5）import的值本身是只读的，不可修改**
+
+使用import命令导入的值，如果是基本数据类型，那么它们的值是不可以修改的，相当于一个const常量；如果是引用数据类型的值，那么它们的引用本身是不能修改的，只能修改引用对应的值本身。
+
+```js
+// export.js
+const obj = {
+    name: 'kingx5'
+};
+const age = 15;
+
+export {obj, age};
+
+// import.js
+import {obj, age} from './export.js';
+
+obj.name = 'kingx6'; // 修改引用指向的值，正常
+obj = {}; // 抛出异常，不可修改引用指向
+age = 15; // 抛出异常，不可修改值本身
+```
+
+##### 7.15.3.2 import命令的常见用法
 
 #### 7.15.4 export default命令
 
