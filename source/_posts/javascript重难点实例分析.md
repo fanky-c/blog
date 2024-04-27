@@ -9725,7 +9725,7 @@ import {age} from './export.js';
 
 **（5）import的值本身是只读的，不可修改**
 
-使用import命令导入的值，如果是基本数据类型，那么它们的值是不可以修改的，相当于一个const常量；如果是引用数据类型的值，那么它们的引用本身是不能修改的，只能修改引用对应的值本身。
+**使用import命令导入的值，如果是基本数据类型，那么它们的值是不可以修改的，相当于一个const常量；如果是引用数据类型的值，那么它们的引用本身是不能修改的，只能修改引用对应的值本身。**
 
 ```js
 // export.js
@@ -9746,6 +9746,129 @@ age = 15; // 抛出异常，不可修改值本身
 
 ##### 7.15.3.2 import命令的常见用法
 
+**（1）设置引入变量的别名**
+
+同样可以使用as关键字为变量设置别名，可以用于解决上一部分中相同变量名import一次的问题。
+
+```js
+// export1.js
+export const name = 'kingx';
+
+// export2.js
+export const name = 'cat';
+
+// 使用as关键字设置两个不同的别名，解决了问题
+import {name as personName} from './export1.js';
+import {name as animalName} from './export2.js';
+```
+
+**（2）模块整体加载**
+
+当我们需要加载整个模块的内容时，可以使用星号（*）配合as关键字指定一个对象，通过对象去访问各个输出值。
+
+```js
+// export.js
+const obj = {
+    name: 'kingx'
+};
+
+export const a = 1;
+export {obj};
+
+// import.js
+import * as a from './export.js';
+```
+
 #### 7.15.4 export default命令
 
+在之前的讲解中，使用import引入的变量名需要和export导出的变量名一样。在某些情况下，我们希望不设置变量名也能供import使用，import的变量名由使用方自定义，这时就要使用到export default命令了。
+
+```js
+// export.js
+const defaultParam = 1;
+
+export default defaultParam;
+
+// import.js
+import param from './export.js';
+console.log(param); // 1
+```
+
+在使用export default命令时，有几点是需要注意的。
+
+**1. 一个文件只有一个export default语句**
+
+**2. import的内容不需要使用大括号括起来**
+
 #### 7.15.5 Module加载的实质
+
+**ES6模块的运行机制是这样的：当遇到import命令时，不会立马去执行模块，而是生成一个动态的模块只读引用，等到需要用到时，才去解析引用对应的值。**
+
+由于ES6的模块获取的是实时值，就不存在变量的缓存。
+
+```js
+// export.js
+export let counter = 1;
+export function incCounter() {
+    counter++;
+}
+
+// import.js
+import {counter, incCounter} from './export7.js';
+console.log(counter); // 1
+incCounter();
+console.log(counter); // 2
+```
+
+第一次输出变量counter的值时，counter为“1”，在执行incCounter()函数后，counter的值加1，输出“2”。
+
+这表明导入的值仍然与原来的模块存在引用关系，并不是完全隔断的。
+
+如7.15.3小节的描述，这个引用关系是只读的，不能被修改。
+
+```js
+import {counter, incCounter} from './export7.js';
+console.log(counter); // 1
+counter++; // 抛出异常
+```
+
+对上述代码稍做修改，将counter的值设置为自增，就会抛出异常。
+
+如果在多个文件中引入相同的模块，则它们获取的是同一个模块的引用。
+
+在export.js文件中定义一个Counter模块，并导出一个Counter的实例，代码如下所示。
+
+```js
+function Counter() {
+    this.sum = 0;
+    this.add = function () {
+        this.sum += 1;
+    };
+    this.show = function () {
+        console.log(this.sum);
+    };
+}
+
+export let c = new Counter();
+```
+
+在另外两个模块中分别导入Counter模块，并进行不同处理。
+
+```js
+// import1.js
+import {c} from './export.js';
+c.add();
+
+// import2.js
+import {c} from './export.js';
+c.show();
+```
+
+在一个html文件中引入两个import文件。
+
+```js
+import './import1.js';
+import './import2.js';
+```
+
+通过控制台可以看到，结果输出为“1”。因为在两个import文件中使用的c变量指向的是同一个引用，在import1.js文件中调用了add()函数，增加了sum变量的值，在import2.js文件中输出sum变量时，值也变为了1。
