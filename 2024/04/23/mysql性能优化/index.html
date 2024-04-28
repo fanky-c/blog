@@ -91,7 +91,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#索引原理"><span class="toc-text">索引原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#联合索引"><span class="toc-text">联合索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#慢查询分析和优化"><span class="toc-text">慢查询分析和优化</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#索引目的"><span class="toc-text">索引目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引原理"><span class="toc-text">索引原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、磁盘IO与预读"><span class="toc-text">1、磁盘IO与预读</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、索引的数据结构"><span class="toc-text">2、索引的数据结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#慢查询分析和优化"><span class="toc-text">慢查询分析和优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#建立索引的几大原则"><span class="toc-text">建立索引的几大原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#联合索引"><span class="toc-text">联合索引</span></a></li></ol>
 </div>
     
 </div>
@@ -148,7 +148,17 @@
 </span>
     </div>
     <div class="post-content ">
-        <h2 id="索引原理"><a href="#索引原理" class="headerlink" title="索引原理"></a>索引原理</h2><h2 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h2><h2 id="慢查询分析和优化"><a href="#慢查询分析和优化" class="headerlink" title="慢查询分析和优化"></a>慢查询分析和优化</h2><p><br></p>
+        <h2 id="索引目的"><a href="#索引目的" class="headerlink" title="索引目的"></a>索引目的</h2><p><strong>索引的目的在于提高查询效率，可以类比字典，如果要查“mysql”这个单词，我们肯定需要定位到m字母，然后从下往下找到y字母，再找到剩下的sql。如果没有索引，那么你可能需要把所有单词看一遍才能找到你想要的，</strong>如果我想找到m开头的单词呢？或者ze开头的单词呢？是不是觉得如果没有索引，这个事情根本无法完成？</p>
+<h2 id="索引原理"><a href="#索引原理" class="headerlink" title="索引原理"></a>索引原理</h2><p>除了词典，生活中随处可见索引的例子，如火车站的车次表、图书的目录等。它们的原理都是一样的，通过不断的缩小想要获得数据的范围来筛选出最终想要的结果，同时把随机的事件变成顺序的事件，也就是我们总是通过同一种查找方式来锁定数据。</p>
+<p>数据库也是一样，但显然要复杂许多，因为不仅面临着等值查询，还有范围查询(&gt;、&lt;、between、in)、模糊查询(like)、并集查询(or)等等。数据库应该选择怎么样的方式来应对所有的问题呢？</p>
+<p>数据库实现比较复杂，数据保存在磁盘上，而为了提高性能，每次又可以把部分数据读入内存来计算，因为我们知道访问磁盘的成本大概是访问内存的十万倍左右，所以简单的搜索树难以满足复杂的应用场景。</p>
+<h3 id="1、磁盘IO与预读"><a href="#1、磁盘IO与预读" class="headerlink" title="1、磁盘IO与预读"></a>1、磁盘IO与预读</h3><p>磁盘读取数据靠的是机械运动，每次读取数据花费的时间可以分为寻道时间、旋转延迟、传输时间三个部分。</p>
+<p>寻道时间指的是磁臂移动到指定磁道所需要的时间。</p>
+<p>旋转延迟就是我们经常听说的磁盘转速，比如一个磁盘7200转，表示每分钟能转7200次，也就是说1秒钟能转120次，旋转延迟就是1/120/2 = 4.17ms。</p>
+<p>传输时间指的是从磁盘读出或将数据写入磁盘的时间，一般在零点几毫秒，相对于前两个时间可以忽略不计。</p>
+<p>考虑到磁盘IO是非常高昂的操作，计算机操作系统做了一些优化，当一次IO时，不光把当前磁盘地址的数据，而是把相邻的数据也都读取到内存缓冲区内，因为局部预读性原理告诉我们，当计算机访问一个地址的数据的时候，与其相邻的数据也会很快被访问到。每一次IO读取的数据我们称之为一页(page)。具体一页有多大数据跟操作系统有关，一般为4k或8k，也就是我们读取一页内的数据时候，实际上才发生了一次IO，这个理论对于索引的数据结构设计非常有帮助。</p>
+<h3 id="2、索引的数据结构"><a href="#2、索引的数据结构" class="headerlink" title="2、索引的数据结构"></a>2、索引的数据结构</h3><p>们现在总结一下，我们需要这种数据结构能够做些什么，其实很简单，那就是：每次查找数据时把磁盘IO次数控制在一个很小的数量级，最好是常数数量级。那么我们就想到如果一个高度可控的多路搜索树是否能满足需求呢？就这样，b+树应运而生。</p>
+<h2 id="慢查询分析和优化"><a href="#慢查询分析和优化" class="headerlink" title="慢查询分析和优化"></a>慢查询分析和优化</h2><h2 id="建立索引的几大原则"><a href="#建立索引的几大原则" class="headerlink" title="建立索引的几大原则"></a>建立索引的几大原则</h2><h2 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h2><p><br></p>
 <p><a href="https://tech.meituan.com/2014/06/30/mysql-index.html" target="_blank" rel="noopener">文章来源</a></p>
 <p><a href="https://www.cnblogs.com/rjzheng/p/12557314.html" target="_blank" rel="noopener">文章来源</a></p>
 
