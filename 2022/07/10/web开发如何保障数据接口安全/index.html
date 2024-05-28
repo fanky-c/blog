@@ -135,6 +135,9 @@
         <a class="tag" href="/tags/#接口安全" title="接口安全">接口安全</a>
         <span>/</span>
         
+        <a class="tag" href="/tags/#https" title="https">https</a>
+        <span>/</span>
+        
         
         </span>
         <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
@@ -147,7 +150,9 @@
 <li>对称加密：  加密和解密使用相同密钥的加密算法。简单点可以使用对称加密算法（如AES）来加解密，或者哈希算法处理（如MD5）。</li>
 <li>非对称加密：非对称加密算法需要两个密钥（公开密钥和私有密钥）。公钥与私钥是成对存在的，如果用公钥对数据进行加密，只有对应的私钥才能解密。更安全的做法，就是用非对称加密算法（如RSA或者SM2），公钥加密，私钥解密。</li>
 </ol>
-<h5 id="https加密过程"><a href="#https加密过程" class="headerlink" title="https加密过程"></a>https加密过程</h5><p><img src="/img/https.png" style="max-width:95%"></p>
+<h5 id="https加密过程"><a href="#https加密过程" class="headerlink" title="https加密过程"></a>https加密过程</h5><p><img src="/img/https1.jpg" style="max-width:95%"></p>
+<p><strong>上图需关注：非对称加密和对称加密阶段</strong></p>
+<p><img src="/img/https.png" style="max-width:95%"></p>
 <ol>
 <li>客户端发起Https请求，连接到服务器的443端口。</li>
 <li>服务器必须要有一套数字证书（证书内容有公钥、证书颁发机构、失效日期等）。</li>
