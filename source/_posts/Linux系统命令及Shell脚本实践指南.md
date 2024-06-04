@@ -45,7 +45,7 @@ info ls
 Linux系统中的用户分为3类，**即普通用户、根用户、系统用户。**
 1. 普通用户: 通常普通用户的UID大于500，因为在添加普通用户时，系统默认用户ID从500开始编号。
 2. 根用户: 根用户也就是root用户，它的ID是0，也被称为超级用户，root账户拥有对系统的完全控制权：可以修改、删除任何文件，运行任何命令。所以root用户也是系统里面最具危险性的用户，root用户甚至可以在系统正常运行时删除所有文件系统，造成无法挽回的灾难。
-3. 系统用户：系统用户是指系统运行时必须有的用户，但并不是指真实的使用者。系统用户的ID范围是1~499 
+3. 系统用户：系统用户是指系统运行时必须有的用户，但并不是指真实的使用者。系统用户的ID范围是1~499
 
 ```sh
 #要确认自己的UID，可以使用以下id命令来获得：
@@ -164,7 +164,7 @@ service crond status
 ```
 
 4. 查看定时任务 crontab -l
-   
+
 *如果由于特殊的原因需要禁止某些用户使用这个功能，可以将该用户的用户名添加至/etc/cron.deny中*
 
 #### /etc/crontab管理
@@ -192,7 +192,7 @@ Linux遵循一切皆文件的规则，对Linux进行配置时，在很大程度�
 3. 移动或重命名文件： mv，后面需要跟两个参数，**第一个参数是要被移动的文件，第二个参数是移动到的目录**
 ```sh
 # 把test.log文件移动到/mnt中
-mv test.log /mnt/ 
+mv test.log /mnt/
 # 把test.log重命名为test1.log
 mv test.log test1.log
 # 移动文件的同时重命名文件
@@ -234,7 +234,7 @@ cp a.txt /tmp/b.txt
 cp a.txt /tmp/
 
 # 复制目录所有文件
-cp -rf /dir1/* /dir2/ 
+cp -rf /dir1/* /dir2/
 ```
 
 #### 文件时间戳
@@ -245,7 +245,7 @@ cp -rf /dir1/* /dir2/
 ```sh
 # -l参数表示要求ls命令列出每个文件的详细信息，
 # -a参数则要求ls命令还要同时列出隐藏文件
-ls -al 
+ls -al
 [root@localhost ~]# ls -al
 total 112
 drwxr-x---  3 root root  4096 Oct  1 10:43 .
@@ -396,7 +396,7 @@ ls -li
 
 # 创建hard01的硬链接hard01_hlink
 # 硬链接hard01_hlink指向的inode和hard01指向inode是一致的
-ln hard01 hard01_hlink 
+ln hard01 hard01_hlink
 
 # ls -li 查看文件inode
 # 文件创建之初该值为1，该文件每增加一个硬链接该值将增1(变成2)，
@@ -415,7 +415,11 @@ cd soft
 touch soft01
 
 # 创建软连接使用-s，
+# 创建 soft01_slink 指向 soft01 (当你访问soft01_slink， 实际是访问soft01_slink)
 ln -s soft01 soft01_slink
+
+# 在 /home/user/ 目录下创建一个名为 bin_link 的符号链接，指向 /usr/local/bin 目录。
+ln -s /usr/local/bin /home/user/bin_link
 
 ls -li
 3834063-rw-r--r-- 1 root root 0 Jan 15 10:50 soft01
@@ -475,9 +479,9 @@ c:2
 a:4
 e:5
 d:1
-f:11 
+f:11
 
-# cat sort.txt | sort 
+# cat sort.txt | sort
 a:4
 b:3
 c:2
@@ -579,7 +583,7 @@ c
 ### 使用split分割大文件
 在Linux下使用split命令来实现文件的分割，支持按照行数分割和按照大小分割这两种模式。要说明的是，二进制文件因为没有“行”的概念，所以二进制文件无法使用行分割，而只能按照文件大小进行分割。
 ```sh
-# -l参数：指定每500行为一个文件 
+# -l参数：指定每500行为一个文件
 # 分割完成后，当前目录下会产生很多小文件
 split -l 500 big_file.txt small_file_
 
@@ -652,7 +656,7 @@ GATEWAY=192.168.159.2
 # 每个主机严格来说都应该有一个FQDN（全限定域名），所以往往域名就很长，
 # 如果这里写成search google.com，那么www就代表www.google. com了，
 # 这个关键字后可以跟多个域名。
-search bigo.local 
+search bigo.local
 nameserver 172.24.8.15 # 172.24.8.15为DNS主机的IP地址
 nameserver 172.24.8.16
 ```
@@ -681,7 +685,7 @@ baidu.com mail is handled by 15 mx.n.shifen.com.
 1. 硬件故障又主要分为网卡物理损坏、链路故障等原因。
 2. 软件主要表现为网卡驱动故障，也就是操作系统对网卡驱动的不兼容，这个问题往往需要通过安装对应的网卡设备驱动来解决
 ```sh
-# 第一步:确认网卡本身是否能正常工作? 
+# 第一步:确认网卡本身是否能正常工作?
 ping 127.0.0.1
 
 # 第二步确认网卡是否出现了物理或驱动故障，使用ping本机IP地址的方式，如果能ping通则说明本地设备和驱动都正常
@@ -725,7 +729,7 @@ ps [-Aawu]
 # -w 显示加宽可以显示更多信息
 # -u 显示有效使用者相关进程
 
-top 
+top
 ```
 
 ### 进程的终止： kill、killall
@@ -771,7 +775,7 @@ lsof /var/log/messages
 
 现假设文件/var/log/messages不小心被删除了，首先来确认一下当前是否有进程正在使用这个文件，如果有则可以继续，如果没有就无法使用该方法继续了。本例中看到有个PID为2449的进程正在使用该文件，那么接下来只要找到对应/proc目录下的文件就可以了
 ```sh
-# lsof | grep message 
+# lsof | grep message
 syslogd   2449      root    1w      REG      253,0   149423    4161767 /var/log/messages
 # cat /proc/2449/fd/2 > /var/log/messages
 # Service syslogd restart
@@ -842,10 +846,10 @@ grep 'r.*t$' /etc/passwd
 [a-zA-Z]
 
 # “^”符号出现在[]中，则代表取反
-[^a-z] 
+[^a-z]
 
 # 手机号码 （3移动8联调）
-^1[38][0-9]\{9\} 
+^1[38][0-9]\{9\}
 ```
 
 7. “ \”转义符号
@@ -913,7 +917,7 @@ echo 'helloworld' | grep '\bhello\b' # 无匹配
 20. 通配符
 ```sh
 # * 符号: 这里的“*”就是提到的第一个通配符，代表0个或多个字符。那么之前的*.doc就是指所有以.doc结尾的文件
-ls -l *.doc 
+ls -l *.doc
 ls -l A*.doc # 找doc文档是以字母A开头
 
 # ？符号： 如果要列出以字母A开头、但是只有两个字母的文件名、以.doc结尾的文件，就需要使用“?”了
@@ -956,8 +960,8 @@ grep 'go*d' regexp.txt # gd god good goood
 grep 'g.*d' regexp.txt # gd gad good goood
 
 # 使用“\”做字符转义, 下面.符号解析成正则任意字符
-grep 'www.helloworld.com' regexp.txt 
-grep 'www\.helloworld\.com' regexp.txt 
+grep 'www.helloworld.com' regexp.txt
+grep 'www\.helloworld\.com' regexp.txt
 ```
 
 ### 文本处理工具sed
@@ -1006,7 +1010,7 @@ sed 's/^this/that/' sed.txt # that is line 1, this is First line, line
 使用y命令可进行字符转换，其作用为将一系列字符逐个地变换为另外一系列字符
 ```sh
 # 将file文件的O替换N, L替换E, D替换成W
-sed 'y/OLD/NEW' file 
+sed 'y/OLD/NEW' file
 
 sed 'y/12345/ABCD' sed.txt
 # this is line A, this is First line
@@ -1100,7 +1104,7 @@ cat awk.txt | awk '{print length}'
 ## shell编程概述和编程基础
 ### shell介绍
 > shell是指一种命令行解释器，是为用户和操作系统之间通信提供的一种接口
-> 脚本语言又被称作解释型语言，这种语言经过编写后不需要做任何编译就可以运行。 
+> 脚本语言又被称作解释型语言，这种语言经过编写后不需要做任何编译就可以运行。
 > 计算机不能理解高级语言，只能理解机器语言，所以必须把高级语言翻译为机器码。而这种翻译的方式有两类，一类是编译，一类是解释，不同之处在于翻译的时间不同。编译型语言是运行前翻译，一般是使用编译工具将程序源码处理成机器认识的可执行文件（比如说Windows下的exe文件，Linux下的二进制可执行性文件），这种文件一旦产生，以后运行时将不需要再次翻译，所以一般来说，编译型语言的效率较高；而解释型语言是运行时翻译，执行一条语句就立即翻译一条，而且每次执行程序都需要进行解释，相对来说效率较低。但是也不能简单地认为编译型语言就一定比解释型效率高，随着解释器的发展，部分解释器能在运行程序时动态优化代码，因此这种效率差距也在一定程度上不断减小。
 
 
@@ -1139,7 +1143,7 @@ bash -x test.sh
 
 #### 如何确定内建命令：type
 ```sh
-type cd 
+type cd
 # cd is shell builtin
 
 type ifconfig
@@ -1157,7 +1161,7 @@ type ifconfig
 
 source test.sh
 # 执行成功， 同时返回脚本中最后一个命令的返回状态；
-# 如果没有返回值则返回0，代表执行成功； 
+# 如果没有返回值则返回0，代表执行成功；
 # 如果未找到指定的脚本则返回false
 ```
 #### 别名：alias
@@ -1239,8 +1243,8 @@ How many box do you want:10  #这里输入数字
 ```
 如果不指定变量，read命令会将读取到的值放入环境变量REPLY中。另外要记住，read是按行读取的，用回车符区分一行，你可以输入任意文字，它们都会保存在变量REPLY中。
 ```sh
-read 
-# 输入read命令 helloworld 
+read
+# 输入read命令 helloworld
 echo $REPLY
 # 输出 helloworld
 ```
@@ -1315,7 +1319,7 @@ Shell中的变量必须以字母或者下划线开头，后面可以跟数字、
 ```sh
 #定义变量：变量名=变量值
 #注意点：变量名和变量值没有空格，之间没任何空格
-name=cc 
+name=cc
 name="c c" #其中引号可以爽双引号也可以是单引号
 ```
 **取值**
@@ -1445,7 +1449,7 @@ Shell中有两类字符，一类是普通字符，在Shell中除了本身的字�
 要使用“\”来转义“$”字符，让“$”失去其特殊含义，而只作为一个符号出现。
 ```sh
 # echo $Dollar 报错
-# echo \$Dollar 
+# echo \$Dollar
 $Dollar
 ```
 <img src="/img/linux7.jpeg" style="max-width:95%" />
@@ -1734,7 +1738,7 @@ Shell中的字符串比较主要有等于、不等于、大于、小于、是否
 #如果expression测试返回真，则执行command
 if expression; then
     command
-fi    
+fi
 ```
 例子：
 ```sh
@@ -1768,7 +1772,7 @@ if expression; then
    command
 elif
    command
-fi      
+fi
 ```
 
 #### if/elif/else判断结构
@@ -1780,8 +1784,8 @@ elif
       command2
    else
       command3
-   fi      
-fi      
+   fi
+fi
 ```
 
 #### case判断结构
@@ -1839,7 +1843,7 @@ echo "Total: $sum" # 2500
 for VAR in $(ls)
 do
   ls -l $VAR
-done  
+done
 ```
 #### 不带列表的for循环
 ```sh
@@ -1874,7 +1878,7 @@ do
  let "sum01+=i"
  if [ $j -lt 100 ]; then
     let "sum02+=j"
- fi   
+ fi
 done
 echo "sum01=$sum01"
 echo "sum02=$sum02"
@@ -1905,7 +1909,7 @@ do
   if [[ $GUESS -eg $PRE_SET_NUM ]]; then
      echo "You get the right number"
      exit
-  else 
+  else
      echo "Wrong, Try again"
   fi
 done
@@ -2014,9 +2018,9 @@ do
  do
     let "multi=$i*$j"
     echo -n "$i*$j=$multi "
-    let "j+=1"   
+    let "j+=1"
  done
- echo 
+ echo
  let "i+=1"
 done
 ```
@@ -2134,7 +2138,7 @@ ITEM not confirmed
 ## 重定向
 I/O重定向是重定向中的一个重要部分，在Shell编程中会有很多机会用到这个功能。简单来说，I/O重定向可以将任何文件、命令、脚本、程序或脚本的输出重定向到另外一个文件、命令、程序或脚本。
 
-### io重定向符号和用法 
+### io重定向符号和用法
 <img src="/img/linux6.jpeg" style="max-width:95%" />
 
 #### 1.标准输出覆盖重定向：>
