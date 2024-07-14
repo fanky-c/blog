@@ -129,6 +129,32 @@ export { aes };
 
 ## 二、非对称加密
 ### 1. RSA
+#### 1.1 介绍
+RSA加密算法是一种非对称加密算法，RSA加密使用了"一对"密钥.分别是公钥和私钥,这个公钥和私钥其实就是一组数字，其二进制位长度可以是1024位或者2048位，长度越长其加密强度越大。
+
+#### 1.2 加解密
+1. 使用公钥加密的数据,利用私钥进行解密
+2. 使用私钥加密的数据,利用公钥进行解密
+
+#### 1.3 前端代码实现
+
+```js
+import JSEncrypt from 'jsencrypt'
+
+// rsa加密
+var encryptor = new JSEncrypt()  // 创建加密对象实例
+  //之前OpenssL生成的公钥，复制的时候要小心不要有空格
+  var pubKey = '-----BEGIN PUBLIC KEY-----MIG...QIDAQAB-----END PUBLIC KEY-----'
+  encryptor.setPublicKey(pubKey)//设置公钥
+  var rsaPassWord = encryptor.encrypt('要加密的内容')  // 对内容进行加密
+
+// rsa解密
+var decrypt = new JSEncrypt()//创建解密对象实例
+  //之前OpenssL生成的秘钥
+  var priKey  = '-----BEGIN RSA PRIVATE KEY-----MIICX...mJLH5gbdvJJmCWRk=-----END RSA PRIVATE KEY----'
+  decrypt.setPrivateKey(priKey)//设置秘钥
+  var uncrypted = decrypt.decrypt(encrypted)//解密之前拿公钥加密的内容
+```
 
 ### 2. DSA
 
