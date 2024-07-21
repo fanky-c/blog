@@ -156,10 +156,70 @@ var decrypt = new JSEncrypt()//创建解密对象实例
   var uncrypted = decrypt.decrypt(encrypted)//解密之前拿公钥加密的内容
 ```
 
-### 2. DSA
-
-
 ## 三、哈希算法
 ### 1. MD5
+#### 1.1 介绍
+MD5加密算法，其全称是Message-Digest Algorithm 5，通常被称为信息摘要算法，所谓的信息摘要就是把明文内容按一定规则生成一段哈希（hash）值，即得到这段明文内容的信息摘要。**利用MD5可以基于任意长度的明文字符串生成128位的哈希值，结果唯一且不可逆，因此MD5经常被用于防止信息被篡改、数字签名、以及对明文进行加密等场景。**
+
+#### 1.2 特性
+
+压缩性：任意长度的数据，算出的MD5值长度都是固定的。
+
+容易计算：从原数据计算出MD5值很容易。
+
+抗修改性：对原数据进行任何改动，哪怕只修改1个字节，所得到的MD5值都有很大区别。
+
+弱抗碰撞：已知原数据和其MD5值，想找到一个具有相同MD5值的数据（即伪造数据）是非常困难的。
+
+从技术的角度来说，MD5真的很安全，因为MD5本身是不可逆的，因此没法解密，除了撞库这样的一个方式。
+
+#### 1.3 加解密
+MD5算法加密的过程分为三步：处理原文，设置初始值，加密运算。
+
+#### 1.4 前端实现
+
+md5.js共有md5的6种加密方法：
+
+```js
+var code = "123456";
+var username = "123456";
+var password = "123456";
+var str1 = hex_md5("123456"); // e10adc3949ba59abbe56e057f20f883e 我们常用的是这种
+var str2 = b64_md5("123456");
+var str3 = str_md5("123456");
+var str4 = hex_hmac_md5(code,code); // 30ce71a73bdd908c3955a90e8f7429ef
+var str5 = b64_hmac_md5(username,username); // MM5xpzvdkIw5VakOj3Qp7w
+var str6 = str_hmac_md5(password,password);
+```
+
 
 ### 2. SHA-3
+#### 2.1 介绍
+SHA-3 算法是第三代标准的哈希函数，基于 Keccak 算法实现。与之前的哈希算法有所不同，SHA-3 算法是基于置换 ( permutation-based ) 的加密函数。
+
+#### 2.2 原理
+哈希算法是信息安全领域重要的组成部分，主要包括：
+
+1、生成和验证数字签名
+
+2、密钥导出 (key derivation)
+
+3、伪随机位生成 (pseudorandom bit generation)
+
+#### 2.2 前端实现
+
+```js
+import CryptoJS from "crypto-js";
+
+//加密224位
+CryptoJS.SHA3('六月初博客',{ outputLength: 224 })
+
+// 加密256位
+CryptoJS.SHA3('六月初博客站',{ outputLength: 256})
+
+//加密384位
+CryptoJS.SHA3('六月初工具',{ outputLength: 384})
+
+// 加密512位
+CryptoJS.SHA3('六月初工具站',{ outputLength: 512})
+```
