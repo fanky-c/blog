@@ -5,6 +5,7 @@ tags:
    - mysql
    - mysql命令
    - mysql优化
+   - join
 ---
 
 ## 日常命令
@@ -131,6 +132,74 @@ alter table table_name add id int auto_increment not null primary key;
 alter table table_name drop folderName;
 ```
 
+## left join、right join和inner join区别
+
+```sql
+表A
+aID   aNum
+1     a1
+2     a2
+3     a3
+4     a4
+5     a5
+
+表B
+bID   bNum
+1     b1
+2     b2
+3     b3
+4     b4
+6     b6
+```
+
+### left join
+left join（左连接）返回包括左表中的所有记录和右表中联结字段相等记录。
+
+```sql
+select * from A left join B on A.aID = B.bID;
+
+aID   aNum  bID   bNum
+1     a1     1     b1
+2     a2     2     b2
+3     a3     3     b3
+4     a4     4     b4
+5     a5     NULL  NULL
+```
+
+left join是以A表的记录为基础的,A可以看成左表,B可以看成右表,left join是以左表为准的.
+换句话说,左表(A)的记录将会全部表示出来,而右表(B)只会显示符合搜索条件的记录(例子中为: A.aID = B.bID), B表记录不足的地方均为NULL
+
+### right join
+right join（右连接）返回包括右表中的所有记录和左表中联结字段相等记录。
+
+```sql
+select * from A right join B on A.aID = B.bID;
+
+aID   aNum  bID   bNum
+1     a1     1     b1
+2     a2     2     b2
+3     a3     3     b3
+4     a4     4     b4
+NULL  NULL   6     b6
+```
+
+仔细观察一下,就会发现,和left join的结果刚好相反,这次是以右表(B)为基础的,A表不足的地方用NULL填充.
+
+### inner join
+inner join（等值连接）只返回两个表中联结字段相等行。
+
+```sql
+select * from A inner join B on A.aID = B.bID;
+
+aID   aNum  bID   bNum
+1     a1     1     b1
+2     a2     2     b2
+3     a3     3     b3
+4     a4     4     b4
+```
+
+很明显,这里只显示出了 A.aID = B.bID的记录.这说明inner join并不以谁为基础,它只显示符合条件的记录.
+
 ## 优化规则
 ### 核心
 1. 字段名不要使用‘key' ‘index’ ‘like’‘time’ 等等关键字
@@ -162,7 +231,7 @@ alter table table_name drop folderName;
 5. 如果是物理机器性能问题，则分多个数据库节点
 
 ## mysql执行过程
-<img src="/img/mysql.png" alt="" />  
+<img src="/img/mysql.png" alt="" />
 绿色部分为SQL实际执行部分，主要分为两步：
 
 解析：词法解析->语法解析->逻辑计划->查询优化->物理执行计划，过程中会检查缓存是否可用，如果没有可用缓存则进入下一步mysql_execute_command执行
