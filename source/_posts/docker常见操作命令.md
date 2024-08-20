@@ -34,7 +34,8 @@ docker image ls
 
 ### 3、构建镜像
 ```js
-docker build
+// 一键清理 Build Cache 缓存命令
+docker builder prune
 
 docker build -t fed_node-v18.19.0:latest ./
 ```
