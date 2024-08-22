@@ -22,7 +22,7 @@ echo "password" | docker login "xxxx.com:80" --username "username" --password-st
 ```js
 docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]
 
-docker pull xxxx.com:80/library/fed_node-v18.19.0@sha256:d38b6c5ab2e9ddb335006dd32f69f3e9a2b74b53be6b0936d2ab6582db09fd12
+docker pull xxxx.com:80/library/fed_node-v18.19.0@sha256:d38b6c
 ```
 
 ### 2、列出镜像
