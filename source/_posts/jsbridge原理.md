@@ -81,7 +81,7 @@ publicclassJavaScriptInterfaceDemoActivityextendsActivity{
 private WebView Wv;
 
     @Override
-    publicvoidonCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         Wv = (WebView)findViewById(R.id.webView);
@@ -94,18 +94,29 @@ private WebView Wv;
 
     }
 
-    publicclassJavaScriptInterface{
+    public class JavaScriptInterface{
          Context mContext;
 
          JavaScriptInterface(Context c) {
              mContext = c;
          }
 
-         publicvoidpostMessage(String webMessage){
+         public void postMessage(String webMessage){
              // Native 逻辑
          }
      }
 }
+
+// harmonyOS
+// 可以通过 Web 组件的 javaScriptProxy() 方法，或者 WebviewController.registerJavaScriptProxy() 方法
+      Web({ src: this.url, controller: this.controller })
+        .javaScriptAccess(true)
+        .javaScriptProxy({
+          object: this,
+          name: "nativeBridge",
+          methodList: ["postMessage"],
+          controller: this.controller,
+      })
 ```
 
 前端调用方式：
