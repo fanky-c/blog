@@ -336,7 +336,7 @@ whereis node
 
 ### 文件压缩和打包
 #### gzip/gunzip
-gzip/gunzip是用来压缩和解压缩单个文件的工具
+gzip/gunzip是用来压缩和解压缩**单个文件**的工具
 ```sh
 # 压缩install.log文件
 gzip install.log  # 最终压缩的文件名：install.log.gz
@@ -345,7 +345,7 @@ gzip install.log  # 最终压缩的文件名：install.log.gz
 gunzip install.log.gz
 ```
 #### tar
-tar不但可以打包文件，还可以将整个目录中的全部文件整合成一个包，整合包的同时还能使用gzip的功能进行压缩，比如说把整个/boot目录整合并压缩成一个文件
+**tar不但可以打包文件，还可以将整个目录中的全部文件整合成一个包，**整合包的同时还能使用gzip的功能进行压缩，比如说把整个/boot目录整合并压缩成一个文件
 ```sh
 # 压缩命令: 压缩/boot目录成bott.tgz
 # -z的含义是使用gzip压缩
@@ -354,7 +354,7 @@ tar不但可以打包文件，还可以将整个目录中的全部文件整合�
 # -f是指使用文件名，也就是这里的boot.tgz文件
 tar -zcvf boot.tgz /boot
 
-# 压缩命令 讲zain目录 压缩为dist.tar.gz
+# 压缩命令 将zain目录 压缩为dist.tar.gz  文件格式tar.gz等同于tgz
 tar -czf dist.tar.gz zain/
 
 
@@ -363,6 +363,20 @@ tar -zxvf boot.tgz
 
 # 解压命令：使用-c参数指定压缩后的目录存放位置。比如说将boot目录解压到/tmp目录中
 tar -zxvf boot.tgz -c /tmp
+```
+
+### 文件体积查看
+#### du
+
+```sh
+# 文件/文件夹名：查看单个文件或文件夹的总大小。
+du -sh
+
+# 查看当前目录下每个子目录的大小。
+du -sh */
+
+# 查看目录及其子目录的详细大小。
+du -h
 ```
 
 ## linux文件系统
