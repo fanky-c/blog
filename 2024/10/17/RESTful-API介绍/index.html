@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        RESTful API介绍 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是-REST？"><span class="toc-text">什么是 REST？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是-API？"><span class="toc-text">什么是 API？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是-RESTful-API？"><span class="toc-text">什么是 RESTful API？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RESTful-API-有哪些优势？"><span class="toc-text">RESTful API 有哪些优势？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RESTful-API-如何工作？"><span class="toc-text">RESTful API 如何工作？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RESTful-API-客户端请求包含哪些内容？"><span class="toc-text">RESTful API 客户端请求包含哪些内容？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是-RESTful-API-身份验证方法？"><span class="toc-text">什么是 RESTful API 身份验证方法？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RESTful-API-服务器响应包含哪些内容？"><span class="toc-text">RESTful API 服务器响应包含哪些内容？</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        RESTful API介绍
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2024-10-17 10:37:09</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#RESTful api" title="RESTful api">RESTful api</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#REST" title="REST">REST</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#api" title="api">api</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="什么是-REST？"><a href="#什么是-REST？" class="headerlink" title="什么是 REST？"></a>什么是 REST？</h2><p>在介绍 REST API 和 RESTful API 之前，我们需要先了解一下 REST 架构。REST，代表“Representational State Transfer”，是一种用于构建网络应用的架构风格。REST 的设计理念基于以下六大约束条件：</p>
+<ol>
+<li>客户端-服务器架构：客户端和服务器之间通过明确的接口进行通信，客户端负责用户界面和用户体验，而服务器处理数据存储和业务逻辑。</li>
+<li>无状态：每个请求都是独立的，服务器不会保存客户端的状态，所有的信息必须包含在请求中。</li>
+<li>可缓存：客户端可以缓存服务器的响应，以提高性能和减少服务器负载。</li>
+<li>统一接口：通过统一的接口简化架构设计，强调资源的标识、操作和表示。</li>
+<li>分层系统：系统可以分层，各层之间独立，层与层之间通过接口通信。</li>
+<li>按需代码：在某些情况下，服务器可以提供可执行代码（如 JavaScript），让客户端在运行时执行。</li>
+</ol>
+<p><strong>REST 架构的这些原则旨在提高系统的可扩展性、可靠性和可维护性。</strong></p>
+<h2 id="什么是-API？"><a href="#什么是-API？" class="headerlink" title="什么是 API？"></a>什么是 API？</h2><p>应用程序编程接口（API）定义您与其他软件系统进行通信必须遵循的规则。开发人员公开或创建 API，以便他们的应用程序可以以编程方式与其他应用程序进行通信。</p>
+<p><strong>您可以将 Web API 想象为客户端和 Web 上资源之间的大门。</strong></p>
+<p><strong>客户端</strong></p>
+<p>客户端是要访问 Web 上信息的用户。客户端可以是使用 API 的个人或软件系统。例如，开发人员可以编写从天气系统访问天气数据的程序。或者，您可以在浏览器上直接访问天气网站访问相同的数据。</p>
+<p><strong>资源</strong></p>
+<p>资源是不同的应用程序向其客户端提供的信息。资源可以是图像、视频、文本、数字或任何类型的数据。向客户端提供资源的设备也称为服务器。企业使用 API 分享资源，既能提供 Web 服务，还能确保安全、可控，身份验证。此外，API 帮助企业确定哪些客户端可以访问特定的内部资源。</p>
+<h2 id="什么是-RESTful-API？"><a href="#什么是-RESTful-API？" class="headerlink" title="什么是 RESTful API？"></a>什么是 RESTful API？</h2><p>RESTful API 是两个计算机系统用于通过互联网安全地交换信息的接口。大多数业务应用程序必须与其他内部和第三方应用程序进行通信才能执行各种任务。</p>
+<h2 id="RESTful-API-有哪些优势？"><a href="#RESTful-API-有哪些优势？" class="headerlink" title="RESTful API 有哪些优势？"></a>RESTful API 有哪些优势？</h2><p><strong>可扩展性</strong></p>
+<p>采用了 REST API 的系统可以高效扩展，因为 REST 优化了客户端-服务器交互。无状态可减轻服务器负载，因为服务器不必保留过去的客户端请求信息。管理良好的缓存可部分或完全消除某些客户端-服务器交互。所有这些功能都支持可扩展性，并且不会导致通信瓶颈进而降低性能。</p>
+<p><strong>灵活性</strong></p>
+<p>RESTful Web 服务支持客户端-服务器完全分离。该服务简化并分离了多种服务器组件，以便可以独立改进每个部分。平台或技术在服务器应用程序端更改，不会影响客户端应用程序。分层应用程序功能可进一步提升灵活性。例如，开发人员可以更改数据库层，而无需重新编写应用程序逻辑。</p>
+<p><strong>独立性</strong></p>
+<p>REST API 与所使用的技术相互独立。您可以在不影响 API 设计的情况下以多种编程语言编写客户端和服务器应用程序。您也可以在不影响通信的情况下更改任何一端的基础技术。</p>
+<h2 id="RESTful-API-如何工作？"><a href="#RESTful-API-如何工作？" class="headerlink" title="RESTful API 如何工作？"></a>RESTful API 如何工作？</h2><p>RESTful API 的基本功能与浏览互联网一样。客户端在请求资源时使用 API 与服务器建立联系。API 开发人员在服务器应用程序 API 文档中说明了客户端应如何使用 REST API。以下是调用任何 REST API 的通用步骤：</p>
+<ol>
+<li>客户端向服务器发送请求。客户端遵循 API 文档以服务器可识别的方式设置请求格式。</li>
+<li>服务器对客户端进行身份验证，并确认客户端有权发送该请求。</li>
+<li>服务器接收请求并对其进行内部处理。</li>
+<li>服务器向客户端返回响应。响应包含通知客户端请求是否成功的信息。响应也包括客户端请求的任何信息。</li>
+</ol>
+<h2 id="RESTful-API-客户端请求包含哪些内容？"><a href="#RESTful-API-客户端请求包含哪些内容？" class="headerlink" title="RESTful API 客户端请求包含哪些内容？"></a>RESTful API 客户端请求包含哪些内容？</h2><p>RESTful API 要求请求包含以下主要组件：</p>
+<p><strong>唯一的资源标识符</strong><br>服务器通过唯一的资源标识符识别每个资源。对于 REST 服务，服务器通常使用统一资源定位符 (URL) 执行资源识别。URL 指定资源的路径。URL 类似于您访问任何网页时在浏览器中输入的网站地址。URL 也称为请求端点，并向服务器清晰指明客户端请求的内容。</p>
+<p><strong>方法</strong><br>开发人员通常使用超文本传输协议 (HTTP) 实施 RESTful API。HTTP 方法通知服务器需要对资源执行什么操作。以下为四种常见的 HTTP 方法：</p>
+<p><em>GET</em></p>
+<p>客户端使用 GET 访问位于服务器上指定 URL 上的资源。它们可以缓存 GET 请求，并在 RESTful API 请求中发送参数以指示服务器在发送之前筛选数据。</p>
+<p><em>POST</em></p>
+<p>客户端使用 POST 向服务器发送数据。它们将数据表征包含到了请求中。多次发送相同的 POST 请求会造成多次创建相同资源的不良影响。</p>
+<p><em>PUT</em></p>
+<p>客户端使用 PUT 更新服务器上的现有资源。与 POST 不同，在 RESTful Web 服务中多次发送相同的 PUT 请求具有相同的效果。</p>
+<p><em>DELETE</em></p>
+<p>客户端使用 DELETE 请求删除资源。DELETE 请求可以更改服务器状态。但是，如果用户没有合适的身份验证，则请求失败。</p>
+<p><strong>HTTP 头</strong></p>
+<p>请求头是客户端和服务器之间交换的元数据。例如，请求头表示请求和响应的格式，提供有关请求状态的信息等等。</p>
+<p><em>数据</em></p>
+<p>REST API 请求可能包含 POST、PUT 和其他 HTTP 方法成功运行所需的数据。</p>
+<p><em>参数</em></p>
+<p>RESTful API 请求可以包含参数，这些参数向服务器提供更多有关需采取行动的详细信息。以下为一些不同类型的参数：</p>
+<ol>
+<li>指定 URL 详细信息的路径参数。</li>
+<li>请求有关资源的更多信息的查询参数</li>
+<li>对客户端进行快速身份验证的 Cookie 参数</li>
+</ol>
+<h2 id="什么是-RESTful-API-身份验证方法？"><a href="#什么是-RESTful-API-身份验证方法？" class="headerlink" title="什么是 RESTful API 身份验证方法？"></a>什么是 RESTful API 身份验证方法？</h2><p>RESTful Web 服务必须首先对请求进行身份验证，然后才能发送响应。身份验证是指验证身份的流程。例如，您可以出示身份证或驾驶证证明您的身份。同理，RESTful 服务客户端必须向服务器证明其身份才能确立信任。</p>
+<p>RESTful API 包含四种常见身份验证方法：</p>
+<p><strong>HTTP 身份验证</strong></p>
+<p><em>基本身份验证</em></p>
+<p>在基本身份验证中，客户端在请求头中发送用户名和密码。其使用 base64 编码，该编码技术将对组转化为一套 64 个字符进行安全传输。</p>
+<p><em>不记名身份验证</em></p>
+<p>术语不记名身份验证指向不记名令牌授予访问控制的流程。不记名令牌通常是服务器在响应登录请求时生成的加密字符串。客户端在请求头中发送令牌以访问资源。</p>
+<p><strong>API 密钥</strong></p>
+<p>API 密钥是 REST API 身份验证的另一个选项。在此方案中，服务器向首次通信的客户端分配生成的唯一值。无论客户端何时尝试访问资源，其使用唯一的 API 密钥进行验证。API 密钥的安全性较低，因为客户端必须传输密钥，其易受网络盗窃的攻击。</p>
+<p><strong>OAuth</strong></p>
+<p>OAuth 结合密码和令牌实现对任何系统的高度安全登录访问。服务器首先请求密码，然后再额外请求令牌以完成授权流程。其可以随时查看令牌，也可以在特定范围和长度的一段时间内查看令牌。</p>
+<h2 id="RESTful-API-服务器响应包含哪些内容？"><a href="#RESTful-API-服务器响应包含哪些内容？" class="headerlink" title="RESTful API 服务器响应包含哪些内容？"></a>RESTful API 服务器响应包含哪些内容？</h2><p><em>状态行</em></p>
+<p>状态行包含三位数字状态代码表示请求成功或请求出现故障。例如，2XX 代码表示成功，但 4XX 和 5XX 代码表示错误。3XX 代码表示 URL 重定向。</p>
+<p><em>信息正文</em></p>
+<p>‘{“name”:”John”, “age”:30}’</p>
+<p><em>头</em></p>
+<p>响应也包含有关响应的头或元数据。它们提供有关响应的更多背景内容，包含服务器、编码、日期和内容类型等信息。</p>
+<p><br></p>
+<p><a href="https://aws.amazon.com/cn/what-is/restful-api/" target="_blank" rel="noopener">文章来源</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>
