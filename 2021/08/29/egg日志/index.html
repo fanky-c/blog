@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        egg日志 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用场景"><span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日志特性"><span class="toc-text">日志特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日志操作"><span class="toc-text">日志操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#打印日志"><span class="toc-text">打印日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日志等级"><span class="toc-text">日志等级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#错误日志"><span class="toc-text">错误日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#日志输出方式"><span class="toc-text">日志输出方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#框架内置日志标识"><span class="toc-text">框架内置日志标识</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#日志切割"><span class="toc-text">日志切割</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#按天切割"><span class="toc-text">按天切割</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#按文件大小切割"><span class="toc-text">按文件大小切割</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        egg日志
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-08-29 14:43:06</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#egg" title="egg">egg</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#egg-logger" title="egg-logger">egg-logger</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ol>
+<li>问题排查</li>
+<li>应用运行状态监控</li>
+</ol>
+<h2 id="日志特性"><a href="#日志特性" class="headerlink" title="日志特性"></a>日志特性</h2><ol>
+<li>日志等级</li>
+<li>统一错误日志</li>
+<li>启动日志和运行日志分离</li>
+<li>多进程日志</li>
+<li>日志自动切割</li>
+<li>日志高性能写入</li>
+<li>日志扩展、自定义</li>
+</ol>
+<h2 id="日志操作"><a href="#日志操作" class="headerlink" title="日志操作"></a>日志操作</h2><h3 id="打印日志"><a href="#打印日志" class="headerlink" title="打印日志"></a>打印日志</h3><ol>
+<li><p>应用日志： 和业务无关， 例如应用启动<br>app.logger.info()</p>
+</li>
+<li><p>请求日志： 记录请求相关日志， 日志会带上请求相关信息<br>ctx.logger.info(‘ctx.logger’)<br>//2019-02-03 11:18:56,157 INFO 46536 [-/127.0.0.1/-/5ms GET /api/user] ctx.logger</p>
+</li>
+<li><p>this.logger: 在controller、 service等实例中获取， 会带上日志文件路径，便于快速定位问题<br>this.logger.info(‘this.logger’);<br>//2019-02-03 11:18:56,158 INFO 46536 [-/127.0.0.1/-/5ms GET /api/user] [controller.user] this.logger</p>
+<h3 id="日志等级"><a href="#日志等级" class="headerlink" title="日志等级"></a>日志等级</h3><ol>
+<li>NONE(默认不输出)、DEBUF –&gt; logger.debug、INFO –&gt; logger.info 、WARN —&gt; looger.warn、ERROR —&gt; looger.error  </li>
+</ol>
+</li>
+</ol>
+<h3 id="错误日志"><a href="#错误日志" class="headerlink" title="错误日志"></a>错误日志</h3><p>ctx.logger.error(new Error(‘error’)); — &gt; 存放路径common-error.log</p>
+<h3 id="日志输出方式"><a href="#日志输出方式" class="headerlink" title="日志输出方式"></a>日志输出方式</h3><ol>
+<li>终端和日志同时会输出</li>
+<li>local 和 unittest 环境下为 baseDir，即项目源码的根目录。</li>
+<li>prod 和其他运行环境，都为 HOME，即用户目录，如 /home/admin。</li>
+</ol>
+<h3 id="框架内置日志标识"><a href="#框架内置日志标识" class="headerlink" title="框架内置日志标识"></a>框架内置日志标识</h3><ol>
+<li>${appInfo.name}-web.log：应用输出的日志，通过上述的 ctx.logger 等打印。</li>
+<li>egg-web.log： 用于框架内核、插件日志，通过 app.coreLogger 打印。</li>
+<li>common-error.log：所有 Logger 的错误日志会统一汇集到该文件。   </li>
+</ol>
+<h2 id="日志切割"><a href="#日志切割" class="headerlink" title="日志切割"></a>日志切割</h2><h3 id="按天切割"><a href="#按天切割" class="headerlink" title="按天切割"></a>按天切割</h3><ol>
+<li>这是框架的默认日志切割方式，在每日 00:01 按照 .log.YYYY-MM-DD 文件名进行切割。<h3 id="按文件大小切割"><a href="#按文件大小切割" class="headerlink" title="按文件大小切割"></a>按文件大小切割</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// config/config.default.js</span><br><span class="line">const path = require(&apos;path&apos;);</span><br><span class="line"></span><br><span class="line">module.exports = appInfo =&gt; &#123;</span><br><span class="line">  const config = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  config.logrotator = &#123;</span><br><span class="line">    filesRotateBySize: [</span><br><span class="line">      &apos;egg-web.log&apos;,</span><br><span class="line">    ],</span><br><span class="line">    maxFileSize: 2 * 1024 * 1024 * 1024,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  return config;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

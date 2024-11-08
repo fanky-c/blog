@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        nodejs相关 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nodejs平滑重启"><span class="toc-text">nodejs平滑重启</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nodejs-runtime架构"><span class="toc-text">nodejs runtime架构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是runtime"><span class="toc-text">什么是runtime</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nodejs-runtime架构-1"><span class="toc-text">nodejs runtime架构</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        nodejs相关
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-08-17 21:26:46</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#nodejs平滑重启" title="nodejs平滑重启">nodejs平滑重启</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#nodejs runTime架构" title="nodejs runTime架构">nodejs runTime架构</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="nodejs平滑重启"><a href="#nodejs平滑重启" class="headerlink" title="nodejs平滑重启"></a>nodejs平滑重启</h3><ol>
+<li><p>pm2(restart, reload 以及 gracefulReload)</p>
+<ol>
+<li>restart: 直接关闭旧服务然后启动新服务，会造成已建立的连接失效</li>
+<li>reload: 平滑更新，先启动若干个新服务，同时停止旧服务接收请求。等待旧服务都停止服务后，关闭旧服务。和 cluster 的代码原理类似，有可能因为要等待连接关闭造成重启时间比较长。</li>
+<li>gracefulReload: 平滑更新，和 reload 的区别是 gracefulReload 会发送一个 shutdown 消息给旧服务，具体的停服逻辑可以由程序自己实现，比较灵活。</li>
+</ol>
+</li>
+<li><p>多机器 + nginx负载均衡模块</p>
+<ol>
+<li>更新服务时只需要逐台部署，保证同一时刻至少有一台机器在提供服务，nginx 就会将流量自动分配到正常服务的机器上</li>
+</ol>
+</li>
+<li><p>Node 本身的 cluster 模块</p>
+<ol>
+<li>发一个重启信号给 Master，例如 kill -USR2 MASTER_PID</li>
+<li>Master 起 n 个新的服务，开始监听请求</li>
+<li>Master 停止原先旧服务的监听，并等待旧服务的所有连接结束</li>
+<li><p>关闭旧服务</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> cluster = <span class="built_in">require</span>(<span class="string">'cluster'</span>);</span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (cluster.isMaster) &#123;</span><br><span class="line">    cluster.fork();</span><br><span class="line"></span><br><span class="line">    cluster.on(<span class="string">'exit'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">worker, code, signal</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'worker '</span> + worker.process.pid + <span class="string">' 退出'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    cluster.on(<span class="string">'listening'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">worker, code, signal</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'worker '</span> + worker.process.pid + <span class="string">' 开始服务'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    cluster.on(<span class="string">'disconnect'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">worker, code, signal</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'worker '</span> + worker.process.pid + <span class="string">' 停止服务'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    process.on(<span class="string">'SIGUSR2'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 保存旧 worker 的列表，cluster.workers 是个 map</span></span><br><span class="line">        <span class="keyword">var</span> oldWorkers = <span class="built_in">Object</span>.keys(cluster.workers).map(<span class="function"><span class="keyword">function</span> (<span class="params">idx</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> cluster.workers[idx];</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 起新服务</span></span><br><span class="line">        cluster.fork();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 当新服务起起来之后，关闭所有的旧 worker</span></span><br><span class="line">        cluster.once(<span class="string">'listening'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">worker</span>) </span>&#123;</span><br><span class="line">            oldWorkers.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">worker</span>) </span>&#123;</span><br><span class="line">                <span class="comment">// disconnect 会停止接收新请求，等待旧请求结束后再结束进程</span></span><br><span class="line">                worker.disconnect();</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 模拟慢速请求</span></span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            res.writeHead(<span class="number">200</span>);</span><br><span class="line">            res.end(<span class="string">"hello world\n"</span>);</span><br><span class="line">        &#125;, <span class="number">15000</span>);</span><br><span class="line">    &#125;).listen(<span class="number">8000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="nodejs-runtime架构"><a href="#nodejs-runtime架构" class="headerlink" title="nodejs runtime架构"></a>nodejs runtime架构</h3><h4 id="什么是runtime"><a href="#什么是runtime" class="headerlink" title="什么是runtime"></a>什么是runtime</h4><ol>
+<li>程序分为几个状态，编辑时－&gt;编译时-&gt;静态时-&gt;运行时</li>
+<li>比如有些错误在编译的时候是不会出现的，就是程序在语法上没有问题。但在运行时，因为缺少资源等因素可能出现运行时错误。叫做runtime error!</li>
+</ol>
+<h4 id="nodejs-runtime架构-1"><a href="#nodejs-runtime架构-1" class="headerlink" title="nodejs runtime架构"></a>nodejs runtime架构</h4><p><img src="/img/noderuntime.jpeg" alt="runtime" height="auto"></p>
+<ol>
+<li><strong><em>用户代码</em></strong>：由程序员编写的 Javascript 应用程序代码。</li>
+<li><strong><em>Node.js API</em></strong>： Node 提供的内置方法，可以在用户代码中使用（例如 用于使用 HTTP 方法的 HTTP  modules、crypto module、用于文件系统操作的 fs module、用于网络请求的 net 等……）。 有关 Node 提供的方法的完整列表，您可以在此处查看文档。 此外，您可以在此处找到源代码实现。 Node 的 API 是用 Javascript 编写的。</li>
+<li><strong><em>Bindings 和 C++扩展插件</em></strong>： 在阅读 Node 时，您会看到 V8 是用 C++ 编写的，Libuv 是用 C 编写的，等等。 基本上，所有模块都是用 C 或 C++ 编写的，因为这些语言在处理底层任务和使用 OS API 方面非常出色和快速。 但是上层的Javascript代码怎么可能用其他语言去写代码呢？ 这就是 bindings 的作用。 它们充当两层之间的粘合剂，因此 Node 可以顺利使用 C 或 C++ 编写的低级代码。 那么，如果我们想自己添加一个C++模块应该怎么做呢？ 我们首先用 C++ 实现模块，然后为此编写 bindings代码。 我们编写的这段代码称为扩展插件。 更多信息可以在这里找到。</li>
+<li><strong><em>Node’s 依赖</em></strong>: 这一层代表 Node 使用的底层库。 最大的依赖是谷歌的 V8 引擎和 Libuv。 其他库包括 OpenSSL（用于 SSL、TLS 和其他基本加密功能）、HTTP 解析器（用于解析 HTTP 请求和响应）、C-Ares（用于异步 DNS 请求）和 Zlib（用于快速压缩和解压缩）。</li>
+<li><strong><em>操作系统</em></strong>: 这是表示上述库所使用的 OS API（系统调用）的最底层。 由于 OS-es 不同，这些库包括 Windows 和 Unix 变体的实现，这使得 Node 平台独立。</li>
+</ol>
+<p>来源于：<a href="https://juejin.cn/post/6979790275879125006" target="_blank" rel="noopener">https://juejin.cn/post/6979790275879125006</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

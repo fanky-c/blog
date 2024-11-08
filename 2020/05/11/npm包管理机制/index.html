@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        npm包管理机制 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#package-json介绍"><span class="toc-text">package.json介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录、文件"><span class="toc-text">目录、文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm版本管理"><span class="toc-text">npm版本管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SemVer规范"><span class="toc-text">SemVer规范</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#标准版本"><span class="toc-text">标准版本</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#先行版本"><span class="toc-text">先行版本</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#版本工具使用"><span class="toc-text">版本工具使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#锁定版本依赖"><span class="toc-text">锁定版本依赖</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#lock文件"><span class="toc-text">lock文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#定期更新依赖"><span class="toc-text">定期更新依赖</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm原理"><span class="toc-text">npm原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-install-运行流程"><span class="toc-text">npm install 运行流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#node-modules结构"><span class="toc-text">node_modules结构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#嵌套结构"><span class="toc-text">嵌套结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#扁平化结构"><span class="toc-text">扁平化结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lock文件-1"><span class="toc-text">lock文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存"><span class="toc-text">缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文件的完整性"><span class="toc-text">文件的完整性</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        npm包管理机制
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-05-11 14:28:30</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#npm" title="npm">npm</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#package.json" title="package.json">package.json</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="package-json介绍"><a href="#package-json介绍" class="headerlink" title="package.json介绍"></a>package.json介绍</h2><h3 id="目录、文件"><a href="#目录、文件" class="headerlink" title="目录、文件"></a>目录、文件</h3><ol>
+<li><p>程序入口</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json文件 </span></span><br><span class="line"><span class="comment">// 例如： import &#123; notification &#125; from 'antd'; 实际上引入的就是./index.js中暴露出去的模块</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"main"</span>: <span class="string">"./index.js"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>规范项目目录，一个 node.js 模块是基于 CommonJS 模块化规范实现的，严格按照 CommonJS 规范，模块目录下除了必须包含包描述文件 package.json 以外，还需要包含以下目录：</p>
+<ul>
+<li>bin：存放可执行二进制文件的目录</li>
+<li>lib：存放js代码的目录</li>
+<li>doc：存放文档的目录</li>
+<li>test：存放单元测试用例代码的目录</li>
+<li>…</li>
+</ul>
+</li>
+</ol>
+<h2 id="npm版本管理"><a href="#npm版本管理" class="headerlink" title="npm版本管理"></a>npm版本管理</h2><h3 id="SemVer规范"><a href="#SemVer规范" class="headerlink" title="SemVer规范"></a>SemVer规范</h3><h4 id="标准版本"><a href="#标准版本" class="headerlink" title="标准版本"></a>标准版本</h4><p>SemVer规范的标准版本号采用 X.Y.Z 的格式，其中 X、Y 和 Z 为非负的整数，且禁止在数字前方补零。X 是主版本号、Y 是次版本号、而 Z 为修订号</p>
+<ol>
+<li>主版本号(major)：当你做了不兼容的API 修改</li>
+<li>次版本号(minor)：当你做了向下兼容的功能性新增</li>
+<li>修订号(patch)：当你做了向下兼容的问题修正。</li>
+</ol>
+<h4 id="先行版本"><a href="#先行版本" class="headerlink" title="先行版本"></a>先行版本</h4><p>当某个版本改动比较大、并非稳定而且可能无法满足预期的兼容性需求时，你可能要先发布一个先行版本。</p>
+<ol>
+<li>内部版本(alpha):</li>
+<li>公测版本(beta):</li>
+<li>正式版本的候选版本rc: 即 Release candiate<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm view vue versions  <span class="comment">//查看vue发布的所以版本记录</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="版本工具使用"><a href="#版本工具使用" class="headerlink" title="版本工具使用"></a>版本工具使用</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下载</span></span><br><span class="line">npm i semver</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断版本号是否合法</span></span><br><span class="line">semver.valid(<span class="string">'1.2.3'</span>) <span class="comment">// '1.2.3'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//强制转化成semver版本号</span></span><br><span class="line">semver.valid(semver.coerce(<span class="string">'v2'</span>)) <span class="comment">// '2.0.0'</span></span><br><span class="line">semver.valid(semver.coerce(<span class="string">'42.6.7.9.3-alpha'</span>)) <span class="comment">// '42.6.7'</span></span><br></pre></td></tr></table></figure>
+<h3 id="锁定版本依赖"><a href="#锁定版本依赖" class="headerlink" title="锁定版本依赖"></a>锁定版本依赖</h3><h4 id="lock文件"><a href="#lock文件" class="headerlink" title="lock文件"></a>lock文件</h4><h4 id="定期更新依赖"><a href="#定期更新依赖" class="headerlink" title="定期更新依赖"></a>定期更新依赖</h4><p>使用 npm outdated 可以帮助我们列出有哪些还没有升级到最新版本的依赖：</p>
+<ol>
+<li>黄色表示不符合我们指定的语意化版本范围 - 不需要升级</li>
+<li>红色表示符合指定的语意化版本范围 - 需要升级</li>
+</ol>
+<p>执行 npm update 会升级所有的红色依赖。</p>
+<h2 id="npm原理"><a href="#npm原理" class="headerlink" title="npm原理"></a>npm原理</h2><h3 id="npm-install-运行流程"><a href="#npm-install-运行流程" class="headerlink" title="npm install 运行流程"></a>npm install 运行流程</h3><p><img src="/img/npm.png" alt="image"></p>
+<ol>
+<li>检查.npmrc文件，优先级： 项目基本.npmrc文件 &gt; 用户的 &gt; 全局的 &gt; npm内置</li>
+<li>检查项目中有无lock文件</li>
+<li>无lock文件<ol>
+<li>不存在缓存就去网上下载, 将下载的包复制到npm缓存目录, 依赖结构解压到 node_modules</li>
+<li>存在缓存，将缓存依赖结构解压到node_modules</li>
+<li>检验包的完整性</li>
+<li>如果检验通过</li>
+<li>构建依赖树，不管其是直接依赖还是子依赖的依赖，优先将其放置在 node_modules 根目录；当遇到相同模块时，判断已放置在依赖树的模块版本是否符合新模块的版本范围，如果符合则跳过，不符合则在当前模块的 node_modules 下放置该模块</li>
+<li>生成lock文件</li>
+</ol>
+</li>
+<li>有lock文件<ol>
+<li>检查lock和package中依赖是否有冲突， 如有冲突以package为准</li>
+<li>如果没有冲突，直接跳过获取包信息、构建依赖树过程， 开始在缓存中查找包信息，后续过程和上面的一样</li>
+</ol>
+</li>
+</ol>
+<h3 id="node-modules结构"><a href="#node-modules结构" class="headerlink" title="node_modules结构"></a>node_modules结构</h3><h4 id="嵌套结构"><a href="#嵌套结构" class="headerlink" title="嵌套结构"></a>嵌套结构</h4><ol>
+<li>早期的npm处理依赖的方式就递归，形成了嵌套的结构。</li>
+<li>优点： node_modules的结构和package.json一一对应。</li>
+<li>缺点： 依赖模块非常多node_modules将非常庞大； 如果不同层级依赖相同的模块导致大量的冗余</li>
+</ol>
+<h4 id="扁平化结构"><a href="#扁平化结构" class="headerlink" title="扁平化结构"></a>扁平化结构</h4><ol>
+<li>npm3.x改用了扁平化结构；</li>
+<li>安装方法： 安装模块时，不管其是直接依赖还是子依赖的依赖，优先将其安装在 node_modules 根目录；当安装到相同模块时，判断已安装的模块版本是否符合新模块的版本范围，如果符合则跳过，不符合则在当前模块的 node_modules 下安装该模块。</li>
+<li>优点： 减少了部分重复模块冗余问题； 消除了嵌套层级过深的问题。</li>
+<li>缺点： npm3.x版本并没有根本解决模块冗余问题，</li>
+</ol>
+<h3 id="lock文件-1"><a href="#lock文件-1" class="headerlink" title="lock文件"></a>lock文件</h3><ol>
+<li>为了解决 npm install 的不确定性问题，在 npm 5.x 版本新增了 package-lock.json 文件，而安装方式还沿用了 npm 3.x 的扁平化的方式。</li>
+</ol>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><ol>
+<li>在执行 npm install 或 npm update命令下载依赖后，除了将依赖包安装在node_modules 目录下外，还会在本地的缓存目录缓存一份。</li>
+</ol>
+<h3 id="文件的完整性"><a href="#文件的完整性" class="headerlink" title="文件的完整性"></a>文件的完整性</h3><ol>
+<li>下载npm包之后本地计算文件hash值， 和下载之前拿到的文件hash对比（npm info）</li>
+</ol>
+<p><a href="https://mp.weixin.qq.com/s/gtsnxFOYRZ4i-Id_9Gr6Aw" target="_blank" rel="noopener">本文参考</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

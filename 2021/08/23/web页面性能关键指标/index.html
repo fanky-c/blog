@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        web页面性能关键指标 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#核心指标"><span class="toc-text">核心指标</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-FP-amp-amp-FCP"><span class="toc-text">1.FP &amp;&amp; FCP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-FSP"><span class="toc-text">2.FSP</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-FCI"><span class="toc-text">3.FCI</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-TTl"><span class="toc-text">4.TTl</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#页面呈现过程相关指标"><span class="toc-text">页面呈现过程相关指标</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-文档加载"><span class="toc-text">1. 文档加载</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#time-to-first-byte-TTFB"><span class="toc-text">time to first byte (TTFB)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#domContentLoaded-DCL"><span class="toc-text">domContentLoaded (DCL)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#load-L"><span class="toc-text">load (L)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-内容呈现"><span class="toc-text">2. 内容呈现</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#first-paint-FP"><span class="toc-text">first paint (FP)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#first-contentful-paint-FCP"><span class="toc-text">first contentful paint (FCP)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#largest-meaningful-paint-LMP"><span class="toc-text">largest meaningful paint (LMP)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#largest-contentful-paint-LCP"><span class="toc-text">largest contentful paint (LCP)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#first-screen-paint-FSP"><span class="toc-text">first screen paint (FSP)</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-交互响应"><span class="toc-text">3. 交互响应</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#first-cpu-idle-FCI"><span class="toc-text">first cpu idle (FCI)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#time-to-interactive-TTI"><span class="toc-text">time to interactive (TTI)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#页面性能评分计算公式"><span class="toc-text">页面性能评分计算公式</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        web页面性能关键指标
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-08-23 20:21:46</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#web性能指标" title="web性能指标">web性能指标</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#fp" title="fp">fp</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#fcp" title="fcp">fcp</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#fmp" title="fmp">fmp</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#tti" title="tti">tti</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>对于前端页面性能的评估，一般是两种形式：</p>
+<ol>
+<li>一种是使用性能分析工具，在线对网页各项指标进行打分评估, 例如：Lighthouse。</li>
+<li>一种是使用性能监控，通过 performance api 或者自定义的埋点上报用户网络真实的访问情况，然后进行统计分析。</li>
+</ol>
+<h3 id="核心指标"><a href="#核心指标" class="headerlink" title="核心指标"></a>核心指标</h3><h4 id="1-FP-amp-amp-FCP"><a href="#1-FP-amp-amp-FCP" class="headerlink" title="1.FP &amp;&amp; FCP"></a>1.FP &amp;&amp; FCP</h4><p>白屏时间：页面开始有内容的时间，在没有内容之前是白屏</p>
+<h4 id="2-FSP"><a href="#2-FSP" class="headerlink" title="2.FSP"></a>2.FSP</h4><p>首屏时间： 可视区域内容已完全呈现的时间</p>
+<h4 id="3-FCI"><a href="#3-FCI" class="headerlink" title="3.FCI"></a>3.FCI</h4><p>可交互时间：用户第一次可以与页面交互的时间</p>
+<h4 id="4-TTl"><a href="#4-TTl" class="headerlink" title="4.TTl"></a>4.TTl</h4><p>可流畅交互时间：用户第一次可以持续与页面交互的时间</p>
+<h3 id="页面呈现过程相关指标"><a href="#页面呈现过程相关指标" class="headerlink" title="页面呈现过程相关指标"></a>页面呈现过程相关指标</h3><h4 id="1-文档加载"><a href="#1-文档加载" class="headerlink" title="1. 文档加载"></a>1. 文档加载</h4><h5 id="time-to-first-byte-TTFB"><a href="#time-to-first-byte-TTFB" class="headerlink" title="time to first byte (TTFB)"></a>time to first byte (TTFB)</h5><p>TTFB: 浏览器从请求页面开始到接收第一字节的时间，这个时间段内包括 DNS 查找、TCP 连接和 SSL 连接。</p>
+<h5 id="domContentLoaded-DCL"><a href="#domContentLoaded-DCL" class="headerlink" title="domContentLoaded (DCL)"></a>domContentLoaded (DCL)</h5><p>DCL: HTML 文档被完全加载和解析完成之后, 无需等待样式表、图像和子框架加载完成</p>
+<h5 id="load-L"><a href="#load-L" class="headerlink" title="load (L)"></a>load (L)</h5><p>L:  页面所有资源都加载完毕后（比如图片，CSS）</p>
+<h4 id="2-内容呈现"><a href="#2-内容呈现" class="headerlink" title="2. 内容呈现"></a>2. 内容呈现</h4><h5 id="first-paint-FP"><a href="#first-paint-FP" class="headerlink" title="first paint (FP)"></a>first paint (FP)</h5><p>FP: 从开始加载到浏览器首次绘制像素到屏幕上的时间，也就是页面在屏幕上首次发生视觉变化的时间; <strong>这是开发人员关心页面加载的第一个关键时刻 — 当浏览器开始呈现页面时</strong></p>
+<h5 id="first-contentful-paint-FCP"><a href="#first-contentful-paint-FCP" class="headerlink" title="first contentful paint (FCP)"></a>first contentful paint (FCP)</h5><p>FCP：浏览器首次绘制来自 DOM 的内容的时间，内容必须是文本、图片（包含背景图）、非白色的 canvas 或 SVG。 这是用户第一次开始看到页面内容，但仅仅有内容，并不意味着它是有用的内容（例如 Header、导航栏等），也不意味着有用户要消费的内容</p>
+<h5 id="largest-meaningful-paint-LMP"><a href="#largest-meaningful-paint-LMP" class="headerlink" title="largest meaningful paint (LMP)"></a>largest meaningful paint (LMP)</h5><h5 id="largest-contentful-paint-LCP"><a href="#largest-contentful-paint-LCP" class="headerlink" title="largest contentful paint (LCP)"></a>largest contentful paint (LCP)</h5><p>LCP: 可视区域中最大的内容元素呈现到屏幕上的时间，用以估算页面的主要内容对用户可见时间</p>
+<h5 id="first-screen-paint-FSP"><a href="#first-screen-paint-FSP" class="headerlink" title="first screen paint (FSP)"></a>first screen paint (FSP)</h5><p>FSP: 页面从开始加载到首屏内容全部绘制完成的时间，用户可以看到首屏的全部内容</p>
+<h4 id="3-交互响应"><a href="#3-交互响应" class="headerlink" title="3. 交互响应"></a>3. 交互响应</h4><h5 id="first-cpu-idle-FCI"><a href="#first-cpu-idle-FCI" class="headerlink" title="first cpu idle (FCI)"></a>first cpu idle (FCI)</h5><p>FCI: 用户第一次可以与页面交互的时间</p>
+<h5 id="time-to-interactive-TTI"><a href="#time-to-interactive-TTI" class="headerlink" title="time to interactive (TTI)"></a>time to interactive (TTI)</h5><p>TTI: 用户第一次可以持续与页面交互的时间</p>
+<h3 id="页面性能评分计算公式"><a href="#页面性能评分计算公式" class="headerlink" title="页面性能评分计算公式"></a>页面性能评分计算公式</h3><p><a href="https://googlechrome.github.io/lighthouse/scorecalc/" target="_blank" rel="noopener">https://googlechrome.github.io/lighthouse/scorecalc/</a></p>
+<p><br><br><a href="https://zhuanlan.zhihu.com/p/98880815" target="_blank" rel="noopener">文章参考1</a><br><a href="https://juejin.cn/post/6844904153869713416" target="_blank" rel="noopener">文章参考2</a><br><a href="https://segmentfault.com/a/1190000038421305" target="_blank" rel="noopener">文章参考3</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        富文本AttributedString的使用 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用方式"><span class="toc-text">使用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用方式一"><span class="toc-text">使用方式一</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#使用方式二"><span class="toc-text">使用方式二</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        富文本AttributedString的使用
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-26 11:44:47</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#macos富文本" title="macos富文本">macos富文本</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#AttributedString" title="AttributedString">AttributedString</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>AttributedString可以分为NSAttributedString和NSMutableAttributedString两种。在使用中通过将AttributedString赋值给控件的 attributedText 属性来添加文字样式</p>
+<h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><h4 id="使用方式一"><a href="#使用方式一" class="headerlink" title="使用方式一"></a>使用方式一</h4><ol>
+<li>添加超链接、设置颜色<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">NSString *string = @&quot;欢迎使用,这是测试哦&quot;;</span><br><span class="line">NSMutableAttributedString *colorTitle = [[NSMutableAttributedString alloc] initWithString:string];</span><br><span class="line"></span><br><span class="line">//设置超链接</span><br><span class="line">[colorTitle addAttributes:@&#123;</span><br><span class="line">                                NSUnderlineStyleAttributeName:@1,</span><br><span class="line">                                NSLinkAttributeName: [NSURL URLWithString:@&quot;https://baidu.com&quot;],</span><br><span class="line">                                &#125; range:NSMakeRange(string.length-9, 4)];</span><br><span class="line"></span><br><span class="line">//设置字体大小</span><br><span class="line">[colorTitle addAttribute:NSFontAttributeName value:[NSFont systemFontOfSize:13] range:NSMakeRange(0, [string length])];</span><br><span class="line"></span><br><span class="line">//设置文字颜色</span><br><span class="line">[colorTitle addAttribute:NSForegroundColorAttributeName value:[NSColor redColor] range:NSMakeRange(17, 7)];</span><br><span class="line"></span><br><span class="line">//设置文字背景色</span><br><span class="line">[colorTitle addAttribute:NSBackgroundColorAttributeName value:[NSColor whiteColor] range:NSMakeRange(17, 7)];</span><br><span class="line"></span><br><span class="line">//添加下划线</span><br><span class="line">[colorTitle addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(17, 7)];</span><br><span class="line"></span><br><span class="line">NSTextField.attributedStringValue = colorTitle;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="使用方式二"><a href="#使用方式二" class="headerlink" title="使用方式二"></a>使用方式二</h4><p>创建属性字典，并将各种属性初始化。赋值，并利用方法appendAttributedString:添加入NSMutableAttributedString，将其赋给控件的attributedText属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">//初始化NSMutableAttributedString</span><br><span class="line">NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]init];</span><br><span class="line"></span><br><span class="line">//设置字体格式和大小</span><br><span class="line">NSString *str0 = @&quot;欢迎使用,这是测试哦&quot;;</span><br><span class="line">NSDictionary *dictAttr0 = @&#123;NSFontAttributeName:[NSFont systemFontOfSize:14]&#125;;</span><br><span class="line">NSAttributedString *attr0 = [[NSAttributedString alloc]initWithString:str0 attributes:dictAttr0];</span><br><span class="line">[attributedString appendAttributedString:attr0];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//设置阴影属性，取值为NSShadow对象</span><br><span class="line">NSString *str7 = @&quot;欢迎使用,这是测试哦&quot;;</span><br><span class="line">NSShadow *shadow = [[NSShadow alloc]init];</span><br><span class="line">shadow.shadowColor = [NSColor redColor];</span><br><span class="line">shadow.shadowBlurRadius = 1.0f;</span><br><span class="line">shadow.shadowOffset = CGSizeMake(1, 1);</span><br><span class="line">NSDictionary *dictAttr7 = @&#123;NSShadowAttributeName:shadow&#125;;</span><br><span class="line">NSAttributedString *attr7 = [[NSAttributedString alloc]initWithString:str7 attributes:dictAttr7];</span><br><span class="line">[attributedString appendAttributedString:attr7];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//设置字体倾斜度 NSObliquenessAttributeName</span><br><span class="line">NSString *str12 = @&quot;设置字体倾斜度&quot;;</span><br><span class="line">NSDictionary *dictAttr12 = @&#123;NSObliquenessAttributeName:@(0.5)&#125;;</span><br><span class="line">NSAttributedString *attr12 = [[NSAttributedString alloc]initWithString:str12 attributes:dictAttr12];</span><br><span class="line">[attributedString appendAttributedString:attr12];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//段落样式</span><br><span class="line">NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc]init];</span><br><span class="line">//行间距</span><br><span class="line">paragraph.lineSpacing = 10;</span><br><span class="line">//段落间距</span><br><span class="line">paragraph.paragraphSpacing = 20;</span><br><span class="line">//对齐方式</span><br><span class="line">paragraph.alignment = NSTextAlignmentLeft;</span><br><span class="line">//添加段落设置</span><br><span class="line">[attributedString addAttribute:NSParagraphStyleAttributeName value:paragraph range:NSMakeRange(0, attributedString.length)];</span><br><span class="line"></span><br><span class="line">NSTextField.attributedStringValue = attributedString;  //uilabel则是attributedText</span><br></pre></td></tr></table></figure>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

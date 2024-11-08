@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        图解http读书笔记 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#web及网络基础"><span class="toc-text">web及网络基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、IP、TCP和DNS"><span class="toc-text">1、IP、TCP和DNS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、-URI和URL区别"><span class="toc-text">2、 URI和URL区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP报文"><span class="toc-text">HTTP报文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#报文结构"><span class="toc-text">报文结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码提示传输速率"><span class="toc-text">编码提示传输速率</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#压缩传输的内容编码（Content-Encoding）"><span class="toc-text">压缩传输的内容编码（Content-Encoding）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分割发送的分块传输编码（Transfer-Encoding）"><span class="toc-text">分割发送的分块传输编码（Transfer-Encoding）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Content-Encoding-和-Transfer-Encoding-chunked"><span class="toc-text">Content-Encoding 和 Transfer-Encoding: chunked</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#发送多种数据的多部分对象集合"><span class="toc-text">发送多种数据的多部分对象集合</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#状态码"><span class="toc-text">状态码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#204（No-Content）"><span class="toc-text">204（No Content）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#206（Partial-Content）"><span class="toc-text">206（Partial Content）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#301"><span class="toc-text">301</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#302"><span class="toc-text">302</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#304"><span class="toc-text">304</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#400（Bad-Request）"><span class="toc-text">400（Bad Request）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#401（Unauthorized）"><span class="toc-text">401（Unauthorized）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#403（-Forbidden）"><span class="toc-text">403（    Forbidden）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#500（Internal-Server-Error）"><span class="toc-text">500（Internal Server Error）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#502（Bad-Gateway）"><span class="toc-text">502（Bad Gateway）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#503（Service-Unavailable）"><span class="toc-text">503（Service Unavailable）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#504（Gateway-Time-out）"><span class="toc-text">504（Gateway Time-out）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#web安全"><span class="toc-text">web安全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#web攻击技术"><span class="toc-text">web攻击技术</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#主动攻击"><span class="toc-text">主动攻击</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#被动攻击"><span class="toc-text">被动攻击</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他安全漏洞"><span class="toc-text">其他安全漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#密码破解"><span class="toc-text">密码破解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#点击劫持"><span class="toc-text">点击劫持</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Dos攻击"><span class="toc-text">Dos攻击</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        图解http读书笔记
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-03-13 15:39:41</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#图解http" title="图解http">图解http</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#读书笔记" title="读书笔记">读书笔记</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="web及网络基础"><a href="#web及网络基础" class="headerlink" title="web及网络基础"></a>web及网络基础</h2><h3 id="1、IP、TCP和DNS"><a href="#1、IP、TCP和DNS" class="headerlink" title="1、IP、TCP和DNS"></a>1、IP、TCP和DNS</h3><ol>
+<li><p>负责传输的IP协议<br>IP（Internet Protocol）网际协议位于网络。 IP地址指明了节点被分配到的地址，MAC地址是指网卡所属的固定地址。IP地址可以和MAC地址进行配对。IP地址可变换，但MAC地址基本上不会更改。</p>
+</li>
+<li><p>确保可靠性的TCP协议<br>TCP位于传输层，提供可靠的字节流服务。TCP协议为了更容易传送大数据才把数据分割，而且TCP协议能够确认数据最终是否送达到对方。</p>
+</li>
+</ol>
+<p><img src="/img/http1.jpeg" style="max-width:95%"></p>
+<ol>
+<li>发送端首先发送一个带SYN标志的数据包给对方。</li>
+<li>接收端收到后，回传一个带有SYN/ACK标志的数据包以示传达确认信息。</li>
+<li><p>最后，发送端再回传一个带ACK标志的数据包，代表“握手”结束。</p>
+</li>
+<li><p>负责域名解析的DNS服务<br>DNS（Domain Name System）服务是和HTTP协议一样位于应用层的协议。它提供域名到IP地址之间的解析服务</p>
+</li>
+</ol>
+<h3 id="2、-URI和URL区别"><a href="#2、-URI和URL区别" class="headerlink" title="2、 URI和URL区别"></a>2、 URI和URL区别</h3><ol>
+<li>与URI（统一资源标识符）相比，我们更熟悉URL（UniformResource Locator，统一资源定位符）。URL正是使用Web浏览器等访问Web页面时需要输入的网页地址</li>
+<li>URI就是由某个协议方案表示的资源的定位标识符，采用HTTP协议时，协议方案就是http。除此之外，还有ftp、mailto、telnet、file等</li>
+<li>URI用字符串标识某一互联网资源，而URL表示资源的地点（互联网上所处的位置）。可见URL是URI的子集</li>
+</ol>
+<h2 id="HTTP报文"><a href="#HTTP报文" class="headerlink" title="HTTP报文"></a>HTTP报文</h2><h3 id="报文结构"><a href="#报文结构" class="headerlink" title="报文结构"></a>报文结构</h3><p><img src="/img/http2.jpeg" alt="请求报文（上）和响应报文（下）的结构" style="max-width:95%"><br>上图：请求报文（上）和响应报文（下）的结构<br><img src="/img/http3.jpeg" alt="请求报文（上）和响应报文（下）的实例" style="max-width:95%"><br>上图：请求报文（上）和响应报文（下）的实例</p>
+<h3 id="编码提示传输速率"><a href="#编码提示传输速率" class="headerlink" title="编码提示传输速率"></a>编码提示传输速率</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><ol>
+<li>报文（message）: 是HTTP通信中的基本单位，由8位组字节流（octet sequence，其中octet为8个比特）组成，通过HTTP通信传输。</li>
+<li>实体（entity）: 作为请求或响应的有效载荷数据（补充项）被传输，其内容由实体首部和实体主体组成</li>
+</ol>
+<p><em>通常，报文主体等于实体主体。只有当传输中进行编码操作时，实体主体的内容发生变化，才导致它和报文主体产生差异</em></p>
+<h4 id="压缩传输的内容编码（Content-Encoding）"><a href="#压缩传输的内容编码（Content-Encoding）" class="headerlink" title="压缩传输的内容编码（Content-Encoding）"></a>压缩传输的内容编码（Content-Encoding）</h4><p>内容编码指明应用在实体内容上的编码格式，并保持实体信息原样压缩。内容编码后的实体由客户端接收并负责解码。常用的内容编码有：gzip、deflate<br><img src="/img/http4.jpeg" alt style="max-width:95%"></p>
+<h4 id="分割发送的分块传输编码（Transfer-Encoding）"><a href="#分割发送的分块传输编码（Transfer-Encoding）" class="headerlink" title="分割发送的分块传输编码（Transfer-Encoding）"></a>分割发送的分块传输编码（Transfer-Encoding）</h4><p>在HTTP通信过程中，请求的编码实体资源尚未全部传输完成之前，浏览器无法显示请求页面。在传输大容量数据时，通过把数据分割成多块，能够让浏览器逐步显示页面。这种把实体主体分块的功能称为分块传输编码（Chunked Transfer Coding）<br><img src="/img/http5.jpeg" alt style="max-width:95%"></p>
+<p><strong>优点:</strong></p>
+<ol>
+<li>分块编码有利于一边进行压缩一边发送数据，而不是先完成压缩过程以得知压缩后数据的大小</li>
+<li>分块传输编码允许服务器在最后发送消息头字段，利于WEB性能优化的TTFB指标；(不依赖头部的长度content-length信息，也能知道实体的边界)</li>
+<li>HTTP分块传输编码允许服务器为动态生成的内容维持HTTP持久链接。通常，持久链接需要服务器在开始发送消息体前发送Content-Length消息头字段，但是对于动态生成的内容来说，在内容创建完之前是不可知的。</li>
+</ol>
+<h4 id="Content-Encoding-和-Transfer-Encoding-chunked"><a href="#Content-Encoding-和-Transfer-Encoding-chunked" class="headerlink" title="Content-Encoding 和 Transfer-Encoding: chunked"></a>Content-Encoding 和 Transfer-Encoding: chunked</h4><p>在头部加入 Transfer-Encoding: chunked 之后，就代表这个报文采用了分块编码。这时，报文中的实体需要改为用一系列分块来传输。每个分块包含十六进制的长度值和数据，长度值独占一行，长度不包括它结尾的 CRLF（\r\n），也不包括分块数据结尾的 CRLF。最后一个分块长度值必须为 0，对应的分块数据没有内容，表示实体结束。<br>Content-Encoding 和 Transfer-Encoding 二者经常会结合来用，其实就是针对进行了内容编码（压缩）的内容再进行传输编码（分块）<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">telnet <span class="number">106.187</span><span class="number">.88</span><span class="number">.156</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line">GET /test.php HTTP/<span class="number">1.1</span></span><br><span class="line">Host: qgy18.com</span><br><span class="line">Accept-Encoding: gzip</span><br><span class="line"></span><br><span class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">Server: nginx</span><br><span class="line"><span class="built_in">Date</span>: Sun, <span class="number">03</span> May <span class="number">2015</span> <span class="number">17</span>:<span class="number">25</span>:<span class="number">23</span> GMT</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Encoding: gzip</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>f</span><br><span class="line">�H���W(�/�I�J</span><br><span class="line"></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="发送多种数据的多部分对象集合"><a href="#发送多种数据的多部分对象集合" class="headerlink" title="发送多种数据的多部分对象集合"></a>发送多种数据的多部分对象集合</h4><p>HTTP协议中也采纳了多部分对象集合，发送的一份报文主体内可含有多类型实体。通常是在图片或文本文件等上传时使用。</p>
+<ol>
+<li>multipart/form-data: 在Web表单文件上传时使用。</li>
+<li>multipart/byteranges: 状态码206（Partial Content，部分内容）响应报文包含了多个范围的内容时使用。<h2 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h2></li>
+</ol>
+<p><img src="/img/http6.jpeg" alt style="max-width:95%"></p>
+<h3 id="204（No-Content）"><a href="#204（No-Content）" class="headerlink" title="204（No Content）"></a>204（No Content）</h3><p>该状态码代表服务器接收的请求已成功处理，但在返回的响应报文中不含实体的主体部分</p>
+<h3 id="206（Partial-Content）"><a href="#206（Partial-Content）" class="headerlink" title="206（Partial Content）"></a>206（Partial Content）</h3><p>该状态码表示客户端进行了范围请求，而服务器成功执行了这部分的GET请求。响应报文中包含由Content-Range指定范围的实体内容</p>
+<h3 id="301"><a href="#301" class="headerlink" title="301"></a>301</h3><p>永久性重定向。该状态码表示请求的资源已被分配了新的URI，以后应使用资源现在所指的URI。</p>
+<p>也就是说，如果已经把资源对应的URI保存为书签了，这时应该按Location首部字段提示的URI重新保存。</p>
+<h3 id="302"><a href="#302" class="headerlink" title="302"></a>302</h3><p>临时性重定向。该状态码表示请求的资源已被分配了新的URI，希望用户（本次）能使用新的URI访问。</p>
+<p>和301 Moved Permanently状态码相似，但302状态码代表的资源不是被永久移动，只是临时性质的。换句话说，已移动的资源对应的URI将来还有可能发生改变。</p>
+<h3 id="304"><a href="#304" class="headerlink" title="304"></a>304</h3><p>服务器端资源未改变，可直接使用客户端未过期的缓存。304状态码返回时，不包含任何响应的主体部分。304虽然被划分在3XX类别中，但是和重定向没有关系</p>
+<h3 id="400（Bad-Request）"><a href="#400（Bad-Request）" class="headerlink" title="400（Bad Request）"></a>400（Bad Request）</h3><p>该状态码表示请求报文中存在语法错误。当错误发生时，需修改请求的内容后再次发送请求。</p>
+<h3 id="401（Unauthorized）"><a href="#401（Unauthorized）" class="headerlink" title="401（Unauthorized）"></a>401（Unauthorized）</h3><p>该状态码表示发送的请求需要有通过HTTP认证（BASIC认证、DIGEST认证）的认证信息。另外若之前已进行过1次请求，则表示用户认证失败。</p>
+<h3 id="403（-Forbidden）"><a href="#403（-Forbidden）" class="headerlink" title="403（    Forbidden）"></a>403（    Forbidden）</h3><p>未获得文件系统的访问授权，访问权限出现某些问题（从未授权的发送源IP地址试图访问）等列举的情况都可能是发生403的原因</p>
+<h3 id="500（Internal-Server-Error）"><a href="#500（Internal-Server-Error）" class="headerlink" title="500（Internal Server Error）"></a>500（Internal Server Error）</h3><p>该状态码表明服务器端在执行请求时发生了错误。也有可能是Web应用存在的bug或某些临时的故障</p>
+<h3 id="502（Bad-Gateway）"><a href="#502（Bad-Gateway）" class="headerlink" title="502（Bad Gateway）"></a>502（Bad Gateway）</h3><p>服务挂了（作为网关或者代理工作的服务器尝试执行请求时，从远程服务器接收到了一个无效的响应）</p>
+<h3 id="503（Service-Unavailable）"><a href="#503（Service-Unavailable）" class="headerlink" title="503（Service Unavailable）"></a>503（Service Unavailable）</h3><p>该状态码表明服务器暂时处于超负载或正在进行停机维护（请求人数太多，服务器为了自保，拒绝用户访问），现在无法处理请求</p>
+<h3 id="504（Gateway-Time-out）"><a href="#504（Gateway-Time-out）" class="headerlink" title="504（Gateway Time-out）"></a>504（Gateway Time-out）</h3><p>是指服务器作为网关或代理，但是没有及时从上游服务器收到请求 （可能是nginx或者后端配置参数错误或者不合理）</p>
+<h2 id="web安全"><a href="#web安全" class="headerlink" title="web安全"></a>web安全</h2><h3 id="web攻击技术"><a href="#web攻击技术" class="headerlink" title="web攻击技术"></a>web攻击技术</h3><h4 id="主动攻击"><a href="#主动攻击" class="headerlink" title="主动攻击"></a>主动攻击</h4><p>主动攻击模式里具有代表性的攻击是SQL注入攻击和OS命令注入攻击</p>
+<h4 id="被动攻击"><a href="#被动攻击" class="headerlink" title="被动攻击"></a>被动攻击</h4><p>被动攻击模式中具有代表性的攻击是跨站脚本攻击（xss）和跨站点请求伪造(csrf)</p>
+<h3 id="其他安全漏洞"><a href="#其他安全漏洞" class="headerlink" title="其他安全漏洞"></a>其他安全漏洞</h3><h4 id="密码破解"><a href="#密码破解" class="headerlink" title="密码破解"></a>密码破解</h4><h4 id="点击劫持"><a href="#点击劫持" class="headerlink" title="点击劫持"></a>点击劫持</h4><p>点击劫持（Clickjacking）是指利用透明的按钮或链接做成陷阱，覆盖在Web页面之上。然后诱使用户在不知情的情况下，点击那个链接访问内容的一种攻击手段</p>
+<h4 id="Dos攻击"><a href="#Dos攻击" class="headerlink" title="Dos攻击"></a>Dos攻击</h4><p><strong>DoS攻击（Denial of Service attack）是一种让运行中的服务呈停止状态的攻击。有时也叫做服务停止攻击或拒绝服务攻击。</strong></p>
+<ol>
+<li>集中利用访问请求造成资源过载，资源用尽的同时，实际上服务也就呈停止状态</li>
+<li>通过攻击安全漏洞使服务停止</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

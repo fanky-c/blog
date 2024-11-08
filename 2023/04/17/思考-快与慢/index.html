@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        思考, 快与慢 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、快思考和慢思考"><span class="toc-text">1、快思考和慢思考</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-概览"><span class="toc-text">1.1 概览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-一张愤怒的脸和一道乘法题"><span class="toc-text">1.2 一张愤怒的脸和一道乘法题</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-1-系统一遇到麻烦，系统二会出面解决"><span class="toc-text">1.2.1 系统一遇到麻烦，系统二会出面解决</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-2-冲突与自我控制"><span class="toc-text">1.2.2 冲突与自我控制</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-2-3-看上去不等于实际上等长的两条线"><span class="toc-text">1.2.3 看上去不等于实际上等长的两条线</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-电影的主角和配角"><span class="toc-text">1.3 电影的主角和配角</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-惰性思维与延迟满足的矛盾"><span class="toc-text">1.4 惰性思维与延迟满足的矛盾</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-4-1-脱口而出的错误答案"><span class="toc-text">1.4.1 脱口而出的错误答案</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-4-2-今天得到1000美元，1年后得到10000美元，你选哪个？"><span class="toc-text">1.4.2 今天得到1000美元，1年后得到10000美元，你选哪个？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-5-联想神奇力量"><span class="toc-text">1.5 联想神奇力量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-6-你的直觉有可能只是错觉"><span class="toc-text">1.6 你的直觉有可能只是错觉</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-6-1-由记忆造成的错觉"><span class="toc-text">1.6.1 由记忆造成的错觉</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-6-2-什么样的信息更容易让人信服"><span class="toc-text">1.6.2 什么样的信息更容易让人信服</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-6-3-股票代码上口，回报率也相对较高"><span class="toc-text">1.6.3 股票代码上口，回报率也相对较高</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-6-4-创新是发生在能让人联想无限的环境中的"><span class="toc-text">1.6.4 创新是发生在能让人联想无限的环境中的</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-7-意料之外和情理之中"><span class="toc-text">1.7 意料之外和情理之中</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-7-1-从第一次的惊喜到第二次的习以为常"><span class="toc-text">1.7.1 从第一次的惊喜到第二次的习以为常</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-7-2-简的钱包是怎么丢的呢？"><span class="toc-text">1.7.2 简的钱包是怎么丢的呢？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-8-字母‘B’-与数字-‘13’"><span class="toc-text">1.8 字母‘B’ 与数字 ‘13’</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-8-1-是什么让你相信了那些荒谬之词？"><span class="toc-text">1.8.1 是什么让你相信了那些荒谬之词？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-8-2-光环效应与群体的智慧"><span class="toc-text">1.8.2 光环效应与群体的智慧</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-8-3-眼见为实的想法往往让我们仓促作出决定"><span class="toc-text">1.8.3 眼见为实的想法往往让我们仓促作出决定</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-9-我们究竟是如何作出判断的？"><span class="toc-text">1.9 我们究竟是如何作出判断的？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-10-目标问题与启发性问题形影不离"><span class="toc-text">1.10 目标问题与启发性问题形影不离</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-10-1-找个相对简单的问题来作答"><span class="toc-text">1.10.1 找个相对简单的问题来作答</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-10-2-立体启发法：远处的物体看上去更高大"><span class="toc-text">1.10.2 立体启发法：远处的物体看上去更高大</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#1-10-3-情感启发式：因为喜欢，所以认同"><span class="toc-text">1.10.3 情感启发式：因为喜欢，所以认同</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、启发法和偏见"><span class="toc-text">2、启发法和偏见</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-大数法则与小数定律"><span class="toc-text">2.1 大数法则与小数定律</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-锚定效应在生活中随处可见"><span class="toc-text">2.2 锚定效应在生活中随处可见</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-科学地利用可得性启发法"><span class="toc-text">2.3 科学地利用可得性启发法</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-3-1-意识到自己的偏见有利于团队关系融洽"><span class="toc-text">2.3.1 意识到自己的偏见有利于团队关系融洽</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-3-2-可得性偏见会影响我们对自己或他人的看法"><span class="toc-text">2.3.2 可得性偏见会影响我们对自己或他人的看法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-焦虑情绪与风险政策的设计"><span class="toc-text">2.4 焦虑情绪与风险政策的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-4-1-被闪电击中与食物中毒，哪种意外致死率更高？"><span class="toc-text">2.4.1 被闪电击中与食物中毒，哪种意外致死率更高？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-4-2-如何避免小概率的风险事件演变成公共危机？"><span class="toc-text">2.4.2 如何避免小概率的风险事件演变成公共危机？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-猜一下，汤姆的专业是什么？"><span class="toc-text">2.5 猜一下，汤姆的专业是什么？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-5-1-依据典型性作出预测是下意识的行为"><span class="toc-text">2.5.1 依据典型性作出预测是下意识的行为</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-5-2-典型性启发的两宗罪"><span class="toc-text">2.5.2 典型性启发的两宗罪</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-5-3-用贝叶斯定理来约束直觉"><span class="toc-text">2.5.3 用贝叶斯定理来约束直觉</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-6-琳达问题的社会效应"><span class="toc-text">2.6 琳达问题的社会效应</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-6-1-琳达不可能只是一名普通的银行出纳吧？"><span class="toc-text">2.6.1 琳达不可能只是一名普通的银行出纳吧？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-6-2-少即是多的逻辑悖论"><span class="toc-text">2.6.2 少即是多的逻辑悖论</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-7-因果关系比统计学信息更具说服力"><span class="toc-text">2.7 因果关系比统计学信息更具说服力</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-7-1-因果关系基础比率与思维定式"><span class="toc-text">2.7.1 因果关系基础比率与思维定式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-7-2-我们并没有自己想的那样乐于助人"><span class="toc-text">2.7.2 我们并没有自己想的那样乐于助人</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-8-所有表现都会回归平均值"><span class="toc-text">2.8 所有表现都会回归平均值</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-8-1-第二次的表现与第一次并无因果联系"><span class="toc-text">2.8.1 第二次的表现与第一次并无因果联系</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-8-2-回归现象的意义不亚于发现万有引力"><span class="toc-text">2.8.2 回归现象的意义不亚于发现万有引力</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-9-如何让直觉性预测更恰当有效？"><span class="toc-text">2.9 如何让直觉性预测更恰当有效？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#2-9-1-偏离预测方向的直觉"><span class="toc-text">2.9.1 偏离预测方向的直觉</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-9-2-对直觉性预测的偏见进行修正"><span class="toc-text">2.9.2 对直觉性预测的偏见进行修正</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-9-3-两位教授候选人，应该选择哪一位？"><span class="toc-text">2.9.3 两位教授候选人，应该选择哪一位？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、过渡自信与决策错误"><span class="toc-text">3、过渡自信与决策错误</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-“知道”的错觉"><span class="toc-text">3.1 “知道”的错觉</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-1-后见之明的社会成本"><span class="toc-text">3.1.1 后见之明的社会成本</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-1-2-真的存在能让企业基业长青的秘诀吗？"><span class="toc-text">3.1.2 真的存在能让企业基业长青的秘诀吗？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-未来是不可预测的"><span class="toc-text">3.2 未来是不可预测的</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-1-士兵测评的有效性错觉"><span class="toc-text">3.2.1 士兵测评的有效性错觉</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-2-投资股票的技能错觉"><span class="toc-text">3.2.2 投资股票的技能错觉</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-3-主观自信与专业文化为认知错觉提供了生存的土壤"><span class="toc-text">3.2.3 主观自信与专业文化为认知错觉提供了生存的土壤</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-2-4-专家预测的准确度比不上扔飞镖的猴子"><span class="toc-text">3.2.4 专家预测的准确度比不上扔飞镖的猴子</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-直觉判断和公式运算，-孰优孰劣？"><span class="toc-text">3.3 直觉判断和公式运算， 孰优孰劣？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-1-专家预测比不上简单运算准确"><span class="toc-text">3.3.1 专家预测比不上简单运算准确</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-2-让许多业内人士烦恼的运算法"><span class="toc-text">3.3.2 让许多业内人士烦恼的运算法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-3-3-“闭上眼睛”的直觉判断比主观判断更可取"><span class="toc-text">3.3.3 “闭上眼睛”的直觉判断比主观判断更可取</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-什么时候可以相信专家的直觉？"><span class="toc-text">3.4 什么时候可以相信专家的直觉？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-4-1-直觉就在眨眼之间"><span class="toc-text">3.4.1 直觉就在眨眼之间</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-4-2-专家型直觉的习得"><span class="toc-text">3.4.2 专家型直觉的习得</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-4-3-环境有规律可循，直觉才可相信"><span class="toc-text">3.4.3 环境有规律可循，直觉才可相信</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-4-4-直觉的对错评估"><span class="toc-text">3.4.4 直觉的对错评估</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-5-努力养成采纳外部意见的决策习惯"><span class="toc-text">3.5 努力养成采纳外部意见的决策习惯</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-5-1-比起外部意见，我们更偏向内部意见"><span class="toc-text">3.5.1 比起外部意见，我们更偏向内部意见</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-5-2-规划谬误：过于乐观的计划随处可见"><span class="toc-text">3.5.2 规划谬误：过于乐观的计划随处可见</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-5-3-减少决策错误的有效方法"><span class="toc-text">3.5.3 减少决策错误的有效方法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-6-乐观主义是一把双刃剑"><span class="toc-text">3.6 乐观主义是一把双刃剑</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-6-1-乐观主义者过度自信的代价"><span class="toc-text">3.6.1 乐观主义者过度自信的代价</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-6-2-竞争忽视：为何大片会扎堆上映？"><span class="toc-text">3.6.2 竞争忽视：为何大片会扎堆上映？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-6-3-是你太糟糕，而不是我太笨拙"><span class="toc-text">3.6.3 是你太糟糕，而不是我太笨拙</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-6-4-“事前验尸”：部分克服乐观偏见的方法"><span class="toc-text">3.6.4 “事前验尸”：部分克服乐观偏见的方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、选择与风险"><span class="toc-text">4、选择与风险</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-事关风险与财富的抉择"><span class="toc-text">4.1 事关风险与财富的抉择</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-更人性化的前景理论"><span class="toc-text">4.2 更人性化的前景理论</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-2-1-面对财富，你会选择规避风险还是冒险一搏？"><span class="toc-text">4.2.1 面对财富，你会选择规避风险还是冒险一搏？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-2-2-损失厌恶：人们对亏损的反应比对盈余的反应大得多"><span class="toc-text">4.2.2 损失厌恶：人们对亏损的反应比对盈余的反应大得多</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-2-3-前景理论无法应对令人失望的事"><span class="toc-text">4.2.3 前景理论无法应对令人失望的事</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-禀赋效应与市场交易"><span class="toc-text">4.3 禀赋效应与市场交易</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-3-1-像商人那样思考和交易"><span class="toc-text">4.3.1 像商人那样思考和交易</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-公平性—经济交易的参照点"><span class="toc-text">4.4 公平性—经济交易的参照点</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-4-1-目标就是参考点"><span class="toc-text">4.4.1 目标就是参考点</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-4-2-我们为什么不愿意改变现状？"><span class="toc-text">4.4.2 我们为什么不愿意改变现状？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-4-3-商人提价或降低员工工资的行为公平吗？"><span class="toc-text">4.4.3 商人提价或降低员工工资的行为公平吗？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-对结果可能性的权衡"><span class="toc-text">4.5 对结果可能性的权衡</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-5-1-可能性效应与确定性效应"><span class="toc-text">4.5.1 可能性效应与确定性效应</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-5-2-四重模式：可能性与决策权重的关系模型"><span class="toc-text">4.5.2 四重模式：可能性与决策权重的关系模型</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-被过分关注的罕见事件"><span class="toc-text">4.6 被过分关注的罕见事件</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-6-1-你认为一支三流球队获得NBA总冠军的可能性有多大？"><span class="toc-text">4.6.1 你认为一支三流球队获得NBA总冠军的可能性有多大？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-6-2-画面感越强，决策权重越大"><span class="toc-text">4.6.2 画面感越强，决策权重越大</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-6-3-对风险的表述方式不同，所做决策可能截然相反"><span class="toc-text">4.6.3 对风险的表述方式不同，所做决策可能截然相反</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-6-4-罕见事件又为何会被人忽视？"><span class="toc-text">4.6.4 罕见事件又为何会被人忽视？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7-能带来长远收益的风险政策"><span class="toc-text">4.7 能带来长远收益的风险政策</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-7-1-宽框架还是窄框架？"><span class="toc-text">4.7.1 宽框架还是窄框架？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-7-2-聪明的投资者不会每天都看股票行情表"><span class="toc-text">4.7.2 聪明的投资者不会每天都看股票行情表</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-7-3-风险政策可以抵消风险厌恶的偏见"><span class="toc-text">4.7.3 风险政策可以抵消风险厌恶的偏见</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-8-心理账户是如何影响我们的选择？"><span class="toc-text">4.8 心理账户是如何影响我们的选择？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-8-1-你会卖掉赢利的股票还是亏损的股票？"><span class="toc-text">4.8.1 你会卖掉赢利的股票还是亏损的股票？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-8-2-哪种选择会让你更后悔？"><span class="toc-text">4.8.2 哪种选择会让你更后悔？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-8-3-因为害怕将来后悔而作出不理性的选择"><span class="toc-text">4.8.3 因为害怕将来后悔而作出不理性的选择</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-9-评估结果的逆转"><span class="toc-text">4.9 评估结果的逆转</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-10-善用框架效应，让生活更美好"><span class="toc-text">4.10 善用框架效应，让生活更美好</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#4-10-1-情感的框架效应很难抵挡"><span class="toc-text">4.10.1 情感的框架效应很难抵挡</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-10-2-用框架性政策助推人们作出更好的选择"><span class="toc-text">4.10.2 用框架性政策助推人们作出更好的选择</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、两个自我"><span class="toc-text">5、两个自我</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-体验效用与决策效应不一致"><span class="toc-text">5.1 体验效用与决策效应不一致</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-1-1-如何测量体验效用？"><span class="toc-text">5.1.1 如何测量体验效用？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-1-2-记忆自我夸大了痛苦体验"><span class="toc-text">5.1.2 记忆自我夸大了痛苦体验</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-1-3-记忆没那么可靠"><span class="toc-text">5.1.3 记忆没那么可靠</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-人生如戏"><span class="toc-text">5.2 人生如戏</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-1-比起整个人生，我们更在意人生的结局"><span class="toc-text">5.2.1 比起整个人生，我们更在意人生的结局</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-2-1-关于上一次旅行，你还能记起多少？"><span class="toc-text">5.2.1 关于上一次旅行，你还能记起多少？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-你有多幸福？"><span class="toc-text">5.3 你有多幸福？</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-3-1-测量经验自我的幸福感"><span class="toc-text">5.3.1 测量经验自我的幸福感</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-4-1-幸福的方法"><span class="toc-text">5.4.1 幸福的方法</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-思考生活"><span class="toc-text">5.4 思考生活</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#5-4-1-生活满意度：一个很难回答的问题"><span class="toc-text">5.4.1 生活满意度：一个很难回答的问题</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-4-2-被放大了的幸福错觉"><span class="toc-text">5.4.2 被放大了的幸福错觉</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-4-3-千万不要忽略时间的作用"><span class="toc-text">5.4.3 千万不要忽略时间的作用</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        思考, 快与慢
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2023-04-17 15:32:42</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#系统A和系统B" title="系统A和系统B">系统A和系统B</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#快运算思考方式" title="快运算思考方式">快运算思考方式</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#慢运算思考方式" title="慢运算思考方式">慢运算思考方式</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="1、快思考和慢思考"><a href="#1、快思考和慢思考" class="headerlink" title="1、快思考和慢思考"></a>1、快思考和慢思考</h3><h4 id="1-1-概览"><a href="#1-1-概览" class="headerlink" title="1.1 概览"></a>1.1 概览</h4><p><strong>a、快思考（系统一）：是无意识且快速的，不怎么费脑力，没有感觉，完全处于自主控制状态。例如：回答2+2</strong></p>
+<p>快思考的运行是无意识且快速的，不怎么费脑力，没有感觉，完全处于自主控制状态。</p>
+<p><strong>b、慢思考（系统二）：是将注意力转移到需要费脑力的大脑活动上来，例如复杂的运算、文章中某页出现a的次数。慢思考的运行通常与行为、选择和专注等主观体验相关联。</strong></p>
+<p>慢思考的运作是高度多样化的，但所有这些运作方式都有一个共同特征：所有运作都需要集中注意力，如若注意力分散，运作也会随之中断</p>
+<h4 id="1-2-一张愤怒的脸和一道乘法题"><a href="#1-2-一张愤怒的脸和一道乘法题" class="headerlink" title="1.2 一张愤怒的脸和一道乘法题"></a>1.2 一张愤怒的脸和一道乘法题</h4><h5 id="1-2-1-系统一遇到麻烦，系统二会出面解决"><a href="#1-2-1-系统一遇到麻烦，系统二会出面解决" class="headerlink" title="1.2.1 系统一遇到麻烦，系统二会出面解决"></a>1.2.1 系统一遇到麻烦，系统二会出面解决</h5><p>系统2在系统1无法提供问题答案时，就会被激活，这好比你碰到了“17×24”这样的乘法题，系统1无法给出答案，系统2便被激活来解决问题。当你遇到令人吃惊的事情时，同样会感到自己有意识的那部分注意力会瞬间激增。另外，在系统1所设定的世界里，电灯不会跳，猫不会像狗一样汪汪叫，“猩猩”也不会穿过篮球场。如若事物违反了系统1所设定的关于世界的模式，系统2同样会被激活。</p>
+<p>系统1和系统2的分工是非常高效的：代价最小，效果最好。通常情况下，这种分工很有效，因为系统1很善于完成自己的本职工作：它在熟悉情境中采取的模式是精确的，所作出的短期预测是准确的，遇到挑战时做出的第一反应也是迅速且基本恰当的。然而，系统1存在成见，在很多特定的情况下，这一系统易犯系统性错误。你会发现这个系统有时候会将原本较难的问题作简单化处理，对于逻辑学和统计学问题，它几乎一无所知。系统1还有一个更大的局限，即我们无法关闭它。</p>
+<h5 id="1-2-2-冲突与自我控制"><a href="#1-2-2-冲突与自我控制" class="headerlink" title="1.2.2 冲突与自我控制"></a>1.2.2 冲突与自我控制</h5><p>自主反应和控制这种反应的意图之间存在冲突，这种冲突在生活中极为普遍。我们差不多都有过这样的经历：在餐厅里，自己的邻座是一对穿着怪异的夫妻，但我们会尽量不去盯着他们看。我们也清楚，如果看书时老是重读不知所云的内容，这就说明我们在强迫自己去读一本无聊的书。在冬季严寒的地区，许多司机都有着这样的记忆：当他们的车在冰上滑行失去控制时，他们必须放弃平时的做法，竭力去按照已反复演练过的指示进行操作：“如果车打滑，做什么都行，就是别踩刹车！”另外，每一个人都有强忍着不诅咒别人去死的经历。系统2的众多任务中就包括抑制系统1产生的这些冲动。换句话说，系统2负责人们的自我控制。</p>
+<h5 id="1-2-3-看上去不等于实际上等长的两条线"><a href="#1-2-3-看上去不等于实际上等长的两条线" class="headerlink" title="1.2.3 看上去不等于实际上等长的两条线"></a>1.2.3 看上去不等于实际上等长的两条线</h5><p><img src="/img/think1.jpg" style="max-width:95%"></p>
+<p>这幅图没有什么特别之处：两条不同长度的水平线，两端有朝向不同方向的箭头，并且下面一条线明显比上面那条线长。这是我们看到的所有内容，而且我们肯定相信自己的眼睛。但是，如果你曾经见过这幅图，就会认出这便是那幅著名的缪勒–莱耶错觉图，要证实这一错觉很简单，只需要找把尺子量一量，你就会发现其实两条水平线是等长的。</p>
+<p>提到认知错觉，最常被问及的问题就是能否避免这种错觉。上述各例传达的信息不容乐观。因为系统1是自主运行的，我们无法随意使其停止，因此直观思维所导致的错误常常难以避免。</p>
+<p>作为一种生活方式，时刻保持警觉性并不是一件好事，想要这样做也并不实际。总是质疑自己的想法会使我们的生活非常枯燥乏味，因为系统2在代替系统1进行日常抉择时总是耗时很长且非常低效。最好的解决办法就是妥协：学会区别常会出现重大错误的情境，在风险很高的时候，尽力避免这些错误。前文中曾提到过，发现别人的错误总比发现自己的错误更容易。</p>
+<blockquote>
+<p>这是你系统1的想法，放慢速度，听听系统2的看法吧</p>
+</blockquote>
+<h4 id="1-3-电影的主角和配角"><a href="#1-3-电影的主角和配角" class="headerlink" title="1.3 电影的主角和配角"></a>1.3 电影的主角和配角</h4><p>虽说不太可能，但假设本书真的被拍成电影的话，自视为主角的系统2一定只能做个配角。在这个故事中，系统2的典型特征表现在其各项活动都需要努力，但其自身却很懒惰，除了必需的努力外，它不愿多付出，哪怕是一点点。因此，虽然系统2认为是自己选择了人们的想法和行为，可实际上，这些选择都是在系统1的引导下完成的，系统1才是这个故事的真正主角。然而，一些至关重要的任务却只有系统2才能执行，因为这些任务需要付出努力和控制自我，由此方可抑制系统1产生的直觉和冲动。</p>
+<p><strong>瞳孔是衡量与思维活动形影不离的生理刺激的标尺，我们可以通过瞳孔了解大脑的运行状况。</strong></p>
+<p><strong>如果达成同一个目标的方法有多种，人们往往会选择最简单的那一种。在经济行为中，付出就是成本，学习技能是为了追求利益和成本的平衡。因为懒惰是人类的本性。</strong></p>
+<h4 id="1-4-惰性思维与延迟满足的矛盾"><a href="#1-4-惰性思维与延迟满足的矛盾" class="headerlink" title="1.4 惰性思维与延迟满足的矛盾"></a>1.4 惰性思维与延迟满足的矛盾</h4><p>不断转换任务和提高大脑运转速度从本质上说是不会让人感到快乐的，人们总是尽可能避开这种情况，这就说明了为什么最省力法则能成为法则。</p>
+<p>人们也能花很长时间和大量精力进行一项工作。心理学家米哈里·契克森米哈(Mihaly Csikszentmihalyi)对这种无须作出努力的状态的研究比别人都多，他将这种状态命名为心流，而且此名称已成为一个心理学术语了。体验过心流的人将其描述为“一种将大脑注意力毫不费力地集中起来的状态，这种状态可以使人忘却时间的概念，忘掉自己，也忘掉自身问题”，他们对这种状态所带来的愉悦感的描述非常吸引人，米哈里称之为“最优体验”。很多活动都能带来心流体验，不论是画画还是摩托车比赛。我认识几个作者，出书就是他们的最优体验。对于一个作者而言，这样容易满足是件幸事。心流巧妙地区分了两种努力形式：对任务的关注和对注意力的严格控制。</p>
+<p><strong>自我控制需要集中注意力，需要付出努力。换种说法就是，控制思想和行为是系统2（慢思考）的任务之一。</strong></p>
+<h5 id="1-4-1-脱口而出的错误答案"><a href="#1-4-1-脱口而出的错误答案" class="headerlink" title="1.4.1 脱口而出的错误答案"></a>1.4.1 脱口而出的错误答案</h5><p>所有的玫瑰都是花。</p>
+<p>有些花会很快凋谢。</p>
+<p>因此，有些玫瑰也会很快凋谢。</p>
+<p>大部分大学生觉得这个推论是合理的。但事实上，这个论证是有问题的，因为玫瑰可能不会很快凋谢。</p>
+<p><strong>这个实验使我们对在日常生活中做出的推论丧失了信心。这个实验使我们认为，当人们相信某个结论是正确的时候，他们很可能会相信支持这个结论的论证，哪怕这些论证不正确。</strong></p>
+<p>避免思维上懒惰的人可以被叫做“勤快人”。他们更机警，思维更活跃，不会满足于貌似正确的答案，对自己的直觉也常持怀疑态度。心理学家基思·斯坦诺维奇认为他们更理性。</p>
+<h5 id="1-4-2-今天得到1000美元，1年后得到10000美元，你选哪个？"><a href="#1-4-2-今天得到1000美元，1年后得到10000美元，你选哪个？" class="headerlink" title="1.4.2 今天得到1000美元，1年后得到10000美元，你选哪个？"></a>1.4.2 今天得到1000美元，1年后得到10000美元，你选哪个？</h5><p>研究人员通过一面单面镜观察这些孩子，他们等待期间的行为总会使观察者大笑。有些孩子成功地经受住了15分钟的考验，其成功原因是他们能把注意力从诱人的奖励上移开。10年或15年之后，那些忍住了诱惑和没忍住诱惑的孩子之间会出现很大差别。忍住了诱惑的孩子在认知任务——尤其是高效地重新分配注意力方面的控制力更强。当他们还年轻时，他们染上毒品的可能性更小。智力水平的巨大区别也随之出现：在4岁时表现出更强的自我控制能力的孩子在智力测验中得到了更高的分数。</p>
+<p>测试者发现，注意力训练不仅提升了这些孩子的执行控制能力，而且他们在智力测验中的笔试成绩也提高了，并且这种提升的状态可以维持几个月不变。</p>
+<p>他还对这项测试中得分很低的那些学生的特点进行了跟踪研究，发现他们更倾向于用脑海中最先出现的想法来回答问题，而不愿意费事去验证自己的直觉。这些人身上的系统2的监测功能往往较弱。那些遇到各种难题都跟着直觉走的人也易于接受系统1的其他暗示，特别是在冲动、不耐烦以及急功近利的时候，这些人就更易接受系统1的各种暗示了。</p>
+<p>我们这场心理剧中的两个角色有着不同的“人格”。系统1是冲动、凭直觉的；而系统2则具备推理能力，它很谨慎，但对一些人而言，这个系统也是懒惰的。我们从不同人的不同特点中发现了相关性：有些人倾向于系统2，而有些人则更接近于系统1。这个简单的测试可以较好地反映出惰性思考的特点。</p>
+<p><strong>高智商并不能消除成见。要想消除成见，还需具备另一种能力，他称其为理性。</strong></p>
+<blockquote>
+<p>不幸的是，她总是喜欢凭直觉随口就说，也许连表达感谢都词不达意吧，弱弱的系统2啊</p>
+</blockquote>
+<h4 id="1-5-联想神奇力量"><a href="#1-5-联想神奇力量" class="headerlink" title="1.5 联想神奇力量"></a>1.5 联想神奇力量</h4><p>苏格兰哲学家大卫·休谟(David Hume)将联想的原则缩减为三个：相似性、时空相接以及因果关系。自休谟时代以后，我们对联想的定义发生了巨大变化，但他的三原则仍可作为定义所有联想的基础。</p>
+<p>你的行为和感情有时会受制于你自己甚至都没有意识到的事件,那些以老年为主题造句子的年轻人比其他人走得要慢得多。</p>
+<p>当人们看到一些教室和学校储物柜的照片时，他们往往也倾向于支持关于教育的提案。</p>
+<p>那些点头（表示同意的动作）的受试者往往易于接受他们听到的信息，而那些摇头的受试者则易于否定那些信息。要强调的是，受试者并没有意识到上述问题，他们只是习惯性地将否定或接受的态度与其常用的身体语言联系起来而已。<strong>由此可见，老话讲“不管你怎么想的，都得心平气和”，这真是条很好的建议，只有真正做到心平气和，你才可能有回报。</strong></p>
+<p>我们所处的文化环境中有很多能让人想起钱的事物，这些事物以我们意识不到的方式影响着我们的行为和态度。</p>
+<p>在一个专制国家中，到处挂着领袖的肖像不仅能向你传达“老大哥在看着你”的感觉，还会使你逐渐丧失自主的思想和独立的行为能力。</p>
+<h4 id="1-6-你的直觉有可能只是错觉"><a href="#1-6-你的直觉有可能只是错觉" class="headerlink" title="1.6 你的直觉有可能只是错觉"></a>1.6 你的直觉有可能只是错觉</h4><p>认知放松的原因和结果，如下图：</p>
+<p><img src="/img/think2.jpg" style="max-width:95%"></p>
+<p>如果一个句子印刷清晰，或是被多次重复，或是已经深植于脑海，人们就能在认知放松的状态下顺畅地将其解读出来。听别人说话时，如果心情好，或者咬一支笔迫使自己“笑”，都能使认知放松。反之，若说明书印刷模糊，颜色浅，句子冗长，语言晦涩，也许心情也不好，甚至在皱眉，这些情形都会使人处于认知紧张状态。</p>
+<h5 id="1-6-1-由记忆造成的错觉"><a href="#1-6-1-由记忆造成的错觉" class="headerlink" title="1.6.1 由记忆造成的错觉"></a>1.6.1 由记忆造成的错觉</h5><p>错觉这个词会让人马上联想到视错觉，因为我们都很熟悉那些令人产生误解的图片。不过，并不是只有视觉才会产生错觉，记忆也容易产生错觉，并且这种现象更加普遍。</p>
+<p>当你指认一个早已见过的词语时，会感到更加放松。正是这种放松使你产生了那种熟悉的感觉（记忆错觉）。</p>
+<h5 id="1-6-2-什么样的信息更容易让人信服"><a href="#1-6-2-什么样的信息更容易让人信服" class="headerlink" title="1.6.2 什么样的信息更容易让人信服"></a>1.6.2 什么样的信息更容易让人信服</h5><p><strong>想让人们相信谬误有个可靠的方法，那就是不断重复，因为人们很难对熟悉感和真相加以区别。</strong></p>
+<p>如果你很在意自己在别人眼里是否值得信赖、是否聪明睿智，那么说话时就言简意赅吧，能用简单句的时候就别用复杂句。</p>
+<p>在一篇名为“不切实际地运用华丽辞藻的后果：使用长句毫无必要”的文章中，他指出用浮夸的语言来表达熟悉的概念是一种智商低下、可信度差的表现。</p>
+<p>例如：水滴石穿，绳锯木断； 亡羊补牢，为时不晚。</p>
+<p><strong>系统2是非常懒惰的，它不愿付出努力。如果可能的话，消息的接收方会离所有需要付出精力的事物远远的，包括名字复杂的信息源。在大多数情况下，系统2都会采纳系统1的建议，并继续运作。</strong></p>
+<h5 id="1-6-3-股票代码上口，回报率也相对较高"><a href="#1-6-3-股票代码上口，回报率也相对较高" class="headerlink" title="1.6.3 股票代码上口，回报率也相对较高"></a>1.6.3 股票代码上口，回报率也相对较高</h5><p>当系统2参与到那些需要努力的事情中时，我们就会感到认知紧张。另一方面，无论是什么原因引起的认知紧张都有可能将系统2调动起来，改变人们处理问题的方式，使他们不再随意且凭直觉做事，而是转向更加专注的分析性思维。</p>
+<p>研究人员召集了40名普林斯顿大学的学生来做这个认知反应测试，其中有一半问卷使用的是浅灰色的小字。拿到这部分问卷的学生可以辨认出上面是些什么字，但这样的字体会导致他们认知紧张。测试结果清楚地表明：当问卷上的字体清晰时，90%的学生至少会犯一个错误；但当字体勉强能够辨认时，他们的错误率却降到了35%。是的，你没有看错：字体模糊不清时，学生的表现更好。<strong>这是因为，无论认知紧张是由什么原因造成的，它都更有可能激发系统2来抑制系统1所给出的直觉性答案。</strong></p>
+<p>曝光效应并不依赖对熟悉程度有意识的体验，事实上，曝光效应完全脱离了意识：当重复的单词或图片迅速闪过，快到观察者根本没有意识到看见它们时，观察者同样还是更为喜欢重复率高的单词或图片。现在我们应该清楚的是，系统1能对系统2意识不到的那些事的印象做出回应。事实上，当人们完全没有意识到自己看见了刺激物时，其曝光效应会更强。</p>
+<h5 id="1-6-4-创新是发生在能让人联想无限的环境中的"><a href="#1-6-4-创新是发生在能让人联想无限的环境中的" class="headerlink" title="1.6.4 创新是发生在能让人联想无限的环境中的"></a>1.6.4 创新是发生在能让人联想无限的环境中的</h5><p>一个更引人注目的结果是，心情不好的受试者完全无法准确地完成这个直觉性任务，他们的猜测还没有随便选择的准确率高。心情显然能够影响系统1的运行：<strong>当我们不舒服和不开心时，就会丧失自己的直觉。</strong></p>
+<p><strong>好心情使系统2放松对行为的控制：当人们心情好时，直觉和创造力会增强，但也会放松警惕，易犯逻辑性错误，这种关联与曝光效应一样，在生理上也讲得通。</strong>好心情是事情进展顺利的信号，周围的环境是安全的，卸下防备并没有什么影响；坏心情则说明事情进展不那么顺利，有可能存在威胁，必须要保持警觉。认知放松与愉快的感觉互为因果。</p>
+<blockquote>
+<p><strong>“熟悉了，就会喜欢，这就是一种曝光效应。”</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>“我今天心情很好，我的系统2也比平时懒惰，我得格外小心了。”</strong></p>
+</blockquote>
+<h4 id="1-7-意料之外和情理之中"><a href="#1-7-意料之外和情理之中" class="headerlink" title="1.7 意料之外和情理之中"></a>1.7 意料之外和情理之中</h4><h5 id="1-7-1-从第一次的惊喜到第二次的习以为常"><a href="#1-7-1-从第一次的惊喜到第二次的习以为常" class="headerlink" title="1.7.1 从第一次的惊喜到第二次的习以为常"></a>1.7.1 从第一次的惊喜到第二次的习以为常</h5><p>系统1的主要功能是维护并更新你个人世界的模式，它呈现的都是常态下的思维模式。这个模式由许多联想和结果共同构成，这些联想由情境、事件、行为等概念引发，而结果则总是伴随某种规律出现，有可能是两者同时出现，也有可能出现时间只差那么一点点。</p>
+<p><strong>“摩西上方舟时，每种动物各带了多少？”发觉这个问题有问题的人太少了，因而有人将此称为“摩西错觉”。摩西并没有带动物上方舟，带动物上方舟的是诺亚</strong></p>
+<h5 id="1-7-2-简的钱包是怎么丢的呢？"><a href="#1-7-2-简的钱包是怎么丢的呢？" class="headerlink" title="1.7.2 简的钱包是怎么丢的呢？"></a>1.7.2 简的钱包是怎么丢的呢？</h5><p>“弗雷德的父母来迟了，酒席承办商应该很快就到了，弗雷德很生气。”你知道为什么弗雷德会生气，也知道他生气不是因为酒席承办商还没来。在你的联想网络中，生气和不准时被看成是可能的因果关系，但生气和盼望酒席承办商来的想法却没有这种联系。在你读到这句话时，脑海中马上就形成了一个连贯的故事，你立即知道了弗雷德生气的原因。找到这种因果联系是理解一个故事的一部分，也是系统1的一种无意识行为。而系统2——也就是有意识的自我——在接收到这个主观理解后，也接受了这种因果关系。</p>
+<p>事实上，所有的标题都要满足我们对逻辑连贯的需求：一件大事必然会带来一些后果，而这些后果也需要一些原因对其作出解释。我们对那天发生的事情所知有限，于是系统1便熟练地将这些知识片段组合成一个连贯的因果关系。</p>
+<p>请读这个句子：</p>
+<p>在纽约拥挤的大街上逛了一天，欣赏完美景后，简发觉自己的钱包丢了。</p>
+<p>研究人员对读过这个句子的人（这些人同时也读过许多其他故事）进行了一次突击性的回想实验，发现这些读者认为“扒手”这个词比“景色”一词与该句子联系更紧密，尽管后者在句子中出现了而前者却没有。联想连贯性原则告诉我们实实在在发生的事情。丢钱包这件事可能有很多不同的原因：钱包从口袋里掉了出去，或者落在了餐厅等。但是，丢钱包、纽约以及拥挤的街道三种想法同时存在时，这些读者都把丢钱包的原因指向了扒手，因此整个故事看上去也是合理的。</p>
+<p><strong>示例 — 常态和原因:</strong></p>
+<blockquote>
+<p>1、她接受不了自己只是运气不好这个解释，她需要一个有前因后果的解释，否则她会认为是有人在故意破坏她的工作。</p>
+</blockquote>
+<blockquote>
+<p>2、若最后发现第二个申请人也是我的一个老朋友，我就不会像看到第一个来申请的朋友那么惊讶了。只要情节稍有重复，一种新体验也就不那么新鲜了</p>
+</blockquote>
+<h4 id="1-8-字母‘B’-与数字-‘13’"><a href="#1-8-字母‘B’-与数字-‘13’" class="headerlink" title="1.8 字母‘B’ 与数字 ‘13’"></a>1.8 字母‘B’ 与数字 ‘13’</h4><p>当我们对答案不确定时，系统1就根据过往经历去赌一个答案。这种下赌的规则是明智的：最近发生的事及当前情境是作抉择时最重要的因素。如果脑中没有闪现出任何最近发生的事，那更为遥远的记忆便会呈现出来。你最早、记忆最为深刻的经历一定是唱英文字母歌，这首歌的开头一定是“ABC”，而不是“A13 C”。</p>
+<p>有意识的怀疑需要同时在脑中记住多种互不相容的解释，需要付出努力，而这并不是系统1的长项。易变和怀疑是系统2的职责范围。</p>
+<h5 id="1-8-1-是什么让你相信了那些荒谬之词？"><a href="#1-8-1-是什么让你相信了那些荒谬之词？" class="headerlink" title="1.8.1 是什么让你相信了那些荒谬之词？"></a>1.8.1 是什么让你相信了那些荒谬之词？</h5><p>联想记忆的运作是导致“确认偏误”的原因之一。如果有人问你：“山姆友好吗？”你就会想到山姆的各种行为举止；而如果有人问你：“山姆是不是很不友好？”你就很难想起他的许多举动。</p>
+<h5 id="1-8-2-光环效应与群体的智慧"><a href="#1-8-2-光环效应与群体的智慧" class="headerlink" title="1.8.2 光环效应与群体的智慧"></a>1.8.2 光环效应与群体的智慧</h5><p>如果你赞同一个总统的政见，你可能也会喜爱他的声音及着装。喜爱（或讨厌）某个人就会喜爱（或讨厌）这个人的全部——包括你还没有观察到的方面——这种倾向就叫做光环效应。</p>
+<p>我们对一个人性格特征的观察顺序是随机的。然而，顺序的确很重要，因为光环效应注重第一印象，而后续信息在很大程度上都被消解掉了。</p>
+<p>企业高管需要花大量时间主持会议，独立判断原则（及解除错误关联）可以直接应用到这些工作中。一条简单的规则就能发挥作用：在开始讨论某个问题之前，先让与会的每一位成员各自写下简短的意见阐明自己的观点。这个过程很好地利用了小组里不同知识和见解的价值。而开放性讨论这一常规做法总会注重那些发言早而又强势的人的意见，使得其他人一味附和他们的观点。</p>
+<h5 id="1-8-3-眼见为实的想法往往让我们仓促作出决定"><a href="#1-8-3-眼见为实的想法往往让我们仓促作出决定" class="headerlink" title="1.8.3 眼见为实的想法往往让我们仓促作出决定"></a>1.8.3 眼见为实的想法往往让我们仓促作出决定</h5><p>只掌握一方证据的受试者比掌握了双方证据的受试者更有自信。这正说明人们根据已有信息勾勒出的故事的连贯性增强了他们的自信心。一个好故事最重要的是信息的前后一致性，而不是其完整性。的确，你常会发现：知道得很少反而可以把已知的所有事物都囊括进连贯的思维模式中。</p>
+<p>·框架效应：同一信息的不同表达方式常常会激发人们不同的情感。“手术后一个月内的存活率是90%”的说法要比“手术后一个月的死亡率是10%”更令人安心。同样，说凉菜“90%不含脂肪”要比说“10%含有脂肪”更具吸引力。很明显，前述每组句子的深层含义都是相同的，只是表达方式不同而已，但人们通常能读出不同的含义，而且觉得自己的所见就是事实。</p>
+<p>·比率忽略：回忆一下史蒂夫，那个本性怯懦、做事井井有条，常被看做图书管理员的人。这个人物性格的描述是生动形象的，尽管你清楚地知道男性农民比男性图书管理员多，但在考虑这个问题时，你总会忽略这个事实。你觉得自己的所见即为事实。</p>
+<p><strong>示例 — 过早下结论:</strong></p>
+<blockquote>
+<p>1、她对这个人的管理技能一无所知。之所以对他印象很好，是因为曾经听他作过一次精彩的报告。</p>
+</blockquote>
+<blockquote>
+<p>2、在讨论之前大家先独自考虑一下这个问题，这样可以避免观点的相互干扰，这样更利于集思广益。</p>
+</blockquote>
+<blockquote>
+<p>3、他们并不想了解更多信息，因为那样可能会破坏整个故事情节。他们更愿意相信眼见即为事实。</p>
+</blockquote>
+<h4 id="1-9-我们究竟是如何作出判断的？"><a href="#1-9-我们究竟是如何作出判断的？" class="headerlink" title="1.9 我们究竟是如何作出判断的？"></a>1.9 我们究竟是如何作出判断的？</h4><p>系统2接受问题或提出问题：不管是提问还是回答，它都能引导注意力并搜寻记忆来找到答案。<br>系统1以不同的方式运行，不断监视着大脑内外发生的一切，没有特定意图，也无须付出多少努力，只是对当时的情形作出全方位评估。</p>
+<p><strong>示例 — 判断问题:</strong></p>
+<blockquote>
+<p>评价一个人是否有吸引力是一种基本判断，不管你是否想这样做，这种评价都是不由自主进行的，也会对你产生影响。</p>
+</blockquote>
+<h4 id="1-10-目标问题与启发性问题形影不离"><a href="#1-10-目标问题与启发性问题形影不离" class="headerlink" title="1.10 目标问题与启发性问题形影不离"></a>1.10 目标问题与启发性问题形影不离</h4><p>对一个人不是特别了解时，你就知道自己是不是喜欢他；你也不知道自己为什么会相信或者不相信一个陌生人；你没有作过调查分析，却能感觉到一家企业一定会成功。有时，对于一些无法完全弄懂的问题，你也总能作出答案，而回答的依据是什么，连你自己也说不清道不明。</p>
+<h5 id="1-10-1-找个相对简单的问题来作答"><a href="#1-10-1-找个相对简单的问题来作答" class="headerlink" title="1.10.1 找个相对简单的问题来作答"></a>1.10.1 找个相对简单的问题来作答</h5><p>对于有难度的问题，我们总是很难快速找到令人满意的答案，此时系统1就会找到一个相关问题来回答，这个问题比原来的问题更易作答。我把这种回答一个问题而绕开另一个问题的做法叫做“替代”。</p>
+<p>用一个问题替代原来的问题是一个解决难题的好策略， 请看下面的“目标问题”：</p>
+<p><img src="/img/think3.jpg" style="max-width:95%"></p>
+<h5 id="1-10-2-立体启发法：远处的物体看上去更高大"><a href="#1-10-2-立体启发法：远处的物体看上去更高大" class="headerlink" title="1.10.2 立体启发法：远处的物体看上去更高大"></a>1.10.2 立体启发法：远处的物体看上去更高大</h5><p>你最近觉得幸福吗？你上个月有多少次约会？</p>
+<p>你上个月有多少次约会？你最近觉得幸福吗？</p>
+<p>这一次的结果完全不同。在这种顺序下，约会次数和幸福感之间的相关度能达到心理测试的最高水。</p>
+<p>有多次约会的学生想起了自己生活中快乐的事，而那些没有约会的学生想起的都是孤独和被拒绝的情节。</p>
+<h5 id="1-10-3-情感启发式：因为喜欢，所以认同"><a href="#1-10-3-情感启发式：因为喜欢，所以认同" class="headerlink" title="1.10.3 情感启发式：因为喜欢，所以认同"></a>1.10.3 情感启发式：因为喜欢，所以认同</h5><p>一旦加入情感因素，结论对论证的主导作用便会最大程度地凸显出来。心理学家保罗·斯洛维克(Paul Slovic)提出了“情感启发式”的概念，认为人们的好恶决定了他们的世界观。你的政治倾向决定了你对各类论证的看法，即它们是令人信服的还是难以服众的。如果你对当前的医疗政策还满意，就会相信该政策能给自己带来很多好处，而且你相信在这个政策下，花同样的钱能做更多的事。</p>
+<p>到目前为止，我似乎已经将其描述成一个给系统1留有足够余地的默许监视器。我描述的系统2还具有主动搜寻记忆的功能、复杂计算功能、比较功能、规划功能和决策功能。在球拍和球的问题中以及许多其他的两个系统相互作用的例子中，系统2似乎总是处于最高决策地位，并有能力抵制系统1的建议，它能使事情放缓，开始进行逻辑分析。自我批评是系统2的功能之一。但在态度方面，系统2更像是系统1各种情感的赞许者而非批评者，也可以说是其各种情感的转让者而非实施者。它搜寻的信息和论据多半局限于与已有看法一致的信息，并不着意对其进行调查审核。积极且追求连贯的系统1为要求不高的系统2提供了各种解决方案。</p>
+<p><strong>系统1的特点:</strong></p>
+<p>自主且快速运行，只需付出较少努力，甚至不用付出努力，没有自主控制的感觉。</p>
+<p>夸大情感的一致性（光环效应）。</p>
+<p>将注意力集中在当前的证据上，忽略不存在的证据（眼见即为事实）</p>
+<p>真正去计算，而不是空想（思维的发散性）</p>
+<p>对损失的反应比获得更强烈（损失厌恶）。</p>
+<p>·严密设计决策问题，分别进行讨论。</p>
+<h3 id="2、启发法和偏见"><a href="#2、启发法和偏见" class="headerlink" title="2、启发法和偏见"></a>2、启发法和偏见</h3><h4 id="2-1-大数法则与小数定律"><a href="#2-1-大数法则与小数定律" class="headerlink" title="2.1 大数法则与小数定律"></a>2.1 大数法则与小数定律</h4><p>根据定义，一个随机事件是不需要解释的，但一连串的随机事件就有规律可循。</p>
+<p>我们从一个令人费解的事实说起：肾癌的发病率在各县有所不同，且是有规律的，我用统计学理论对此作了解释：相比于大样本，极端的结果（高发病率和低发病率）更容易出现在小样本中。这样的解释不存在因果联系。某县的人口稀少既不会引发癌症，也不能避免癌症，只会使癌症的发病率比人口稠密地方的发病率更高（或更低）。这就是真相，没什么可解释的。</p>
+<p><em>(1)大样本比小样本更精确。</em></p>
+<p><em>(2)小样本比大样本产生极端结果的概率大。</em></p>
+<p>上述内容概括起来就是：没错，你知道大样本的结果更精确，但你现在可能才意识到你并不清楚为什么它们更精确。</p>
+<p><strong>小样本的出错风险可能高达50%</strong></p>
+<p>使用一个足够大的样本是降低这种风险的唯一方法。选择小样本的研究者只能看自己是不是能选对合适的样本了。</p>
+<p><strong>信任多于质疑的普遍性偏见</strong></p>
+<p>系统1在了解事实之前就根据零散的证据拼凑了一个饱满的形象。如果相信小数定律，急于下结论的机制就会运作起来。通常情况下，它会建构一个言之成理的说法使你相信自己的直觉判断。</p>
+<p><strong>对随机事件作出因果解释必然是错的</strong></p>
+<p>简单说来，如果你听从自己的直觉，就常常会因为把随机事件看做是有规律的事件而犯错。我们都非常愿意相信生活中大多数事情并不是随机的。</p>
+<p><strong>示例——小数定律:</strong></p>
+<p>观察的样本太小，所以不能作出任何推断。我们不要遵从小数定律</p>
+<p>在我们有足够大的样本之前，我计划对实验结果暂时保密。否则，我们会有过早下结论的风险。</p>
+<h4 id="2-2-锚定效应在生活中随处可见"><a href="#2-2-锚定效应在生活中随处可见" class="headerlink" title="2.2 锚定效应在生活中随处可见"></a>2.2 锚定效应在生活中随处可见</h4><p>锚定效应。人们在对某一未知量的特殊价值进行评估之前，总会事先对这个量进行一番考量，此时锚定效应就会发生。</p>
+<p>如果有人问你甘地死时年龄是否大于114岁，你在估测他的死亡年龄时会比锚定问题是35岁（死亡）时更高。你在考量买房要花多少钱时，也会受到要价的影响。同样的房子，如果市场价格高，它就显得比市场价格低时更有价值，即使你决心抵制价格的影响也没有用。</p>
+<p><strong>a. 对锚定值的调整常常是不足的</strong><br>从锚定的数字开始，然后估测它是过高还是过低，接着让大脑从锚定数值上“转移”并逐渐调整你的估值。</p>
+<p>为什么你在开车下了高速公路驶入城市街道时还会开那么快——如果是边聊天边开车，速度尤其容易快。调整不足就是对这一现象的最好解释。孩子在房间里喜欢把音乐开得很大声，父母却很恼火，两代人关系紧张，其原因也是调整不足。勒伯夫和沙菲尔注意到“家长要求孩子应将音乐调到‘适当’的音量，但听着特别大声音乐的孩子即使想这样做也难，还会认为家长忽视了他们真心作出的让步，这是因为他们无法从充分的高锚定值中调整过来”。这里提到的司机和孩子都有意地（将数值）向下调整，但两者都没有（将这个值）调整到位。</p>
+<p><strong>b. 暗示就是一种锚定效应</strong></p>
+<p>请回答：</p>
+<p>甘地去世时比144岁大还是小？</p>
+<p>甘地去世时多少岁？</p>
+<p>你是否会把144岁向下调整来得出自己的评估？也许不会，但这个大得离奇的数字仍然会影响你的估测。我的直觉告诉我，锚定就是一种暗示。如果有人只是提起某件事，而他的话却促使我们去看、去听或是去感受这件事，此时的情形就可以用锚定来形容。例如，“你的左腿现在是否微微麻木了”这个问题常会使相当多的人回答说他们的左腿确实感到有些异样。</p>
+<p>暗示即一种启动效应，它会有选择地找出相应的证据。你完全不会相信甘地活到了144岁，但你的联想机制却会对一位逝去的老人产生印象。</p>
+<p><strong>c. 作为这幢房子的主人，你能接受的最低售价是多少？</strong></p>
+<p>请回答：</p>
+<p>最高的那棵红杉树是高于1200英尺还是低于1200英尺？</p>
+<p>你认为那棵最高的红杉树有多高？</p>
+<p>不出所料，（关于那棵最高的红杉树有多高）两个组给出了完全不同的平均评估：844英尺和282英尺。两者的差距有562英尺。</p>
+<p>锚定效应在实验室中司空见惯，在现实世界中其影响同样毫不逊色。几年前的一个实验中，实验人员让一些房地产经纪人对一幢待售房子的价值进行评估。这些经纪人亲自去看了这所房子，还仔细研究了一本小册子，里面包括这幢房子的全面信息和售价。其中一半经纪人评估的售价比标价高很多，另一半评估的售价则比标价低很多。每位经纪人都给出了自己认为合理的售价，同时（假定自己是这幢房子的房主）她们还给出了自己能够接受的最低售价。实验人员随后问这些经纪人哪些因素影响了她们的决策。出乎意料的是，售价并非影响因素之一。这些经纪人十分得意，因为她们没有被这个因素所左右。她们坚称标价没有影响到她们对这一问题的回应，但实际上她们错了：锚定指数是41%。事实上，专业人士和对房地产一无所知的商学院学生一样，都受到了锚定效应的影响。后者的锚定指数是48%。</p>
+<p>没有提到锚定问题，这些对环境都很敏感的探索馆参观者会说他们愿意拿出的钱平均为64美元。当锚定金额只有5美元时，平均捐款则是20美元。当锚定金额达到400美元时，人们的捐款平均数就达到了143美元。</p>
+<p><em>锚定效应在某些情形下看起来也是合理的。毕竟，那些被问到难题的人肯定会去抓住这根救命稻草的，况且这个锚定值也是根貌似合理的稻草。如果你对加利福尼亚的树所知无几，却又被问到红杉树是否高于1200英尺，此时你可能就会认为这个数字与真实数字相差不远。因为是那些知道这种树真实高度的人想出的这个问题，所以这个锚定值也许是个有价值的提示。 但是，锚定效应研究有一个重要发现，即锚定值显然是任意的，它也许和可能有信息价值的锚定值一样有效。</em></p>
+<p><strong>d. 锚定效应何时适用，何时不适用？</strong></p>
+<p>第一次在集市上讨价还价也是这样，先发锚定有着重大的影响。我在教学生谈判时，给他们的建议是如果你认为是对方作出了无礼的提议，你就不应该提出同样无礼的提议，因为两者之间有距离的话会使此后的商谈难以进行。你应该大吵大闹，夺门而出，或者威胁对方说自己也会这样做，要让对方明白以这个数字为基准的话，谈判将难以继续。</p>
+<p>在讨论小数定律时我们发现，如果一则消息没有马上被视为谎言，那么不管其可靠性如何，它都会对联想系统产生同样的影响。这个消息的重点是故事，随便根据什么信息编造的都无所谓，即使这则消息的信息量很少，质量很差劲也无所谓，因为眼见即为事实。当你读到一个拯救受伤登山客的人的英勇故事时，这个故事对你的联想记忆产生的影响和一篇新闻报道或电影简介大体差不多。<em>锚定效应是由这个联想激发引起的。这个故事是否真实、是否可信一点都不重要。随机锚定的强大影响是锚定效应的极端例子，因为随机锚定显然没有提供什么信息。</em></p>
+<p><strong>你不知道它是如何引导和限制你的思考的，因为你不能想象如果锚定改变（或不存在）你会如何思考。但是，你应该假设任何一个公开谈判时的数字都对你有锚定效应，如果概率大，你应该抵制（你的系统2）该效应。</strong></p>
+<p><strong>示例—锚定</strong></p>
+<blockquote>
+<p>被告律师提出一个微不足道的证明，证明中提到了一个荒谬的小损失，这些律师就是想让法官们拿这个损失做锚定。</p>
+</blockquote>
+<h4 id="2-3-科学地利用可得性启发法"><a href="#2-3-科学地利用可得性启发法" class="headerlink" title="2.3 科学地利用可得性启发法"></a>2.3 科学地利用可得性启发法</h4><p>我们的项目中有一项是对“可得性启发法”进行研究。我们问自己，人们在想要估计某类事件的出现频率时到底是怎么做的，这些事件包括“人在60岁之后的离婚概率”或“（是否是）危险的植物”等。我们认为这种自问就是启发法。这些问题的答案很简单：<strong>从记忆中搜寻这类问题的实例，如果搜寻过程既轻松又顺畅，这些事的发生概率就会被判断为很大。</strong></p>
+<h5 id="2-3-1-意识到自己的偏见有利于团队关系融洽"><a href="#2-3-1-意识到自己的偏见有利于团队关系融洽" class="headerlink" title="2.3.1 意识到自己的偏见有利于团队关系融洽"></a>2.3.1 意识到自己的偏见有利于团队关系融洽</h5><p>与其他判断启发法一样，可得性启发法就是用一个问题替代另一个问题：<strong>你希望估测某一范畴的大小或某一事件的（发生）频率，但你却会提到自己想到相关实例的轻松程度。</strong>问题的替代必然会产生系统性错误。你会发现启发法是如何通过一个简单的过程导致偏见的，不直接说出（事件发生的）频率，而是列举那些使你轻松想起相关实例的因素，其中的每个因素都会成为偏见的潜在来源。</p>
+<ul>
+<li><p><strong>你可以很轻松地回想起引起自己注意的突出事件。</strong>好莱坞明星的离婚事件和政客的性丑闻事件格外引人注目，想到这些实例并不难。因此，你很容易夸大好莱坞离婚事件和政客性丑闻事件的频率。</p>
+</li>
+<li><p><strong>一个大事件会暂时提高此类事件的可得性。</strong>飞机失事事件会有媒体来报道，这也会暂时改变你对飞行安全的看法，接着你又看到路旁有辆汽车着火了，于是这些事故会暂时盘踞在你的脑海中，你会觉得这个世界此时充满更多难以预料的事。</p>
+</li>
+<li><p><strong>亲身经历、生动的图片和鲜活的例子比发生在别人身上的事、单纯的文字或是统计数据更容易让人回想起来。</strong>一个与你相关的判决错误会逐渐削弱你对司法体系的信任度，其影响程度比你在报纸上读到类似事件的影响更深。</p>
+</li>
+</ul>
+<p><strong>有个很著名的可得性实验表明，意识到自己的偏见可以使夫妻和睦相处，而且很可能在其他的合作计划中与他人的关系也很融洽。 夫妻二人记自己的努力和贡献比记对方的清楚得多，而且可得性的不同导致了对频率判断的不同。</strong></p>
+<p>同样的偏见对常见的观察同样适用，很多合作团队成员感觉他们做的事超出了自己的分内工作，还感到其他人并不感激自己作出的贡献。 <strong>任何情况下，每个人都该牢记这一点。你做的事情偶尔会超出自己的分内事，但你应该知道，当你有可能有这种感觉的时候，你的团队里的每个成员也都可能有同感。</strong></p>
+<h5 id="2-3-2-可得性偏见会影响我们对自己或他人的看法"><a href="#2-3-2-可得性偏见会影响我们对自己或他人的看法" class="headerlink" title="2.3.2 可得性偏见会影响我们对自己或他人的看法"></a>2.3.2 可得性偏见会影响我们对自己或他人的看法</h5><p><strong>自我评估是由事件呈现在脑海中的轻松度来衡量的。轻松地想起某件事的体验比想起事情的数量更重要。</strong></p>
+<p>想起新事例的困难增速远远超出了他们的预计。正是这种超出预期的低顺畅性使那些被要求列举12个事例的人将自己描述成优柔寡断之人。</p>
+<p><strong>各种各样的证据都指向统一结论，即那些跟着系统1走的人更容易受可得性偏见的影响，比那些警惕性更高的人受影响的程度更大。</strong></p>
+<p><strong>示例—可得性</strong></p>
+<blockquote>
+<p>因为上个月发生了两架飞机相撞事件，她现在更愿意坐火车。这真是愚蠢，风险其实并没有真正降低，这就是可得性偏见</p>
+</blockquote>
+<blockquote>
+<p>他应该看些统计数据。</p>
+</blockquote>
+<blockquote>
+<p>这位执行总裁连续多次成功，因此失败不会轻易在她的脑海中出现。可得性偏见使得她过于自信</p>
+</blockquote>
+<h4 id="2-4-焦虑情绪与风险政策的设计"><a href="#2-4-焦虑情绪与风险政策的设计" class="headerlink" title="2.4 焦虑情绪与风险政策的设计"></a>2.4 焦虑情绪与风险政策的设计</h4><h5 id="2-4-1-被闪电击中与食物中毒，哪种意外致死率更高？"><a href="#2-4-1-被闪电击中与食物中毒，哪种意外致死率更高？" class="headerlink" title="2.4.1 被闪电击中与食物中毒，哪种意外致死率更高？"></a>2.4.1 被闪电击中与食物中毒，哪种意外致死率更高？</h5><p>对死亡原因的估测因媒体报道而有所改变。我们对事件发生频率的估测也会受到自己接触这些信息和频率与个人情感强烈程度等因素的影响。</p>
+<p>当人们更青睐于某项技术时，他们就会认为此项技术更有优势、风险更小；如果他们不喜欢某项技术，则只会想到其缺点和寥寥几个优点。</p>
+<h5 id="2-4-2-如何避免小概率的风险事件演变成公共危机？"><a href="#2-4-2-如何避免小概率的风险事件演变成公共危机？" class="headerlink" title="2.4.2 如何避免小概率的风险事件演变成公共危机？"></a>2.4.2 如何避免小概率的风险事件演变成公共危机？</h5><p>人类发明“风险”这个概念是为了帮助自己理解和应对生活中的危险和不确定情况。尽管这些危险是真实存在的，但却没有“真正风险”或“客观风险”这回事。</p>
+<p>我们的大脑解决小风险的能力有一个基本限度：我们要么完全忽视风险，要么过于重视风险，没有中间地带。每位等待晚归女儿的家长都能体验到这种感觉。你也许知道真的是（几乎是）没有什么可担心的，但你的大脑会不自觉地闪现危险的景象。正如斯洛维克所言，焦虑对伤害的可能性还不够敏感。你想到了分子（即你在新闻中看到的悲惨新闻），却没有想到分母。</p>
+<p>将效用层叠发挥到极致的人最有可能是那些恐怖分子。除了几次可怕的事件，比如“9.11”事件，恐怖袭击导致的死亡人数与其他死亡原因相比是非常小的。即使在恐怖活动猖獗的国家，比如以色列，每周的死亡人数也远不及交通事故死亡的人数多。</p>
+<p>政策制定者必须努力保护公众不受恐惧情绪的影响，而不是只保护其不受真实存在的危险的伤害。</p>
+<p><strong>示例—效用层叠</strong></p>
+<blockquote>
+<p>她对一项创意大为赞赏，说它收益大，无成本。我认为这就是种情绪启发式</p>
+</blockquote>
+<blockquote>
+<p>这是一个效用层叠的例子：被媒体和公众大肆宣扬的事还没发生，电视上就满是关于此事的报道，每个人都在谈论这件事。</p>
+</blockquote>
+<h4 id="2-5-猜一下，汤姆的专业是什么？"><a href="#2-5-猜一下，汤姆的专业是什么？" class="headerlink" title="2.5 猜一下，汤姆的专业是什么？"></a>2.5 猜一下，汤姆的专业是什么？</h4><p>汤姆是你们国家一所著名院校的研究生。请预测汤姆就读于以下9个专业的概率，并对专业进行排序。用1表示最有可能就读的专业，9表示最无可能的。</p>
+<p>工商管理</p>
+<p>计算机科学</p>
+<p>工程学</p>
+<p>人文与教育</p>
+<p>在这个问题中，人文与教育专业的基础比率指的就是这个专业的学生人数占全体学生总数的比率。在缺乏与汤姆相关的具体资料的情况下，你可能会根据基础比率进行猜测，相比计算机科学和图书馆学，汤姆更有可能被人文与教育专业录取，因为人文与教育专业的招生规模比另外两个专业的招生规模大。<strong>在没有其他信息可供参考时，采取基础比率的方法最容易。</strong></p>
+<h5 id="2-5-1-依据典型性作出预测是下意识的行为"><a href="#2-5-1-依据典型性作出预测是下意识的行为" class="headerlink" title="2.5.1 依据典型性作出预测是下意识的行为"></a>2.5.1 依据典型性作出预测是下意识的行为</h5><p>尽管他比任何人都清楚基础比率在预测中的作用，但当他看到某个人的性格描述时，就会忽略掉这些比率。不出所料，他用对典型性的判断替代了对概率的评估。</p>
+<p>我们对相似性的判断可以完全不受基础比率的影响，不受可能会出现的不当描述的影响，但是在判断概率时，如果忽略基础比率和证据的可靠性的话，就注定会犯错误。</p>
+<p><strong>他学习成绩好不了，看那一身文身吧”，听到有人这样说时，他们一定是受到了典型性启发式的影响。如果我们通过某个下巴的轮廓或铿锵有力的演讲来判断这个职位候选人是否具有领导才能，此时我们依赖的就是典型性。</strong></p>
+<p>职业棒球球探在预测某个选手是否会成功时，他们大体上看的是球员的体格和相貌。这本书的主角是奥克兰“运动家棒球队”的经理比利·比恩(Billy Beane)。他作出了一个大家都不愿接受的决定：<strong>否决球探们的建议，通过选手过去表现的统计数据来挑选球员。</strong>“运动家棒球队”挑选出来的选手都以低会费入队，因为其他球队都因为没有想到用数据来判断，因而拒绝了这些选手。“运动家棒球队”很快就以低成本达成了最佳结果。</p>
+<h5 id="2-5-2-典型性启发的两宗罪"><a href="#2-5-2-典型性启发的两宗罪" class="headerlink" title="2.5.2 典型性启发的两宗罪"></a>2.5.2 典型性启发的两宗罪</h5><p>用典型性来判断概率有一些重要的优点，它所带来的初始印象通常比乱猜一气更为精确。</p>
+<ul>
+<li><p>在大多数情况下，表现得很友好的人实际上也很友好。</p>
+</li>
+<li><p>又高又瘦的职业运动员很有可能是打篮球的而不是踢足球的</p>
+</li>
+<li><p>年轻的男性会比年老的女性更不要命地踩油门。</p>
+</li>
+</ul>
+<p><strong>典型性的第一宗罪就是，它过于喜爱预测不可能发生的（低基础比率的）事件。</strong></p>
+<p>下面就是一个例子：如果你看见一个人在纽约地铁里阅读《纽约时报》，下面哪种情况与读报者更吻合？</p>
+<p>她有博士学位。</p>
+<p>她没有大学文凭。</p>
+<p>典型性会告诉你应该选有博士学位那位，但这样做并不一定是明智的。你应该充分考虑第二个选项，因为纽约地铁里更多的是没有大学文凭的人，而不是有博士学位的人。</p>
+<p>对于每一个人来说，汤姆读某个专业的概率就是那个专业招生规模的基础比率。然而，得知汤姆的个性特征后，人们再也不会将基础比率纳入考虑范围了。</p>
+<p>增强系统2的激活状态能有效提高回答汤姆问题的准确率。</p>
+<p>系统1引起了错误的直觉，系统2采纳了这个直觉，并将其运用在判断当中。然而，造成系统2犯下此类错误的原因有两个——忽视与懒惰</p>
+<p><strong>典型性的第二宗罪是它对证据质量不够敏感。</strong></p>
+<p><strong>当你怀疑信息的可靠性时，可以做一件事：作概率判断时，往基础比率那方面想。别期望遵循这条原则会很容易——它需要在付出很多努力的情况下，才能实现自我监督和自我控制。</strong></p>
+<p>想要得出汤姆问题的正确答案，你应该遵从最先出现在自己脑海中的想法，若认为某招生人数多的专业（人文与教育、社会科学与社会工作）被选中的概率高，则稍微降低其概率；若认为某招生人数少的专业（图书馆学、计算机科学）被选中的概率低，则稍微提高其概率。<strong>如果你对汤姆一无所知，你作出的抉择就不是你的初衷了，你手头上的那点信息也不能相信了。所以，你应该让基础比率在预测时起主导作用。</strong></p>
+<h5 id="2-5-3-用贝叶斯定理来约束直觉"><a href="#2-5-3-用贝叶斯定理来约束直觉" class="headerlink" title="2.5.3 用贝叶斯定理来约束直觉"></a>2.5.3 用贝叶斯定理来约束直觉</h5><p>你认为明天会下雨的概率只不过是你的臆测，你不应该相信头脑里出现的所有想法。你的信念必须受限于概率逻辑。所以，如果你相信明天某个时候会下雨的概率是40%，就该相信不会下雨的概率是60%，那么明天早晨下雨的概率就一定不会是50%。如果你相信某个候选人当选总统的概率是30%，并且相信他在首次竞选成功后再次当选的概率是80%，你就必须相信他连任的概率是24%。</p>
+<p>关于贝叶斯定理，有两点我们要铭记在心，要知道我们总是喜欢把事情搞得一团糟。<strong>第一，基础比率十分重要，即便是在手头的案例已有证据的情况下依然如此；第二，通过分析证据得到的直观印象通常都会被夸大。</strong></p>
+<p>眼见即为事实与联想一致性的结合易使我们相信自己编纂的故事。以下是对贝叶斯定理关键点的总结：</p>
+<ul>
+<li>以相对合理的基础比率对结果的可能性作出判断。</li>
+<li>质疑你对证据的分析。</li>
+</ul>
+<p><strong>示例—典型性与基础比率</strong></p>
+<blockquote>
+<p>这家新成立的企业看起来好像不会倒闭，但是这个行业的成功基础比率非常之低。我们又怎么能知道这家企业就是个特例（一定能成功）呢？</p>
+</blockquote>
+<blockquote>
+<p>他们一直在重复犯同样的错误：用并不充分的证据来预测罕见的事件。当证据不充分时，我们应该以基础比率作为判断依据。</p>
+</blockquote>
+<blockquote>
+<p>我知道这份报告绝对是具有毁灭性意义的，也许它的证据十分确凿，但我们凭什么相信呢？我们必须在做计划时保持一定的怀疑态度才行。</p>
+</blockquote>
+<h4 id="2-6-琳达问题的社会效应"><a href="#2-6-琳达问题的社会效应" class="headerlink" title="2.6 琳达问题的社会效应"></a>2.6 琳达问题的社会效应</h4><h5 id="2-6-1-琳达不可能只是一名普通的银行出纳吧？"><a href="#2-6-1-琳达不可能只是一名普通的银行出纳吧？" class="headerlink" title="2.6.1 琳达不可能只是一名普通的银行出纳吧？"></a>2.6.1 琳达不可能只是一名普通的银行出纳吧？</h5><p>我们的实验中最著名也最受争议的地方是设计了一位虚拟的女士，名叫琳达·阿莫斯和我拟造了琳达问题，用以说明启发式在判断中的作用以及它与逻辑相悖的地方。以下是我们对琳达的描述：</p>
+<p>琳达，31岁，单身，一位直率又聪明的女士，主修哲学。在学生时代，她就对歧视问题和社会公正问题较为关心，还参加了反核示威游行。</p>
+<p>下面两种情况哪种可能性更大？</p>
+<p>琳达是银行出纳。</p>
+<p>琳达是银行出纳，同时她还积极参与女权运动。</p>
+<p>通常，当人们没能运用明显相关的逻辑原则时，就会出现“谬误”。阿莫斯和我引入了“合取谬误”(conjunction fallaly)这个想法，通过直接比较，人们总会认为两个事件（在此即为银行出纳和女权主义者）的联合出现比只出现其中一件事（银行出纳）的可能性要大，此时就出现了合取谬误。</p>
+<p>请思考下列一组问题中的两个描述，并对其可能性作出评估。</p>
+<p>明年北美某地将有一次洪灾，1000多人将被淹死。</p>
+<p>明年加利福尼亚某时将有一次地震，此次地震将导致洪水，1000多人将被淹死。</p>
+<p>加利福尼亚地震的情节要比北美洪灾的情节更合乎情理，尽管加利福尼亚地震的概率非常小。<strong>不出所料，人们对更详细、更丰富的描述作出的概率判断更高，这一点有违逻辑。预言家总会给其客户设下陷阱：对情节加以详述会使其更可信，却更不可能成为现实。</strong></p>
+<p>下面两个论述哪个可能性更大？</p>
+<p>简是位老师。</p>
+<p>简是位老师，她走路去上班。</p>
+<p><strong>这两个问题与琳达问题一样，有相同的逻辑结构，但它们却没有引起谬误，因为更详细的结果只是更详细而已，不会更让人信服，或更有连贯性，或更讲得通。对貌似合理和连贯性的评估不会产生概率问题的答案。在与之相矛盾的直觉缺位时，逻辑就会起作用。</strong></p>
+<h5 id="2-6-2-少即是多的逻辑悖论"><a href="#2-6-2-少即是多的逻辑悖论" class="headerlink" title="2.6.2 少即是多的逻辑悖论"></a>2.6.2 少即是多的逻辑悖论</h5><p><img src="/img/think4.jpg" style="max-width:95%"></p>
+<p>假设A、B两套餐具质量相当，那么哪套更值钱呢？这个问题很简单。你可以看到A套包括B套所有的餐具，另外还多出7件完好无损的餐具，所以A套“必然”更值钱。的确，综合评估组的受试者宁愿多花点钱买A套餐具也不愿买B套，A套标价为32美元，B家标价为30美元。</p>
+<p><strong>在单一评估组中则出现了完全相反的结果，其中B套标价（33美元）比A套（23美元）高很多，我们都知道为何会出现这一结果。用具组合（包括餐具）通过标准和原型展示出来，因为没有人想买破损的餐具，于是你立即感觉到A套组合的平均价值比B套组合的平均价值低。如果以平均价值引导估测，人们认为B套更值钱也就不足为奇了。奚恺元将这样的结果模式称为“少即是多”。从A套中拿走16件餐具（有7件是完好无损的），它的价值就会提升了。</strong></p>
+<p>如果你去法庭就会看到律师们往往采用两种批评风格：<strong>要想推翻某个案件，他们往往会去质疑支持此案的最有力证据，他们会找准证词中最薄弱的地方，让目击证人变得不值得相信。</strong>关注弱点在政治辩论中也很常见。我认为在科学争论中这是不恰当的。</p>
+<p><strong>示例：</strong></p>
+<blockquote>
+<p>他们构建了一个非常复杂的情节，还坚持说这个情节出现的可能性很大。这不是真的，这只是个貌似合理的故事而已</p>
+</blockquote>
+<blockquote>
+<p>对于贵重的产品他们还附赠一个便宜的小礼物，这样的话，整套产品就不那么吸引人了。少即是多就是这个意思。</p>
+</blockquote>
+<h4 id="2-7-因果关系比统计学信息更具说服力"><a href="#2-7-因果关系比统计学信息更具说服力" class="headerlink" title="2.7 因果关系比统计学信息更具说服力"></a>2.7 因果关系比统计学信息更具说服力</h4><p>一辆出租车在夜晚肇事后逃逸。</p>
+<p>这座城市有两家出租车公司，其中一家公司的出租车是绿色的，另一家是蓝色的。</p>
+<p>你知道以下数据：</p>
+<p>·这座城市85%的出租车是绿色的，15%是蓝色的。</p>
+<p>·一位目击证人辨认出那辆肇事出租车是蓝色的。当晚，警察在出事地点对证人的证词进行了测试，得出的结论是：目击者在当时能够正确辨认出这两种颜色的概率是80%，错误的概率是20%。</p>
+<p>这场事故的出租车是蓝色而不是绿色的概率是多少？</p>
+<p><strong>这是“贝叶斯定理”的一个标准问题。我们可以从中得到两条信息：一个基础比率以及不完全可靠的目击者证词。若没有目击者，肇事出租车是蓝色的概率（即蓝色出租车的基础比率）为15%。若两家出租车公司规模一样大的话，基础比率就会变成无用信息，你就只需考虑目击者的证词，因而这个问题的概率就是80%。我们可以用贝叶斯定理将这两个信息源结合起来，得出正确答案是41%。然而，你可能会想到当人们面对这个问题时是怎样做的：他们会忽略基础比率，只考虑目击者的因素。因此，最普遍的答案是80%。</strong></p>
+<h5 id="2-7-1-因果关系基础比率与思维定式"><a href="#2-7-1-因果关系基础比率与思维定式" class="headerlink" title="2.7.1 因果关系基础比率与思维定式"></a>2.7.1 因果关系基础比率与思维定式</h5><p>现在，请考虑一下上述问题的另一种表述方式，在这个表述中，只有基础比率发生了变化。</p>
+<p>·两家公司拥有数量相同的出租车，但是在出租车造成的事故中，绿色出租车占85%。</p>
+<p>·关于目击证人的信息与上例相同</p>
+<p>在第一个表述中，蓝色出租车的基础比率是关于这座城市出租车的统计学事实。大脑极其渴望找到其中的因果关系，但却一筹莫展：这座城市绿色和蓝色出租车的数量与出租车司机肇事后逃逸到底有什么因果关系呢？</p>
+<p>而在第二个表述中，开绿色出租车的司机比开蓝色出租车的司机肇事率高5倍。于是你会马上得出结论：<strong>开绿色出租车的司机是一群莽撞的疯子！现在，你认为绿色出租车司机是莽撞的，并对这家公司所有你并不认识的司机都抱有这种印象，我们称之为思维定式。我们很容易将这样的思维定式设定在因果关系里，因为莽撞是使出租车司机与肇事逃逸产生因果联系的相关事实。</strong></p>
+<p>这个出租车的实例阐明了两种基础比率。<strong>“统计学基础比率”(statistical base rates)是指某一事件所属类别的事实总量，与单独事件无关；而“因果关系基础比率”(causal base rates)则会改变你对单独事件的看法。对两种基础比率，人们往往会区别对待：</strong></p>
+<p><strong>·统计学基础比率普遍受到轻视，当人们手头有与该事件相关的具体信息时，有时还会完全忽略这一比率。</strong></p>
+<p><strong>·因果关系基础比率被视为个别事件的信息，人们很容易将这一比率与其他具体事件的信息结合起来考虑问题。</strong></p>
+<p>与因果关系相关的那个出租车问题存在一种思维定式：绿色出租车的司机是危险的。思维定式是指人们会（至少暂时会）将自己对某个团体的看法延伸到这个团体中每一个成员的身上（团体存在某些问题，其中的成员无一例外也都会有这些问题）</p>
+<p>有些思维定式的错误是致命的，负面的思维定式可能会产生可怕的后果，但这样的心理学事实无法避免：不管是对是错，思维定式都是我们对不同范畴事物的看法。</p>
+<p>我们认为应该将基础比率视为与整体相关的统计学事实，而不是与个人相关的假设性事实。<strong>换句话说，我们反对利用因果关系基础比率。</strong></p>
+<h5 id="2-7-2-我们并没有自己想的那样乐于助人"><a href="#2-7-2-我们并没有自己想的那样乐于助人" class="headerlink" title="2.7.2 我们并没有自己想的那样乐于助人"></a>2.7.2 我们并没有自己想的那样乐于助人</h5><p>社会心理学家理查德·尼斯贝特(Richard Nisbett)和他的学生尤金·博吉达(Eugene Borgida)很早之前就在密歇根大学做了这个实验。他们向学生描述了前几年在纽约大学进行的那个著名的“帮助实验”。他们将实验受试者分别带入房间，并要求他们对着麦克风谈论自己的生活和烦恼。他们轮流叙述两分钟，每个房间的麦克风只有在受试者讲述时才会出声。每一组有6位受试者，其中一位是我们派去扮演受试者的工作人员。这位工作人员是第一个叙述的人，他是按照研究人员准备的稿子说的。他说他很难适应纽约的生活，并十分尴尬地承认自己很容易抽搐，在紧张的时候尤其如此。接着，所有受试者都依次叙述。当那位工作人员再次对着麦克风讲述时，他变得焦虑和不连贯，他说他感到一阵抽搐，希望有人能帮助他。他最后几句说的是“有没有人……能……救救我……（喘气声）我……我要……死了，我要……死了（气哽声，然后安静了下来）”。此时，下一位受试者的麦克风被自动打开，人们再也听不到那位有可能濒临死亡的人的动静了。</p>
+<p>你认为这个实验的其他受试者会做些什么呢？到现在为止，受试者知道他们中的一员癫痫发作并希望得到帮助，然而他们觉得可能已经有几个人冲出去并提供了帮助，所以自己可以安然地待在隔间中。实验结果是：15个受试者中，只有3个人立刻对请求做出了反应。6个人没有踏出过房间，另外5个人在“癫痫患者”明显气哽时才冲出房间。<strong>这项实验说明当某人知道其他人也听到了同样的求救信息时，就会感到自己肩上的责任变小了。</strong></p>
+<p><strong>与从别人那儿听到令人惊奇的事实相比，你更有可能因为从自己的行为中发现惊人的事实而学到知识。</strong></p>
+<p><strong>示例—原因和数据</strong></p>
+<blockquote>
+<p>我们不能假设仅仅通过统计数据他们就能真正学到知识，需要再给他们一两个有代表性的个体案例来影响他们的系统1（作出判断）</p>
+</blockquote>
+<h4 id="2-8-所有表现都会回归平均值"><a href="#2-8-所有表现都会回归平均值" class="headerlink" title="2.8 所有表现都会回归平均值"></a>2.8 所有表现都会回归平均值</h4><p>一般来说，只有学员的表现远远超出平均值时才能得到这位教练的表扬。但也许学员只是恰巧在那一次表现得很好，而后又变差，这与是否受到表扬毫无关系</p>
+<h5 id="2-8-1-第二次的表现与第一次并无因果联系"><a href="#2-8-1-第二次的表现与第一次并无因果联系" class="headerlink" title="2.8.1 第二次的表现与第一次并无因果联系"></a>2.8.1 第二次的表现与第一次并无因果联系</h5><p><strong>一般来说，人们会认为过度自信以及人们对其期望过高的压力造成了这些人表现不佳。</strong>不过，这个诅咒可以用更简单的方式来解释：能够成为《体育画报》封面人物的运动员在前一赛季一定表现极为出色，也许这种出色的表现在很大程度上源于运气——运气是善变的，接下来他就没那么走运了。</p>
+<h5 id="2-8-2-回归现象的意义不亚于发现万有引力"><a href="#2-8-2-回归现象的意义不亚于发现万有引力" class="headerlink" title="2.8.2 回归现象的意义不亚于发现万有引力"></a>2.8.2 回归现象的意义不亚于发现万有引力</h5><p>从这些实验可以看出，子代的高度和母本高度似乎并不相关，但似乎前者比后者更趋于平均。如果母本较高，那么子代就会变矮；如果母本较矮，则子代就会变高。实验显示，子代向平均值的回归与母本高矮的差异是成比例的。</p>
+<p>我们理解“回归”概念存在很多困难，这些困难皆源自两个系统——系统1和系统2。在相当数量的案例中，即便提供了一些统计数据，若无特殊说明，“相关”与“回归”的关系还是相当模糊的。因此，系统2认为理解这种关系很难。因为从某种程度上讲，<strong>这是由于我们总是要求对事物进行因果关系解释，这也是系统1的一个特征。</strong></p>
+<p>如果给一群抑郁儿童喝了某种功能饮料的话，一段时间后，他们的病情会有很大的好转。如果抑郁儿童每天都花一段时间倒立，或是把一只猫抱在怀里20分钟，这些举动也可以使病情好转。多数读者读了这则新闻之后会不由自主地认为：喝功能饮料和抱猫的行为的确使抑郁儿童的病情得到了改善，但这个结论却无法得到证实。</p>
+<p>他们也犯过同样的错误——将相关性和因果性混淆在一起。<strong>回归平均值是科学研究中的常见问题，有经验的科学家都会小心提防这种毫无缘由的因果推论所形成的陷阱。</strong></p>
+<p>读过本章，你就知道将每家店的销售额增加10%显然是不对的。<strong>你应当使自己的预测具有回归性：对于业绩不好的店，预测增长率应高于10%；对于业绩较好的店，预测值应低于这个值（甚至是负值）</strong></p>
+<p><strong>示例—回归平均值</strong></p>
+<blockquote>
+<p>她说经验教会她一个道理，批评比赞扬更有用。不过她不明白这是回归平均值在发挥效用</p>
+</blockquote>
+<blockquote>
+<p>我们的筛选过程并不是很完美，所以我们会考虑回归性。有些极其优秀的候选人也会让我们失望，对此我们并不感到惊讶</p>
+</blockquote>
+<h4 id="2-9-如何让直觉性预测更恰当有效？"><a href="#2-9-如何让直觉性预测更恰当有效？" class="headerlink" title="2.9 如何让直觉性预测更恰当有效？"></a>2.9 如何让直觉性预测更恰当有效？</h4><p>有些预测判断，比如那些工程师所作的预测，<strong>主要就是通过查找表格、精确计算以及对类似项目的结果进行仔细分析得来的。还有一些预测则需要直觉和系统1的共同参与，主要有两种类型。有些直觉主要依靠反复训练得来的技能和经验。</strong>加里·克莱因在《力量的源泉》(Source of Power)一书中及其他场合曾提到过象棋高手、火场指挥员和内科医生所作的快速自动判断及选择，用以阐释这种经验性直觉，即由于识别出熟悉的线索，大脑中快速呈现出当前问题的解决方案。</p>
+<h5 id="2-9-1-偏离预测方向的直觉"><a href="#2-9-1-偏离预测方向的直觉" class="headerlink" title="2.9.1 偏离预测方向的直觉"></a>2.9.1 偏离预测方向的直觉</h5><p>在以色列国防军队服役期间，很长时间我都待在一支部队里，这支部队通过一系列面试及实战测试来挑选后备实训军官。成功预测的特定标准为这些人在军官学校的最终成绩。这些等级评定的效度非常低（我会在后面的章节详细说明）。若干年后，这支部队仍旧存在，而彼时我已成为一名教授，并且正与阿莫斯合作研究直觉性判断问题。我一直与这支部队的工作人员保持着密切联系，于是便请他们帮个忙。除了他们通常使用的评估候选人的评分系统以外，我还让他们猜测每个学员将来在军官学校中可能得到的分数。他们搜集了几百份这样的预测。所有作出这些预测的军官都知道学校给学员评分时用的是字母评分系统，也知道所有学员得到的A、B、C各等级的近似比例。实验结果令人惊讶：预测出来的A和B的频率几乎与学校的结业成绩中的A、B等级的频率等同。</p>
+<p>这些发现提供了一个引人注目的例子，这个例子涉及替代和强度匹配两个方面。作出预测的军官完全将这两个任务混淆在一起了：</p>
+<p>· 他们平时的任务是对候选人在该部队的表现作出评价。</p>
+<p>· 我让他们执行的任务是对候选人的未来成绩作出切实预测。</p>
+<p>他们运用强度匹配将自己的评级简单地转换为军官学校的评分结果。由于无法解决预测中存在（相当大）的不确定性，他们的预测又一次完全无法回归（平均值）。</p>
+<h5 id="2-9-2-对直觉性预测的偏见进行修正"><a href="#2-9-2-对直觉性预测的偏见进行修正" class="headerlink" title="2.9.2 对直觉性预测的偏见进行修正"></a>2.9.2 对直觉性预测的偏见进行修正</h5><p><strong>按照以下4个简单步骤来做，我们就可以进行无偏见预测：</strong></p>
+<ol>
+<li><p>先估测出平均绩点的平均值。</p>
+</li>
+<li><p>根据你对证据的印象算出与之相匹配的平均绩点。</p>
+</li>
+<li><p>对你的证据和平均绩点的关联作出估计。</p>
+</li>
+<li><p>如果关联度是0.3，则从估算出的平均绩点的平均值中抽出30%，放到与之匹配的平均绩点里。</p>
+</li>
+</ol>
+<p>步骤1为你提供了基准线，即在你除了知道朱莉是个快毕业的大学生之外什么也不知道的情况下，预测她的平均绩点。在没有信息的情况下，你很有可能预测其为一般水平。（这一点与你对汤姆的预测相似，在对他一无所知的情况下，你便将企业管理专业毕业生的基础比率放在了他的身上。）</p>
+<p>步骤2是你的直觉性预测，这个预测将你的估计和证据进行了匹配。</p>
+<p>步骤3使你离开基准线靠向自己的直觉，但你能离开的距离取决于你对关联性的估测。</p>
+<p>在步骤4中，尽管你最终作出的预测还是受到了直觉的影响，但是这个影响力已经小很多了。</p>
+<p>在你需要预测一个定量数值时，就可以运用这个方法，例如在预测平均绩点、投资效益、公司发展的业绩时，这个方法就可以派上用场。这个方法以你的直觉为基础，但是削弱了直觉的影响，使它回归到平均值上了。当你有充分的理由对自己的直觉性预测的准确性充满信心时，即证据和预测之间联系非常紧密，进行调整的余地就会很小。</p>
+<h5 id="2-9-3-两位教授候选人，应该选择哪一位？"><a href="#2-9-3-两位教授候选人，应该选择哪一位？" class="headerlink" title="2.9.3 两位教授候选人，应该选择哪一位？"></a>2.9.3 两位教授候选人，应该选择哪一位？</h5><p>无偏见预测的一个特征就是，只有在信息非常有效时才允许人们对罕见或极端的事件作出预测。如果你期待自己作出恰当有效。</p>
+<p>如果信息量有限，你也无法预测到一个出色的高中生会成为普林斯顿大学的优等生；同理，一个风险资本家永远不会认为新创立的公司在起步阶段时成功的概率会“很高”。</p>
+<p>一个部门要雇用一位年轻的教授，他们希望这位教授未来的学术能力能够达到最高水平。该部门的调查委员会最后将候选人圈定为两个：</p>
+<ul>
+<li><p>金最近完成了毕业设计。她的推荐信中都是对她的溢美之词，而且面试时她说得也很好，给在场的每个人都留下了深刻的印象。不过她没有什么实质性的科研成果。</p>
+</li>
+<li><p>简经过过去3年的学习取得了博士后头衔，学术成果颇丰，研究也做得非常出色，但她在面试时表现得不如金出色。</p>
+</li>
+</ul>
+<p>我们直觉会选择金，因为她给人的印象更深刻，而且眼见即为事实。但与简的信息相比，金的相关信息则少很多。<strong>我们可以回想一下小数原则。事实上，你从关于金的描述中得到的信息样本比简的要小，而且在小样本中更容易发现极端的结果。小样本的结果往往有更多的运气成分，因此在判断金将来的表现时，更应该回归平均值。若觉得金更有可能退步，最终你就会选择简，尽管你对她的印象并不深刻。</strong>如果按照学术能力来选人，我会投给简一票，但我得先努力克服自己对金的直觉印象——金更有希望。跟着我们的直觉走比违背直觉感觉更自然、更亲切。</p>
+<p><strong>示例—直觉性预测</strong></p>
+<blockquote>
+<p>那家新成立的公司已经深入人心了，但我们不能指望他们将来也能做得这么好。他们的营销之路很长，回归的空间也很大</p>
+</blockquote>
+<blockquote>
+<p>我们的直觉性预测的确令人鼓舞，但这个预测可能离现实太远了，还是让我们再看看手中的信息资料，让预测回归到平均状态吧。</p>
+</blockquote>
+<blockquote>
+<p>我读过关于那个品牌的一篇评论，评价极高，然而这很可能只是侥幸成功。我们应该这样想：对这个品牌的评论很多，而我们看到的这个正巧是评价最高的。</p>
+</blockquote>
+<h3 id="3、过渡自信与决策错误"><a href="#3、过渡自信与决策错误" class="headerlink" title="3、过渡自信与决策错误"></a>3、过渡自信与决策错误</h3><h4 id="3-1-“知道”的错觉"><a href="#3-1-“知道”的错觉" class="headerlink" title="3.1 “知道”的错觉"></a>3.1 “知道”的错觉</h4><p>此前讨论的光环效应是思维连贯性形成的部分原因，因为这一效应使我们更有可能将自己对某人所有品质的看法和对其特别重要特质的判断匹配起来。例如，如果觉得这位棒球投手又帅又强壮，那我们也很容易会认为他投球水平一定很高。光环效应也可能是负面的：如果觉得一位运动员很丑，我们就很可能会低估他的竞技能力。<strong>光环效应通过夸大评估的一致性来保持简单和连贯的特点：好人只做好事，坏人全都很坏。</strong> “希特勒喜欢狗和小鸡”这种说法，不论你听过多少次，无论如何都不会相信。因为根据光环效应，如此坏的人是不会有任何善意的，而这句话却违背了这一点。一致性使我们的想法有些固执，感觉模糊不定。</p>
+<p>光环效应还有最后一个阶段，即给该故事的主角戴上不可战胜的光环。</p>
+<p>运气的成分越多，从中能学到的就越少。</p>
+<h5 id="3-1-1-后见之明的社会成本"><a href="#3-1-1-后见之明的社会成本" class="headerlink" title="3.1.1 后见之明的社会成本"></a>3.1.1 后见之明的社会成本</h5><p><strong>后见之明的偏见对决策者的评估行为有着恶劣影响，它导致观察者不是根据判断过程的合理性来评估一个判断的好坏，而是以结果的好坏作为判断标准。</strong> 假设有一个低风险的外科手术，手术期间发生了一件始料未及的事故，病人因此死亡。事后，陪审团更倾向于相信手术本来就存在风险，而且主刀医生应该比其他人更清楚这一点。即使在制定决策时其想法是合理的，这一结果偏见也会使人们几乎不可能对他的决策作出正确评估。</p>
+<p>好的决策如果产生了坏的结果，我们就会责备那些决策制定者；而对那些只是在事后才能明确看出是正确的决策而言，其制定者也不会因此得到什么赞扬。这便是典型的“结果偏见”。</p>
+<p>很难在事后评论人们是否严格依照标准运作过程行事，因此那些希望自己的决定能经受住后见之明检测的决策制定者只好采用官僚的做派——极不情愿冒风险。由玩忽职守引起的起诉变得越来越常见，内科医生们以多种方式改变了自己的诊疗程序：要求患者作更多检查，请教专家更多病例，采用保守疗法，即使这些方法未必奏效也要用。这些行为与其说对病人有益，倒不如说是保护了医生，埋下了利益冲突的隐患。不断增强的责任可谓福祸参半。</p>
+<p><strong>尽管后见之明和结果偏见总会有滋生风险之嫌，却也会给那些不负责任的冒险者带来不应得的回馈，例如某位将军或企业家一次疯狂的冒险举动竟然成功了。那些一直很幸运的领导者不但从未因冒太大的风险而受到惩罚，相反，人们总会相信他们有很强的鉴别力和先见之明，能够预见成功；而那些曾经怀疑过他们的明智的人事后也会被视为平庸、胆小、懦弱之辈。几次幸运的冒险便会给一个不顾后果的领导人罩上耀眼的光环：极富远见、英勇果敢。</strong></p>
+<h5 id="3-1-2-真的存在能让企业基业长青的秘诀吗？"><a href="#3-1-2-真的存在能让企业基业长青的秘诀吗？" class="headerlink" title="3.1.2 真的存在能让企业基业长青的秘诀吗？"></a>3.1.2 真的存在能让企业基业长青的秘诀吗？</h5><p>身为瑞士一所商学院教授的菲利普·罗森茨威格(Philip Rosenzweig)曾写过一本书——《光环效应》(The Halo Effect)，该著作颇有见地。他在书中表明，<strong>有两种类型的商业书籍很受欢迎，能够满足人们对虚幻确定性的需求。这两种类型包括：描写特别的个人和企业（常见的）成功与（偶尔）失败的历史；分析成功与比较成功企业之间的区别。他总结道，成功和失败的故事常会夸大领导风格和管理措施对公司业绩的影响，因此这些故事基本上都没什么用。</strong></p>
+<p><strong>明明是同一个人和同样的行为，在事情进展顺利时就是讲究方法，而事情进展不顺利时就成了死板，光环效应的影响的确太大了，因此你也许会发现自己对前述想法十分抵触。</strong>由于光环效应，我们将因果关系抛到脑后：我们很容易相信公司的失败是因为其执行总裁僵化死板，而真实情况是其执行总裁之所以显得死板是因为这家公司正每况愈下。错觉就是这样产生的。</p>
+<p><strong>示例—后见之明</strong></p>
+<blockquote>
+<p>这个错误很明显，但这不过是后见之明，你事前根本无法知道。</p>
+</blockquote>
+<blockquote>
+<p>他从这则关于成功的故事中学到了太多，多得有些过头了，他现在已经陷入了叙事谬误的误区。</p>
+</blockquote>
+<blockquote>
+<p>我们不要带有结果偏见。尽管结果偏见有时也很管用，但这个决定是很愚蠢的。</p>
+</blockquote>
+<h4 id="3-2-未来是不可预测的"><a href="#3-2-未来是不可预测的" class="headerlink" title="3.2 未来是不可预测的"></a>3.2 未来是不可预测的</h4><h5 id="3-2-1-士兵测评的有效性错觉"><a href="#3-2-1-士兵测评的有效性错觉" class="headerlink" title="3.2.1 士兵测评的有效性错觉"></a>3.2.1 士兵测评的有效性错觉</h5><p>每次得到的结果几乎总是相同的：我们对这些士兵在军官学校的表现进行预测的能力弱到完全可以被忽略掉。我们的预测也就比凭空猜想强点，但也强不了多少。</p>
+<p><strong>其实我们知道自己的预测只比随意乱猜强一点，一般情况下都是这样，但我们仍然感觉自己所作的每一项预测都是有根据的，而且我们还会按照自己的预测行事。这让我想起了缪勒–莱耶错觉，我们都知道图中的线段是等长的，但一眼看过去仍然觉得它们长度不同。我对这种类推非常感兴趣，所以特意为我们的这种体验创造了一个术语：有效性的错觉。</strong></p>
+<p>对某个判断的主观自信并不是对这个判断正确概率的合理评估。自信是一种感觉，它能反映出某条信息和处理该信息时所体现的认知放松的一致性。<strong>由衷地承认不确定性乃明智之举，但如果有人声称自信满满，只能说明他在脑海里已经构建了一个连贯的情节，当然这个情节未必是真实的。</strong></p>
+<h5 id="3-2-2-投资股票的技能错觉"><a href="#3-2-2-投资股票的技能错觉" class="headerlink" title="3.2.2 投资股票的技能错觉"></a>3.2.2 投资股票的技能错觉</h5><p>麦基尔的核心理念是，一只股票的价格包含了关于公司价值和对股票前景的最佳预测的所有信息。</p>
+<p>众多研究者有一个普遍认同的观点，那就是几乎所有炒股的人，<strong>不管他们对股票是否了解（很少人了解股票），都在玩碰运气的游戏。</strong>交易者的主观经验只不过是他们在很不确定的情况下作出的看似明智的猜测而已。然而在高效率的市场中，明智的猜测比瞎猜也准不了多少。</p>
+<h5 id="3-2-3-主观自信与专业文化为认知错觉提供了生存的土壤"><a href="#3-2-3-主观自信与专业文化为认知错觉提供了生存的土壤" class="headerlink" title="3.2.3 主观自信与专业文化为认知错觉提供了生存的土壤"></a>3.2.3 主观自信与专业文化为认知错觉提供了生存的土壤</h5><p><strong>认知错觉比视觉错觉更顽固。</strong>缪勒–莱耶错觉虽然告诉你线段长度是相同的，但这没有改变你看线段的方式，却改变了你的行为。现在你知道不能相信自己对末端有箭头的线段长度的印象，而且你还知道在一般的缪勒–莱耶错觉中不能相信自己的眼睛。如果有人问起线段的长度，你会说出别人告诉你的长度，而不是你将看到的错误长度。与此相反，当我和同事们在以色列军队中得知领导能力评估实验的有效性很低时，我们很理智地接受了这一事实，但这并未影响我们的感觉及此后的行动</p>
+<h5 id="3-2-4-专家预测的准确度比不上扔飞镖的猴子"><a href="#3-2-4-专家预测的准确度比不上扔飞镖的猴子" class="headerlink" title="3.2.4 专家预测的准确度比不上扔飞镖的猴子"></a>3.2.4 专家预测的准确度比不上扔飞镖的猴子</h5><p>知识最丰富的人反而常常不大可靠，原因是学到更多知识的人对自己的技能产生了一种无限放大的错觉，进而变得不切实际、过于自信。</p>
+<p><strong>本章的主要观点并不是说那些企图预测未来的人会犯很多错误，即使不说也是如此。我们应该了解的第一点是，预测错误不可避免，因为这个世界就是不可预知的；我们应该了解的第二点是，我们不应该相信高度主观的自信就是准确性的指示器（低度自信可能更有益处）。</strong></p>
+<p><strong>示例—有效性错觉与技能错觉</strong></p>
+<blockquote>
+<p>他知道这份记录表明这种疾病的变化几乎是不可预知的，他怎么会对这个病例表现得这么自信？听起来像是有效性错觉。</p>
+</blockquote>
+<blockquote>
+<p>“是什么让他觉得自己比市场更聪明呢？是技能错觉吗？”</p>
+</blockquote>
+<blockquote>
+<p>问题不在于这些专家是否训练有素，而在于他们的世界是否是可预测的</p>
+</blockquote>
+<h4 id="3-3-直觉判断和公式运算，-孰优孰劣？"><a href="#3-3-直觉判断和公式运算，-孰优孰劣？" class="headerlink" title="3.3 直觉判断和公式运算， 孰优孰劣？"></a>3.3 直觉判断和公式运算， 孰优孰劣？</h4><h5 id="3-3-1-专家预测比不上简单运算准确"><a href="#3-3-1-专家预测比不上简单运算准确" class="headerlink" title="3.3.1 专家预测比不上简单运算准确"></a>3.3.1 专家预测比不上简单运算准确</h5><p>这项研究得出了一个惊人的结论：要提升预测的准确度，最终的结果应由公式给出，在低效的情况下尤其如此。例如，在医学院的学生录取工作中，最终决定一般由面试候选人的老师来做。这一依据是片面的，但他们的推测也有可靠的证据：如果面试官也参与最终的录取工作，面试的过程很可能会降低选拔过程的准确性。这是因为面试官过于相信自己的直觉，他们会很重视个人的喜好而忽略很多其他信息，从而降低了有效性。同样，专家在评估新酒的价格时会品尝酒，这种信息的反面作用大于正面。当然，即使清楚天气对酒质的影响，专家们也无法保证公式那样的一致性。</p>
+<p>一个住院医生问阿普加医生如何对新生儿作系统评估。她回答道：“这很简单，你可以这样做。”阿普加快速写下了5个变量（心率、呼吸、反应、肌肉强度和颜色）以及3个分数（0、1、2分别代表各个变量的稳健度）。阿普加意识到自己可能会有所突破，而且这一突破还可能被应用到所有的产房中，她便开始用这种方法评估每一个出生一分钟的婴儿。一个得到8分以上的婴儿一般是肤色粉红、蠕动、啼哭、面部扭曲并拥有100次以上的脉搏，这样的婴儿外形很好。低于4分的婴儿一般是浑身青紫、肌肉松弛、不爱动且心跳微弱，这样的婴儿需要立即救治。<strong>应用了阿普加的评分原则后，产房的护士们终于在判断婴儿情况是否危险的问题上有了一套标准，人们认为这个公式对减少婴儿的夭折率起到了很重要的作用。</strong></p>
+<h5 id="3-3-2-让许多业内人士烦恼的运算法"><a href="#3-3-2-让许多业内人士烦恼的运算法" class="headerlink" title="3.3.2 让许多业内人士烦恼的运算法"></a>3.3.2 让许多业内人士烦恼的运算法</h5><p>对通过数理统计来作决定的厌恶情绪影响着人类，这种厌恶源于我们本身对自然事物的偏好以及对人工合成产物的否定。选苹果时，如果有人问我们喜欢有机的苹果还是商业种植的，大多数人都会倾向于“全天然”的那个。即使被告知两者的口味相同、营养相同而且同样卫生，很多人还是会选择有机水果。商人们甚至发现，标签上印有“全天然”或者“不添加防腐剂”时，销量就会增加。</p>
+<p>作重要决定时，对运算法的偏见就会被放大。米尔指出：“有些临床医师会因一个‘盲目的、机械化的’公式而耽误了可以治疗的病例，这是很可怕的，但我也没有什么好办法来缓和这种令人恐惧的情形。</p>
+<h5 id="3-3-3-“闭上眼睛”的直觉判断比主观判断更可取"><a href="#3-3-3-“闭上眼睛”的直觉判断比主观判断更可取" class="headerlink" title="3.3.3 “闭上眼睛”的直觉判断比主观判断更可取"></a>3.3.3 “闭上眼睛”的直觉判断比主观判断更可取</h5><p>幸运的是，我读过保罗·米尔那本一年前出版发行的“小书”。我很相信书中的论证，认为简单的运算法优于临床的直觉判断。我总结出，当前的面试之所以失败，部分原因是它允许面试者按照个人的喜好作决定，这个决定会因面试者的心理活动而发生一些变动。相反，我们应该用限时的项目来获得受试者在正常环境下更具体的信息。我从米尔那里还学到了我们应该摒弃这种用面试者的整体评估来给新兵打分的方法。米尔的书中指出这种评估不值得相信，而运算法从分散的评价中得出的结果则更有价值。</p>
+<p>通过这些标准化的真实问题，我希望能够排除光环效应，排除人们喜好的第一印象对判断结果的影响。为了进一步预防各种光环的影响，我要求面试官依照固定的顺序去测试这6个特点，在测试下一个特点之前要对前一个特点按5分制打分。我告诉他们不要为新兵在部队的未来发展操心。他们唯一的工作就是找出与新兵的过去相关的信息并以此来给每一个特性打分。“你们的作用就是提供可靠的测定值，”我说，“处理预测有效性的工作让我来。”我这句话的意思是我要用公式来整合他们的具体得分。</p>
+<p>为了避免光环效应，你必须在一定时间内完成某一个特性的信息采集并对其打分，之后才能测试下一个。不要越过某个特性去测其他项目。评估每个候选者时，要将这6项评分累加起来。由于你要负责作出最终决定，那就不要“闭眼”测试了。即使你认为其他候选人更合适，也一定要雇用那个得分最高的人——请尽量克制自己创造“断腿”机会改变排位的想法。大量的研究可以向你保证：只要按照该过程操作，你就能找到最合适的人选。这比人们通常用的那些没有准备就开始面试，并依靠“我看到了他深邃的眼神，我喜欢自己看到的一切“这类主观判断要好得多。</p>
+<p><strong>示例—人工判断和公式运算</strong></p>
+<blockquote>
+<p>不管何时，只要公式能替代人工判断，我们至少应该考虑一下（运算法）。</p>
+</blockquote>
+<blockquote>
+<p>他认为自己的判断既缜密又微妙，但实际上把一些分数简单地整合在一起也许会更胜一筹。</p>
+</blockquote>
+<blockquote>
+<p>我们应该事先考虑清楚自己有多重视这些候选者以往的表现，否则，对他们的第一印象会对我们产生过多的影响。</p>
+</blockquote>
+<h4 id="3-4-什么时候可以相信专家的直觉？"><a href="#3-4-什么时候可以相信专家的直觉？" class="headerlink" title="3.4 什么时候可以相信专家的直觉？"></a>3.4 什么时候可以相信专家的直觉？</h4><h5 id="3-4-1-直觉就在眨眼之间"><a href="#3-4-1-直觉就在眨眼之间" class="headerlink" title="3.4.1 直觉就在眨眼之间"></a>3.4.1 直觉就在眨眼之间</h5><p>格拉德威尔这本书开篇的故事令人印象深刻：一些艺术名家鉴赏雕像中的杰作——一个阔步行走的男孩雕像。有些专家本能地认为这个雕像是仿冒品，但也说不清楚是什么让自己有这种感觉的。读了这本书的人（有数百万人读过）都认为直觉在其中起了作用。<strong>这些专家知道雕塑是仿冒的，却不知道自己为什么知道——这正是对直觉的定义</strong></p>
+<p>调查指挥官们是怎样不加选择就做出正确决策的。最初的假设是指挥官会将其分析限制在两个选项中，但这个假设已被证实是错误的。事实上，指挥官只萌生了一个选项，且这个选项也正是他们所需要的。他们花了超过10年的时间进行真实和虚拟的演练，以识别出合适的选项作为首选，而在有真实需要时，他们就可以利用这个累积了多年的指令库。他们评估某个选项的方法是在脑部模拟这个选项，看它是否适用于当时的情况……如果他们考虑的这个做法大概可行，他们就会这样做；如果这样做不太好，他们就会对其进行调整；如果不易调整，他们就会选择下一个最有可能的选项。然后，重复上面所说的过程，直到找到一个合适的做法。</p>
+<h5 id="3-4-2-专家型直觉的习得"><a href="#3-4-2-专家型直觉的习得" class="headerlink" title="3.4.2 专家型直觉的习得"></a>3.4.2 专家型直觉的习得</h5><p>恐惧可以被感知，事实上也很容易被感知，因为无须亲身经历只需通过语言就能感知。对危险有着“第六感”的消防员肯定有很多机会讨论及思考多种他并没有亲自参与的火灾，并在脑中对会有什么样的线索出现以及该怎样反应进行演练。我还记得，一名没有作战经历的年轻排长在带领部队穿越峡谷时会很紧张，因为他曾经学习过这样的地形很可能会有埋伏。学习需要一定的反复强化。</p>
+<p>情感学习可能很快，但学习我们所说的“专业技能”通常需要很长时间。学习专业技能，例如高水平的国际象棋、职业篮球以及消防技能，很复杂也很缓慢，因为某个领域的专业技能涉及的不仅是一项单一的技能，还包含了很多小技巧。象棋就是一个很好的例子。一名专业棋手一眼就能看清一个复杂的棋局，但达到那样的能力水平却需要很多年。对象棋大师的各项研究表明，想要达到高水平需要至少10000个小时的专注练习（大约需要在6年的时间里每天练习5小时）。在注意力高度集中的这若干个小时内，一个谨慎的棋手会熟悉数以千计的棋局，且每个棋局中的棋子都有攻守关系。</p>
+<p>掌握下棋的技巧要比学习朗读更难也更慢，因为象棋的“字母表”含有更多的字母，每个“单词”也包含许多字母。然而，经过上千小时的练习以后，象棋大师能够一眼就“读”出棋局。他想出的那几步棋通常也都很高明，有时还会令对手措手不及。他们可以处理自己从未遇到过的“单词”，还能找到一个新的方法去解释一个熟悉的“单词”。</p>
+<h5 id="3-4-3-环境有规律可循，直觉才可相信"><a href="#3-4-3-环境有规律可循，直觉才可相信" class="headerlink" title="3.4.3 环境有规律可循，直觉才可相信"></a>3.4.3 环境有规律可循，直觉才可相信</h5><p>早些时候，我研究过人们自信的来源，认为以下两点与之相关：认知放松和一致性。如果我们能很轻松地想到自己想要的那个故事，且各个情节之间并无矛盾时，我们就会很有自信。但是放松和一致并不能保证我们充满自信的观点就是正确的。联想机制会抑制怀疑并引发与当前情况相符合的想法与信息。遵从眼见即为事实原则的大脑可通过忽略自己所不知道的事而变得过于自信。因此，许多人容易对没有事实根据的直觉怀有高度的自信也就不足为奇了。我和克莱因最终就一个重要的原则达成了共识：人们对直觉的自信心不能作为他们判断的有效性的可靠指标。换句话说，当有人告诉你你应该相信他们的判断时，不要相信他们，也不要相信自己。</p>
+<p>如果主观自信不可信的话，我们该怎样评估直觉判断的有效性呢？判断在什么时候才能反映出真实的技能水平呢？什么时候会显现出有效性错觉呢？回答这些问题需考虑到技能习得的两个基本条件：</p>
+<p><strong>1、一个可预测的、有足够规律可循的环境。</strong></p>
+<p><strong>2、一次通过长期训练学习这些规律的机会。</strong></p>
+<p><strong>当满足以上两个条件时，就可以培养出直觉来了。象棋这个活动就需要在极具规律的环境下进行，桥牌和扑克也提供了有力的、能支撑技能的统计学规律。医生、护士、运动员以及消防员面对的都是复杂但却基本有序的情境。相反，作长期预测的股票投资者以及政治学者是在有效性为零的环境中进行的。他们的失败反映了他们尝试预测的事物基本是不可预见的。</strong></p>
+<p>在毫无章法的环境下，运算法远远优于人工判断有两个原因：运算法比人工判断更可能观察到不怎么有效的线索，还可能通过利用这样的线索将正确性保持在适度水平上。</p>
+<p><strong>请记住这条规则：在环境缺乏牢靠的规律时，不要相信直觉。</strong></p>
+<p>环境中的某些规律会比其他规律更容易察觉并容易加以利用。想想你是如何形成自己的刹车方式的。当你学习转弯时，你渐渐学会了何时放油门以及用多大力气踩刹车。现在，弯道改变了，但多次转弯的经历已使你能在任何弯道上在恰当的时间以恰当的力度踩刹车。学习这项技能的条件是很理想的，因为你在每次遇到弯道时都能收到及时、清楚的反馈：转弯顺畅时你会感到很舒服，但如果刹车没有踩到底，你就会感到车子有些难以控制。港口引航员调动大型船舶的情境也有一定的规律，但只凭借经验是很难学到这项技能的，因为行动之间可能会有长时间的推迟，这样的推迟还会带来显著的后果。<strong>专业人员是否有机会培养直觉性专业技能主要取决于反馈的质量和速度，以及是否有足够的时间进行练习。</strong></p>
+<h5 id="3-4-4-直觉的对错评估"><a href="#3-4-4-直觉的对错评估" class="headerlink" title="3.4.4 直觉的对错评估"></a>3.4.4 直觉的对错评估</h5><p>在我们的实验快结束时，我和加里·克莱恩就上面提及的那个问题给出了一个一般性答案：什么时候可以相信有经验的专业人士的直觉？<strong>我们的结论是，大多数情况下，我们还是可以将可能是有效的直觉与可能是无效的直觉区分开来的。这就好比判断一件艺术作品的真假一样，关注这件作品的出处通常比关注作品本身的判断准确率更高。</strong>如果环境有足够的规律性，并且在判断时有机会掌握这些规律，联想机制就会识别这些情境并做出快速且准确的预测与决策。这些条件若得到满足，你就可以相信某个人的直觉。</p>
+<p>在一个不够规律或效度较低的环境中，判断启发式就会被激活。系统1通常会用另一个问题快速替换掉难题，创造出并不存在的关联。此时回答的问题并不是预期的那一个，但这个答案会很快出现在人们的脑海中，会通过系统2宽松的审查。你可能想预测某个公司的商业前景，并相信这就是你正在判断的事，但实际上，你对这家公司高管能力的印象主宰了你的评估。因为替代是自动发生的，你通常并不清楚自己（你的系统2）赞同并采纳的判断源自何处。如果这是唯一出现在大脑里的判断，你可能就无法将它与你根据专业直觉得来的有效判断进行主观上的区分。这就是主观自信不能作为直觉准确性指标的原因：即使判断的是错误的问题，在作出这一判断时仍可能有高度的自信。</p>
+<p>你可能会问：为什么我和加里·克莱因立即想到了通过评估环境规律和专家学习经历的方法来估测专家的直觉能力，而不是通过专家的自信程度来评判，还会问我们答案可能是什么。其实解决方案一开始就很明显。我们先前就知道火场指挥官和儿科护士的直觉是有效的，而米尔研究的那些专业人士以及股票投资者和经济学者的直觉则不准确。</p>
+<p><strong>示例–专家型直觉</strong></p>
+<blockquote>
+<p>对这个特别任务，她有多少专业技能？做过多少练习</p>
+</blockquote>
+<blockquote>
+<p>他真的相信这些新成立的公司的环境有足够的规律来证明与基础比率背道而驰的直觉吗</p>
+</blockquote>
+<blockquote>
+<p>她对自己的决策非常自信，但主观自信并不是评估准确性的标准</p>
+</blockquote>
+<h4 id="3-5-努力养成采纳外部意见的决策习惯"><a href="#3-5-努力养成采纳外部意见的决策习惯" class="headerlink" title="3.5 努力养成采纳外部意见的决策习惯"></a>3.5 努力养成采纳外部意见的决策习惯</h4><p><strong>我遵循了我们已经计划好要纳入课程体系的流程：从一个团队获取信息的合理方法并不是通过公开讨论，而是通过私下收集大家的观点来完成。</strong>这个流程与常规的公开讨论不同，它更加充分地利用了每个成员的相关知识。我收集了大家的预测，并将结果记录在黑板上。</p>
+<p>这个令人尴尬的插曲成了我职业生涯中一段最具启发性的经历。我从中悟出了三点，</p>
+<p>第一点是显而易见的，我偶然得到了两种截然不同的预测方法。</p>
+<p>后来，这两种方法被我和阿莫斯称为内部意见和外部意见。第二点是我们最初的预测，即完成项目需要大约两年的时间，体现出一种规划谬误。</p>
+<p>我花了很长的时间才悟出第三点，我将这一点称为非理性坚持，一如我们那天做的荒唐事：没有终止那个项目。面对选择时，我们因为事业心而丢掉了理性。</p>
+<h5 id="3-5-1-比起外部意见，我们更偏向内部意见"><a href="#3-5-1-比起外部意见，我们更偏向内部意见" class="headerlink" title="3.5.1 比起外部意见，我们更偏向内部意见"></a>3.5.1 比起外部意见，我们更偏向内部意见</h5><p>如果你对一个事件的了解仅限于其所属类别，其他情况一概不知，此时作出的预测就是基准预测。正如前文所述，基准预测应该是进一步调整的锚定。如果你只知道某位女士住在纽约，却被问到她的身高的话，你的基准预测就是你对纽约女性平均身高的合理猜测。</p>
+<p>如果得到了与案例相关的特定信息，例如那位女士的儿子是他所在高中篮球队的首发中锋，你就会将预测转向一个合理的方向。希莫将我们团队与其他团队的对比说明，我们所作的预测较基准预测而言更糟糕，而基准预测已经是糟糕透顶了。</p>
+<h5 id="3-5-2-规划谬误：过于乐观的计划随处可见"><a href="#3-5-2-规划谬误：过于乐观的计划随处可见" class="headerlink" title="3.5.2 规划谬误：过于乐观的计划随处可见"></a>3.5.2 规划谬误：过于乐观的计划随处可见</h5><p>我和阿莫斯创造了“规划谬误”这个新词来描述下列计划和预测：</p>
+<ol>
+<li><p>不切实际地接近理想状况（的计划和预测）。</p>
+</li>
+<li><p>可通过参考类似案例的数据得到提高（的计划和预测）</p>
+</li>
+</ol>
+<p>1997年7月，爱丁堡规划中的新苏格兰议会大楼预计的最高预算是4000万英镑。到了1999年6月，建楼的预算就变成了1.09亿英镑。2000年4月，规划者将“成本上限”修改为1.95亿英镑。到2001年11月，他们又将“最终成本”预估为2.41亿英镑。这个最终成本在2002年年末的时候又上涨了两次，成为2.946亿英镑。到2003年6月，预算又增加了3次，达到3.758亿英镑。这栋大楼最终在2004年建成，最终耗资约为4.31亿英镑。</p>
+<p>规划者与决策者的乐观心态并不是造成超支的唯一原因。厨房改造和武器系统的承包人都承认（尽管不是对他们的客户承认），他们都会通过扩充最初计划而获取最大利益。客户们无法想象他们的意愿会随时间的推移而逐渐增多，而没能预测到这些情况的事实也恰好反映出这一点。如果他们制订一个较为现实的计划并严格按计划进行，最终就不会花掉这么多钱了。</p>
+<p>最初预算的误差并不总是无知的。制订计划的人都希望自己的计划能得到上级和顾客的认可。通常也正是这种愿望的驱使，他们才制订出了不切实际的计划。他们这样做还因为仅仅由于超支或超时不太可能会导致项目被中途叫停。在这些例子中，避免规划谬误的最大责任落在了批准计划的决策者身上。如果这些决策者没有意识到外部意见的必要性，他们就会犯下规划谬误的错误。</p>
+<h5 id="3-5-3-减少决策错误的有效方法"><a href="#3-5-3-减少决策错误的有效方法" class="headerlink" title="3.5.3 减少决策错误的有效方法"></a>3.5.3 减少决策错误的有效方法</h5><p>如何通过改进的方法提高预测的准确性？上面的说法可算做唯一一条最为重要的建议了。<strong>在预测时使用相似团队的分布信息被称为采纳“外部意见”，它是避免规划谬误的有效方法。</strong></p>
+<p>弗林夫伯格使用的预测方法与为克服对基础比率的忽视而采取的建议非常相似：</p>
+<ol>
+<li><p>识别对应的参考类别（例如厨房改建和大型铁路项目等）。</p>
+</li>
+<li><p>获取参考类别的统计数据（每英里铁路的造价或是支出超过预算的百分比），利用这些数据作出基准预测。</p>
+</li>
+<li><p>如果有特别的原因说明这个项目多少会比同类项目的乐观偏差更为明显，则可使用此例的具体信息对基准预测进行调整。</p>
+</li>
+</ol>
+<p>高管们为了抢占资源很容易会提出过于乐观的计划，因此，各个组织面临着控制高管这种倾向的挑战。<strong>运转良好的组织会奖励规划师，因为他们提出的方案精准而又切实可行；当然也会处罚规划师，因为他们没能对遇到的困难作出预测或是没能考虑到他们本可以规避的困难，即未知的未知数。</strong></p>
+<p>在我们预测风险项目的结果时，高管们很容易会掉入规划谬误的陷阱。<strong>在规划谬误的支配下，他们根据脱离现实的乐观心态来做决策，而不是根据对利益得失以及概率的理性分析做决策。他们高估了利益，低估了损失。他们设想了成功的场景，却忽略了失败和误算的可能性。因此，他们所追求的行动方案不太可能在预算之内完成，也不大可能按时完成，这个方案可能也无法实现预期的回报——甚至都无法完成。</strong></p>
+<p><strong>如果在开始做这个项目时就有了合理的基准预测，那么我们就不会再将项目进行下去了，但我们已经投入了大量精力——这是一个沉没成本悖论的例子，我们将在本书后半部分重点关注这个问题。放弃这个项目会令我们很尴尬，</strong>尤其是我，而且我也没有直接的理由这样做。在危急时刻转变方向比较容易，但这并不是一个危急时刻，因为我们得到的只是一些不相干的人的实例。与我们在自身努力后得到不好的结果相比，外部意见更容易被忽略。</p>
+<p><strong>示例—外部意见和内部意见</strong></p>
+<blockquote>
+<p>他正在采纳内部意见，他应该忽略自己案例的情况，去看看其他案例是什么情况。</p>
+</blockquote>
+<blockquote>
+<p>她掉进了规划谬误的陷阱。她设想了一个最为理想的情景，但有多种原因可能导致计划失败，她无法预见所有原因。</p>
+</blockquote>
+<blockquote>
+<p>我们又加大了投资，因为我们不想承认失败。这是一个沉没成本悖论的例子吗？</p>
+</blockquote>
+<h4 id="3-6-乐观主义是一把双刃剑"><a href="#3-6-乐观主义是一把双刃剑" class="headerlink" title="3.6 乐观主义是一把双刃剑"></a>3.6 乐观主义是一把双刃剑</h4><p>规划谬误只是普遍存在的乐观偏见的一种表现形式。<strong>我们中的大多数人都认为世界是美好的，但世界却没有想象般美好；我们觉得自己的贡献很大，但事实上并没有那么大；我们认为自己设定的目标很容易实现，但其实实现的可能性也没有那么大。我们还容易夸大自己预测未来的能力，进而导致乐观的过度自信，这可能会影响到决策。</strong>乐观偏见也许是认知偏见中最重要的一种。如果你性情乐观，就应该既乐观又谨慎，因为乐观偏见可能有益，也可能带来风险。</p>
+<h5 id="3-6-1-乐观主义者过度自信的代价"><a href="#3-6-1-乐观主义者过度自信的代价" class="headerlink" title="3.6.1 乐观主义者过度自信的代价"></a>3.6.1 乐观主义者过度自信的代价</h5><p>抱有乐观心态很正常，但一些幸运儿比其他人更为乐观。如果你天生就有乐观偏见，无须别人告知，你就知道自己是个幸运儿，因为你已经感到幸运了。<strong>乐观心态大多是遗传下来的，是人类普遍存在的一种性情，偏向于看到事物积极的一面。如若让你为自己的孩子求个愿望，你应该真心希望他或她有个乐观的心态。乐观主义者通常都是开朗快乐的，也因此颇受欢迎。他们对失败和困难的承受力都比较强，患抑郁症的概率低，免疫系统良好，也更注重身体健康。他们感觉自己比别人健康，事实上他们的确更长寿。</strong>有些人会夸大自己的预期寿命，认为自己的寿命会超过保险界的统计数据。而对这些人的研究表明，他们的工作时间较长，对自己未来的收入更有信心，离婚之后更容易再婚（典型的“精神胜利法”），也更容易投资个股。<strong>当然，只有那些带有轻微偏见并且能在不脱离实际的前提下“强调积极因素”的人才能享受乐观主义带来的益处。</strong></p>
+<p>一项对小型企业创始人的调查总结道，<strong>企业家对待生活的态度普遍比中层主管乐观。他们成功的经历印证了他们对自己的判断和掌控能力的信心。他们的自信因别人的崇拜而增强。这条推理使我们得出一个假说：对他人生活影响巨大的人可能是乐观和过度自信的，这种人承担的风险远大于自己所能意识到的水平。</strong></p>
+<p>有偏见并不奇怪。如果最近某人开了家意大利餐厅，你在采访他时就不要期待她会低估自己成功的概率或说自己缺乏经营餐馆的能力。但你肯定会纳闷儿：如果她通过一些渠道得知了胜算率，还会继续投入金钱和时间吗？或是她在得知胜算率（有60%的新餐厅3年后会歇业）以后，会考虑胜算率吗？答案是，她可能不会考虑采纳外部意见。</p>
+<p>一般说来，个体经营的财务收益属于中等：同等条件下，人们通过向雇主出售自己的技能得到的平均回报要比经营自己的企业更高。这表明乐观主义是普遍、执拗且代价昂贵的。</p>
+<p>即使大多数风险承担者最终总是收获失望，但那些因乐观而承担的风险企业家毫无疑问都会为激发资本主义社会的经济活力作出贡献。</p>
+<h5 id="3-6-2-竞争忽视：为何大片会扎堆上映？"><a href="#3-6-2-竞争忽视：为何大片会扎堆上映？" class="headerlink" title="3.6.2 竞争忽视：为何大片会扎堆上映？"></a>3.6.2 竞争忽视：为何大片会扎堆上映？</h5><p>人们倾向于用愿望思维来解释企业家身上的乐观主义，但是情感只是乐观主义产生的一部分原因。认知偏见起了很重要的作用，特别是系统1的其中一个特征，即眼见即为事实。</p>
+<ul>
+<li><p>我们将注意力集中在目标上，锚定我们的计划，却忽视了相关的基础比率，导致规划谬误。</p>
+</li>
+<li><p>我们只关注自己想做的和能做的，却忽视了他人的计划和技能。</p>
+</li>
+<li><p>我们只重视自己已知的，却忽视自己未知的，因此我们对自己的信念过度自信。</p>
+</li>
+<li><p>在解读过去和预测未来时，我们强调了技能的因果角色，却忽视了运气的影响。因此，我们产生了“控制错觉”</p>
+</li>
+</ul>
+<p>“90%的司机都相信自己的车技要高于平均水平”这一心理学发现已得到了证实，也已成了文化的一部分，还成了普遍存在的高于均数效应的主要例子。。然而，对这个发现的解读在近几年发生了改变，原来认为这是一种自我膨胀，现在则认为这是一种认知偏见。请考虑下面两个问题：</p>
+<ul>
+<li><p>你是一个好司机吗？</p>
+</li>
+<li><p>你是一个高于平均水平的司机吗？</p>
+</li>
+</ul>
+<p>第一个问题很简单，人们很快就可作答，且多数司机都会答“是”。第二个问题要难很多，大多数受试者几乎都不可能谨慎而又正确地作答，因为这需要对司机的平均水平进行评估。读到这里，对于人们会用简单答案回答难题这一观点你已有所了解。虽然受试者将自己的水平与平均水平进行比较，却从未考虑过平均水平究竟是什么水平。<strong>对高于均数效应的认知解释有一项证据，即当人们被要求完成一项困难的任务时，他们会不假思索地将自己划在平均水平以下。结果，只要表现还说得过去，人们就总是喜欢表现得过于乐观。</strong></p>
+<p>我曾经有过几次机会询问新成立的创新型公司的创办者及其合作人一个问题：<strong>公司取得的成绩在多大程度上取决于你在公司的作为？这明显是个简单的问题；人们很快就能回答出来，而且在我所抽取的小样本中，认为自己与公司成功的关联度没有低于80%的。即使他们并不肯定此时自己是否成功，这些有胆量的人也都认为自己的命运完全掌握在自己手中。他们肯定错了：新公司的成绩更多取决于其竞争者、市场的变化以及自身的调控。然而，眼见即为事实的原则也起到了一部分作用，企业家会自然而然地将注意力放在他们最为了解的地方——他们的计划、行为、最直接的威胁和机遇等，例如筹资能力。他们对竞争者所知较少，也就自然地认为竞争者与公司未来没多大关系。</strong></p>
+<p>竞争忽略的结果是产生了许多额外入口：众多竞争者进入市场，导致市场不能保证赢利，所以平均下来，其结果就是亏损。对于新进入市场的公司来说，这样的结果会令其失望，但是这对总体经济的影响却可能是积极的。事实上，一些创新型企业的失败标志着新的市场需要更有能力的竞争者。乔瓦尼·多西(Giovanni Dosi)和丹·洛瓦洛称这些创新型企业为“乐观主义烈士”，对经济有益，对投资者有害。</p>
+<h5 id="3-6-3-是你太糟糕，而不是我太笨拙"><a href="#3-6-3-是你太糟糕，而不是我太笨拙" class="headerlink" title="3.6.3 是你太糟糕，而不是我太笨拙"></a>3.6.3 是你太糟糕，而不是我太笨拙</h5><p>杜克大学的学者们搜集了11600份这样的预测并检验了它们的准确性。结论非常明显：大型企业的财务主管对股票市场的短期走向一无所知，他们估测出的值与真实值的相关系数接近零！当他们说股市走低时，股市多半可能会上扬。这些发现并不令人吃惊。真正糟糕的消息是，这些财务总监似乎并不知道他们的预测是没有价值的。</p>
+<p>这说明财务总监过度相信自己预测市场的能力了。<strong>“过度自信”是眼见即为事实的一种表现：在估测质量时，我们会依赖大脑呈现的信息并构建一个使估测合理的、具有逻辑的解释。一个人不可能采用自己没有想到的那些信息，</strong> 也许是因为他从来就不知道这些信息吧。</p>
+<p><strong>对环境的不确定性了解不足必然会导致经济行为人承担本可以避免的风险。然而，无论在社会生活中还是在股票市场中，乐观主义极其重要。个人及企业会奖励那些提供了冒险且有误导性信息的人，而不是说真话的人</strong></p>
+<p>青睐过度自信的专家的领域并不仅限于金融预测。其他专业人士必须面对这样一个事实：一位实至名归的专家需要表现出很高的自信程度。临床医生显现出的不确定是一种懦弱的表现。自信的人比对事情持不确定态度的人更受人推崇。在危机中，极度的不确定会造成严重后果，而且在风险高的时候承认自己只是在猜测的做法特别不易被接受。所以，假装知道通常是首选的解决方式。</p>
+<p>我一直认为，在科学研究这一领域，乐观对成功而言同样不可或缺：<strong>我遇到的成功的科学家都会夸大他或她正在进行的研究的重要性。我还相信，不爱夸大自己重要性的人在反复面对挫折和失败时会一蹶不振，这种情况也是大多数研究人员的结局。</strong></p>
+<h5 id="3-6-4-“事前验尸”：部分克服乐观偏见的方法"><a href="#3-6-4-“事前验尸”：部分克服乐观偏见的方法" class="headerlink" title="3.6.4 “事前验尸”：部分克服乐观偏见的方法"></a>3.6.4 “事前验尸”：部分克服乐观偏见的方法</h5><p>他将自己的提议称为“事前验尸”。流程十分简单：当一个机构即将做出一个重要决策但还没有正式下达决议时，克莱恩提议召集对这个决策有所了解的人开一次简短的会议。<strong>在会议之前有一个简短的演说：“设想我们在一年后的今天已经实施了现有计划，但结果惨败。请用5～10分钟简短写下这次惨败的缘由。”</strong></p>
+<p><strong>事前验尸观点有两个主要优点：决策快要制定好时，许多团队成员会受到集体思考的影响，而事前验尸则扼制住了这种影响。另外，它还激发了那些见多识广的个人的想象力，并将他们的想法引导到最需要它们的方向。</strong></p>
+<p>当一个团队将注意力集中在决策上，特别是当领导宣布他的意图时，人们对计划好的步骤的可行性的疑虑就会渐渐减弱，到最后，这样的怀疑还会被认为是对团队和领导的不忠诚。如果某个团队中只有支持决策的人才有发言权，那么对怀疑的抑制就会造成这个团队的过度自信。事前验尸的主要优点是它引发了怀疑。另外，它还助长了支持决策的人去探寻他们先前没有考虑到但却可能存在的威胁。事前验尸并不是灵丹妙药，也不能提供完整措施使我们避免恼人的意外，但这一方法在一定程度上可以减少计划的损失。而这些损失一般都是因眼见即为事实的偏差以及盲目的乐观主义导致的。</p>
+<p><strong>示例–乐观偏见与过度自信</strong></p>
+<blockquote>
+<p>他们有控制错觉，他们严重低估了障碍。</p>
+</blockquote>
+<blockquote>
+<p>这是一个过度自信的例子，他们似乎认为自己知道的比实际的多</p>
+</blockquote>
+<blockquote>
+<p>我们应该开一个事前验尸会议，有人也许能想到一个被我们忽略了的威胁。</p>
+</blockquote>
+<h3 id="4、选择与风险"><a href="#4、选择与风险" class="headerlink" title="4、选择与风险"></a>4、选择与风险</h3><h4 id="4-1-事关风险与财富的抉择"><a href="#4-1-事关风险与财富的抉择" class="headerlink" title="4.1 事关风险与财富的抉择"></a>4.1 事关风险与财富的抉择</h4><p>你愿意选择哪一项？</p>
+<p>A.抛硬币决定。如果是正面，你会得到100美元；如果是背面，你就什么都得不到。</p>
+<p>B.肯定会得到46美元。</p>
+<p>在这个例子中，我们两个都会选B选项，而且很可能你也会这么选.</p>
+<p><strong>示例——伯努利理论的错误</strong></p>
+<blockquote>
+<p>“3年前，他有2万美元的奖金，他对此已经很满意了，但他的薪水自那以后只涨了20%，所以他需要更多的奖金来获得同样的效用。”</p>
+</blockquote>
+<blockquote>
+<p>两个人都愿意接受自己拿到的薪水，但他们对这份薪水的满意度不一样，因为他们的参照点是不同的。她目前的薪水更高。</p>
+</blockquote>
+<blockquote>
+<p>她在申请离婚赡养费。实际上她愿意调解，但他更愿意上法庭。这种分歧是意料之中的——她只能稳赚，所以要规避风险；而他面对的却都是糟糕的结果，所以他更愿意冒险。</p>
+</blockquote>
+<h4 id="4-2-更人性化的前景理论"><a href="#4-2-更人性化的前景理论" class="headerlink" title="4.2 更人性化的前景理论"></a>4.2 更人性化的前景理论</h4><h5 id="4-2-1-面对财富，你会选择规避风险还是冒险一搏？"><a href="#4-2-1-面对财富，你会选择规避风险还是冒险一搏？" class="headerlink" title="4.2.1 面对财富，你会选择规避风险还是冒险一搏？"></a>4.2.1 面对财富，你会选择规避风险还是冒险一搏？</h5><p>问题1：你会选择哪一个？</p>
+<p>肯定会得到900美元，还是有90%的可能性会得到1000美元？</p>
+<p>问题2：你会选择哪一个？</p>
+<p>必定会损失900美元，还是有90%的可能性会损失1000美元？</p>
+<p><strong>你只是喜欢得到，不喜欢失去——几乎可以肯定地说，你对失去的厌恶程度远大于你对得到的喜欢程度。</strong></p>
+<p><strong>对亏损的反应比对同等数量盈余的反应要强烈得多。这就是所谓的损失厌恶。</strong></p>
+<h5 id="4-2-2-损失厌恶：人们对亏损的反应比对盈余的反应大得多"><a href="#4-2-2-损失厌恶：人们对亏损的反应比对盈余的反应大得多" class="headerlink" title="4.2.2 损失厌恶：人们对亏损的反应比对盈余的反应大得多"></a>4.2.2 损失厌恶：人们对亏损的反应比对盈余的反应大得多</h5><p>问题5：现在，用抛硬币来打赌。</p>
+<p>如果是背面，你会输掉100美元。</p>
+<p>如果是正面，你会赢得150美元。</p>
+<p>这个赌局吸引人吗？你想参加吗？</p>
+<p>尽管这个赌局的预期值显然是有利的，因为你坐收的赢利铁定比你可能遭受的亏损小，但你可能还是不愿下这个赌注——大多数人都不会愿意这样做。</p>
+<p>对于大多数人来说，对失去100美元的恐惧比得到150美元的愿望更强烈。我们从众多此类观察中得出结论，即<strong>失去比得到给人的感受更强烈，因此人们往往会规避损失。</strong></p>
+<p>但当实验人员要求参与实验的受试者“像商人那样思考”时，他们对损失的规避感就不那么强烈了，他们对损失的情绪反应（通过情感激励的心理指数来测量）也大大减弱了</p>
+<h5 id="4-2-3-前景理论无法应对令人失望的事"><a href="#4-2-3-前景理论无法应对令人失望的事" class="headerlink" title="4.2.3 前景理论无法应对令人失望的事"></a>4.2.3 前景理论无法应对令人失望的事</h5><p>A.有百万分之一的概率赢得100万美元。</p>
+<p>B.有90%的概率赢得12美元，有10%的概率什么也得不到。</p>
+<p>C.有90%的概率赢得100万美元，有10%的概率什么也得不到。</p>
+<p>“什么也得不到”在三种情况下都是可能会出现的结果，前景理论在这三种情况下给这种结果分配了相同的价值。“什么也得不到”是个参照点，且其价值是零。这些说法和你的经历相符吗？当然不是。“什么也得不到”在前两种情况下是被期望但未能实现的事，没有给其分配价值也是讲得通的。相反，在第三种情况下，没能获利就会让人非常失望。这就好比私下里向你保证会给你加工资，赢得一大笔钱的可能性那么大，这就建立了一个新的暂时参照点。相对于你的期望而言，“什么也得不到”无异于一种巨大的损失。前景理论无法应对这种情况，因为在结果（在这里是指“什么也得不到”）出现的可能性很小或另外一种选择很有价值时，前景理论是不会允许这种结果的价值发生改变的</p>
+<p><strong>示例——前景理论</strong></p>
+<blockquote>
+<p>他是损失厌恶的典型例子，因而连非常有利的机会也被他拒绝了。</p>
+</blockquote>
+<blockquote>
+<p>她非常有钱，因而她对微不足道的所得反应那么强烈着实让人费解。</p>
+</blockquote>
+<blockquote>
+<p>他把损失看得比所得要重一倍。不过这也很正常。</p>
+</blockquote>
+<h4 id="4-3-禀赋效应与市场交易"><a href="#4-3-禀赋效应与市场交易" class="headerlink" title="4.3 禀赋效应与市场交易"></a>4.3 禀赋效应与市场交易</h4><p>边际效用递减，即你的休假天数越多，就越不会在意自己是否还想多休息一天，而且每多一天，这一天的意义就比前一天更小。同样，你的收入越高，就越不关心自己是否会额外再得到一美元，而且为换取一天的额外休假，你愿意放弃的钱数也会有所增加。</p>
+<h5 id="4-3-1-像商人那样思考和交易"><a href="#4-3-1-像商人那样思考和交易" class="headerlink" title="4.3.1 像商人那样思考和交易"></a>4.3.1 像商人那样思考和交易</h5><p>李斯特发现那些缺乏经验的商人中只有18%的人愿意和别人交换礼物。与之形成鲜明对比的是，那些经验丰富的商人并没有表现出任何禀赋效应的迹象：他们中有48%的人进行了交易！</p>
+<p>经验丰富的商人显然已经学会了正确提问，<strong>即“与可以得到的其他东西相比，那个杯子真的是我特别想‘得到’的吗”。经济学家会问这个问题，有了这个问题，禀赋效应就不复存在了，因为得到的快乐和放弃的痛苦之间的不对称性没有关联。</strong></p>
+<p><strong>示例——禀赋效应</strong></p>
+<blockquote>
+<p>她不在意自己能得到两个职位中的哪一个，但公告发布一天之后，她就不再想换了。这就是禀赋效应！</p>
+</blockquote>
+<blockquote>
+<p>他只是不想以低于自己买房的价格卖掉自己的房子。损失厌恶起作用了</p>
+</blockquote>
+<blockquote>
+<p>他是个吝啬鬼，只要花钱就觉得赔了</p>
+</blockquote>
+<h4 id="4-4-公平性—经济交易的参照点"><a href="#4-4-公平性—经济交易的参照点" class="headerlink" title="4.4 公平性—经济交易的参照点"></a>4.4 公平性—经济交易的参照点</h4><h5 id="4-4-1-目标就是参考点"><a href="#4-4-1-目标就是参考点" class="headerlink" title="4.4.1 目标就是参考点"></a>4.4.1 目标就是参考点</h5><p>损失厌恶系数指的是两种动机的相对强度：我们想要规避损失的动机要强于获得利益的动机。参照点所关注的是现状，但它还会是将来的目标，即没有实现的目标就是种损失，超过了目标就是种所得。</p>
+<h5 id="4-4-2-我们为什么不愿意改变现状？"><a href="#4-4-2-我们为什么不愿意改变现状？" class="headerlink" title="4.4.2 我们为什么不愿意改变现状？"></a>4.4.2 我们为什么不愿意改变现状？</h5><p>我们为什么不愿意改变现状？避免损失的动机和获得收益的动机强度并不对称，这一点在许多情况下都有体现。<br>在商务谈判中，尤其是在对现有合同的重新商谈中、在典型的劳动商议和在贸易或限制军备的国际谈判中，这种不对称是长期存在的一个特征。现有的条款确定了参照点，协议中任何方面拟定的变更都会被看成是一方对另一方作出的让步。损失厌恶会产生一种不对称，使得双方难以达成共识。你对我作出的让步是我的所得，但它们却是你的损失；损失使你产生的痛苦会比它们给我带来的快乐更多。因此，你对这种让步的价值会比我赋予它的价值高。当然，你要求我作出的让步对于我来说也会是这样，你对我作出的让步也不会给予足够的价值评价！对越来越小的蛋糕进行商讨非常困难，因为即使损失，也要将其分配出去。人们在蛋糕越来越大时，显得更随和。</p>
+<p><strong>改革通常包括保护利益相关者的不追溯条款，例如以下情形：劳动力减少是由于（退休、辞职、死亡等原因造成的）人员缩减而不是开除；工资或福利的缩减只会在将来的工人身上施行。损失厌恶是一种强大而保守的力量，它偏爱机构或个人对当前生活的细小改变。</strong></p>
+<h5 id="4-4-3-商人提价或降低员工工资的行为公平吗？"><a href="#4-4-3-商人提价或降低员工工资的行为公平吗？" class="headerlink" title="4.4.3 商人提价或降低员工工资的行为公平吗？"></a>4.4.3 商人提价或降低员工工资的行为公平吗？</h5><p>是什么造成了商人、雇主以及房主的不公平交易行为？我们研究了公众对这一问题的看法。问卷中的首要问题是：因为这种不公平行为招来的骂名是否会使他们追逐利润的行为收敛些？我们的发现是：会。而且我们还发现，公众评估哪家公司也许真的（不）会收敛时所依照的道德原则可以明鉴得失。其基本原则是，当前的工资、价格或租金设定了一个参照点，不可违背这个参照点。有些公司将自身的损失强加给顾客或工人，使自己回到交易参照点，这样做是不公平的，除非这样做是为了保护自身的权利</p>
+<p>一家五金店一直以15美元的价格出售雪铲。某日下了大雪，第二天早上店主就将雪铲的价格提高到了20美元。</p>
+<p>你认为这种行为：</p>
+<p>完全公平、可以接受、不公平、很不公平</p>
+<p>按标准的经济行为模式来看，这家五金店的行为是公平的：通过提高价格来回应需求的增加。而调查对象却不这么认为，82%的人选择了不公平或很不公平。他们显然是将大雪前的雪铲价格看成了参照点，而将提升的价格看成是店主强加给顾客的损失，因为这家店并不是不得已才这样做的，而是因为它选择这样做。我们发现公平性的一条基本原则是：<strong>不可利用市场的力量将损失强加给他人。</strong></p>
+<p><strong>示例——损失问题</strong></p>
+<blockquote>
+<p>这项改革肯定无法通过。那些必然受损的人会比那些必然获利的人更加强烈地反对这种做法。</p>
+</blockquote>
+<blockquote>
+<p>如果他们觉得利益的蛋糕的确在变大，就会发现再次商议更容易。因为他们不是在分配损失，而是在分配所得。</p>
+</blockquote>
+<blockquote>
+<p>我们的客户对价格上涨并无抱怨，因为他们知道我们的成本也上涨了。他们尊重我赢利的权利。</p>
+</blockquote>
+<h4 id="4-5-对结果可能性的权衡"><a href="#4-5-对结果可能性的权衡" class="headerlink" title="4.5 对结果可能性的权衡"></a>4.5 对结果可能性的权衡</h4><p>权衡时，你肯定会考虑到这些结果的可能性：有50%的概率赢得100万美元当然要比只有1%的概率更吸引人。权衡有时是有意识的，有时是经过深思熟虑的。然而，大多情况下，这些总体评估都是由系统1作出的。</p>
+<h5 id="4-5-1-可能性效应与确定性效应"><a href="#4-5-1-可能性效应与确定性效应" class="headerlink" title="4.5.1 可能性效应与确定性效应"></a>4.5.1 可能性效应与确定性效应</h5><p>A.从零提升到5%。</p>
+<p>B.从5%提升到10%。</p>
+<p>C.从60%提升到65%。</p>
+<p>D.从95%提升到100%。</p>
+<p>从零到5%的巨大转变表明了“可能性效应”(possibility effect)，这一效应会是我们高估那些出现可能性极低的结果的发生频率。大量买彩票的人表明，他们愿意花超出预期价值的钱来换取赢得大奖的渺茫机会。</p>
+<p>从95%提升到100%是另一种实质性改变，也会产生巨大的影响，是“确定性效应”(certainty effect)</p>
+<h5 id="4-5-2-四重模式：可能性与决策权重的关系模型"><a href="#4-5-2-四重模式：可能性与决策权重的关系模型" class="headerlink" title="4.5.2 四重模式：可能性与决策权重的关系模型"></a>4.5.2 四重模式：可能性与决策权重的关系模型</h5><p>人类的很多不幸处境都在右上角那栏中得到了体现，也就是说人们在面临的抉择比较糟糕时会孤注一掷，尽管希望渺茫，他们也宁愿选择使事情更糟的较大可能性以换取避免损失的希望，这种做法常会使可控制的失误变成灾难。</p>
+<p><strong>示例——四重模式</strong></p>
+<blockquote>
+<p>他试图用庭外和解的手段来解决这个无意义的诉讼案件，以避免损失，然而却不大可能。这是过分看重较小可能性的结果。既然会面对很多相似的问题，他最好还是不要放弃。</p>
+</blockquote>
+<blockquote>
+<p>他们知道瓦斯爆炸的可能性很小，但他们想要消除这种可能性。这是可能性效应，而且他们想要的是再无后患。</p>
+</blockquote>
+<h4 id="4-6-被过分关注的罕见事件"><a href="#4-6-被过分关注的罕见事件" class="headerlink" title="4.6 被过分关注的罕见事件"></a>4.6 被过分关注的罕见事件</h4><p>极其生动的死亡或爆炸画面的影响因媒体的关注以及人们的频繁交谈而不断加强，在身处具体的情境时，尤其如此，例如看见了一辆巴士时。此类情绪一触即发、身不由己且无法控制，会使人们本能地想要保护自己。<strong>系统2可能“知道”发生危险的概率很小，但即使知道也无法消除人们内心的不安和躲避危险的冲动。我们无法停止系统1的运行。</strong></p>
+<p><strong>“罕见事件不是被忽视就是被过度重视。”</strong>不过，这个说法并没有详细说明在什么情况下事件会被忽视，什么情况下会被过度重视，也没有从心理学上对此作出解释。</p>
+<h5 id="4-6-1-你认为一支三流球队获得NBA总冠军的可能性有多大？"><a href="#4-6-1-你认为一支三流球队获得NBA总冠军的可能性有多大？" class="headerlink" title="4.6.1 你认为一支三流球队获得NBA总冠军的可能性有多大？"></a>4.6.1 你认为一支三流球队获得NBA总冠军的可能性有多大？</h5><p>人们是怎样作出判断，怎样确定决策权重的呢？让我们先来看两个简化的回答，然后再对答案进行证实。以下就是这两个十分简单的答案：</p>
+<ul>
+<li><p>人们高估了罕见事件的概率。</p>
+</li>
+<li><p>人们在做决策时过高权衡了罕见事件。</p>
+</li>
+</ul>
+<p>尽管过高估计和过高权衡是两个不同的现象，却有着同样的心理机制，即集中注意力、证实性偏差以及认知放松。</p>
+<p>这些发现对规划谬误以及其他乐观主义的表现形式作出了新的阐述。<strong>当某个人努力预测某个方案的结果时，就可以切实且轻松地成功执行某项方案。相反，失败的可能性则会被忽略，因为事情出问题的情况错综复杂。对自己职业前景进行评估的那些企业家与投资者很容易高估自己的机会，也喜欢过高权衡自己的估值。</strong></p>
+<h5 id="4-6-2-画面感越强，决策权重越大"><a href="#4-6-2-画面感越强，决策权重越大" class="headerlink" title="4.6.2 画面感越强，决策权重越大"></a>4.6.2 画面感越强，决策权重越大</h5><p><strong>普林斯顿的这个团队说，他们已经观察到人们对与情感相关的结果的出现概率的敏感度很低，这种情况很正常。赌钱属于例外情况。赌钱时，人们对概率的敏感度相对较高，因为他们有确切的预期值。</strong></p>
+<p>新的假设为，在第二个案例中，对概率的敏感度会更低，因为与“一笔钱”这个抽象的概念相比，蓝色信封能唤起更为丰富的想象。你在脑中构建这个事件时，即使知道赢的概率很小，但奖品的生动画面仍然会浮现出来。认知放松同样也对确定性效应产生了影响：当你脑海中闪现关于某个事件生动的画面时，这个事件不发生的可能性所带来的影响同样也很生动，因此就会被过度权衡。增强的可能性效应与增强的确定性效应相结合以后，决策权重很难在21%的概率和84%的概率之间发生改变。</p>
+<h5 id="4-6-3-对风险的表述方式不同，所做决策可能截然相反"><a href="#4-6-3-对风险的表述方式不同，所做决策可能截然相反" class="headerlink" title="4.6.3 对风险的表述方式不同，所做决策可能截然相反"></a>4.6.3 对风险的表述方式不同，所做决策可能截然相反</h5><p>A罐中有10个球，其中有1个是红色的。</p>
+<p>B罐中有100个球，其中有8个是红色的。</p>
+<p>你会选哪个罐子呢？因为选A罐的胜算是10%，选B罐是8%，所以作出正确选择应该不难，但实际并非如此：大约有30%～40%的学生选择了红球数量较多的那个罐子，而不是胜算率高的那一个。</p>
+<p><strong>正如你可能想到的那样，人们在这种情况下作出的愚蠢选择已经引起众多研究者的关注。他们对这种偏见也有不同的命名，而我使用的是保罗·斯洛维克的命名“分母忽视”。如果你将注意力集中在能使你胜利的球上，就不会去关注那些不能使你赢的球。生动的画面也是产生分母忽视的原因，至少我有过这样的经历。当我想到小罐子时，我看到的是一个小红球在一片白色的背景中；当我想到大罐子时，我看到的是8个红球在一堆白球当中，这样的画面增强了我对胜利的信心。</strong></p>
+<p><strong>分母忽视这个观点有助于解释为什么不同的风险表达方式所造成的效果会有这么大的不同。</strong></p>
+<h5 id="4-6-4-罕见事件又为何会被人忽视？"><a href="#4-6-4-罕见事件又为何会被人忽视？" class="headerlink" title="4.6.4 罕见事件又为何会被人忽视？"></a>4.6.4 罕见事件又为何会被人忽视？</h5><p>现在仍然没有能够阐释凭经验选择的方法，但无论在实验中还是在现实世界里，大家都普遍认同一点，即对罕见事件的决策权重较低有一个绝对主要的原因：<strong>许多受试者从未经历过罕见事件！大多数加州的市民从未体验过大地震，2007年时也没有银行家切身经历过大规模的金融危机。</strong></p>
+<p><strong>示例——罕见事件</strong></p>
+<blockquote>
+<p>即使在日本，海啸也很少发生，但是海啸在我们头脑中的画面非常生动形象，游客也因此会高估海啸发生的可能性。</p>
+</blockquote>
+<blockquote>
+<p>他们想让人们意识到风险是存在的。这也就是他们会使用‘每1000人中有1人死亡’这个说法的原因，这种做法利用了分母忽视效应。</p>
+</blockquote>
+<h4 id="4-7-能带来长远收益的风险政策"><a href="#4-7-能带来长远收益的风险政策" class="headerlink" title="4.7 能带来长远收益的风险政策"></a>4.7 能带来长远收益的风险政策</h4><p>人们在收益状态下更倾向于规避损失，在亏损状态下更倾向于承担风险。（明确收益下延误损失， 明确损失下倾向赌徒）</p>
+<h5 id="4-7-1-宽框架还是窄框架？"><a href="#4-7-1-宽框架还是窄框架？" class="headerlink" title="4.7.1 宽框架还是窄框架？"></a>4.7.1 宽框架还是窄框架？</h5><p>处于收益状态时规避损失、处于亏损状态时承担风险是需要付出代价的。这些态度会使你不愿冒险，而愿付出额外的费用去得到肯定可获得的赢利，还会使你愿意付出额外费用（包含在预期价值中）以避免肯定的亏损。两种情况下付出的这些钱来源都一样，在同时面临这两种问题时，你的矛盾态度就不会很乐观。</p>
+<ol>
+<li><p>窄框架：分别思考两个简单的决策问题。</p>
+</li>
+<li><p>宽框架：一个有4个选项的综合决策问题。</p>
+</li>
+</ol>
+<p>我们有限的大脑很难达到逻辑一致性的理想状态，因为我们易受眼见即为事实原则的影响，不愿动脑筋。另外，即使有人告诉我们应该综合考虑问题，我们自己还是倾向于在问题刚出现的时候立刻做出决策。我们既没有意愿也没有精力去增强偏好的一致性，我们的偏好也不会自动变得一致，它们处于理性代理模式。</p>
+<h5 id="4-7-2-聪明的投资者不会每天都看股票行情表"><a href="#4-7-2-聪明的投资者不会每天都看股票行情表" class="headerlink" title="4.7.2 聪明的投资者不会每天都看股票行情表"></a>4.7.2 聪明的投资者不会每天都看股票行情表</h5><p>保罗·萨缪尔森是20世纪著名的经济学家。他曾问过他的某个朋友是否愿意玩一个抛硬币的游戏，玩这个游戏可能会损失100美元，也可能会获得200美元。他的朋友答道：“我不会接受，因为我觉得获得200美元的满足感无法抵消我损失100美元的痛苦。但如果你保证将硬币抛100次的话，我就和你玩这个游戏。</p>
+<p>在窄框架的情况下，他们被告知在做决策时应该“将每一个决策都当做你唯一需要做的决策”，并且要体会这些决策带给自己的情绪反应。在宽框架的情况下做决策的建议，包括“将自己想象为商人”，“你总是做这样的事”，以及“将它看做众多财政决策中的一个，这样一个决策会在将来一起被并入‘证券投资组合’中。</p>
+<p>宽框架缓解了人们对损失的情绪反应，增强了他们承担风险的意愿。</p>
+<p>损失厌恶和窄框架的结合是一个代价更大的祸端。个人投资者可以通过降低查看自己投资结果的频率来避免这一祸端，并在获得宽框架带来的情感收益的同时节约时间、减轻痛苦。时刻关注每日的经济波动是种亏本的对策。 因为频繁的低额损失带来的痛苦比同样频率的低额收益带来的快乐程度更为强烈。一个季度查看一次就足够了，对于个人投资者来说，这样的频率还要高一些。刻意避免查看短期结果，除了可使投资者的心情更为愉快以外，还可以提升决策和结果的品质。</p>
+<h5 id="4-7-3-风险政策可以抵消风险厌恶的偏见"><a href="#4-7-3-风险政策可以抵消风险厌恶的偏见" class="headerlink" title="4.7.3 风险政策可以抵消风险厌恶的偏见"></a>4.7.3 风险政策可以抵消风险厌恶的偏见</h5><p>外部意见和风险政策是补救两种不同偏见的方法，而这两种偏见会影响许多决策的制定：<strong>规划谬误中的过度乐观以及损失厌恶中的过度谨慎。这两种偏见相互对立。过度乐观使个人和组织免于损失厌恶的不好影响；损失厌恶使人们不会产生过度自信的乐观主义。这样的结果对于决策制定者来说是有益的。乐观主义者认为他们做决策时比在实际情况下更为谨慎，而损失厌恶者则会正确地拒绝危险的提议（在没有外部意见的情况下，他们是可能接受这些提议的）。当然，我们不能保证这些偏见会在所有情况下都相互抵消。能够同时消除过度乐观以及过度规避风险的机构应该采取这种做法，将外部意见与风险政策结合来考虑应该可以实现其目的。</strong></p>
+<p><strong>示例—风险政策</strong></p>
+<blockquote>
+<p>告诉她应该像商人那样思考！有赚，当然也有赔。</p>
+</blockquote>
+<blockquote>
+<p>我们公司每个部门经理在其所在领域都采取损失厌恶的做法。这很正常，但造成的后果是，这个机构不敢冒险。</p>
+</blockquote>
+<blockquote>
+<p>我决定每个季度查看一次我的证券投资组合。我总是选择规避损失，因此在面对每天价格波动的情况下总是不能做出理性的决策。</p>
+</blockquote>
+<h4 id="4-8-心理账户是如何影响我们的选择？"><a href="#4-8-心理账户是如何影响我们的选择？" class="headerlink" title="4.8 心理账户是如何影响我们的选择？"></a>4.8 心理账户是如何影响我们的选择？</h4><p>亿万富翁再赚几亿美元不是出于经济原因，实验经济学项目的参与者获取额外的赞助也不是出于经济原因，<strong>钱是衡量一个人自身利益与自我成就感的标尺。</strong></p>
+<h5 id="4-8-1-你会卖掉赢利的股票还是亏损的股票？"><a href="#4-8-1-你会卖掉赢利的股票还是亏损的股票？" class="headerlink" title="4.8.1 你会卖掉赢利的股票还是亏损的股票？"></a>4.8.1 你会卖掉赢利的股票还是亏损的股票？</h5><p>两个狂热的球迷计划到离他们约64公里远的地方看篮球赛。其中一个人买了门票；另一个人在买票的途中遇见了一个朋友，免费得到了票。现在，有预报称比赛当晚会有暴风雪。这两位持票的球迷谁会更愿意冒着暴风雪去看比赛？</p>
+<p>答案很明显，我们知道买了票的那个球迷更有可能会去。心理账户也为此提供了解释。 但是我们应该这样想：“如果我的票是从朋友那儿得来的，我还会冒着暴风雪驾车吗？”但只有积极的、受过相关训练的大脑才会想到提出这样的难题。</p>
+<p>你需要钱来操办女儿的婚礼，所以想卖掉一些股票。你记得自己每一只股票的买进价，也能分辨出某只股票是“赢利股”（即当前价值高于你的买进价的股票），或是亏损股。在你所有的股票中，蓝莓牌瓷砖是一只赢利股；如果你在今天将其售出，就会得到5000美元的收益。你持有蒂芙尼电机相同的股份，现值是5000美元，但低于你的买进价格。你更有可能出售哪一只股票？</p>
+<p><strong>可以预料，金融研究中已经记录了大量人们售出自己的赢利股、保留亏损股的偏好——这被视为一种偏见，关于此还有一个晦涩难懂的名字：处置效应。</strong></p>
+<p><strong>理性的代理人会对证券投资组合有一个整体的看法，会售出最无可能在未来赢利的股票，而不是去考虑它是赢利股还是亏损股。</strong></p>
+<p>董事会非常清楚这样的冲突，所以当某位执行总裁因受困于先前的决策影响而不愿避免再造成损失的话，董事会就会将其替换掉。董事会成员不见得认为新的执行总裁比原先的更有能力，但他们知道新的总裁不会有与原总裁一样的心理账户，在评估当前机会的选择时，他也就更容易忽视过去投资的沉没成本。</p>
+<h5 id="4-8-2-哪种选择会让你更后悔？"><a href="#4-8-2-哪种选择会让你更后悔？" class="headerlink" title="4.8.2 哪种选择会让你更后悔？"></a>4.8.2 哪种选择会让你更后悔？</h5><p>为了理解后悔与常态的关系，请思考下列情境：</p>
+<p>布朗先生几乎从不让旅行者搭便车。昨天他让一个男人搭了便车，然后他被抢了。</p>
+<p>史密斯先生经常让旅行者搭便车。昨天他让一个男人搭了便车，然后他被抢了。</p>
+<p>这两个人谁更可能感到后悔？</p>
+<p>答案不出我们所料：有88%的受试者认为布朗先生会更后悔，12%的受试者认为是史密斯先生。</p>
+<p><strong>带有批判性的观察者会将这两个人的行为与合理行为的传统常态相比较，更可能会批评史密斯先生，因为他总是习惯性地承担这种不可预知的风险。我们会忍不住说，史密斯先生是自食其果，布朗先生是走了霉运。但布朗先生更应被指责，因为他在这件事上的做法与他平时的性格不符。</strong></p>
+<h5 id="4-8-3-因为害怕将来后悔而作出不理性的选择"><a href="#4-8-3-因为害怕将来后悔而作出不理性的选择" class="headerlink" title="4.8.3 因为害怕将来后悔而作出不理性的选择"></a>4.8.3 因为害怕将来后悔而作出不理性的选择</h5><p>为什么家长不愿为了钱而让孩子承担风险，哪怕只是增加一点风险。值得注意的是，这种态度对于我们想保护的人的安全来说，是不合逻辑且有潜在危害的。即使是最慈爱的父母，他们用来保护自己孩子的时间和金钱也是有限的（保护孩子安全的心理账户预算有限），因此，使这些资源的作用发挥到极致似乎很合理。通过买稍差的杀虫剂可以节约一小笔钱，但会增加孩子中毒的风险。然而，节约的这笔钱却可以更好地用在消除其他威胁孩子健康的事情上，例如买一个更为安全的儿童汽车座椅或是插座罩。禁忌权衡反对任何增加风险的可能，但这并不是利用健康预算的有效方法。<strong>事实上，相较于想要保障孩子安全的愿望，这种抗拒可能更多的是出于害怕自己会后悔。任何在考虑后接受了这种交易的家长都会假设，想到杀虫剂带来危害时他们后悔和羞愧的画面。</strong></p>
+<p>你还可以采取一些预防措施，以防止将来后悔。也许最有效的方法就是做到对可能会后悔的事心中有数。如果你能够在情况变糟糕时，先仔细考虑自己是否会后悔再作决定，那么你将来的遗憾也就可能会更少一些。<strong>你应该也知道，后悔总是伴随着后见之明的偏见而来，所以，任何你能做的、防止后见之明的措施都有可能是有益的。我个人躲避后见之明的方法是：在做有长远影响的决策之时，不要太过周密，但也不要完全凭偶然行事。如果你考虑到了一点点，你可能在事后说，“我本可以作出更好的选择”，这种后见之明就更会令你很不甘心。</strong></p>
+<p><strong>示例 — 心理账户</strong></p>
+<blockquote>
+<p>他对现金支付和信用卡支付有不同的心理账户。我不断地提醒他，钱就是钱，并没有多大区别。</p>
+</blockquote>
+<blockquote>
+<p>他一直保留着那只股票，只是因为不想在关闭心理账户时处于损失状态。这就是处置效应。</p>
+</blockquote>
+<h4 id="4-9-评估结果的逆转"><a href="#4-9-评估结果的逆转" class="headerlink" title="4.9 评估结果的逆转"></a>4.9 评估结果的逆转</h4><p><strong>示例–逆转</strong></p>
+<blockquote>
+<p>当你将框架放大时，你就会做出更明智的决策，事实往往如此。</p>
+</blockquote>
+<blockquote>
+<p>当你单独看某件事时，你很容易受系统1的情感反应的支配。</p>
+</blockquote>
+<h4 id="4-10-善用框架效应，让生活更美好"><a href="#4-10-善用框架效应，让生活更美好" class="headerlink" title="4.10 善用框架效应，让生活更美好"></a>4.10 善用框架效应，让生活更美好</h4><p>2006年世界杯总决赛是意大利队和法国队之间的较量。“意大利队赢了”，“法国队输了”，两个句子描述了这场比赛的结果，这两句含义相同吗？回答要看怎么理解“含义”这个词了。</p>
+<p>从逻辑推理的角度来看，这两个描述比赛结果的句子是可以互换的，因为它们所指的状况相同。</p>
+<p>含义还有另一层观念，在这层观念中“意大利队赢了”和“法国队输了”的意思并不相同。在这层观念中，对某个句子含义的理解发生在你的联想机制中。这两个句子引发了不同的联想。“意大利队赢了”让人们想起了意大利队，以及该队为了赢得比赛所作的努力。“法国队输了”会让人们想起法国队，还有法国队为什么会失败，包括法国队的球星齐达内用头撞了意大利队队员。这两句话引起大脑的联想，即系统1如何对此反应，这确实有不同的“含义”。逻辑上相同的陈述引发了不同的反应，这一事实使得人们无法像经济人那样可靠且有理性。</p>
+<h5 id="4-10-1-情感的框架效应很难抵挡"><a href="#4-10-1-情感的框架效应很难抵挡" class="headerlink" title="4.10.1 情感的框架效应很难抵挡"></a>4.10.1 情感的框架效应很难抵挡</h5><p>若某赌注有10%的概率赢得95美元，有90%的概率损失5美元，你会接受这个赌注吗？</p>
+<p>若某彩票有10%的概率赢得100美元，有90%的概率什么也得不到，你愿意花5美元买这张彩票吗？</p>
+<p>首次，要花点时间弄明白这两个问题是相同的。在这两个问题中，你都要决定是否愿意接受某一不确定的可能，即拿到95美元或损失5美元。有人作选择会基于理性，他们会给出两个相同的答案，但这样的人是少数。事实上，其中有一个问题引起了很多正面的答复，这个问题是第二个。一个不好的结果如果被架构为不会赢的彩票的成本，比被简单地描述成输掉一个赌注更易被接受。<strong>我们对以下这个说法不应该感到惊讶：损失能比成本引起更强烈的负面感觉。选择不是基于现实的，因为系统1就不是基于现实的。</strong></p>
+<p><strong>在获得时，偏向确定的事； 在损失时，偏向赌一把。</strong></p>
+<p>对手术短期结果的两种描述是：</p>
+<p>第一个月的存活率是90%。</p>
+<p>在第一个月里，有10%的死亡率。</p>
+<p>你已经知道了结果：在第一个框架下（84%的医生选择了它），手术治疗要比在第二个框架下（50%的受试者选择放射治疗）更受欢迎。</p>
+<p>重新构架是要付出努力的，而且系统2通常很懒惰。除非有明显的理由需要这样做外，否则，大多数人都会被动地接受在框架下的决策问题，因此很少有机会发现我们的偏好受框架约束而不是现实约束的程度。</p>
+<h5 id="4-10-2-用框架性政策助推人们作出更好的选择"><a href="#4-10-2-用框架性政策助推人们作出更好的选择" class="headerlink" title="4.10.2 用框架性政策助推人们作出更好的选择"></a>4.10.2 用框架性政策助推人们作出更好的选择</h5><p>假设美国正为一场来自亚洲的异常疾病作准备，这场疾病估计会夺取600人的性命。为战胜这一疾病，我们提出了两种方案。假设对方案结果准确的科学估测如下：</p>
+<p>如果采用了方案A,200人会获救。</p>
+<p>如果采用了方案B，有1/3的可能会救600人，有2/3的可能一个人也救不了。</p>
+<p>很多受试者都会选择方案A：他们更愿意选择确定的选项，而不想赌一把。</p>
+<p>方案的结果在第二种说法中有了不同的框架，如：</p>
+<p>如果采用了方案A’,400人会死。</p>
+<p>如果采用了方案B’，有1/3的可能没人会死，而有2/3的可能有600人都会死。</p>
+<p>请仔细看并对比两种说法：方案A和A’的结果是相同的，方案B和B’的结果也是相同的。然而在第二个框架下，很多人都选择赌一把。</p>
+<p>两种框架下不同的选择都符合前景理论。在前景理论中，根据结果的好坏，我们对打赌还是确定的事的选择也会不同。</p>
+<p><strong>1、当结果是正面的时候，决策制定者更愿意选择确定的事（他们是风险规避者）；</strong></p>
+<p><strong>2、当结果都是负面的时候，他们更愿意拒绝确定的事，愿意赌一把（他们会冒险）。</strong></p>
+<p><strong>示例–框架和现实</strong></p>
+<blockquote>
+<p>如果他们能对自己会得到多少钱而不是会损失多少钱有个框架的话，就会对将要发生的事有心理准备。</p>
+</blockquote>
+<blockquote>
+<p>通过改变参照点来重新架构问题吧，假想我们没有拥有过某个东西，我们会认为它值多少钱呢？</p>
+</blockquote>
+<blockquote>
+<p>对于损失，要在大脑中将其引入‘一般收入’，这样你就会感觉好一点！</p>
+</blockquote>
+<h3 id="5、两个自我"><a href="#5、两个自我" class="headerlink" title="5、两个自我"></a>5、两个自我</h3><blockquote>
+<p><strong>1、效用只对于消费者来说的，消费者经济行为所导致对自己的效果好坏大小。</strong></p>
+</blockquote>
+<blockquote>
+<p><strong>2、效应是对于当一个经济变量变化所引起另一个经济变量变化的大小的值，如收入效应，替代效应，挤出效应，货币效应，利率效应等等。</strong></p>
+</blockquote>
+<h4 id="5-1-体验效用与决策效应不一致"><a href="#5-1-体验效用与决策效应不一致" class="headerlink" title="5.1 体验效用与决策效应不一致"></a>5.1 体验效用与决策效应不一致</h4><p>例如，期望效用理论就是控制决策效用的合理性原则，它与快乐体验没有关系。当然，若人们想要的正巧是自己喜欢的，喜欢的也是自己所选择的时候，“效用”的这两种含义就一致了</p>
+<h5 id="5-1-1-如何测量体验效用？"><a href="#5-1-1-如何测量体验效用？" class="headerlink" title="5.1.1 如何测量体验效用？"></a>5.1.1 如何测量体验效用？</h5><ol>
+<li><p>如果目的是为了减少患者的痛苦记忆，那降低最为疼痛时的疼痛感就比将疼痛的过程减到最短更为重要。同样的道理，如果患者在过程结束时感到的疼痛相对较轻，他对此过程的记忆就会更好，那么逐渐减轻疼痛比急剧减轻更可取。</p>
+</li>
+<li><p>如果想减少实际体验到的痛苦，迅速完成这个过程或许更合适，即使这样做会让患者更疼痛并给患者留下可怕的记忆。</p>
+</li>
+</ol>
+<p>你认为这两个目标哪一个更好？我没有作调查，但我认为会有很多人选择痛苦记忆较少的那个。我觉得将这种困境看做是两个自我之间的利益冲突会更容易理解一点（这与我们所熟悉的两个系统不符合）。经验自我是回答“现在疼吗”这种问题的，而记忆自我则是回答“总体如何”这种问题的。我们只有通过记忆才能保存生活体验，因此，在我们思考生命时，唯一能采取的观点来自于记忆自我。</p>
+<p>我曾作过一个关于将记忆和体验区分开的困难的演讲。结束后，我听到了一名观众的评论。他说聚精会神地听唱片中的交响乐时，由于光盘有刮痕，快结束时产生了令人厌恶的声音，糟糕的结尾往往“毁了全部的体验”。但实际上毁的并非是体验，只是对它的记忆而已。经验自我几乎有了完美的经验，糟糕的结尾并不能将其抹去，因为这种体验已经发生了。这位听众将整个体验定义为失败，就因为它的结尾很糟糕，但他却忽略了40分钟的音乐带给他的快乐。实际体验真的毫无价值吗？</p>
+<h5 id="5-1-2-记忆自我夸大了痛苦体验"><a href="#5-1-2-记忆自我夸大了痛苦体验" class="headerlink" title="5.1.2 记忆自我夸大了痛苦体验"></a>5.1.2 记忆自我夸大了痛苦体验</h5><p>在本实验中，我们观察到的偏向是我们在之前讲到的“少即是多”的另一个例子。其他“少即是多”的例子包括奚恺元的实验，即给低于总价值的24个盘子附加上几个盘子，因为附加的盘子中有的是坏的。还有一个例子是琳达问题，即激进的妇女会被认为更像是主张女权主义的银行出纳，而不是普通的银行出纳。其中的相似性并非偶然。系统1同样的操作特点说明了三种情况：系统1是用平均水平、规范和原型来表示集合，而不是用各条件的集合。冰手实验就是多个时刻的集合，而记忆自我会将每个时刻作为典型时刻记下来。这又会导致冲突。对于通过经验自我来评估各个时刻的客观观察者来说，最重要的是“曲线下的区域”，因为它表示的正是这段时间内受试者承受的所有痛苦，这本质上属于总结。相比之下，记忆自我保存的记忆是对代表性的时刻的感受，受到高峰和结束时刻的强烈影响。</p>
+<p>其他的经典研究表明，对老鼠大脑内的特殊区域（老鼠的大脑和人类的大脑相似）进行电刺激会产生强烈的快乐感，这种快乐感很强烈，以至于在某些情况下，老鼠（实验者可通过操纵杠杆刺激其大脑）会很兴奋，连停下来进食都不可能，最终被饿死。实验者可用不同电流强度和持续的电刺激能使大脑产生快乐的区域。需要再次强调的是，只有电流强度会起作用。在一定程度上，增加电刺激的持续时间并不会使动物更能感受到这种快感。支配人类记忆自我的规则有一个漫长的发展史</p>
+<h5 id="5-1-3-记忆没那么可靠"><a href="#5-1-3-记忆没那么可靠" class="headerlink" title="5.1.3 记忆没那么可靠"></a>5.1.3 记忆没那么可靠</h5><p>几年前就一直困扰我的注射难题中最有用的一个想法就是：多次使人同样痛苦的注射，其体验效用可用计算注射次数的方法进行测量。如果所有的注射都同样令人厌恶，那么其中20次注射的痛苦程度会是10次注射的2倍，并且从20次注射减少至18次与从6次减少到4次给人们带来的减少痛苦感受的程度是相同的。如果决策效用与体验效用不相符，那么肯定是决策出错了。冰手实验也体现了这样的逻辑：持续90秒浸在冷水里比其前60秒在冷水里更痛苦。如果人们愿意选择忍受较长时间的浸泡，则说明他们的决定是错的。在我之前遇到的难题中，决策和体验之间的差异源于越来越小的敏感度：18次和20次之间的差异并不是很明显，似乎还没有6次和4次注射之间的差异明显。在冰手实验中，这种错误则反映出了记忆的两个原则：过程忽视和峰终定律。这些机制虽然不同，但结果却是一样的：决策与体验不协调。</p>
+<p><strong>示例 - 体验效用</strong></p>
+<blockquote>
+<p>你完全是从记忆自我的角度思考你失败的婚姻的。离婚就像是以刺耳的音符结束的交响乐。事实上，它虽然结束时很糟糕，但这并不意味着整首交响乐都那么糟。</p>
+</blockquote>
+<blockquote>
+<p>这是关于过程忽视的一个负面例子。尽管好的体验的时间要比不好的体验时间多10倍，但你还是将好的体验和不好的等同并加以权衡了。</p>
+</blockquote>
+<h4 id="5-2-人生如戏"><a href="#5-2-人生如戏" class="headerlink" title="5.2 人生如戏"></a>5.2 人生如戏</h4><h5 id="5-2-1-比起整个人生，我们更在意人生的结局"><a href="#5-2-1-比起整个人生，我们更在意人生的结局" class="headerlink" title="5.2.1 比起整个人生，我们更在意人生的结局"></a>5.2.1 比起整个人生，我们更在意人生的结局</h5><p>我们并非只在歌剧院才会感受到人生如同故事，并希望它会有个好结局。当我们听说一位和女儿疏远多年的妇人逝世时，也想知道她在死前是否已经与女儿冰释前嫌。我们所关心的不只是女儿的心情，而是希望这位母亲的故事更为圆满。关怀某个人通常体现在关心这个人故事的完整性，而不是他的感觉。一些事情还会改变已经去世的人的故事，这些事情也可能使我们深深动容。例如：一个男人到死都深信自己的妻子很爱他。所以，当我们听说他的妻子多年前就有了情夫，与这个男人在一起只是为了他的钱时，就会为这个男人感到悲哀。尽管，这个丈夫一生都很快乐，我们还是会同情他。若某位科学家的某项重要发现在她死后被证实是错误的，我们也会为她感到耻辱，尽管她自己并没有体验过这种耻辱。当然，更重要的是，我们都极度关注自己的人生故事，并希望故事的主角正派，结局完美。</p>
+<p>心理学家埃德·迪耶内(Ed Diener)及他的学生们对过程忽视和峰终定律是否会主宰我们对整个人生中所作的评估感到好奇。迪耶内简要地描述了简的一生（简是虚构出来的人物）：简从未结婚生子，一场车祸让她丧命，但死的时候并不痛苦。对于简的故事有这么一个版本：她一生都非常幸福（这种幸福可能持续了30年或60年），她将工作视为享受，喜爱度假，花了很多时间与朋友聚会，培养自己的爱好。在故事的第二个版本中，简的寿命被延长了5年，她于35岁或65岁逝世。迪耶内描述说简生命的最后5年很快乐，但不及从前那样快乐。每位受试者在读过其中一份为简设计好的“传记”以后，都需要回答两个问题，“纵观简的一生，你认为她的人生有多圆满”以及“你认为简的一生经历了多大的幸福或不幸”。</p>
+<p><strong>研究的结果进一步证实了过程忽视和峰终定律。</strong>在组间实验中（不同受试者看到的实验情景不同），将简的寿命延长一倍不会使受试者对她人生的圆满度或是整体的幸福度改变观点。显然，她的一生是由一个典型的时间段代表，与总体的时间无关。因此，她的“总体幸福”是生命中一段典型时期体验到的幸福，而不是整个生命过程中体验到的幸福。</p>
+<p>由这个观点可以得知，迪耶内和他的学生们也发现了“少即是多”的效应。这个效应清楚地表明，平均（典型）可替代总体。若给原本一直都非常幸福的生命增加5年“还算幸福”的日子，会导致人们对这个生命总体幸福度的评估大幅降低。</p>
+<p><strong>在评估整个生命以及一些有趣的事时，高潮与结尾很重要，过程通常会被忽略。</strong></p>
+<h5 id="5-2-1-关于上一次旅行，你还能记起多少？"><a href="#5-2-1-关于上一次旅行，你还能记起多少？" class="headerlink" title="5.2.1 关于上一次旅行，你还能记起多少？"></a>5.2.1 关于上一次旅行，你还能记起多少？</h5><p>请思考度假时的选择。你是希望在去年去过且很熟悉的海滩度过愉快的周末，还是想充实新的记忆？为了满足这些不同的选择，两种截然不同的行业随之出现：度假村提供了恢复元气的休闲方式；旅游业则帮助人们构建故事、收集记忆。许多旅行者会近乎疯狂地拍照，这说明储存记忆是人们旅游的重要目的，这个目的会影响我们旅游的计划和体验。照相的人并不认为当时的景色只能供自己欣赏片刻，他们将景色当做未来的记忆来收藏。照片对于记忆自我来说很有用，尽管我们很少会长时间或多次观看这些照片，有的照片我们甚至没再看过，但是拍照并不一定就是旅行者的经验自我欣赏风景的最佳方式。</p>
+<p>很多时候我们都通过自己想要储存的故事或记忆来评估旅行。“难忘”这个词常都用来描述旅行中的亮点，明确地阐述旅行的目的。在其他情况下，我们会想到“喜爱”这个词，这是对此刻永生难忘的宣言，尽管这并不总是准确，会随着时间的变化而变化。有自我意识的记忆体验会得到重视、被赋予意义，这是其他体验无法实现的</p>
+<p>埃德·迪耶内及他的团队提供的证据表明，是记忆自我选择了旅行方式。他们要求一些学生记日记，记录下春假期间他们对自己经历的评估。学生在假期结束之时，还需提供自己对整个假期的整体评估。最后，他们还需说明自己是否愿意再次这样度假。统计分析说明，他们是否想要重复假期的意愿完全取决于最后的评估，即使是最后的评分也不能代表他们在日记中描述的经历，他们依然会这样选择。就像冰手实验一样，无论对错，当人们在作是否重复某个经历的决定时，他们都会由记忆作出选择。</p>
+<h4 id="5-3-你有多幸福？"><a href="#5-3-你有多幸福？" class="headerlink" title="5.3 你有多幸福？"></a>5.3 你有多幸福？</h4><p>有许多事是我们愿意继续、不想停止的，包括心理和生理上的愉悦。<strong>我想到的海伦想要继续做下去的事情是全身心投入到某项工作中去，这种全身心投入的状态被米哈里称为心流。心流是艺术家在创作时、人们在被电影和书籍或是填字游戏深深吸引住时的一种状态。</strong>人们处于这些情境时，往往不愿被打扰。我也有过类似的记忆：我小时候，当我母亲从我手中把玩具拿走，要带我去公园时，我总会哭。在公园里，当她将我从秋千上抱走，带我去玩滑梯时，我也会哭。抗拒中断当前事情表明：无论是玩玩具还是荡秋千，我当时都正玩得愉快。</p>
+<h5 id="5-3-1-测量经验自我的幸福感"><a href="#5-3-1-测量经验自我的幸福感" class="headerlink" title="5.3.1 测量经验自我的幸福感"></a>5.3.1 测量经验自我的幸福感</h5><p>现在，我们可以通过手机来采集经验样本。<strong>具体方法是：将某个人的手机设置为在每天任意的时间响或振动，随后，手机会在打断这个受试者后，显示一些关于她正在做什么以及和谁在一起的问题。手机还会显示评定量表，以供受试者报告她各种感受的强度，这些感受有：快乐、紧张、愤怒、担心、投入程度、身体上的疼痛等。</strong></p>
+<h5 id="5-4-1-幸福的方法"><a href="#5-4-1-幸福的方法" class="headerlink" title="5.4.1 幸福的方法"></a>5.4.1 幸福的方法</h5><p>巨大的样本使得我们可以进行全面的分析，证实了情境因素、生理健康以及社会接触等对于经验自我幸福感的重要性。当然，头痛也会使人痛苦，而某人某天感受的第二个最佳参照点就是这个人是否与朋友和亲人接触。说快乐就是将时间用在你爱的人和爱你的人身上的确有一点儿夸张。</p>
+<p>钱可以买到快乐吗？这是人们最常问的关于幸福的问题。对45万名受试者回应的盖洛普海斯威斯幸福指数分析以及对1000名美国人的每日调查，为我们提供了惊人而又明确的答案。结论是贫穷使人悲惨，富有可能会提升某个人的生活满意度，但总体来说来却不能提高经验自我的幸福感。</p>
+<p><strong>更高的收入会削弱人们享受生活中小乐趣的能力。</strong></p>
+<p><strong>示例–幸福感</strong></p>
+<blockquote>
+<p>增加幸福感的最简单方法是分配好你的时间。你能抽出更多时间做自己喜欢做的事情吗</p>
+</blockquote>
+<blockquote>
+<p>如果你的收入超过了满意水平，你能够拥有更多使人愉快的经历，但你将会丧失一些享受小乐趣的能力</p>
+</blockquote>
+<h4 id="5-4-思考生活"><a href="#5-4-思考生活" class="headerlink" title="5.4 思考生活"></a>5.4 思考生活</h4><h5 id="5-4-1-生活满意度：一个很难回答的问题"><a href="#5-4-1-生活满意度：一个很难回答的问题" class="headerlink" title="5.4.1 生活满意度：一个很难回答的问题"></a>5.4.1 生活满意度：一个很难回答的问题</h5><h5 id="5-4-2-被放大了的幸福错觉"><a href="#5-4-2-被放大了的幸福错觉" class="headerlink" title="5.4.2 被放大了的幸福错觉"></a>5.4.2 被放大了的幸福错觉</h5><p>分析了数据以后，我显然赢得了那场家庭辩论。正如预期的那样，两个地区的学生对天气的态度是不同的：加州人很享受当地的气候，而中西部人却厌恶当地的气候。然而，气候并不是决定幸福感的重要因素，甚至加州学生与中西部学生的生活满意度也根本没有任何不同。<strong>我们还发现，我的妻子并不是唯一一个认为加州人更为幸福的人。两个地区的学生都犯了和我妻子同样的错误，我们还能追溯到此错误的根源，即他们都夸大了气候的重要性。我们将这种错误称为聚焦错觉。</strong></p>
+<p>聚焦错觉的本质是眼见即为事实，就上面例子来看，即是对气候给予过多的权重，却忽略了其他影响幸福的因素。为了理解这种错觉强大的影响力，请花几秒钟思考下面的问题：</p>
+<p>你从自己的车上能得到多大快乐？</p>
+<p>你能立刻得到答案，因为你知道自己有多喜爱和欣赏自己的车。你将其替换成了另一个不同的问题：“你在什么时候能从车中得到快乐？”这个问题的答案可能会令你惊奇，但也是简单直接的：当你考虑到自己的车时，你就能从车中得到快乐（或不快）。当然，你也不会常想到自己的车。正常情况下，你平时开车时是不会花很多时间思考自己的车的，你会想一些其他的事情，而你的心情也由你所想的事决定。当你尝试评估自己有多喜爱车时，你实际上回答的是另一个更为具体的问题：“当你考虑自己的车时，你能从车中得到多少快乐？”这个替换导致你忽略了自己很少想起车的事实，这是过程忽视的一种形式。其结果就是聚焦忽略。如果你喜欢自己的车，你就有可能夸大从其中得到的快乐，这会使你在想到当前这辆车的优点或是考虑是否要买辆新车时出现错觉。</p>
+<p>类似的偏见使得人们对加州人幸福感的判断发生了偏差。当被问到加州人的幸福感时，你可能会想到加州比较特别的活动，例如夏天可以爬山，或是羡慕那里冬天气候温和。但事实上，加州人很少参与那些活动。不仅如此，加州的常驻居民在对自己的生活进行总体评估时，根本没怎么想到气候这个问题。如果你一生都住在加州，而且不怎么去旅游的话，那么加州就像自己的10根脚趾一样，会觉得它们很重要，但却不会时常想到它们。如果生活中任意一方面的想法有很强的可替代性的话，此方面就更有可能被凸显出来。</p>
+<p>聚焦错觉能使人们对自己当前的幸福状态、他人的幸福感以及自己未来的幸福感判断错误。</p>
+<p>半身瘫痪的人一天中有多长时间情绪低落？</p>
+<p>半身瘫痪者的幸福感在大多数时候都是接近于正常水平的。想要适应一个新的环境，无论这个环境是好还是坏，在很大程度上取决于慢慢地不去想这个环境。从这个意义上来看，生活的长期状况（包括半身瘫痪和婚姻）只在部分时间会对人们的状态产生影响，即当人们关注于这些状况的时候。</p>
+<p>聚焦错觉会产生一种偏见，这种偏见会导致人们更加看好本身就能令人兴奋的事物或经历，即使这些事物或经历最终也会失去吸引力。人们忽视了时间，致使维持人们长久的注意力价值的经验很少受到关注，至少比这种经验应得到的关注要少。</p>
+<h5 id="5-4-3-千万不要忽略时间的作用"><a href="#5-4-3-千万不要忽略时间的作用" class="headerlink" title="5.4.3 千万不要忽略时间的作用"></a>5.4.3 千万不要忽略时间的作用</h5><p>本书中不断重复时间的重要性。将经验自我的生活描述为一系列有价值的时刻是符合逻辑的。某个生活阶段的价值（我曾称其为快乐总量）就是这一阶段所有价值的总和。不过，这不是大脑呈现各个阶段的方法。我曾提到过，记忆自我同样也会讲故事和作出选择，而且它讲的故事和作出的选择都不能恰当地表示时间。<strong>在讲故事时，一些关键的时刻，特别是开始、高潮和结尾，代表了整个生活阶段，过程因此就被忽略掉了。</strong></p>
+<p><strong>示例–生活思考</strong></p>
+<blockquote>
+<p>她认为买一辆豪车会使自己更为快乐，但这其实是个情感预测错误。</p>
+</blockquote>
+<blockquote>
+<p>今天早上，他的车在上班途中坏掉了，因此，他的心情非常糟糕。今天并不适合问他关于工作满意度的问题</p>
+</blockquote>
+<blockquote>
+<p>她平时看起来都很开心，但当我们问她是否快乐时，她说自己并不快乐。这个问题肯定使她想到了自己最近离婚这件事</p>
+</blockquote>
+<blockquote>
+<p>买一座更大的房子可能不会使我们永远感到快乐。我们可能会因为犯聚焦错觉的错误而遭殃。</p>
+</blockquote>
+<blockquote>
+<p>他选择了在两座城市间之间奔波往返。这可能是一个错误想法的典型例子</p>
+</blockquote>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

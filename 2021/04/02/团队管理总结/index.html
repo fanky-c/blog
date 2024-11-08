@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        团队管理总结 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是团队管理"><span class="toc-text">什么是团队管理?</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-角色认知"><span class="toc-text">1. 角色认知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-管理沟通"><span class="toc-text">2. 管理沟通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-行为分析"><span class="toc-text">3. 行为分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#技术管理具体案例"><span class="toc-text">技术管理具体案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#leader负责对象，从中挖掘自己的价值"><span class="toc-text">leader负责对象，从中挖掘自己的价值</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-公司"><span class="toc-text">1. 公司</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-团队，-不是指某个具体组员"><span class="toc-text">2. 团队， 不是指某个具体组员</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#leader职责"><span class="toc-text">leader职责</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#团队好坏的评判标准"><span class="toc-text">团队好坏的评判标准</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#一、好团队"><span class="toc-text">一、好团队</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#二、坏团队"><span class="toc-text">二、坏团队</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向上管理"><span class="toc-text">向上管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向下管理"><span class="toc-text">向下管理</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        团队管理总结
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-04-02 16:55:16</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#团队管理" title="团队管理">团队管理</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="什么是团队管理"><a href="#什么是团队管理" class="headerlink" title="什么是团队管理?"></a>什么是团队管理?</h2><h3 id="1-角色认知"><a href="#1-角色认知" class="headerlink" title="1. 角色认知"></a>1. 角色认知</h3><blockquote>
+<p>角色认知：从团队角度去看某个问题和事情, 从个人到leader角色转变，带领团队实现目标和价值</p>
+<ul>
+<li>改变工作价值、工作职责， 关注目标和结果</li>
+<li>改变自己的核心竞争力， 技术评估、技术运用、技术管理</li>
+</ul>
+</blockquote>
+<ol>
+<li>管理规划。 也是团队方向，到达什么目标<ol>
+<li>团队定位</li>
+<li>团队价值</li>
+<li>团队目标</li>
+<li>团队资源， 目标实现路径</li>
+</ol>
+</li>
+<li>团队建设。 也是就管理人，增强团队战斗力<ol>
+<li>动力<ol>
+<li>员工个人能力</li>
+<li>员工激励</li>
+</ol>
+</li>
+<li>合力（共同方向）<ol>
+<li>分工： 团队组员分工</li>
+<li>协作：团队成员默契程度和合作融洽</li>
+</ol>
+</li>
+<li>耐力（持续输出）<ol>
+<li>梯队建设： 后备力量</li>
+<li>文化建设：团队的认可和归属</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>任务管理。 也就是管理事情<ol>
+<li>事前管理： 做什么？ 优先级？</li>
+<li>事中管理：怎么做？执行落地？</li>
+<li>事后管理：以后怎么做？ 建立流程机制？</li>
+</ol>
+</li>
+</ol>
+<h3 id="2-管理沟通"><a href="#2-管理沟通" class="headerlink" title="2. 管理沟通"></a>2. 管理沟通</h3><ol>
+<li><p>向上沟通</p>
+</li>
+<li><p>向下沟通</p>
+</li>
+<li><p>团队合作</p>
+<ol>
+<li>授信</li>
+<li>沟通</li>
+</ol>
+</li>
+</ol>
+<h3 id="3-行为分析"><a href="#3-行为分析" class="headerlink" title="3. 行为分析"></a>3. 行为分析</h3><ol>
+<li>认知<ol>
+<li>理解概念：认知就是知不知，知道不知道这是个问题</li>
+<li>解决方案：拓展认知</li>
+</ol>
+</li>
+<li>意愿<ol>
+<li>理解概念： 意愿就是想不想， 愿意不愿意去做</li>
+<li>解决方案： 激发意愿， 团队激励机制</li>
+</ol>
+</li>
+<li>能力<ol>
+<li>理解概念： 能力就是能不能， 有没有能力完成这个任务</li>
+<li>解决方案：团队梯度培养</li>
+</ol>
+</li>
+</ol>
+<h2 id="技术管理具体案例"><a href="#技术管理具体案例" class="headerlink" title="技术管理具体案例"></a>技术管理具体案例</h2><h3 id="leader负责对象，从中挖掘自己的价值"><a href="#leader负责对象，从中挖掘自己的价值" class="headerlink" title="leader负责对象，从中挖掘自己的价值"></a>leader负责对象，从中挖掘自己的价值</h3><h4 id="1-公司"><a href="#1-公司" class="headerlink" title="1. 公司"></a>1. 公司</h4><p>视公司规模和格局，责任会不一样。 相同的职称在不同公司会扮演不同的角色。</p>
+<p>中小公司由于业务发展需求，要的是快速灵活，也就是效率和质量，其次才是性能。</p>
+<h4 id="2-团队，-不是指某个具体组员"><a href="#2-团队，-不是指某个具体组员" class="headerlink" title="2. 团队， 不是指某个具体组员"></a>2. 团队， 不是指某个具体组员</h4><h3 id="leader职责"><a href="#leader职责" class="headerlink" title="leader职责"></a>leader职责</h3><p><strong>主动发现、分析和解决问题。</strong> 包含了：主动发现问题意愿，带领团队解决问题的能力。</p>
+<p>发现线上问题不断、业务需求急着开发、精力不够；按照发现问题、分析问题、解决问题和迭代和固化步骤进行；</p>
+<p>一、发现问题，代码庞大老旧、接手的人对代码不熟悉、解决线上问题耗费大量时间</p>
+<p>二、分析问题，对代码不熟悉、不能提前发现线上问题、线上定位问题耗时</p>
+<p>三、解决问题，拆分模块、画流程图和时序图，周会上进行分享掌握的知识；新增监控和告警手段</p>
+<p>四、迭代和固化，对现在解决问题的方法进行优化更新，形成可传授、可复制的流程且固化下来 </p>
+<h3 id="团队好坏的评判标准"><a href="#团队好坏的评判标准" class="headerlink" title="团队好坏的评判标准"></a>团队好坏的评判标准</h3><h4 id="一、好团队"><a href="#一、好团队" class="headerlink" title="一、好团队"></a>一、好团队</h4><ol>
+<li>稳，不出现事故，业务方对你们团队放心</li>
+<li>活力，内部沟通交流频繁</li>
+<li>人才涌现，团队在真正解决问题的时候会不自觉的培养出一批人才</li>
+</ol>
+<h4 id="二、坏团队"><a href="#二、坏团队" class="headerlink" title="二、坏团队"></a>二、坏团队</h4><ol>
+<li>瞎忙</li>
+<li>没活力，心态闭塞</li>
+<li>例行公事</li>
+<li>甩手掌柜</li>
+</ol>
+<h3 id="向上管理"><a href="#向上管理" class="headerlink" title="向上管理"></a>向上管理</h3><ol>
+<li>沟通思路</li>
+<li>争取资源支持</li>
+<li>及时同步进度和问题</li>
+</ol>
+<h3 id="向下管理"><a href="#向下管理" class="headerlink" title="向下管理"></a>向下管理</h3><ol>
+<li>工作安排</li>
+<li>经验传承（经验转化为能力）</li>
+<li>信息同步，及时反馈</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

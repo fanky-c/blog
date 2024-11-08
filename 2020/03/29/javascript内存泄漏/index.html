@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        javascript内存泄漏 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#内存的介绍"><span class="toc-text">内存的介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是内存泄露"><span class="toc-text">什么是内存泄露</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#垃圾回收算法"><span class="toc-text">垃圾回收算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#引用计数法："><span class="toc-text">引用计数法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#标记清除法"><span class="toc-text">标记清除法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存泄露的场景"><span class="toc-text">内存泄露的场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#全局变量"><span class="toc-text">全局变量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#被遗忘的定时器和回调函数"><span class="toc-text">被遗忘的定时器和回调函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DOM外引用"><span class="toc-text">DOM外引用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#闭包"><span class="toc-text">闭包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存泄露检测"><span class="toc-text">内存泄露检测</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#浏览器"><span class="toc-text">浏览器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#node环境"><span class="toc-text">node环境</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        javascript内存泄漏
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-03-29 19:34:27</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#内存泄露场景" title="内存泄露场景">内存泄露场景</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#内存泄露检测" title="内存泄露检测">内存泄露检测</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="内存的介绍"><a href="#内存的介绍" class="headerlink" title="内存的介绍"></a>内存的介绍</h3><ul>
+<li>内存的生命周期： 申请内存 –&gt; 使用内存 –&gt;  释放内存</li>
+</ul>
+<h3 id="什么是内存泄露"><a href="#什么是内存泄露" class="headerlink" title="什么是内存泄露"></a>什么是内存泄露</h3><ul>
+<li>内存泄露就是不在被应用需要的内存，由于某种原因，没有归还给操作系统。</li>
+</ul>
+<h3 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h3><h4 id="引用计数法："><a href="#引用计数法：" class="headerlink" title="引用计数法："></a>引用计数法：</h4><ol>
+<li>如果该对象没有引用就被回收。 </li>
+<li>缺点就是在循环引用情况下无法回收。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>  <span class="title">test</span>（）</span>&#123;</span><br><span class="line">     <span class="keyword">var</span>  obj1  = &#123;&#125;;</span><br><span class="line">     <span class="keyword">var</span>  obj2  = &#123;&#125;;</span><br><span class="line">     obj1.x  =  obj2 ; <span class="comment">// obj1引用obj2</span></span><br><span class="line">     obj2.x  =  obj1 ; <span class="comment">// obj2引用obj1</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="标记清除法"><a href="#标记清除法" class="headerlink" title="标记清除法"></a>标记清除法</h4><ol>
+<li>创建垃圾回收器对象， 浏览器宿主对象window， 检测它所有的子对象是否存在。</li>
+<li>所有子对象递归检测，如果从window开始能到达标记为激活，就不视为垃圾</li>
+<li>所有子对象递归检测，如果从window开始不能到达就视为垃圾，归还给操作系统</li>
+</ol>
+<h3 id="内存泄露的场景"><a href="#内存泄露的场景" class="headerlink" title="内存泄露的场景"></a>内存泄露的场景</h3><h4 id="全局变量"><a href="#全局变量" class="headerlink" title="全局变量"></a>全局变量</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//案例</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    name = <span class="string">'hello'</span>; <span class="comment">//name将变成全局变量，泄露到全局</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//原因</span></span><br><span class="line">全局变量是根据定义无法被垃圾回收机制。如果是临时需要存放大量数据的全局变量，</span><br><span class="line">必须指定为<span class="literal">null</span>或者使用完重新分配内存</span><br><span class="line"></span><br><span class="line"><span class="comment">//解决方案</span></span><br><span class="line">使用js严格模式</span><br></pre></td></tr></table></figure>
+<h4 id="被遗忘的定时器和回调函数"><a href="#被遗忘的定时器和回调函数" class="headerlink" title="被遗忘的定时器和回调函数"></a>被遗忘的定时器和回调函数</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//案例</span></span><br><span class="line">setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> dom = <span class="built_in">document</span>.getElementById(<span class="string">'DOM'</span>);</span><br><span class="line">    <span class="keyword">if</span>(dom)&#123;</span><br><span class="line">        dom.innerText = <span class="string">'hello world'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//1， dom 无法被回收  2， 整个定时器一直在运行没有清除</span></span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//解决方法</span></span><br><span class="line">在定时器完成工作时候，手动清楚定时器</span><br></pre></td></tr></table></figure>
+<h4 id="DOM外引用"><a href="#DOM外引用" class="headerlink" title="DOM外引用"></a>DOM外引用</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//案例</span></span><br><span class="line"><span class="keyword">var</span> refA = <span class="built_in">document</span>.getElementById(<span class="string">'test'</span>);</span><br><span class="line"><span class="built_in">document</span>.body.removeChild(refA); <span class="comment">// dom删除了</span></span><br><span class="line"><span class="built_in">console</span>.log(refA, <span class="string">"refA"</span>);  <span class="comment">// 但是还存在引用 能console出整个div 没有被回收</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//原因: </span></span><br><span class="line">保留了DOM节点的引用,导致GC没有回收</span><br><span class="line"></span><br><span class="line"><span class="comment">//解决办法：</span></span><br><span class="line">refA = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//闭包本身不会造成内存泄露，使用不当才会导致</span></span><br><span class="line"><span class="comment">//案例</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//解决方法</span></span><br><span class="line">在退出函数之前，将不使用的局部变量全部删除</span><br></pre></td></tr></table></figure>
+<h3 id="内存泄露检测"><a href="#内存泄露检测" class="headerlink" title="内存泄露检测"></a>内存泄露检测</h3><h4 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h4><ol>
+<li>chrome开发者工具memory </li>
+<li>点击take snapshot进行对比</li>
+</ol>
+<h4 id="node环境"><a href="#node环境" class="headerlink" title="node环境"></a>node环境</h4><ol>
+<li>process.memoryUsage方法</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

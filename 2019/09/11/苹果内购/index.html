@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        苹果内购 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#支付状态"><span class="toc-text">支付状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#支付流程"><span class="toc-text">支付流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-直接和Apple服务器进行购买和验证"><span class="toc-text">1. 直接和Apple服务器进行购买和验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-自己架设服务器进行验证"><span class="toc-text">2. 自己架设服务器进行验证</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟物品类型"><span class="toc-text">虚拟物品类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iap注意事项"><span class="toc-text">iap注意事项</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        苹果内购
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-11 18:59:43</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#iap" title="iap">iap</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#苹果内购流程" title="苹果内购流程">苹果内购流程</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="支付状态"><a href="#支付状态" class="headerlink" title="支付状态"></a>支付状态</h3><ul>
+<li>SKPaymentTransactionStatePurchasing：正在支付</li>
+<li>SKPaymentTransactionStatePurchased：已支付</li>
+<li>SKPaymentTransactionStateFailed：支付失败</li>
+<li>SKPaymentTransactionStateRestored：恢复购买, 例如非消耗商品在iPad已经购买了，在iPhone恢复，或者卸载了App，重装没有及时更新状态，可以用这个恢复，用于非消耗品</li>
+<li>SKPaymentTransactionStateDeferred：未确定状态, 由于外部原因导致的（如家长控制，未测试）</li>
+</ul>
+<h3 id="支付流程"><a href="#支付流程" class="headerlink" title="支付流程"></a>支付流程</h3><h4 id="1-直接和Apple服务器进行购买和验证"><a href="#1-直接和Apple服务器进行购买和验证" class="headerlink" title="1. 直接和Apple服务器进行购买和验证"></a>1. 直接和Apple服务器进行购买和验证</h4><h4 id="2-自己架设服务器进行验证"><a href="#2-自己架设服务器进行验证" class="headerlink" title="2. 自己架设服务器进行验证"></a>2. 自己架设服务器进行验证</h4><ol>
+<li>用户进入购买虚拟物品页面， APP从后台服务器获取产品列表展示给用户</li>
+<li>用户点击购买某一虚拟物品，app就把该虚拟物品productionIdentifier发送到Apple服务器</li>
+<li>Apple服务器根据app发送过来的productionIdentifier返回相应物品的信息（描述、价格等等）</li>
+<li>用的点击确认购买，购买请求就发送到Apple服务器</li>
+<li>Apple服务器完成购买，返回给用户一个完成购买凭证</li>
+<li>app根据Apple服务器返回的购买凭证，拿到后台服务器验证</li>
+<li>后台服务器把凭证发送到Apple服务器验证，Apple返回一个字段给后台服务器表明该凭证是否有效</li>
+<li>后台服务器把验证结果发送到app，app根据验证结果做相应的处理</li>
+</ol>
+<h3 id="虚拟物品类型"><a href="#虚拟物品类型" class="headerlink" title="虚拟物品类型"></a>虚拟物品类型</h3><ol>
+<li>消耗品（Consumable products）：比如游戏内金币等。</li>
+<li>不可消耗品（Non-consumable products）：简单来说就是一次购买，终身可用（用户可随时从App Store restore）。</li>
+<li>自动更新订阅品（Auto-renewable subscriptions）：和不可消耗品的不同点是有失效时间。比如一整年的付费周刊。在这种模式下，开发者定期投递内容，用户在订阅期内随时可以访问这些内容。订阅快要过期时，系统将自动更新订阅（如果用户同意）</li>
+<li>非自动更新订阅品（Non-renewable subscriptions）：一般使用场景是从用户从IAP购买后，购买信息存放在自己的开发者服务器上。失效日期/可用是由开发者服务器自行控制的，而非由App Store控制，这一点与自动更新订阅品有差异。</li>
+<li>免费订阅品（Free subscriptions）：在Newsstand中放置免费订阅的一种方式。免费订阅永不过期。只能用于Newsstand-enabled apps。</li>
+</ol>
+<blockquote>
+<p>类型2、3、5都是以Apple ID为粒度的。比如小张有三个iPad，有一个Apple ID购买了不可消耗品，则三个iPad上都可以使用。<br>类型1、4一般来说则是现买现用。如果开发者自己想做更多控制，一般选4</p>
+</blockquote>
+<h3 id="iap注意事项"><a href="#iap注意事项" class="headerlink" title="iap注意事项"></a>iap注意事项</h3><ol>
+<li>ios7之后，苹果的票据保存在Bundle.main.appStoreReceiptURL,票据只有一份且加密。</li>
+<li>SKPaymentTransactionObserver监听支付结果；当客户端调用finishTransaction时，则表示订单已经完成，则客户端不再接收到支付成功的回调，如果没有finishTransaction，则苹果会一直回调（每次打开App(监听)就会回调，直到调用finishTransaction完成订单）<br><img src="/img/iap.png" width="700" height="auto" alt="离线日志" align="center"></li>
+<li>purchasing状态下还没有唯一标识transactionIdentifier，只有在purchased和restore状态下才有</li>
+<li>同一个商品，如果上次支付用户支付成功SKPaymentTransactionStatePurchased，但是没有调用finishTransaction），再次下单购买的时候，会提示恢复购买，只会调用Purchasing，不会监听到其他状态，并且用户不会扣钱，如果重新打开App，重新监听SKPaymentTransactionObserver，会收到多条回调，并且对应的transactionId一样，也就是同一个商品，再未完成前，不会重复扣款，只有上一个订单完成后，才会继续支付扣款</li>
+</ol>
+<p><a href="http://note.youdao.com/noteshare?id=a5d076c025d7970d5047fb83753a80ee" target="_blank" rel="noopener">有道云笔记iap</a><br><a href="https://note.youdao.com/ynoteshare1/index.html?id=d549ec4ee4b562974e2bfa4952c07a47&amp;type=note" target="_blank" rel="noopener">有道云笔记mac</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

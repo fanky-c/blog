@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        http/1.x和http/2 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#http-1-x"><span class="toc-text">http/1.x</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基本介绍"><span class="toc-text">基本介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#A-请求报文"><span class="toc-text">A:请求报文</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#B-方法"><span class="toc-text">B:方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#C-响应报文"><span class="toc-text">C:响应报文</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#D：状态码"><span class="toc-text">D：状态码</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#常用header"><span class="toc-text">常用header</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cookie机制"><span class="toc-text">cookie机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#连接机制"><span class="toc-text">连接机制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#HTTP-1-x-三种连接⽅式"><span class="toc-text">HTTP/1.x 三种连接⽅式</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缓存"><span class="toc-text">缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#缓存存储策略"><span class="toc-text">缓存存储策略</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#缓存过期策略"><span class="toc-text">缓存过期策略</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#缓存对比策略"><span class="toc-text">缓存对比策略</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-1-x-缺点"><span class="toc-text">HTTP 1.x 缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http-2"><span class="toc-text">http/2</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#连接复用"><span class="toc-text">连接复用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#首部压缩"><span class="toc-text">首部压缩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#服务器推送"><span class="toc-text">服务器推送</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        http/1.x和http/2
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-09-05 16:49:43</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#http" title="http">http</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#缓存" title="缓存">缓存</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="http-1-x"><a href="#http-1-x" class="headerlink" title="http/1.x"></a>http/1.x</h3><h4 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h4><h5 id="A-请求报文"><a href="#A-请求报文" class="headerlink" title="A:请求报文"></a>A:请求报文</h5><ol>
+<li>请求⾏ </li>
+<li>请求头</li>
+<li>空行</li>
+<li>请求体</li>
+</ol>
+<p><img src="/img/http_request.png" alt="报文"><br><img src="/img/http_request1.png" alt="报文">  </p>
+<h5 id="B-方法"><a href="#B-方法" class="headerlink" title="B:方法"></a>B:方法</h5><ol>
+<li>get <ul>
+<li>从服务器获取文档</li>
+<li>可以被缓存</li>
+<li>通过url请求，有长度限制</li>
+<li>url明文请求，安全得不到保障</li>
+<li>对服务器无副作用，多次操作不会改变服务器状态</li>
+</ul>
+</li>
+<li>post<ul>
+<li>向服务器发送所需处理的数据</li>
+<li>不能被缓存</li>
+<li>没有长度限制</li>
+<li>请求放在主体，不会被记录下来，安全性相对来说得到保障</li>
+<li>有副作用，即非幂等</li>
+</ul>
+</li>
+<li>head<ul>
+<li>从服务器获取文档头部</li>
+</ul>
+</li>
+<li>put<ul>
+<li>请求的主体存到服务器中</li>
+</ul>
+</li>
+<li>options<ul>
+<li>查词可以服务器上执行那些方法,检查服务器性能（跨域请求用的多）</li>
+</ul>
+</li>
+</ol>
+<h5 id="C-响应报文"><a href="#C-响应报文" class="headerlink" title="C:响应报文"></a>C:响应报文</h5><ol>
+<li>响应行</li>
+<li>响应头</li>
+<li>响应体  </li>
+</ol>
+<p><img src="/img/http_respond.png" alt="报文"><br><img src="/img/http_respond1.png" alt="报文">  </p>
+<h5 id="D：状态码"><a href="#D：状态码" class="headerlink" title="D：状态码"></a>D：状态码</h5><ol>
+<li>1xx 信息性状态</li>
+<li>2xx 成功<ul>
+<li>206：Partial Content 分块内容</li>
+</ul>
+</li>
+<li>3xx 重定向<ul>
+<li>301: 永久移动。请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。今后任何新的请求都应使用新的URI代替</li>
+<li>304: 未修改。所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源</li>
+</ul>
+</li>
+<li>4xx 客户端错误<ul>
+<li>400: Bad Request 常⻅于请求时提交了错误的参数</li>
+<li>401：Unauthorized 需要验证</li>
+<li>403：Forbidden 禁⽌访问</li>
+<li>404：Not Found</li>
+</ul>
+</li>
+<li>5xx 服务端错误<ul>
+<li>500：Server Error 服务器出错</li>
+<li>502：Bad Gateway 通常由代理服务器返回，表示上游服务器出错</li>
+<li>503：Service Unavailable 服务暂不可⽤，但将来可⽤（例如服务当前负载太⾼） </li>
+<li>504：Gateway Timeout 通常由代理服务器返回，表示上游服务器超时</li>
+</ul>
+</li>
+</ol>
+<h4 id="常用header"><a href="#常用header" class="headerlink" title="常用header"></a>常用header</h4><h4 id="cookie机制"><a href="#cookie机制" class="headerlink" title="cookie机制"></a>cookie机制</h4><ul>
+<li>HTTP是⼀个匿名、⽆状态的协议，但很多情况下服务器需要识别客户端的身份</li>
+<li>识别身份的⽅法:<ol>
+<li>Authentication⾸部 + WWW-Authentication⾸部</li>
+<li>胖URL，在URL⾥带上身份信息</li>
+<li>Cookie ⽬前识别⽤户，实现持久会话的最好⽅式</li>
+</ol>
+</li>
+<li>cookie本质上是⼀些key-value数据，key是cookie名字，value是cookie的值<ol>
+<li>domain和path: 指定了哪些域名和路径会带上该cookie</li>
+<li>HttpOnly属性阻⽌了javascript来访问cookie，可以防⽌⼀些XSS攻击</li>
+</ol>
+</li>
+<li>会话期Cookie: 浏览器关闭之后它会被⾃动删除</li>
+<li>持久性Cookie: 指定了cookie过期时间</li>
+</ul>
+<p><img src="/img/http_cookie.png" alt="cookie"> </p>
+<h4 id="连接机制"><a href="#连接机制" class="headerlink" title="连接机制"></a>连接机制</h4><h5 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h5><ul>
+<li>HTTP使⽤TCP来传输数据，HTTP/1.0每个请求都新开⼀个连接，效率低下。<ol>
+<li>TCP握⼿导致⽐较⻓的延时</li>
+<li>TCP拥塞控制算法在慢启动阶段带宽较⼩</li>
+</ol>
+</li>
+<li>HTTP/1.1默认使⽤⻓连接，即⼀个连接会保持⼀段时间，⽤于发送⼀系列的请求</li>
+<li>管道化请求：不等待前⼀个请求返回就在同⼀个连接发送下⼀个请求（⽬前都没实现）</li>
+<li>相关⾸部：Connection （客户端和服务端都使⽤）<ol>
+<li>Connection: keep-alive 在当前请求完成后，保持连接</li>
+<li>Connection: close 在当前请求完成后，关闭连接</li>
+</ol>
+</li>
+</ul>
+<h5 id="HTTP-1-x-三种连接⽅式"><a href="#HTTP-1-x-三种连接⽅式" class="headerlink" title="HTTP/1.x 三种连接⽅式"></a>HTTP/1.x 三种连接⽅式</h5><p><img src="/img/http_live.png" alt="三种连接⽅式"> </p>
+<h4 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h4><h5 id="缓存存储策略"><a href="#缓存存储策略" class="headerlink" title="缓存存储策略"></a>缓存存储策略</h5><ol>
+<li>cache-control:  public, max-age=31536000。响应数据会被缓存到客户端</li>
+</ol>
+<h5 id="缓存过期策略"><a href="#缓存过期策略" class="headerlink" title="缓存过期策略"></a>缓存过期策略</h5><ol>
+<li>expires<ul>
+<li>表示存在时间，允许客户端在这个时间之前不去检查（发请求），等同max-age的<br>效果。但是如果同时存在，则被Cache-Control的max-age覆盖</li>
+</ul>
+</li>
+</ol>
+<h5 id="缓存对比策略"><a href="#缓存对比策略" class="headerlink" title="缓存对比策略"></a>缓存对比策略</h5><ol>
+<li>last-modified:  Fri, 25 Nov 2016 08:15:46 GMT。 资源被修改的最后时间<ul>
+<li>浏览器会携带该值去服务器对比，对比成功在返回304，服务器提示浏览器从本地加载数据，否则返回200并响应数据。</li>
+</ul>
+</li>
+<li>eTag:  “Fpwrobxxh6n6-E2sDbMMA2znbN1i”<ul>
+<li>对资源的索引节（INode），大小（Size）和最后修改时间（MTime）进行Hash后得到的，是资源的唯一标识</li>
+</ul>
+</li>
+</ol>
+<h4 id="HTTP-1-x-缺点"><a href="#HTTP-1-x-缺点" class="headerlink" title="HTTP 1.x 缺点"></a>HTTP 1.x 缺点</h4><ul>
+<li>Head Of Line Blocking 队头阻塞<ol>
+<li>HTTP/1.1实际上没实现pipelining，⼀条连接同时只能进⾏⼀个HTTP请求，若该请求的响应很慢，则后续使⽤该连接的HTTP请求都被阻塞</li>
+</ol>
+</li>
+<li>⾸部数据冗余：发往同⼀server的多个请求的Header重复发送<ol>
+<li>gzip只会压缩实体数据</li>
+</ol>
+</li>
+<li>客户端请求-服务端响应模型（缺少服务端推送）  </li>
+</ul>
+<h3 id="http-2"><a href="#http-2" class="headerlink" title="http/2"></a>http/2</h3><h4 id="连接复用"><a href="#连接复用" class="headerlink" title="连接复用"></a>连接复用</h4><ul>
+<li>多个请求和响应复⽤同⼀连接<ol>
+<li>解决了HTTP/1.1中的队头阻塞问题</li>
+<li>基于新的⼆进制分帧层，客户端和服务端可以将多个HTTP消息分解为互不依赖的帧，交错发送，最后重新组装</li>
+<li>连接复⽤解决了HTTP/1.x存在的队头阻塞问题，减少连接数，更好利⽤了⽹络带宽（⻓连接避免了TCP拥塞控制的影响）</li>
+</ol>
+</li>
+</ul>
+<h4 id="首部压缩"><a href="#首部压缩" class="headerlink" title="首部压缩"></a>首部压缩</h4><ul>
+<li>压缩HTTP⾸部字段<ol>
+<li>减少⾸部的传输开销</li>
+<li>每个HTTP传输都包含⼀系列⾸部，在HTTP/1.x中这些⾸部始终以纯⽂本形式传输，并且多个连接的⾸部都是重复的，例如User-Agent, Host，Cookie等。这些⾸部会给传输带上额外的开销，可能多达1kb</li>
+<li>HTTP/2使⽤⼀种叫HPACK的⽅法来压缩⾸部数据</li>
+</ol>
+</li>
+</ul>
+<h4 id="服务器推送"><a href="#服务器推送" class="headerlink" title="服务器推送"></a>服务器推送</h4><ul>
+<li>服务端可以对⼀个客户端请求发送多个响应</li>
+<li>客户端可以限制服务端推送的数据量或停⽤服务端推</li>
+</ul>
+<p><strong> 注意：</strong></p>
+<ol>
+<li><p>HTTP/2 没有改动 HTTP 的应⽤语义。HTTP ⽅法、状态代码、URI 和标头字段等<br>核⼼概念与HTTP/1.x⼀致，HTTP/2 修改了数据格式化（分帧）以及在客户端与服<br>务器间传输的⽅式</p>
+</li>
+<li><p>因为引⼊新的⼆进制分帧层，HTTP/2⽆法向后兼容HTTP/1.x</p>
+</li>
+</ol>
+<p><strong><em>参考我的同事java大神郎哥的非常感谢他。 </em></strong></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

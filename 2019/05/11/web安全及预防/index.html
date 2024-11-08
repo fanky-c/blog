@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        web安全及预防 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#web常见安全漏洞分类"><span class="toc-text">web常见安全漏洞分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#跨站脚本攻击-XSS"><span class="toc-text">跨站脚本攻击(XSS)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SQL注入"><span class="toc-text">SQL注入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#跨站点请求伪造（CSRF）"><span class="toc-text">跨站点请求伪造（CSRF）</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        web安全及预防
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-05-11 18:59:04</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#web安全" title="web安全">web安全</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#web安全措施" title="web安全措施">web安全措施</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="web常见安全漏洞分类"><a href="#web常见安全漏洞分类" class="headerlink" title="web常见安全漏洞分类"></a>web常见安全漏洞分类</h3><h4 id="跨站脚本攻击-XSS"><a href="#跨站脚本攻击-XSS" class="headerlink" title="跨站脚本攻击(XSS)"></a>跨站脚本攻击(XSS)</h4><ol>
+<li>介绍： 攻击者在web在页面通过表单等方式插入script代码，当用户浏览网页时候，script代码会被执行，从而达到攻击目的。</li>
+<li>分类：<ol>
+<li>反射型（服务器渲染）。用户访问带xxs脚本url请求，服务端接受数据发送给浏览器，浏览器解析造成xss漏洞。</li>
+<li>存储型。用户输入带XSS脚本的数据，服务端把数据存进数据库，页面被其他用户正常请求时，返回带XSS的数据。</li>
+<li>DOM类型。运用恶意脚本通过DOM动态地检查和修改页面内容。</li>
+</ol>
+</li>
+<li>危害：<ol>
+<li>修改网页内容</li>
+<li>盗取cookie</li>
+<li>页面重定向</li>
+<li>收集用户浏览器信息</li>
+</ol>
+</li>
+<li>措施：<ol>
+<li>检测输入参数，对应&lt;、&gt;等字符进行过滤或者编码。</li>
+<li>对输出参数进行htmlEncode编码或转义</li>
+<li>设置httpOnly防御js获取cookie</li>
+<li>设置csp(content-security-policy), 就是为了页面内容安全而制定的一系列防护策略. 通过CSP所约束的的规责指定可信的内容来源（这里的内容可以指脚本、图片、iframe、font、style等等可能的远程的资源）</li>
+</ol>
+</li>
+</ol>
+<h4 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h4><ol>
+<li>介绍：SQL注入是利用WEB服务，把精心设计的SQL命令注入到后台数据库执行。</li>
+<li>危害：<ol>
+<li>对数据库非法读取、删除、添加等</li>
+<li>盗取用户铭感信息</li>
+</ol>
+</li>
+<li>措施：<ol>
+<li>不应直接用前端传过来的sql做拼接，而应该用预编译语句，绑定变量，不改变sql语义。</li>
+<li>用户输入参数验证</li>
+<li>对关键数据库设置只读，减少风险。</li>
+</ol>
+</li>
+</ol>
+<h4 id="跨站点请求伪造（CSRF）"><a href="#跨站点请求伪造（CSRF）" class="headerlink" title="跨站点请求伪造（CSRF）"></a>跨站点请求伪造（CSRF）</h4><ol>
+<li><p>介绍：攻击者盗用你的身份，以你的名义发送恶意请求。</p>
+</li>
+<li><p>满足条件：</p>
+<ol>
+<li>登录受信用网站A，并在本地生成Cookie</li>
+<li>在不登出A网站情况下，访问危险的B网站。</li>
+<li>案例：<ol>
+<li>如果登录电商网站赠送积分或者礼物，接口：<a href="http://www.mybank.com/Transfer.php？money=1000&amp;to=zhangsan" target="_blank" rel="noopener">http://www.mybank.com/Transfer.php？money=1000&amp;to=zhangsan</a></li>
+<li>攻击者在评论区发表：&lt;img src=<a href="http://www.mybank.com/Transfer.php?money=1000&amp;who=hacker&gt;。" target="_blank" rel="noopener">http://www.mybank.com/Transfer.php?money=1000&amp;who=hacker&gt;。</a> 然后就源源不断收到礼物。</li>
+<li>送礼物或礼物是有记录的，然后攻击者找到删除记录接口（发现是post方式），自己构造一个页面通过form表单删除，然后同window.location = ‘XXXX’ 返回之前网页。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>措施：</p>
+<ol>
+<li>验证HTTP referer字段，判断连接从哪个页面跳转过来。</li>
+<li>不用get请求，改用post。</li>
+<li>在http请求参数添加随机token，在服务器建立拦截器，如果请求中无token或者错误的token则拒绝请求。</li>
+<li>添加验证码、滑块验证。</li>
+<li>chrome51版本以上 cookie设置Same-site，直接禁止第三方访问</li>
+</ol>
+</li>
+</ol>
+<p><br><br><a href="https://tech.meituan.com/2018/09/27/fe-security.html" target="_blank" rel="noopener">参考一</a><br><a href="https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html" target="_blank" rel="noopener">参考二</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

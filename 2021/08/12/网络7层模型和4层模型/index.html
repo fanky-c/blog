@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        网络7层模型和4层模型 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#7层和4层模型介绍"><span class="toc-text">7层和4层模型介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7层模型作用"><span class="toc-text">7层模型作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tcp和udp区别"><span class="toc-text">tcp和udp区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#封装-和-解封"><span class="toc-text">封装 和 解封</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-封装过程"><span class="toc-text">1. 封装过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-解封过程"><span class="toc-text">2. 解封过程</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        网络7层模型和4层模型
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2021-08-12 10:15:57</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#OSI模型" title="OSI模型">OSI模型</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#TCP/IP模型" title="TCP/IP模型">TCP/IP模型</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#网络模型" title="网络模型">网络模型</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="7层和4层模型介绍"><a href="#7层和4层模型介绍" class="headerlink" title="7层和4层模型介绍"></a>7层和4层模型介绍</h3><p>OSI 和TCP/IP 的对应关系和协议：<br><img src="/img/osi.jpeg" height="auto" align="center"></p>
+<h3 id="7层模型作用"><a href="#7层模型作用" class="headerlink" title="7层模型作用"></a>7层模型作用</h3><p>OSI对应的作用：<br><img src="/img/osi1.jpeg" height="auto" align="center"></p>
+<h3 id="tcp和udp区别"><a href="#tcp和udp区别" class="headerlink" title="tcp和udp区别"></a>tcp和udp区别</h3><ol>
+<li>TCP是面向连接的，UDP是面向无连接的。TCP在通信之前必须通过三次握手机制与对方建立连接，而UDP通信不必与对方建立连接，不管对方的状态就直接把数据发送给对方 </li>
+<li>TCP连接过程耗时，UDP不耗时 </li>
+<li>TCP连接过程中出现的延时增加了被攻击的可能，安全性不高，而UDP不需要连接，安全性较高 </li>
+<li>TCP是可靠的，保证数据传输的正确性，不易丢包;UDP是不可靠的，易丢包 </li>
+<li>tcp传输速率较慢，实时性差，udp传输速率较快。tcp建立连接需要耗时，并且tcp首部信息太多，每次传输的有用信息较少，实时性差。 </li>
+<li>tcp是流模式，udp是数据包模式。tcp只要不超过缓冲区的大小就可以连续发送数据到缓冲区上，接收端只要缓冲区上有数据就可以读取，可以一次读取多个数据包，而udp一次只能读取一个数据包，数据包之间独立</li>
+</ol>
+<h3 id="封装-和-解封"><a href="#封装-和-解封" class="headerlink" title="封装 和 解封"></a>封装 和 解封</h3><h4 id="1-封装过程"><a href="#1-封装过程" class="headerlink" title="1. 封装过程"></a>1. 封装过程</h4><p><img src="/img/tcp1.webp" height="auto" align="center"></p>
+<h4 id="2-解封过程"><a href="#2-解封过程" class="headerlink" title="2. 解封过程"></a>2. 解封过程</h4><p><img src="/img/tcp2.webp" height="auto" align="center"></p>
+<p><br><br><a href="https://mp.weixin.qq.com/s/2f7WoFIAFGVPeRUg4--xNw" target="_blank" rel="noopener">文章来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

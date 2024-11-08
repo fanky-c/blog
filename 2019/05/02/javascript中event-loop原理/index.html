@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        javascript中event loop原理 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js任务广义分类"><span class="toc-text">js任务广义分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#同步任务"><span class="toc-text">同步任务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#异步任务"><span class="toc-text">异步任务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js任务细致分类"><span class="toc-text">js任务细致分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#宏任务（MacroTask）"><span class="toc-text">宏任务（MacroTask）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#微任务（MicroTask）-优先于宏任务"><span class="toc-text">微任务（MicroTask）,优先于宏任务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览器中Event-Loop"><span class="toc-text">浏览器中Event Loop</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#事件循环"><span class="toc-text">事件循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#任务队列图"><span class="toc-text">任务队列图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#案例"><span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NodeJS中Event-Loop"><span class="toc-text">NodeJS中Event Loop</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        javascript中event loop原理
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-05-02 17:13:21</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#event loop" title="event loop">event loop</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#内存堆" title="内存堆">内存堆</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#调用栈" title="调用栈">调用栈</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Event Loop即事件循环，是指浏览器或Node的一种解决javaScript单线程运行时不会阻塞的一种机制，也就是我们经常使用异步的原理。</p>
+<h3 id="js任务广义分类"><a href="#js任务广义分类" class="headerlink" title="js任务广义分类"></a>js任务广义分类</h3><h4 id="同步任务"><a href="#同步任务" class="headerlink" title="同步任务"></a>同步任务</h4><ol>
+<li>同步任务：进入主线程，一个一个执行。</li>
+</ol>
+<h4 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h4><ol>
+<li>异步任务：进入  <code>event table</code> , 注册回调函数 <code>callback</code>, 任务完成之后，将 <code>callback</code> 移入  <code>event queue</code>， 等待主线程调用。</li>
+</ol>
+<h3 id="js任务细致分类"><a href="#js任务细致分类" class="headerlink" title="js任务细致分类"></a>js任务细致分类</h3><h4 id="宏任务（MacroTask）"><a href="#宏任务（MacroTask）" class="headerlink" title="宏任务（MacroTask）"></a>宏任务（MacroTask）</h4><ol>
+<li>setTimeout、setInterval、script、I/O、UI Rendering</li>
+</ol>
+<h4 id="微任务（MicroTask）-优先于宏任务"><a href="#微任务（MicroTask）-优先于宏任务" class="headerlink" title="微任务（MicroTask）,优先于宏任务"></a>微任务（MicroTask）,优先于宏任务</h4><ol>
+<li>Process.nextTick（Node独有）、Promise</li>
+</ol>
+<h3 id="浏览器中Event-Loop"><a href="#浏览器中Event-Loop" class="headerlink" title="浏览器中Event Loop"></a>浏览器中Event Loop</h3><h4 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h4><p><img src="/img/eventloop.webp"><br><strong><em> 事件循环 负责执行代码、收集和处理事件以及执行队列中的子任务: </em></strong></p>
+<ol>
+<li>Javascript 有一个主线程和执行栈，所有的任务都会被放到调用栈等待主线程执行</li>
+<li>同步任务会被放在调用栈中，按照顺序等待主线程依次执行</li>
+<li>主线程之外存在一个任务队列，所有任务在主线程中以执行栈的方式运行</li>
+<li>同步任务都在主线程上执行，栈中代码在执行的时候会调用 Web API，此时会产生一些异步任务</li>
+<li>异步任务会在有了结果（比如被监听的事件发生时）后，将注册的回调函数放入任务队列中</li>
+<li>执行栈中任务执行完毕后，此时主线程处于空闲状态，会从任务队列中获取任务进行处理</li>
+</ol>
+<p>以上过程会不断重复，这就是浏览器的运行机制，也是Event Loop</p>
+<p><strong>更加详细的流程：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">JavaScript中的事件循环机制基于异步执行，用于处理非阻塞 I/O 操作、定时器等异步任务。以下是事件循环机制的基本流程：</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> 执行全局同步代码： 当 JavaScript 程序开始执行时，首先执行全局同步代码，将同步任务推入执行栈（Call Stack）中。</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> 执行栈（Call Stack）： 执行栈是一个存储函数调用的栈结构。每当调用一个函数，它会被推入执行栈的顶部；</span><br><span class="line">当函数执行完毕，它会从栈顶弹出。执行栈是同步执行的。</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span> 执行异步任务： 当遇到异步任务时，将异步任务的回调函数推入任务队列（Task Queue）中。</span><br><span class="line">异步任务包括定时器、事件监听器、Ajax 请求等。</span><br><span class="line"></span><br><span class="line"><span class="number">4.</span> 事件循环开始： 当执行栈为空时，事件循环开始工作。</span><br><span class="line">事件循环会检查任务队列是否有任务。如果有，将任务推入执行栈中执行。</span><br><span class="line"></span><br><span class="line"><span class="number">5.</span> 执行异步任务回调： 异步任务的回调函数在执行栈中执行。</span><br><span class="line">如果异步任务中有新的异步任务，它们会被推入任务队列中，等待下一轮事件循环。</span><br><span class="line"></span><br><span class="line"><span class="number">6.</span> 重复： 重复以上过程，形成一个循环。每轮事件循环称为一个 tick。</span><br></pre></td></tr></table></figure>
+<h4 id="任务队列图"><a href="#任务队列图" class="headerlink" title="任务队列图"></a>任务队列图</h4><p><img src="/img/event_loop.png" alt="任务队列" height="auto"></p>
+<h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">        resolve()</span><br><span class="line">    &#125;).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">5</span>); <span class="comment">// 为啥5会立即执行？---&gt; 虽然位于Promise的构造函数中，但在这个例子构造函数没有任何触发异步操作的地方，所以它也会同步执行。</span></span><br><span class="line">    resolve()</span><br><span class="line">&#125;).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">6</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1 5 10 6 2 3 4</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>第一轮事件循环<ol>
+<li>进入主线程遇到console.log(1), 输出 1</li>
+<li>遇到setTimeout,将其回调函数推入macro task的event queue， 并且标记任务setTimeout1</li>
+<li>遇到promise 微任务， 直接执行 new Promise的构造函数 输出 5， 将then函数的回调函数推入 micro Task 的 event queue 中，记为 promise1</li>
+<li>执行 console.log(10), 输出 10</li>
+<li>第一轮事件结束，主线程会去检查是否有微任务，会输出then函数 console.log(6)</li>
+</ol>
+</li>
+<li>第二轮事件循环<ol>
+<li>首先setTimeout1，输出 2</li>
+<li>然后碰到 promise 微任务， 直接执行 new Promise 输出 3, 同理将 回调函数推入 micro Task 的 event queue 中， 记为 promise2</li>
+<li>执行 微任务 promise2， 输出 4, 微任务执行完成，</li>
+<li>检查event queue队列是否还有任务没执行，所以任务执行完成</li>
+</ol>
+</li>
+</ol>
+<h3 id="NodeJS中Event-Loop"><a href="#NodeJS中Event-Loop" class="headerlink" title="NodeJS中Event Loop"></a>NodeJS中Event Loop</h3><p>Node.js 的事件循环机制建立在 V8 引擎之上，并且采用了 libuv 库来处理事件循环。以下是 Node.js 事件循环机制的基本原理：</p>
+<p>1、Node.js 的单线程： Node.js 是单线程的，但它通过事件循环机制实现了异步操作，使其能够处理大量并发请求。</p>
+<p>2、事件循环的阶段： Node.js 的事件循环被分为不同的阶段。每个阶段都有一个 FIFO 队列，用于存放相应的回调函数。事件循环的阶段包括：</p>
+<ol>
+<li>timers（定时器）： 执行 setTimeout 和 setInterval 中到期的回调函数。</li>
+<li>pending callbacks： 执行某些系统操作的回调函数，如TCP错误之类的操作。</li>
+<li>idle, prepare： 仅用于内部操作。</li>
+<li>poll（轮询）： 处理 I/O 事件。当轮询队列不为空时，事件循环会遍历队列执行回调。如果轮询队列为空且有 setImmediate 回调，事件循环会直接进入下一阶段。</li>
+<li>check： 执行 setImmediate 的回调函数。</li>
+<li>close callbacks： 执行关闭的回调函数，例如 socket.on(‘close’, …)。</li>
+</ol>
+<p>3、事件循环的执行过程： 当 Node.js 启动时，它会执行全局脚本，并且事件循环开始。每个阶段的执行都是一个循环。在每个循环中，事件循环会执行当前阶段的所有回调函数，然后移动到下一个阶段。</p>
+<p>4、异步操作的触发： 在 Node.js 中，异步操作的触发通常包括 I/O 操作、定时器到期、以及其他异步操作（如 setImmediate、process.nextTick 等）。</p>
+<p>5、触发异步操作后的回调： 当异步操作完成后，相应的回调函数会被推入到相应的事件队列中，等待事件循环执行。</p>
+<p>6、事件队列和回调的执行： 每个阶段都有一个事件队列，用于存放相应阶段的回调函数。当事件循环进入某个阶段时，会依次执行该阶段队列中的回调函数。</p>
+<p>总体来说，Node.js 事件循环机制通过事件队列和不同的阶段来实现异步非阻塞的执行模型。这使得 Node.js 能够高效地处理大量并发请求，而不会阻塞整个应用程序。</p>
+<p><br><br>文章来源：</p>
+<ol>
+<li><a href="https://juejin.im/post/5c3d8956e51d4511dc72c200#heading-25" target="_blank" rel="noopener">参考1</a></li>
+<li><a href="https://mp.weixin.qq.com/s/omqXH1SxJyvl7N8y-6Zp3Q" target="_blank" rel="noopener">参考2</a></li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        日常开发常见的加密算法 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、对称加密"><span class="toc-text">一、对称加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-AES"><span class="toc-text">1. AES</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-介绍"><span class="toc-text">1.1 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-加解密步骤"><span class="toc-text">1.2 加解密步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-前端代码实现"><span class="toc-text">1.3 前端代码实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、非对称加密"><span class="toc-text">二、非对称加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-RSA"><span class="toc-text">1. RSA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-介绍-1"><span class="toc-text">1.1 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-加解密"><span class="toc-text">1.2 加解密</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-前端代码实现-1"><span class="toc-text">1.3 前端代码实现</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、哈希算法"><span class="toc-text">三、哈希算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-MD5"><span class="toc-text">1. MD5</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-介绍-2"><span class="toc-text">1.1 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-特性"><span class="toc-text">1.2 特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-加解密"><span class="toc-text">1.3 加解密</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-前端实现"><span class="toc-text">1.4 前端实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-SHA-3"><span class="toc-text">2. SHA-3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-介绍"><span class="toc-text">2.1 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-原理"><span class="toc-text">2.2 原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-前端实现"><span class="toc-text">2.2 前端实现</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        日常开发常见的加密算法
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2024-07-10 20:31:19</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#AES" title="AES">AES</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#RSA" title="RSA">RSA</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#MD5" title="MD5">MD5</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#SHA-3" title="SHA-3">SHA-3</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#对称加密算法" title="对称加密算法">对称加密算法</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#非对称加密算法" title="非对称加密算法">非对称加密算法</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#哈希算法" title="哈希算法">哈希算法</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="一、对称加密"><a href="#一、对称加密" class="headerlink" title="一、对称加密"></a>一、对称加密</h2><h3 id="1-AES"><a href="#1-AES" class="headerlink" title="1. AES"></a>1. AES</h3><h4 id="1-1-介绍"><a href="#1-1-介绍" class="headerlink" title="1.1 介绍"></a>1.1 介绍</h4><p>AES（高级加密标准）是一种对称加密算法，即加密和解密使用相同的密钥。它可以加密长度为128、192和256位的数据块，并使用128位的密钥进行加密。AES算法使用了固定的块长度和密钥长度，并且被广泛应用于许多安全协议和标准中，例如SSL/TLS、SSH、IPSec等。</p>
+<p>在AES加密中，明文被分成128位的块，每个块使用相同的密钥进行加密。加密过程包括以下步骤：</p>
+<ol>
+<li>密钥扩展：将密钥扩展为加密算法所需的轮密钥。</li>
+<li>初始轮：将明文分成块，并与第一轮密钥进行异或。</li>
+<li>多轮加密：将初始轮产生的结果反复进行多轮加密，每轮使用不同的轮密钥进行加密。</li>
+<li>最终轮：在最后一轮加密中，将块进行加密，但是不再进行下一轮加密，而是直接输出密文。</li>
+</ol>
+<h4 id="1-2-加解密步骤"><a href="#1-2-加解密步骤" class="headerlink" title="1.2 加解密步骤"></a>1.2 加解密步骤</h4><p>前端：</p>
+<ol>
+<li>初始化: 引入jsencrypt库并出始化JSEncrypt对象，使用encrypt.setPublicKey()方法设置公钥,公钥是随机任意字符串 。</li>
+<li>生成私钥和偏移量: 随机生成aes的私钥key和偏移量 iv，使用encrypt.encrypt()方法对私钥key和偏移量iv进行加密得到code,并将code传给后端, 将私钥与code存入客户端。</li>
+<li>加密: 引入CryptoJS插件,使用CryptoJS.AES.encrypt()方法结合生成的私钥key和偏移量iv加密数据。</li>
+</ol>
+<p>后端：</p>
+<ol>
+<li>初始化: 使用encrypt.setPrivateKey()方法设置私钥,私钥要与前端的公钥一致。</li>
+<li>解密code: 使用encryptor.decrypt()方法解密code得到eas的私钥key和偏移量iv。</li>
+<li>解密数据: 引入CryptoJS插件, 使用CryptoJS.AES.decrypt()方法结合key和iv解密数据。</li>
+</ol>
+<h4 id="1-3-前端代码实现"><a href="#1-3-前端代码实现" class="headerlink" title="1.3 前端代码实现"></a>1.3 前端代码实现</h4><p>封装加密/解密：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建key.js文件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> JSEncrypt <span class="keyword">from</span> <span class="string">'jsencrypt'</span></span><br><span class="line"><span class="keyword">const</span> encrypt = <span class="keyword">new</span> JSEncrypt();</span><br><span class="line"><span class="keyword">let</span> publicKey = <span class="string">'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCeCDcnFrS7DIRbvZLHreVUzaMbAFy2DYmioxBK606urY4rVR8IgLgUhnyw2/GQ99pyr8lGtqPeOoapantw1XwEVyi74MDxs4UDL8j4OZR1Es7HVGOB0GwKWobdU9cm/1iDwGyouSmijxKyAePg6KsLNgbjDPYZRS11bYEuZ8/RLQIDAQAB'</span>;</span><br><span class="line"><span class="comment">// 设置公钥</span></span><br><span class="line">encrypt.setPublicKey(<span class="string">'-----BEGIN PUBLIC KEY-----'</span> + publicKey + <span class="string">'-----END PUBLIC KEY-----'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> random = <span class="function">(<span class="params">length</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> str = <span class="built_in">Math</span>.random().toString(<span class="number">36</span>).substr(<span class="number">2</span>);</span><br><span class="line">  <span class="keyword">if</span> (str.length &gt;= length) &#123;</span><br><span class="line">    <span class="keyword">return</span> str.substr(<span class="number">0</span>, length);</span><br><span class="line">  &#125;</span><br><span class="line">  str += random(length - str.length);</span><br><span class="line">  <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> rsaEncode = <span class="function">(<span class="params">src</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 加密数据</span></span><br><span class="line">  <span class="keyword">let</span> data = encrypt.encrypt(src);</span><br><span class="line">  <span class="keyword">return</span> data</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getKey = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line"><span class="comment">// 生成私钥和偏移量</span></span><br><span class="line">  <span class="keyword">let</span> key = &#123; <span class="attr">key</span>: random(<span class="number">16</span>), <span class="attr">iv</span>: random(<span class="number">16</span>) &#125;;</span><br><span class="line">  <span class="comment">// 对私钥和偏移量加密</span></span><br><span class="line">  <span class="keyword">let</span> code = rsaEncode(key.key + <span class="string">','</span> + key.iv);</span><br><span class="line">  <span class="built_in">window</span>.codeArr = <span class="built_in">window</span>.codeArr || &#123;&#125;;</span><br><span class="line">  <span class="comment">// 存入客户端</span></span><br><span class="line">  codeArr[code] = key;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    key, code</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> getAesKey = <span class="function">(<span class="params">aes</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> key = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(codeArr[aes]));</span><br><span class="line">  <span class="comment">// 从客户端获取到 key</span></span><br><span class="line">  <span class="keyword">delete</span> codeArr[aes];</span><br><span class="line">  <span class="keyword">return</span> key</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.getKey = getKey</span><br><span class="line"><span class="built_in">window</span>.rsaEncode = rsaEncode</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 encrypt.js 文件</span></span><br><span class="line"><span class="keyword">import</span> CryptoJS <span class="keyword">from</span> <span class="string">'crypto-js'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ------------AES 加密-------------</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getAesString</span>(<span class="params">data, key, iv</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> keys = CryptoJS.enc.Utf8.parse(key)</span><br><span class="line">  <span class="keyword">let</span> vis = CryptoJS.enc.Utf8.parse(iv)</span><br><span class="line">  <span class="keyword">let</span> encrypt = CryptoJS.AES.encrypt(data, keys, &#123;</span><br><span class="line">    iv: vis, <span class="comment">//iv偏移量 CBC需加偏移量</span></span><br><span class="line">    mode: CryptoJS.mode.CBC, <span class="comment">//CBC模式</span></span><br><span class="line">    padding: CryptoJS.pad.Pkcs7 <span class="comment">//padding处理</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> encrypt.toString(); <span class="comment">//加密完成后，转换成字符串</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// ------------AES 解密-------------</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getDAesString</span>(<span class="params">encrypted, key, iv</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> key  = CryptoJS.enc.Utf8.parse(key);</span><br><span class="line">  <span class="keyword">var</span> iv   = CryptoJS.enc.Utf8.parse(iv);</span><br><span class="line">  <span class="keyword">var</span> decrypted =CryptoJS.AES.decrypt(encrypted,key,&#123;</span><br><span class="line">    iv:iv,</span><br><span class="line">    mode:CryptoJS.mode.CBC,</span><br><span class="line">    padding:CryptoJS.pad.Pkcs7</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> decrypted.toString(CryptoJS.enc.Utf8);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// AES 对称秘钥加密</span></span><br><span class="line"><span class="keyword">const</span> aes = &#123;</span><br><span class="line">  en: <span class="function">(<span class="params">data, key</span>) =&gt;</span> getAesString(data, key.key, key.iv),</span><br><span class="line">  de: <span class="function">(<span class="params">data, key</span>) =&gt;</span> getDAesString(data, key.key, key.iv)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; aes &#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="二、非对称加密"><a href="#二、非对称加密" class="headerlink" title="二、非对称加密"></a>二、非对称加密</h2><h3 id="1-RSA"><a href="#1-RSA" class="headerlink" title="1. RSA"></a>1. RSA</h3><h4 id="1-1-介绍-1"><a href="#1-1-介绍-1" class="headerlink" title="1.1 介绍"></a>1.1 介绍</h4><p>RSA加密算法是一种非对称加密算法，RSA加密使用了”一对”密钥.分别是公钥和私钥,这个公钥和私钥其实就是一组数字，其二进制位长度可以是1024位或者2048位，长度越长其加密强度越大。</p>
+<h4 id="1-2-加解密"><a href="#1-2-加解密" class="headerlink" title="1.2 加解密"></a>1.2 加解密</h4><ol>
+<li>使用公钥加密的数据,利用私钥进行解密</li>
+<li>使用私钥加密的数据,利用公钥进行解密</li>
+</ol>
+<h4 id="1-3-前端代码实现-1"><a href="#1-3-前端代码实现-1" class="headerlink" title="1.3 前端代码实现"></a>1.3 前端代码实现</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> JSEncrypt <span class="keyword">from</span> <span class="string">'jsencrypt'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// rsa加密</span></span><br><span class="line"><span class="keyword">var</span> encryptor = <span class="keyword">new</span> JSEncrypt()  <span class="comment">// 创建加密对象实例</span></span><br><span class="line">  <span class="comment">//之前OpenssL生成的公钥，复制的时候要小心不要有空格</span></span><br><span class="line">  <span class="keyword">var</span> pubKey = <span class="string">'-----BEGIN PUBLIC KEY-----MIG...QIDAQAB-----END PUBLIC KEY-----'</span></span><br><span class="line">  encryptor.setPublicKey(pubKey)<span class="comment">//设置公钥</span></span><br><span class="line">  <span class="keyword">var</span> rsaPassWord = encryptor.encrypt(<span class="string">'要加密的内容'</span>)  <span class="comment">// 对内容进行加密</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// rsa解密</span></span><br><span class="line"><span class="keyword">var</span> decrypt = <span class="keyword">new</span> JSEncrypt()<span class="comment">//创建解密对象实例</span></span><br><span class="line">  <span class="comment">//之前OpenssL生成的秘钥</span></span><br><span class="line">  <span class="keyword">var</span> priKey  = <span class="string">'-----BEGIN RSA PRIVATE KEY-----MIICX...mJLH5gbdvJJmCWRk=-----END RSA PRIVATE KEY----'</span></span><br><span class="line">  decrypt.setPrivateKey(priKey)<span class="comment">//设置秘钥</span></span><br><span class="line">  <span class="keyword">var</span> uncrypted = decrypt.decrypt(encrypted)<span class="comment">//解密之前拿公钥加密的内容</span></span><br></pre></td></tr></table></figure>
+<h2 id="三、哈希算法"><a href="#三、哈希算法" class="headerlink" title="三、哈希算法"></a>三、哈希算法</h2><h3 id="1-MD5"><a href="#1-MD5" class="headerlink" title="1. MD5"></a>1. MD5</h3><h4 id="1-1-介绍-2"><a href="#1-1-介绍-2" class="headerlink" title="1.1 介绍"></a>1.1 介绍</h4><p>MD5加密算法，其全称是Message-Digest Algorithm 5，通常被称为信息摘要算法，所谓的信息摘要就是把明文内容按一定规则生成一段哈希（hash）值，即得到这段明文内容的信息摘要。<strong>利用MD5可以基于任意长度的明文字符串生成128位的哈希值，结果唯一且不可逆，因此MD5经常被用于防止信息被篡改、数字签名、以及对明文进行加密等场景。</strong></p>
+<h4 id="1-2-特性"><a href="#1-2-特性" class="headerlink" title="1.2 特性"></a>1.2 特性</h4><p>压缩性：任意长度的数据，算出的MD5值长度都是固定的。</p>
+<p>容易计算：从原数据计算出MD5值很容易。</p>
+<p>抗修改性：对原数据进行任何改动，哪怕只修改1个字节，所得到的MD5值都有很大区别。</p>
+<p>弱抗碰撞：已知原数据和其MD5值，想找到一个具有相同MD5值的数据（即伪造数据）是非常困难的。</p>
+<p>从技术的角度来说，MD5真的很安全，因为MD5本身是不可逆的，因此没法解密，除了撞库这样的一个方式。</p>
+<h4 id="1-3-加解密"><a href="#1-3-加解密" class="headerlink" title="1.3 加解密"></a>1.3 加解密</h4><p>MD5算法加密的过程分为三步：处理原文，设置初始值，加密运算。</p>
+<h4 id="1-4-前端实现"><a href="#1-4-前端实现" class="headerlink" title="1.4 前端实现"></a>1.4 前端实现</h4><p>md5.js共有md5的6种加密方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> code = <span class="string">"123456"</span>;</span><br><span class="line"><span class="keyword">var</span> username = <span class="string">"123456"</span>;</span><br><span class="line"><span class="keyword">var</span> password = <span class="string">"123456"</span>;</span><br><span class="line"><span class="keyword">var</span> str1 = hex_md5(<span class="string">"123456"</span>); <span class="comment">// e10adc3949ba59abbe56e057f20f883e 我们常用的是这种</span></span><br><span class="line"><span class="keyword">var</span> str2 = b64_md5(<span class="string">"123456"</span>);</span><br><span class="line"><span class="keyword">var</span> str3 = str_md5(<span class="string">"123456"</span>);</span><br><span class="line"><span class="keyword">var</span> str4 = hex_hmac_md5(code,code); <span class="comment">// 30ce71a73bdd908c3955a90e8f7429ef</span></span><br><span class="line"><span class="keyword">var</span> str5 = b64_hmac_md5(username,username); <span class="comment">// MM5xpzvdkIw5VakOj3Qp7w</span></span><br><span class="line"><span class="keyword">var</span> str6 = str_hmac_md5(password,password);</span><br></pre></td></tr></table></figure>
+<h3 id="2-SHA-3"><a href="#2-SHA-3" class="headerlink" title="2. SHA-3"></a>2. SHA-3</h3><h4 id="2-1-介绍"><a href="#2-1-介绍" class="headerlink" title="2.1 介绍"></a>2.1 介绍</h4><p>SHA-3 算法是第三代标准的哈希函数，基于 Keccak 算法实现。与之前的哈希算法有所不同，SHA-3 算法是基于置换 ( permutation-based ) 的加密函数。</p>
+<h4 id="2-2-原理"><a href="#2-2-原理" class="headerlink" title="2.2 原理"></a>2.2 原理</h4><p>哈希算法是信息安全领域重要的组成部分，主要包括：</p>
+<p>1、生成和验证数字签名</p>
+<p>2、密钥导出 (key derivation)</p>
+<p>3、伪随机位生成 (pseudorandom bit generation)</p>
+<h4 id="2-2-前端实现"><a href="#2-2-前端实现" class="headerlink" title="2.2 前端实现"></a>2.2 前端实现</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> CryptoJS <span class="keyword">from</span> <span class="string">"crypto-js"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//加密224位</span></span><br><span class="line">CryptoJS.SHA3(<span class="string">'六月初博客'</span>,&#123; <span class="attr">outputLength</span>: <span class="number">224</span> &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加密256位</span></span><br><span class="line">CryptoJS.SHA3(<span class="string">'六月初博客站'</span>,&#123; <span class="attr">outputLength</span>: <span class="number">256</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//加密384位</span></span><br><span class="line">CryptoJS.SHA3(<span class="string">'六月初工具'</span>,&#123; <span class="attr">outputLength</span>: <span class="number">384</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 加密512位</span></span><br><span class="line">CryptoJS.SHA3(<span class="string">'六月初工具站'</span>,&#123; <span class="attr">outputLength</span>: <span class="number">512</span>&#125;)</span><br></pre></td></tr></table></figure>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

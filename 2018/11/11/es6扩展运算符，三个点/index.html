@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        es6扩展运算符和剩余运算符，三个点... - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#含义"><span class="toc-text">含义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用途"><span class="toc-text">用途</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1，函数调参-将一个数组，变为参数序列。"><span class="toc-text">1，函数调参,将一个数组，变为参数序列。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2，替换数组和apply相关方法"><span class="toc-text">2，替换数组和apply相关方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3，与解构赋值结合（只能放在最后）"><span class="toc-text">3，与解构赋值结合（只能放在最后）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4，将字符串转为真正的数组"><span class="toc-text">4，将字符串转为真正的数组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-实现了-Iterator-接口的对象"><span class="toc-text">5,实现了 Iterator 接口的对象</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        es6扩展运算符和剩余运算符，三个点...
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-11-11 19:01:24</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#es6" title="es6">es6</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#..." title="...">...</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#扩展运算符" title="扩展运算符">扩展运算符</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#剩余运算符" title="剩余运算符">剩余运算符</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h3><p>扩展运算符用…表示，它好比rest参数的逆运算，讲一个数组转为用逗号分隔的参数序列。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">console.log(...[1, 2, 3])</span><br><span class="line">// 1 2 3</span><br><span class="line">console.log(1, ...[2, 3, 4], 5)</span><br><span class="line">// 1 2 3 4 5</span><br><span class="line">[...document.querySelectorAll(&apos;div&apos;)]</span><br><span class="line">//[&lt;div&gt;,&lt;div&gt;]</span><br></pre></td></tr></table></figure></p>
+<h3 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h3><h4 id="1，函数调参-将一个数组，变为参数序列。"><a href="#1，函数调参-将一个数组，变为参数序列。" class="headerlink" title="1，函数调参,将一个数组，变为参数序列。"></a>1，函数调参,将一个数组，变为参数序列。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function f(v, w, x, y, z) &#123; &#125;</span><br><span class="line">var args = [0, 1];</span><br><span class="line">f(-1, ...args, 2, ...[3]);</span><br></pre></td></tr></table></figure>
+<p>另外当 …args 作为函数参数时，它允许我们传递任意数量的参数，而不需要提前声明参数的数量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function f(...args)&#123;</span><br><span class="line">   console.log(args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">f(1,2,3); // [1, 2, 3]</span><br><span class="line">f(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;) // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]</span><br></pre></td></tr></table></figure></p>
+<h4 id="2，替换数组和apply相关方法"><a href="#2，替换数组和apply相关方法" class="headerlink" title="2，替换数组和apply相关方法"></a>2，替换数组和apply相关方法</h4><ul>
+<li>由于扩展运算符可以展开数组，所以不再需要apply方法，将数组转为函数的参数了。</li>
+<li><p>取代apply用法一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// ES5 的写法</span><br><span class="line">function f(x, y, z) &#123;</span><br><span class="line">// ...</span><br><span class="line">&#125;</span><br><span class="line">var args = [0, 1, 2];</span><br><span class="line">f.apply(null, args);</span><br><span class="line">// ES6 的写法</span><br><span class="line">function f(x, y, z) &#123;</span><br><span class="line">// ...</span><br><span class="line">&#125;</span><br><span class="line">var args = [0, 1, 2];</span><br><span class="line">f(...args);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>取代apply，应用Math.max方法用法二：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// ES5 的写法</span><br><span class="line">Math.max.apply(null, [14, 3, 77])</span><br><span class="line">// ES6 的写法</span><br><span class="line">Math.max(...[14, 3, 77])</span><br><span class="line">//  等同于</span><br><span class="line">Math.max(14, 3, 77);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数组合并和添加尾部三：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// ES5</span><br><span class="line">[1, 2].concat(more)</span><br><span class="line">// ES6</span><br><span class="line">[1, 2, ...more]</span><br><span class="line">var arr1 = [&apos;a&apos;, &apos;b&apos;];</span><br><span class="line">var arr2 = [&apos;c&apos;];</span><br><span class="line">var arr3 = [&apos;d&apos;, &apos;e&apos;];</span><br><span class="line">// ES5 的合并数组</span><br><span class="line">arr1.concat(arr2, arr3);</span><br><span class="line">// [ &apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos; ]</span><br><span class="line">// ES6 的合并数组</span><br><span class="line">[...arr1, ...arr2, ...arr3]</span><br><span class="line">// [ &apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos; ]</span><br><span class="line">// ES5 的写法</span><br><span class="line">var arr1 = [0, 1, 2];</span><br><span class="line">var arr2 = [3, 4, 5];</span><br><span class="line">Array.prototype.push.apply(arr1, arr2);</span><br><span class="line">// ES6 的写法</span><br><span class="line">var arr1 = [0, 1, 2];</span><br><span class="line">var arr2 = [3, 4, 5];</span><br><span class="line">arr1.push(...arr2);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3，与解构赋值结合（只能放在最后）"><a href="#3，与解构赋值结合（只能放在最后）" class="headerlink" title="3，与解构赋值结合（只能放在最后）"></a>3，与解构赋值结合（只能放在最后）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const [first, ...rest] = [1, 2, 3, 4, 5];</span><br><span class="line">first // 1</span><br><span class="line">rest // [2, 3, 4, 5]</span><br><span class="line">const [...butLast, last] = [1, 2, 3, 4, 5];</span><br><span class="line">//  报错</span><br><span class="line">const [first, ...middle, last] = [1, 2, 3, 4, 5];</span><br><span class="line">//  报错</span><br></pre></td></tr></table></figure>
+<h4 id="4，将字符串转为真正的数组"><a href="#4，将字符串转为真正的数组" class="headerlink" title="4，将字符串转为真正的数组"></a>4，将字符串转为真正的数组</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[...&apos;hello&apos;]</span><br><span class="line">// [ &quot;h&quot;, &quot;e&quot;, &quot;l&quot;, &quot;l&quot;, &quot;o&quot; ]</span><br></pre></td></tr></table></figure>
+<h4 id="5-实现了-Iterator-接口的对象"><a href="#5-实现了-Iterator-接口的对象" class="headerlink" title="5,实现了 Iterator 接口的对象"></a>5,实现了 Iterator 接口的对象</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var nodeList = document.querySelectorAll(&apos;div&apos;);</span><br><span class="line">var array = [...nodeList];</span><br></pre></td></tr></table></figure>
+<p>任何 Iterator 接口的对象，都可以用扩展运算符转为真正的数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let arrayLike = &#123;</span><br><span class="line">&apos;0&apos;: &apos;a&apos;,</span><br><span class="line">&apos;1&apos;: &apos;b&apos;,</span><br><span class="line">&apos;2&apos;: &apos;c&apos;,</span><br><span class="line">length: 3</span><br><span class="line">&#125;;</span><br><span class="line">// TypeError: Cannot spread non-iterable object.</span><br><span class="line">let arr = [...arrayLike];</span><br></pre></td></tr></table></figure>
+<p>对于那些没有部署 Iterator 接口的类似数组的对象，扩展运算符就无法将其转为真正的数组，但是可以使用Array.from方法将arrayLike转为真正的数组。</p>
+<p><a href="https://blog.csdn.net/qq_30100043/article/details/53391308" target="_blank" rel="noopener">参考</a></p>
+<p><a href="https://www.freecodecamp.org/chinese/news/three-dots-operator-in-javascript/" target="_blank" rel="noopener">参考二</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        数据结构和算法 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#算法"><span class="toc-text">算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#洗牌算法"><span class="toc-text">洗牌算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#判断正整数是否对称"><span class="toc-text">判断正整数是否对称</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#判断10进制整数包含多少个n-0-9"><span class="toc-text">判断10进制整数包含多少个n[0 - 9]</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#寻找重复数"><span class="toc-text">寻找重复数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#寻找2个字符串最大公共子串"><span class="toc-text">寻找2个字符串最大公共子串</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#对比版本号大小"><span class="toc-text">对比版本号大小</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#爬楼梯算法"><span class="toc-text">爬楼梯算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#有序数组旋转求出最小值"><span class="toc-text">有序数组旋转求出最小值</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#链表"><span class="toc-text">链表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#链表介绍"><span class="toc-text">链表介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#反转链表"><span class="toc-text">反转链表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#删除链表中第N个节点"><span class="toc-text">删除链表中第N个节点</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        数据结构和算法
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-02-05 12:15:19</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#数据结构" title="数据结构">数据结构</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#算法" title="算法">算法</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#链表" title="链表">链表</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h4 id="洗牌算法"><a href="#洗牌算法" class="headerlink" title="洗牌算法"></a>洗牌算法</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要求：新生产的数组元素下标和原数组元素下标不能重复</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//思路</span></span><br><span class="line"><span class="comment">// 1. 倒序循环这个数组</span></span><br><span class="line"><span class="comment">// 2. 取值范围从1-N(数组的长度)随机数K</span></span><br><span class="line"><span class="comment">// 3. K 与 N 交换</span></span><br><span class="line"><span class="comment">// 4. 直到循环到数组的第一位</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//代码(大概率出现位置没有改变)</span></span><br><span class="line"><span class="built_in">Array</span>.prototype.Shuffle = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="keyword">this</span>.length<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--)&#123;</span><br><span class="line">      <span class="keyword">let</span> randomIndex = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (i+<span class="number">1</span>));</span><br><span class="line">      <span class="keyword">let</span> itemIndex = <span class="keyword">this</span>[randomIndex];</span><br><span class="line">      <span class="keyword">this</span>[randomIndex] = <span class="keyword">this</span>[i];  <span class="comment">//交换</span></span><br><span class="line">      <span class="keyword">this</span>[i] = itemIndex;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//代码改进</span></span><br></pre></td></tr></table></figure>
+<h4 id="判断正整数是否对称"><a href="#判断正整数是否对称" class="headerlink" title="判断正整数是否对称"></a>判断正整数是否对称</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要求：12321、 1234321</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//思路： 原数和倒序数相等则可以判断对称</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//代码实现：</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reverse</span>(<span class="params">n</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> result = <span class="number">0</span>;</span><br><span class="line">  <span class="comment">//对数字依次求模，从右至左求出数字每一位</span></span><br><span class="line">  <span class="keyword">while</span>(n)&#123;</span><br><span class="line">    result = result * <span class="number">10</span> + n % <span class="number">10</span>;  <span class="comment">//%10得到最后一位数，  %100得到最后二位数</span></span><br><span class="line">    n = <span class="built_in">parseInt</span>(n / <span class="number">10</span>);     <span class="comment">//去除个位数其他的数</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isMirror</span>(<span class="params">n</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(n === reverse(n))<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="判断10进制整数包含多少个n-0-9"><a href="#判断10进制整数包含多少个n-0-9" class="headerlink" title="判断10进制整数包含多少个n[0 - 9]"></a>判断10进制整数包含多少个n[0 - 9]</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要求： 不能通过转换为String，然后通过循环来判断</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//思路： 一位一位数进行对比</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//代码实现：</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">count</span>(<span class="params">num, n</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">while</span>(num)&#123;</span><br><span class="line">      <span class="keyword">let</span> currNum = num % <span class="number">10</span>;   <span class="comment">//求模得到最后一个数</span></span><br><span class="line">      num = <span class="built_in">parseInt</span>(num / <span class="number">10</span>);  <span class="comment">//去除最后一位数</span></span><br><span class="line">      <span class="keyword">if</span>(currNum === n)&#123;</span><br><span class="line">         count++;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="寻找重复数"><a href="#寻找重复数" class="headerlink" title="寻找重复数"></a>寻找重复数</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//要求：从一个数组找出重复数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//思路：  1. 利用sort()进行从排序  2. 前面和后面进行对比</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//代码实现：</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">findDuplicate</span>(<span class="params">arr</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">let</span> newArr = [];</span><br><span class="line">  arr.sort();</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>; i&lt;arr.length; i++)&#123;</span><br><span class="line">     <span class="keyword">if</span>(arr[i] === arr[i+<span class="number">1</span>] &amp;&amp; newArr.indexOf(arr[i]) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        newArr.push(arr[i]);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> newArr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="寻找2个字符串最大公共子串"><a href="#寻找2个字符串最大公共子串" class="headerlink" title="寻找2个字符串最大公共子串"></a>寻找2个字符串最大公共子串</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要求：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//思路： 1. 2个字符串构成矩阵结构（行列结构）  2. 对矩阵中每一项进行对比看是否匹配（1匹配0不匹配 3. 然后求出对角线最长为1的那一段序列，即为最大公共子串</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//代码实现：</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">findMaxSubStr</span>(<span class="params">str1, str2</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(str1.length === <span class="number">0</span> || str2.length ===<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">let</span> len1 = str1.length;</span><br><span class="line">  <span class="keyword">let</span> len2 = str2.length;</span><br><span class="line">  <span class="keyword">let</span> arr = [];</span><br><span class="line">  <span class="keyword">let</span> maxLen = <span class="number">0</span>;  <span class="comment">//公共子串长度</span></span><br><span class="line">  <span class="keyword">let</span> maxPos = <span class="number">0</span>;  <span class="comment">//公共子串最后一个字符位置</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>; i&lt;len1; i++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> j=len2<span class="number">-1</span>; j&gt;=<span class="number">0</span>; j--)&#123;</span><br><span class="line">       <span class="keyword">if</span>(str1.charAt(j) == str2.charAt(i))&#123;</span><br><span class="line">         <span class="comment">//匹配</span></span><br><span class="line">         <span class="keyword">if</span>(i===<span class="number">0</span> || j===<span class="number">0</span>)&#123;</span><br><span class="line">           arr[j] = <span class="number">1</span>;</span><br><span class="line">         &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">           arr[j] = arr[j<span class="number">-1</span>]+<span class="number">1</span>;</span><br><span class="line">         &#125;</span><br><span class="line">       &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">         <span class="comment">//不匹配</span></span><br><span class="line">         arr[j] = <span class="number">0</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span>(arr[j] &gt; maxLen)&#123;</span><br><span class="line">           maxLen = arr[j];</span><br><span class="line">           maxPos = j;</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">   <span class="keyword">return</span> str1.substr(maxPos - maxLen + <span class="number">1</span>, maxLen);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//代码优化</span></span><br><span class="line"><span class="comment">//思路： 公共子串肯定&lt;=Math.min(str1, str2)、 而且还是连续的、而且还是str1和str2的子串</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">findMaxSubstr</span>(<span class="params">str1 = <span class="string">''</span>, str2 = <span class="string">''</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (str1 == <span class="string">''</span> || str2 == <span class="string">''</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> maxSubStr = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">let</span> len1 = str1.length;</span><br><span class="line">    <span class="keyword">let</span> len2 = str2.length;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//找出str1、str2中较小字符串; </span></span><br><span class="line">    <span class="comment">//如果str1.length &gt; str2.length, 就强制让str1变为最小字符串</span></span><br><span class="line">    <span class="keyword">if</span> (len1 &gt; len2) &#123;</span><br><span class="line">        <span class="keyword">let</span> temp = str1;</span><br><span class="line">        str1 = str2;</span><br><span class="line">        str2 = temp;</span><br><span class="line">        len1 = str1.length;</span><br><span class="line">        len2 = str2.length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = len1; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt;= len1 - i; j++) &#123;</span><br><span class="line">            maxSubStr = str1.substr(j, i);  <span class="comment">//j:开始位置， i:长度</span></span><br><span class="line">            <span class="keyword">if</span> (str2.indexOf(maxSubStr) &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> maxSubStr;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="对比版本号大小"><a href="#对比版本号大小" class="headerlink" title="对比版本号大小"></a>对比版本号大小</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//思路</span></span><br><span class="line"><span class="number">1.</span> 通过位数一个个对比</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compareVersion</span>(<span class="params">curVer, oldVer</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(curVer &amp;&amp; oldVer)&#123;</span><br><span class="line">       <span class="keyword">let</span> arr1 = curVer.split(<span class="string">'.'</span>);</span><br><span class="line">       <span class="keyword">let</span> arr2 = oldVer.split(<span class="string">'.'</span>);</span><br><span class="line">       <span class="keyword">let</span> minLen = <span class="built_in">Math</span>.min(arr1.length, arr2.length);</span><br><span class="line">       <span class="keyword">let</span> position = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">let</span> diff = <span class="number">0</span>;</span><br><span class="line">       </span><br><span class="line">       <span class="comment">//循环位数对比</span></span><br><span class="line">       <span class="keyword">while</span>(position &lt; minLen)&#123;</span><br><span class="line">         diff = <span class="built_in">parseInt</span>(arr1[position]) - <span class="built_in">parseInt</span>(arr2[position]);</span><br><span class="line">         <span class="comment">//相同的位数指不一样就跳出循环体， 比较diff</span></span><br><span class="line">         <span class="keyword">if</span>(diff != <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         position++;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span>(diff == <span class="number">0</span>)&#123;</span><br><span class="line">           <span class="comment">//curVer位数大于oldVer，且前面的值相等</span></span><br><span class="line">          <span class="keyword">return</span> (arr1.length - arr2.length) &gt; <span class="number">0</span>;</span><br><span class="line">       &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">          <span class="comment">//curVer和oldVer中间位数指不相等</span></span><br><span class="line">          <span class="keyword">return</span> diff &gt; <span class="number">0</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">     <span class="built_in">console</span>.error(<span class="string">'请输入版本号'</span>);</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="爬楼梯算法"><a href="#爬楼梯算法" class="headerlink" title="爬楼梯算法"></a>爬楼梯算法</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//题目</span></span><br><span class="line">假设在爬楼梯，需要n阶才能到达楼顶，每次可以爬<span class="number">1</span>或者<span class="number">2</span>个台阶， 有多少不同方法爬到楼顶？</span><br><span class="line"></span><br><span class="line"><span class="comment">//思路</span></span><br><span class="line"><span class="number">1.</span> 运用递归思路， 就是自己间接或者直接调用自己。 （递归可能会导致内存的溢出）</span><br><span class="line"><span class="number">2.</span> 用循环的方式减少递归的内存消耗</span><br><span class="line"></span><br><span class="line"><span class="comment">//解法</span></span><br><span class="line"><span class="keyword">const</span> climbing = <span class="function"><span class="keyword">function</span>(<span class="params">n</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(n &lt; <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">if</span>(n === <span class="number">1</span> || n === <span class="number">2</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> n;</span><br><span class="line">   &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> climbing(n<span class="number">-2</span>) + climbing(n<span class="number">-1</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> climbing = <span class="function"><span class="keyword">function</span>(<span class="params">n</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(n &lt; <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">if</span>(n === <span class="number">1</span> || n === <span class="number">2</span>)&#123;</span><br><span class="line">      <span class="keyword">return</span> n;</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="keyword">let</span> sum = <span class="number">0</span>;  <span class="comment">//累计</span></span><br><span class="line">   <span class="keyword">let</span> preStep = <span class="number">2</span>; <span class="comment">//2个台阶</span></span><br><span class="line">   <span class="keyword">let</span> prepreStep = <span class="number">1</span>; <span class="comment">//一个台阶</span></span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">3</span>; i&lt;=n; i++)&#123;</span><br><span class="line">      sum = preStep + prepreStep;  <span class="comment">//累计</span></span><br><span class="line">      prepreStep = preStep;   <span class="comment">//</span></span><br><span class="line">      preStep = sum;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="有序数组旋转求出最小值"><a href="#有序数组旋转求出最小值" class="headerlink" title="有序数组旋转求出最小值"></a>有序数组旋转求出最小值</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//题目</span></span><br><span class="line">原 array：[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br><span class="line">rotate 之后就是：[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">输出：最小值 <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//思路</span></span><br><span class="line"><span class="number">1.</span> 遍历所有值，用一个变量记录最小值</span><br><span class="line"><span class="number">2.</span> 二分查找(每次排除一半数据，留下另一半再进行对比)</span><br><span class="line"></span><br><span class="line"><span class="comment">//具体实现</span></span><br><span class="line">example: arr = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> 中间值和最右边值进行对比， 如果中间值大于最右边值则认为最小值在右边区域。 left = middle + <span class="number">1</span> (+<span class="number">1</span>因为right &gt; middle)</span><br><span class="line"><span class="number">2.</span> 中间值和最右边值进行对比， 如果中间值小于最右边值则认为最小值在左边区域。 right = middle (最小值可能是middle本身)</span><br><span class="line"><span class="number">3.</span> <span class="keyword">while</span>终止条件: left == right</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> findMin = <span class="function"><span class="keyword">function</span> (<span class="params">arr = []</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(arr.length &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">let</span> left = <span class="number">0</span>;</span><br><span class="line">   <span class="keyword">let</span> right = arr.length - <span class="number">1</span>;</span><br><span class="line">   <span class="keyword">while</span>(left &lt; right)&#123;</span><br><span class="line">      <span class="keyword">let</span> middle = left + <span class="built_in">Math</span>.floor((right - left) / <span class="number">2</span>);</span><br><span class="line">      <span class="keyword">if</span>(arr[middle] &gt; arr[right])&#123;</span><br><span class="line">         left = middle + <span class="number">1</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] == nums[right])&#123; <span class="comment">//[2, 2, 1, 2]  middle == right</span></span><br><span class="line">         right --;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span>&#123;</span><br><span class="line">         right = middle;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> arr[left]; <span class="comment">// arr[left] = arr[right]</span></span><br><span class="line">&#125;</span><br><span class="line">findMin([<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]);</span><br></pre></td></tr></table></figure>
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><h4 id="链表介绍"><a href="#链表介绍" class="headerlink" title="链表介绍"></a>链表介绍</h4><ol>
+<li>线性结构。 数组、链表。 数组在内存中是连续的，所以通过下标查找性能好，但是删除和新增会导致整个数组变化性能反而不好。链表就反之。</li>
+<li>非线性结构。树、堆。<h4 id="反转链表"><a href="#反转链表" class="headerlink" title="反转链表"></a>反转链表</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//题目</span></span><br><span class="line">输入：<span class="number">1</span>-&gt;<span class="number">2</span>-&gt;<span class="number">3</span>-&gt;<span class="number">4</span>-&gt;<span class="literal">null</span>;</span><br><span class="line">输出：<span class="number">4</span>-&gt;<span class="number">3</span>-&gt;<span class="number">2</span>-&gt;<span class="number">1</span>-&gt;<span class="literal">null</span>;</span><br><span class="line"><span class="comment">//思路</span></span><br><span class="line"><span class="number">1.</span> 把当前节点的next属性指向它的前一个节点</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//实现</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">listNode</span>(<span class="params">val</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">this</span>.val = val;   <span class="comment">//当前节点</span></span><br><span class="line">   <span class="keyword">this</span>.next = <span class="literal">null</span>;  <span class="comment">//该节点指向下一个节点</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> reverseList = <span class="function"><span class="keyword">function</span> (<span class="params">list</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">if</span>(list === <span class="literal">null</span> || list.next === <span class="literal">null</span>)&#123;</span><br><span class="line">       <span class="keyword">return</span> list;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">let</span> pre = <span class="literal">null</span>, cur = list;</span><br><span class="line">   <span class="keyword">while</span>(cur !== <span class="literal">null</span>)&#123;</span><br><span class="line">      <span class="keyword">let</span> next = cur.next;  <span class="comment">//保存临时变量</span></span><br><span class="line">      cur.next = pre;  <span class="comment">//当前节点next指向前一个</span></span><br><span class="line">      pre = cur;</span><br><span class="line">      cur = next;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> pre;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="删除链表中第N个节点"><a href="#删除链表中第N个节点" class="headerlink" title="删除链表中第N个节点"></a>删除链表中第N个节点</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

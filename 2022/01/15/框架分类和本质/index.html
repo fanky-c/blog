@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        框架分类和本质 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是架构"><span class="toc-text">什么是架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是框架和框架本质"><span class="toc-text">什么是框架和框架本质</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-系统和子系统"><span class="toc-text">1. 系统和子系统</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-模块和组件"><span class="toc-text">2. 模块和组件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-框架和架构"><span class="toc-text">3. 框架和架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-架构分层和分类"><span class="toc-text">4. 架构分层和分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-业务架构"><span class="toc-text">1. 业务架构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-应用架构"><span class="toc-text">2. 应用架构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-数据架构"><span class="toc-text">3. 数据架构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-代码-开发架构"><span class="toc-text">4. 代码/开发架构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#5-技术架构"><span class="toc-text">5. 技术架构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#6-部署架构"><span class="toc-text">6. 部署架构</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设计模式"><span class="toc-text">设计模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-什么是设计模式"><span class="toc-text">1. 什么是设计模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-架构方面设计模式分类"><span class="toc-text">2. 架构方面设计模式分类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#a-单库单应用模式"><span class="toc-text">a. 单库单应用模式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#b-内容分发模式"><span class="toc-text">b. 内容分发模式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#c-查询分离模式"><span class="toc-text">c. 查询分离模式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#d-微服务模式"><span class="toc-text">d. 微服务模式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#e-多级缓存模式"><span class="toc-text">e. 多级缓存模式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#f-分库分表模式"><span class="toc-text">f. 分库分表模式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#h-弹性伸缩模式"><span class="toc-text">h. 弹性伸缩模式</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#i-多机房模式"><span class="toc-text">i. 多机房模式</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        框架分类和本质
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-01-15 22:30:56</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#框架分类" title="框架分类">框架分类</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#框架本质" title="框架本质">框架本质</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="什么是架构"><a href="#什么是架构" class="headerlink" title="什么是架构"></a>什么是架构</h3><p>选择合适且有不错扩展能力的技术方案，解决业务真实存在的问题。</p>
+<p>也可以粗暴的理解为架构就是骨架，人类的身体的支撑是主要由骨架来承担的，然后是其上的肌肉、皮肤。</p>
+<h3 id="什么是框架和框架本质"><a href="#什么是框架和框架本质" class="headerlink" title="什么是框架和框架本质"></a>什么是框架和框架本质</h3><h4 id="1-系统和子系统"><a href="#1-系统和子系统" class="headerlink" title="1. 系统和子系统"></a>1. 系统和子系统</h4><ol>
+<li>系统：泛指由一群有关联的个体组成，根据某种规则运作，能完成个别元件不能独立完成的工作能力的群体</li>
+<li>子系统：一群关联的个体组成的系统，多半是更大系统中的一部分</li>
+</ol>
+<h4 id="2-模块和组件"><a href="#2-模块和组件" class="headerlink" title="2. 模块和组件"></a>2. 模块和组件</h4><ol>
+<li>区分逻辑：两者都是系统组成的部分，从不同的角度拆分</li>
+<li>模块：根据逻辑单位划分； 将复杂的问题简单化，可以系统、子系统、服务、函数、功能模块</li>
+<li>组件：根据物理文件单位划分；可以是数据库、nginx、ui组件等技术组件</li>
+</ol>
+<h4 id="3-框架和架构"><a href="#3-框架和架构" class="headerlink" title="3. 框架和架构"></a>3. 框架和架构</h4><ol>
+<li><strong>框架是规范</strong>，如开源框架：Ruby on Rails、Spring、Laravel、Django等，这是可以拿来直接使用或者在此基础上二次开发</li>
+<li><strong>架构是结构，软件系统的顶层结构</strong>。架构是指经过系统性思考，权衡利弊之后在现有的资源约束下的最合理决策，最终明确的系统骨架：包括子系统、模块、组件以及他们之间的关系， 约束规范，指定原则，并且由它来指导团队中的每个人思想层面一致<ol>
+<li>系统性思考的合理决策：技术选型、解决方案</li>
+<li>明确系统骨架：明确系统有哪些组成部分</li>
+<li>系统协作关系：各组成部分如何协作来实现业务请求</li>
+<li>约束规范和指导原则：保证系统有序、高效、稳定运行</li>
+</ol>
+</li>
+</ol>
+<ol start="3">
+<li><strong>架构师具备的能力</strong><br>架构师思考的问题：如何针对当前需求，选择合适的应用架构，如何面对未来，保证架构平滑过渡   <ol>
+<li>理解业务</li>
+<li>全局把控</li>
+<li>选择合适技术</li>
+<li>解决关键问题</li>
+<li>指导研发落地实施   </li>
+</ol>
+</li>
+</ol>
+<h4 id="4-架构分层和分类"><a href="#4-架构分层和分类" class="headerlink" title="4. 架构分层和分类"></a>4. 架构分层和分类</h4><h5 id="1-业务架构"><a href="#1-业务架构" class="headerlink" title="1. 业务架构"></a>1. 业务架构</h5><ol>
+<li>介绍：业务架构包括业务规划、业务流程、对整个系统的业务进行拆分、对领域模型进行设计、把现实的业务转化成抽象对象</li>
+<li>原则：没有最优的架构，只有最合适的架构，一切系统设计原则都是要以解决业务问题为最终目标，脱离实际业务的技术情怀架构往往会给系统带来大坑。合理的架构能够提前预见业务发展1-2年为宜。<h5 id="2-应用架构"><a href="#2-应用架构" class="headerlink" title="2. 应用架构"></a>2. 应用架构</h5></li>
+<li>介绍：应用作为独立可部署的单元，为系统划分了明确边界，深刻影响系统功能组织、代码开发、部署和运维等各方面</li>
+<li>关键点：<ol>
+<li>职责划分：明确应用（各个逻辑模块和子系统）的边界：逻辑分层、子系统和模块定义</li>
+<li>职责之间的协作：接口协议（应用对外输出的接口）、协议关系（应用之间的调用关系）<h5 id="3-数据架构"><a href="#3-数据架构" class="headerlink" title="3. 数据架构"></a>3. 数据架构</h5></li>
+</ol>
+</li>
+<li>介绍：数据架构指导数据库和缓存设计<h5 id="4-代码-开发架构"><a href="#4-代码-开发架构" class="headerlink" title="4. 代码/开发架构"></a>4. 代码/开发架构</h5></li>
+<li>代码单元：配置设计；框架、类库</li>
+<li>代码单元组织：编码规范、编码惯例；项目模块划分；顶层文件结构设计；依赖关系<h5 id="5-技术架构"><a href="#5-技术架构" class="headerlink" title="5. 技术架构"></a>5. 技术架构</h5></li>
+</ol>
+<h5 id="6-部署架构"><a href="#6-部署架构" class="headerlink" title="6. 部署架构"></a>6. 部署架构</h5><p>介绍：拓扑架构，包括架构部署几个节点、节点之间的关系、服务的高可用、网络路口和协议，决定了应用如何运行，运行的性能、可维护、可扩展性， 这是所有架构的基础。</p>
+<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><h4 id="1-什么是设计模式"><a href="#1-什么是设计模式" class="headerlink" title="1. 什么是设计模式"></a>1. 什么是设计模式</h4><p>模式就是经验，设计模式就是设计经验，有了这些经验，我们就能在特定情况下使用特定的设计、组合设计，这样可以大大节省我们的设计时间，提高工作效率。</p>
+<h4 id="2-架构方面设计模式分类"><a href="#2-架构方面设计模式分类" class="headerlink" title="2. 架构方面设计模式分类"></a>2. 架构方面设计模式分类</h4><ol>
+<li>单库单应用模式：结构简单、开发速度快、为原型验证和用户少的应用设计</li>
+<li>内容分发模式：目前用的比较多</li>
+<li>查询分离模式：对于大并发的查询、业务</li>
+<li>微服务模式：适用于复杂的业务模式的拆解</li>
+<li>多级缓存模式：可以把缓存玩的很好</li>
+<li>分库分表模式：解决单机数据库瓶颈</li>
+<li>弹性伸缩模式：解决波峰波谷业务流量不均匀的方法之一</li>
+<li>多机房模式：解决高可用、高性能的一种方法</li>
+</ol>
+<h5 id="a-单库单应用模式"><a href="#a-单库单应用模式" class="headerlink" title="a. 单库单应用模式"></a>a. 单库单应用模式</h5><ol>
+<li>优点：结构简单、开发速度快、实现简单，可用于产品的第一版等有原型验证需求、用户少的设计。</li>
+<li>缺点：性能差、基本没有高可用、扩展性差，不适用于大规模部署、应用等生产环境。<br><img src="/img/arc1.jpeg" style="max-width:95%"></li>
+</ol>
+<h5 id="b-内容分发模式"><a href="#b-内容分发模式" class="headerlink" title="b. 内容分发模式"></a>b. 内容分发模式</h5><p>基本上所有的大型的网站都有或多或少的采用这一种设计模式，常见的应用场景是使用CDN技术把网页、图片、CSS、JS等这些静态资源分发到离用户最近的服务器。<br><img src="/img/arc2.jpeg" style="max-width:95%"></p>
+<h5 id="c-查询分离模式"><a href="#c-查询分离模式" class="headerlink" title="c. 查询分离模式"></a>c. 查询分离模式</h5><p>这种模式主要解决单机数据库压力过大，从而导致业务缓慢甚至超时，查询响应时间变长的问题，也包括需要大量数据库服务器计算资源的查询请求。这个可以说是单库单应用模式的升级版本，也是技术架构迭代演进过程中的必经之路<br><img src="/img/arc3.jpeg" style="max-width:95%"></p>
+<p>使用场景：</p>
+<ol>
+<li><p>场景一：全文关键词检索</p>
+<blockquote>
+<p>我想这个需求，绝大多数应用都会有，如果使用传统的数据库技术，大部分可能都会使用like这种SQL语句，高级一点可能是先分词，然后通过分词index相关的记录。SQL语句的性能问题与全表扫描机制导致了非常严重的性能问题，现在基本上很少见到。这里的ES是ElasticSearch的缩写，是一种查询引擎。<br>a. 服务端把一条业务数据落库<br>b. 服务端异步把该条数据发送到ES<br>c. ES把该条记录按照规则、配置放入自己的索引库<br>d. 客户端查询的时候，由服务端把这个请求发送到ES，得到数据后，根据需求拼装、组合数据，返回给客户端</p>
+</blockquote>
+</li>
+<li><p>场景二：大量的普通查询</p>
+<blockquote>
+<p>这个场景是指我们的业务中的大部分辅助性的查询，如：取钱的时候先查询一下余额，根据用户的ID查询用户的记录，取得该用户最新的一条取钱记录等。我们肯定是要天天要用的，而且用的还非常多。同时呢，我们的写入请求也是非常多的，导致大量的写入、查询操作压向同一数据库，然后，数据库挂了，系统挂了。所以要求我们必须分散数据库的压力，一个业界较成熟的方案就是数据库的读写分离，写的时候入主库，读的时候读从库。这样就把压力分散到不同的数据库了，如果一个读库性能不行，扛不住的话，可以一主多从，横向扩展。<br>a.服务端把一条业务数据落库<br>b.数据库同步或异步或半同步把该条数据复制到从库<br>c.服务端读数据的时候直接去从库读相应的数据</p>
+</blockquote>
+</li>
+</ol>
+<h5 id="d-微服务模式"><a href="#d-微服务模式" class="headerlink" title="d. 微服务模式"></a>d. 微服务模式</h5><p>我把业务分块，做了垂直切分，切成一个个独立的系统，每个系统各自衍化，有自己的库、缓存、ES等辅助系统，系统之间的实时交互通过RPC，异步交互通过MQ，通过这种组合，共同完成整个系统功能。 那么，这么做是否真的解决上述问题了呢？不玩虚的，一个个来说。对于问题一，由于拆分成了多个子系统，系统的压力被分散了，而各个子系统都有自己的数据库实例，所以数据库的压力变小。</p>
+<p><img src="/img/arc4.jpeg" style="max-width:95%"></p>
+<blockquote>
+<p><strong>优点如下：</strong><br>a.对于问题二，一个子系统A的数据库挂了，只是影响到系统A和使用系统A的那些功能，不会所有的功能不可用，从而解决一个数据库挂了，导致所有功能不可用的问题。<br>b.问题三、四，也因为拆分得到了解决，各个子系统有自己独立的GIT代码库，不会相互影响。通用的模块可通过库、服务、平台的形式解决。<br>c.问题五，子系统A发生改变，需要上线，那么我只需要编译A，然后上线就可以了，不需要其他系统做同样的事情。<br>d.问题六，顺应了康威定律，我部门该干什么事、输出什么，也通过服务的形式暴露出来，我部只管把我部的职责、软件功能做好就可以。<br>e.问题七，所有需要我部数据的需求，都通过接口的形式发布出去，客户通过接口获取数据，从而屏蔽了底层数据库结构，甚至数据来源，我部只需保证我部的接口契约没有发生变化即可，新的需求增加新的接口，不会影响老的接口。<br>f.问题八，不同的子系统需要不同的权限，这个问题也优雅的解决了。<br>g.问题九，暂时控制住了复杂性，我只需控制好大的方面，定义好系统边界、接口、大的流程，然后再分而治之、逐个击破、合纵连横。</p>
+</blockquote>
+<p><strong>另外，对于这个模式来说，最难把握的是度，切记不要切分过细，我见过一个功能一个子系统，上百个方法分成上百个子系统的，真的是太过度了。实践中，一个较为可行的方法是：能不分就不分，除非有非常必要的理由！。</strong></p>
+<h5 id="e-多级缓存模式"><a href="#e-多级缓存模式" class="headerlink" title="e. 多级缓存模式"></a>e. 多级缓存模式</h5><p><img src="/img/arc5.jpeg" style="max-width:95%"></p>
+<p><strong>客户端处缓存 –&gt; API网关处缓存 –&gt; 后端业务处</strong></p>
+<ol>
+<li>优点：抗住大量读请求，减少后端压力。</li>
+<li>缺点：数据一致性问题较突出，容易发生雪崩，即：如果客户端缓存失效、API网关缓存失效，那么所有的大量请求瞬间压向后端业务系统，后果可想而知。</li>
+</ol>
+<h5 id="f-分库分表模式"><a href="#f-分库分表模式" class="headerlink" title="f. 分库分表模式"></a>f. 分库分表模式</h5><p>这种模式主要解决单表写入、读取、存储压力过大，从而导致业务缓慢甚至超时，交易失败，容量不够的问题。一般有水平切分和垂直切分两种，这里主要介绍水平切分</p>
+<p><img src="/img/arc6.jpeg" style="max-width:95%"></p>
+<p>如上图所示红色部分，把一张表分到了几个不同的库中，从而分担压力</p>
+<p>主机：硬件，指一台物理机，或者虚拟机，有自己的CPU，内存，硬盘等。</p>
+<p>实例：数据库实例，如一个MySQL服务进程。一个主机可以有多个实例，不同的实例有不同的进程，监听不同的端口。 </p>
+<p>库：指表的集合，如学校库，可能包含教师表、学生表、食堂表等等，这些表在一个库中。一个实例中可以有多个库。库与库之间用库名来区分。 </p>
+<p>表：库中的表，不必多说，不懂的就不用往下看了，不解释。</p>
+<p><strong>a. 优点：减少数据库单表的压力。</strong></p>
+<p><strong>b. 缺点：事务保证困难、业务逻辑需要做大量改造。</strong></p>
+<h5 id="h-弹性伸缩模式"><a href="#h-弹性伸缩模式" class="headerlink" title="h. 弹性伸缩模式"></a>h. 弹性伸缩模式</h5><p>这种模式主要解决突发流量的到来，导致无法横向扩展或者横向扩展太慢，进而影响业务，全站崩溃的问题。</p>
+<p><img src="/img/arc7.jpeg" style="max-width:95%"></p>
+<p>首先把所有的计算资源整合成资源池的概念，然后通过一些策略、监控、服务，动态的从资源池中获取资源，用完后在放回到池子中，供其他系统使用。具体实现上比较成熟的两种资源池方案是VM、docker，每个都有着自己强大的生态。监控的点有CPU、内存、硬盘、网络IO、服务质量等，根据这些，在配合一些预留、扩张、收缩策略，就可以简单的实现自动伸缩。</p>
+<p>优点：弹性、随需计算，充分优化企业计算资源。</p>
+<p>缺点：应用要从架构层做到可横向扩展化改造、依赖的底层配套比较多，对技术水平、实力、应用规模要求较高。</p>
+<h5 id="i-多机房模式"><a href="#i-多机房模式" class="headerlink" title="i. 多机房模式"></a>i. 多机房模式</h5><p>这种模式主要解决不同地区高性能、高可用的问题。</p>
+<p><img src="/img/arc8.jpeg" style="max-width:95%"></p>
+<p>优点：高可用、高性能、异地多活。</p>
+<p>缺点：数据同步、数据一致性、请求路由。</p>
+<p><br><br><a href="https://mp.weixin.qq.com/s/2koujY54dUsNvmZ9KdueOg" target="_blank" rel="noopener">文章来源于</a><br><a href="https://mp.weixin.qq.com/s/7X_WdKXgI7Vglt3qstf-Ug" target="_blank" rel="noopener">文章来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

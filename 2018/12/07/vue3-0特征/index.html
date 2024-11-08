@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        vue3.0特征 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#新特征"><span class="toc-text">新特征</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数据监听由object-defineProperty变为Proxy。"><span class="toc-text">数据监听由object.defineProperty变为Proxy。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#runTime资源会更小（源码支持tree-shaking）"><span class="toc-text">runTime资源会更小（源码支持tree-shaking）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#时间分片"><span class="toc-text">时间分片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#flow变为type-script"><span class="toc-text">flow变为type-script</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#编译器重构"><span class="toc-text">编译器重构</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        vue3.0特征
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-12-07 11:31:24</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#vue" title="vue">vue</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#vue3.0" title="vue3.0">vue3.0</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="新特征"><a href="#新特征" class="headerlink" title="新特征"></a>新特征</h3><ol>
+<li>编译时候会对原生元素(div)和组件元素(component)进行分析对比，运行时候原生元素直接生成vitrual dom，组件元素就直接生成组件代码。</li>
+<li>优化slots生成，生成新的组件依赖关系，避免不必要的组件渲染。之前版本如果slots模板自身发生变化，会通知调用的父组件更新。现在利用scoped(范围、作用域)只更新子组件本身了。</li>
+<li>静态属性的提取。之前v2.x只对静态内容做直接输出，但是静态属性可以和静态内容一样不做比对直接输出。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;test&quot; class=&quot;test&quot;&gt;&#123;&#123; msg &#125;&#125;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="数据监听由object-defineProperty变为Proxy。"><a href="#数据监听由object-defineProperty变为Proxy。" class="headerlink" title="数据监听由object.defineProperty变为Proxy。"></a>数据监听由object.defineProperty变为Proxy。</h4><ol>
+<li><p>Object.defineProperty() 方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回这个对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">obj：必需。目标对象 </span><br><span class="line">prop：必需。需定义或修改的属性的名字</span><br><span class="line">descriptor：必需。目标属性所拥有的特性</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Proxy 对象用于定义基本操作的自定义行为（如属性查找，赋值，枚举，函数调用等）:<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy" target="_blank" rel="noopener">参考</a></p>
+<ol>
+<li>Proxy是lazy by default，初始化整个对象数据，当用某个属性用到才会被监听。</li>
+</ol>
+</li>
+</ol>
+<h4 id="runTime资源会更小（源码支持tree-shaking）"><a href="#runTime资源会更小（源码支持tree-shaking）" class="headerlink" title="runTime资源会更小（源码支持tree-shaking）"></a>runTime资源会更小（源码支持tree-shaking）</h4><ol>
+<li>源码支持tree-shaking结构, 之前的所有的功能都挂在vue对象上，vue3.x把不是必须的功能编译打包的时候按需引入。最最最基本核心代码大概10kg gziped压缩。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//Vue2.0</span><br><span class="line">import Vue from &apos;vue&apos;</span><br><span class="line">Vue.nextTick(() =&gt; &#123;&#125;)</span><br><span class="line">const obj =  Vue.observable(&#123;&#125;)</span><br><span class="line"></span><br><span class="line">//Vue3.0</span><br><span class="line">import &#123; nextTick, observable &#125; from &apos;vue&apos;</span><br><span class="line">nextTick(() =&gt; &#123;&#125;)</span><br><span class="line">const obj = observable(&#123;&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="时间分片"><a href="#时间分片" class="headerlink" title="时间分片"></a>时间分片</h4><ol>
+<li>cpu运行web程序机制是：主队列（主线程）需要完成所有主要任务（脚本的加载、渲染等），才能响应用户的操作。 这样用户的体验取决于Vue组件加载或者重新渲染的时间。</li>
+<li>Vue3的时间分片做法：将脚本运算过程切换成小段，并在每段执行完之后查看是否有用户输入处理。这样无论多少次渲染和重新渲染，应用程序都保持这响应状态。</li>
+</ol>
+<h4 id="flow变为type-script"><a href="#flow变为type-script" class="headerlink" title="flow变为type-script"></a>flow变为type-script</h4><h4 id="编译器重构"><a href="#编译器重构" class="headerlink" title="编译器重构"></a>编译器重构</h4><ol>
+<li>插件化设计，便于开发者参与其中。</li>
+<li>带位置的信息parser(source maps), 具体某个模板具体某一块出错信息。</li>
+<li>更好的IDE工具链（eslint、vscode）</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

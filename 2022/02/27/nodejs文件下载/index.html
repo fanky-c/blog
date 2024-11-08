@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        nodejs文件下载 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单文件下载"><span class="toc-text">简单文件下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#流式下载（大文件）"><span class="toc-text">流式下载（大文件）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下载进度条提示"><span class="toc-text">下载进度条提示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#断点续传"><span class="toc-text">断点续传</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态表格下载"><span class="toc-text">动态表格下载</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        nodejs文件下载
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-02-27 15:54:21</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#文件下载" title="文件下载">文件下载</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#流式下载" title="流式下载">流式下载</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#断点续传" title="断点续传">断点续传</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="简单文件下载"><a href="#简单文件下载" class="headerlink" title="简单文件下载"></a>简单文件下载</h3><p><strong>服务器上文件系统已经存在了某个文件，客户端请求下载直接把文件读了吐回去。设置 Content-Disposition 头部为 attachment 是关键，告诉浏览器应该下载这个文件</strong></p>
+<blockquote>
+<p>Content-Type: application/octet-stream告诉浏览器这是一个二进制文件。 Content-Disposition告诉浏览器这是一个需要下载的附件并告诉浏览器默认的文件名。<br>如果不添加Content-Disposition响应头，浏览器可能会下载或显示文件内容，不同浏览器的处理有所不同。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Koa <span class="keyword">from</span> <span class="string">'koa'</span>;</span><br><span class="line"><span class="keyword">import</span> Router <span class="keyword">from</span> <span class="string">'koa-router'</span>;</span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> fs <span class="keyword">from</span> <span class="string">'fs/promises'</span>; <span class="comment">// node版本必须在12</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa();</span><br><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> Router();</span><br><span class="line"></span><br><span class="line">router.get(<span class="string">'/download/simple'</span>, <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> file = <span class="keyword">await</span> fs.readFile(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/1.txt`</span>, <span class="string">'utf-8'</span>);</span><br><span class="line">  ctx.set(&#123;</span><br><span class="line">    <span class="string">'Content-Disposition'</span>: <span class="string">`attachment; filename=1.txt`</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  ctx.body = file;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(router.routes());</span><br><span class="line">app.listen(<span class="number">80</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="流式下载（大文件）"><a href="#流式下载（大文件）" class="headerlink" title="流式下载（大文件）"></a>流式下载（大文件）</h3><p><strong>Node无法将大文件一次性读取到进程内存里，这时候用流来解决。 此例子不设置 Content-Disposition 头部也是会下载的，因为 Content-Type 被设置为了 application/octet-stream，浏览器认为其是一个二进制流文件所以默认下载处理了</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">router.get(<span class="string">'/download/stream'</span>, <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> file = fs.createReadStream(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/1.txt`</span>);</span><br><span class="line">  ctx.set(&#123;</span><br><span class="line">    <span class="string">'Content-Disposition'</span>: <span class="string">`attachment; filename=1.txt`</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  ctx.body = file;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="下载进度条提示"><a href="#下载进度条提示" class="headerlink" title="下载进度条提示"></a>下载进度条提示</h3><p><strong>大文件下载进度显示，浏览器通过Content-Length来识别</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; PassThrough &#125; = <span class="built_in">require</span>(<span class="string">'stream'</span>);</span><br><span class="line">router.get(<span class="string">'/download/progress'</span>, <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; enable &#125; = ctx.query;</span><br><span class="line">  <span class="keyword">const</span> buffer = <span class="keyword">await</span> fsp.readFile(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/1.txt`</span>);</span><br><span class="line">  <span class="keyword">const</span> stream = <span class="keyword">new</span> PassThrough();</span><br><span class="line">  <span class="keyword">const</span> l = buffer.length;</span><br><span class="line">  <span class="keyword">const</span> count = <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">const</span> size = <span class="built_in">Math</span>.floor(l / count);</span><br><span class="line">  <span class="keyword">const</span> writeQuarter = <span class="function">(<span class="params">i = <span class="number">0</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> start = i * size;</span><br><span class="line">    <span class="keyword">const</span> end = i === count - <span class="number">1</span> ? l : (i + <span class="number">1</span>) * size;</span><br><span class="line">    stream.write(buffer.slice(start, end));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (end === l) &#123;</span><br><span class="line">      stream.end();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// Koa 不再知道文件大小和类型，并将文件分为 4 份，每份间隔 3 秒发送来模拟大文件下载。</span></span><br><span class="line">      setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> writeQuarter(i + <span class="number">1</span>), <span class="number">3000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 通过参数是否显示进度条，给出剩余下载时间</span></span><br><span class="line">  <span class="keyword">if</span> (!!enable) &#123;</span><br><span class="line">    ctx.set(&#123;</span><br><span class="line">      <span class="string">'Content-Length'</span>: <span class="string">`<span class="subst">$&#123;l&#125;</span>`</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ctx.set(&#123;</span><br><span class="line">    <span class="string">'Content-Type'</span>: <span class="string">'plain/txt'</span>,</span><br><span class="line">    <span class="string">'Content-Disposition'</span>: <span class="string">`attachment; filename=1.txt`</span>,</span><br><span class="line">    Connection: <span class="string">'keep-alive'</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  ctx.body = stream;</span><br><span class="line">  writeQuarter();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="断点续传"><a href="#断点续传" class="headerlink" title="断点续传"></a>断点续传</h3><p><strong>下载文件特别大时，常常也会因为网络不稳定导致下载中途断开而失败，</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getStartPos</span>(<span class="params">range = <span class="string">''</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> startPos = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> range === <span class="string">'string'</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> matches = <span class="regexp">/^bytes=([0-9]+)-$/</span>.exec(range);</span><br><span class="line">    <span class="keyword">if</span> (matches) &#123;</span><br><span class="line">      startPos = <span class="built_in">Number</span>(matches[<span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> startPos;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">router.get(<span class="string">'/download/partial'</span>, <span class="keyword">async</span> (ctx) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> range = ctx.get(<span class="string">'range'</span>);</span><br><span class="line">  <span class="keyword">const</span> start = getStartPos(range);</span><br><span class="line">  <span class="keyword">const</span> stat = <span class="keyword">await</span> fsp.stat(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/1.txt`</span>);</span><br><span class="line">  <span class="keyword">const</span> stream = fs.createReadStream(<span class="string">`<span class="subst">$&#123;__dirname&#125;</span>/1.txt`</span>, &#123;</span><br><span class="line">    start,</span><br><span class="line">    highWaterMark: <span class="built_in">Math</span>.ceil((stat.size - start) / <span class="number">4</span>),</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  stream.on(<span class="string">'data'</span>, (chunk) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Readed <span class="subst">$&#123;chunk.length&#125;</span> bytes of data.`</span>);</span><br><span class="line">    stream.pause();</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      stream.resume();</span><br><span class="line">    &#125;, <span class="number">3000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Start Pos: <span class="subst">$&#123;start&#125;</span>.`</span>);</span><br><span class="line">  <span class="keyword">if</span> (start === <span class="number">0</span>) &#123;</span><br><span class="line">    ctx.status = <span class="number">200</span>;</span><br><span class="line">    ctx.set(&#123;</span><br><span class="line">      <span class="string">'Accept-Ranges'</span>: <span class="string">'bytes'</span>,</span><br><span class="line">      <span class="string">'Content-Length'</span>: <span class="string">`<span class="subst">$&#123;stat.size&#125;</span>`</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    ctx.status = <span class="number">206</span>;</span><br><span class="line">    ctx.set(&#123;</span><br><span class="line">      <span class="string">'Content-Range'</span>: <span class="string">`bytes <span class="subst">$&#123;start&#125;</span>-<span class="subst">$&#123;stat.size - <span class="number">1</span>&#125;</span>/<span class="subst">$&#123;stat.size&#125;</span>`</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ctx.set(&#123;</span><br><span class="line">    <span class="string">'Content-Type'</span>: <span class="string">'application/octet-stream'</span>,</span><br><span class="line">    <span class="string">'Content-Disposition'</span>: <span class="string">`attachment; filename=1.txt`</span>,</span><br><span class="line">    Connection: <span class="string">'keep-alive'</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  ctx.body = stream;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="动态表格下载"><a href="#动态表格下载" class="headerlink" title="动态表格下载"></a>动态表格下载</h3><p><strong>实际业务问题：根据请求参数条件读取数据库的某张表的全部记录并导出为表格</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Controller.js</span></span><br><span class="line"><span class="keyword">const</span> sequelize = <span class="keyword">new</span> Sequelize(name, user, password, &#123;</span><br><span class="line">  dialect: <span class="string">'mysql'</span>,</span><br><span class="line">  host,</span><br><span class="line">  port,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">const</span> model = sequelize.import(<span class="string">'/path/to/model'</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; rows &#125; = <span class="keyword">await</span> model.findAndCountAll(&#123;</span><br><span class="line">  where: conditions,</span><br><span class="line">  attributes: [<span class="string">'f_user_id'</span>],</span><br><span class="line">  group: <span class="string">'f_user_id'</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> list = awaitPromise.all(</span><br><span class="line">  rows.map(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; f_user_id &#125; = item;</span><br><span class="line">    <span class="keyword">const</span> userRows = <span class="keyword">await</span> model.findAll(&#123;</span><br><span class="line">      where: &#123; ...conditions, f_user_id &#125;,</span><br><span class="line">      <span class="comment">// ordering, eager loading, ...</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// formating userRows -&gt; userData</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> userData;</span><br><span class="line">  &#125;)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> headers = [<span class="string">'ID'</span>, <span class="comment">/*...*/</span>];</span><br><span class="line"><span class="keyword">const</span> sheetData = [headers, ...list];</span><br><span class="line"></span><br><span class="line">ctx.attachment(<span class="string">`<span class="subst">$&#123;sheetName&#125;</span>.xlsx`</span>);</span><br><span class="line">ctx.body = <span class="keyword">await</span> exportXlsx(sheetName, sheetData);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// xlsx.js</span></span><br><span class="line"><span class="keyword">const</span> ExcelJS = <span class="built_in">require</span>(<span class="string">'exceljs'</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  exportXlsx: <span class="keyword">async</span> (name = <span class="string">'sheet'</span>, data) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> tempFilePath = <span class="string">`./xlsx/<span class="subst">$&#123;<span class="built_in">Date</span>.now()&#125;</span>.xlsx`</span>;</span><br><span class="line">    <span class="keyword">const</span> workbook = <span class="keyword">new</span> ExcelJS.stream.xlsx.WorkbookWriter(&#123; </span><br><span class="line">      filename: tempFilePath </span><br><span class="line">    &#125;); <span class="comment">// 创建一个流式写入器</span></span><br><span class="line">    <span class="keyword">const</span> sheet = workbook.addWorksheet(<span class="string">'My Sheet'</span>); <span class="comment">// 添加工作表</span></span><br><span class="line">    <span class="keyword">const</span> &#123; length &#125; = data;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">      sheet.addRow(data[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    sheet.commit(); <span class="comment">// 提交工作表</span></span><br><span class="line">    <span class="keyword">await</span> workbook.commit(); <span class="comment">// 交工作簿，即写入文件</span></span><br><span class="line">    <span class="keyword">return</span> fs.createReadStream(tempFilePath);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>待优化：</strong></p>
+<ol>
+<li>没考虑数据量的问题，当时数据超过几万条时候，nodejs的内存就会爆掉，进而退出进程</li>
+<li>数据查询逻辑不考虑性能，没考虑sql查询并发数问题</li>
+<li>没有考虑内存限制, exceljs提供了流api</li>
+</ol>
+<p><strong>优化措施：</strong></p>
+<ol>
+<li><p><strong>分段处理:</strong> 最简单的策略就是将几 w 条数据库数据按每组 1w 条分组，分批次处理。 利用流程控制库async</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> total = <span class="keyword">await</span> model.count(<span class="comment">/* ... */</span>)</span><br><span class="line"><span class="keyword">let</span> page = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> tasks = [];</span><br><span class="line"><span class="keyword">const</span> size = <span class="number">10000</span>;</span><br><span class="line"><span class="keyword">while</span> (total &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  tasks.push(<span class="function"><span class="params">()</span> =&gt;</span> queryModel(&#123;</span><br><span class="line">    limit: size,</span><br><span class="line">    offset: size * page</span><br><span class="line">  &#125;))</span><br><span class="line">  page++;</span><br><span class="line">  total -= size;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">await</span> <span class="keyword">async</span>.series(tasks);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>减少sql查询数:</strong> 源码中出现先 group by 查询出去重的 f_user_id 后，再来并发查询某一用户的所有记录。这里应该用 SQL 中的 IN 先查完再匹配处理: </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">model.findAll(&#123;</span><br><span class="line">  where: &#123;</span><br><span class="line">    ...conditions,</span><br><span class="line">    f_user_id: rows.map(<span class="function"><span class="params">x</span> =&gt;</span><span class="string">`<span class="subst">$&#123;x.f_user_id&#125;</span>`</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>流处理:</strong> 在上面的xlsx.js文件中，是先输出一个文件再使用fs.createReadStream流输出</p>
+<pre><code class="js"><span class="keyword">const</span> workbook = <span class="keyword">new</span> Excel.stream.xlsx.WorkbookWriter(options);
+<span class="keyword">const</span> sheet = workbook.addWorksheet(<span class="string">'My Sheet'</span>);
+<span class="comment">// ...</span>
+ctx.body = workbook.stream;
+</code></pre>
+</li>
+</ol>
+<p><br><br><a href="https://mp.weixin.qq.com/s/Jz_Xu6Np38TpdwFVUGNGdA" target="_blank" rel="noopener">文章来源</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

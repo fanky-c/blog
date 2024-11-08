@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        npm|yarn|pnpm区别 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#npm"><span class="toc-text">npm</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-原理"><span class="toc-text">1. 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-缺点"><span class="toc-text">2. 缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#yarn"><span class="toc-text">yarn</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-原理-1"><span class="toc-text">1. 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-yarn和npm区别"><span class="toc-text">2. yarn和npm区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pnpm"><span class="toc-text">pnpm</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-特点"><span class="toc-text">1. 特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-原理"><span class="toc-text">2. 原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-速度快"><span class="toc-text">1. 速度快</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-存储管理"><span class="toc-text">2. 存储管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-依赖管理"><span class="toc-text">3. 依赖管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-安全管理"><span class="toc-text">4. 安全管理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-日常使用"><span class="toc-text">3. 日常使用</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        npm|yarn|pnpm区别
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2022-02-07 16:54:02</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#npm、yarn和pnpm区别" title="npm、yarn和pnpm区别">npm、yarn和pnpm区别</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#yarn" title="yarn">yarn</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#pnpm" title="pnpm">pnpm</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h2><h3 id="1-原理"><a href="#1-原理" class="headerlink" title="1. 原理"></a>1. 原理</h3><p><img src="/img/npm4.png"></p>
+<ol>
+<li>检查.npmrc文件, 优先级为：项目级的.npmrc 文件 &gt; 用户级的.npmrc 文件&gt; 全局级的.npmrc文件 &gt; npm内置的.npmrc 文件</li>
+<li>检查有无lock文件</li>
+<li>无lock文件<ol>
+<li>从npm远程获取包信息</li>
+<li>根据package.json构建依赖树</li>
+<li>在缓存中依此查找依赖树中每个包<ol>
+<li>不存在缓存：<ol>
+<li>从npm包远程仓库下载包</li>
+<li>检查包的完整性</li>
+<li>检查不通过就重新下载</li>
+<li>检查通过<ol>
+<li>将下载的包复制到npm缓存目录</li>
+<li>将下载的包依照依赖树结构解压到node_modules</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>存在缓存：将缓存按照依赖结构解压到 node_modules</li>
+</ol>
+</li>
+<li>将包解压到 node_modules</li>
+<li>生成lock文件</li>
+</ol>
+</li>
+<li>有lock文件<ol>
+<li>检查package.json中依赖版本和是否和package-lock.json中的依赖有冲突</li>
+<li>如果没有冲突，直接跳过获取包的、构建依赖树、查找缓存后续过程相同</li>
+</ol>
+</li>
+</ol>
+<p><strong>1. 项目代码中引用了一个模块，模块查找流程如下</strong></p>
+<ol>
+<li>在当前模块路径下搜索</li>
+<li>在当前模块 node_modules 路径下搜素</li>
+<li>在上级模块的 node_modules 路径下搜索</li>
+<li>直到搜索到全局路径中的 node_modules</li>
+</ol>
+<p><strong>2. npm 3.x 新增扁平结构</strong></p>
+<ol>
+<li><strong>安装模块时，不管其是直接依赖还是子依赖的依赖，优先将其安装在node_modules根目录；当安装到相同模块时，判断已安装的模块版本是否符合新模块的版本范围，如果符合则跳过，如果不符合则在当前模块的node_modules下安装该模块。</strong> </li>
+<li><strong>解决了</strong><ol>
+<li>不同层级的依赖中， 可能引用同一个模块， 导致大量冗余</li>
+<li>在windows系统中，文件路径最大长度为260个字符，嵌套过深可能导致不可预祝的问题   </li>
+</ol>
+</li>
+</ol>
+<h3 id="2-缺点"><a href="#2-缺点" class="headerlink" title="2. 缺点"></a>2. 缺点</h3><ol>
+<li><strong>没有彻底解决扁平结构</strong><ol>
+<li>如果依赖的不同版本的包依然会存在嵌套问题<br><img width="80%" src="/img/npm5.jpeg"></li>
+</ol>
+</li>
+</ol>
+<h2 id="yarn"><a href="#yarn" class="headerlink" title="yarn"></a>yarn</h2><h3 id="1-原理-1"><a href="#1-原理-1" class="headerlink" title="1. 原理"></a>1. 原理</h3><p><img src="/img/yarn.webp"></p>
+<ol>
+<li><strong>A、检查（checking）:</strong>主要是检查项目中是否存在一些 npm 相关的配置文件，如 package-lock.json 等。如果存在，可能会警告提示，因为它们可能会存在冲突。在这一阶段，也会检查系统 OS、CPU 等信息。</li>
+<li><strong>B、解析包（resolving packages）:</strong> 在经过复杂的解析算法后，我们就确定了所有依赖的具体版本信息以及下载地址<ol>
+<li>首先获取项目 package.json 中声明的首层依赖，包括 dependencies, devDependencies, optionalDependencies 声明的依赖</li>
+<li>接着采用遍历首层依赖的方式获取依赖包的版本信息，以及递归查找每个依赖下嵌套依赖的版本信息，并将解析过和正在解析的包用一个 Set 数据结构来存储，这样就能保证同一个版本范围内的包不会被重复解析</li>
+</ol>
+</li>
+<li><strong>C、获取包（fetching packages）:</strong> 这一步主要是利用系统缓存，到缓存中找到具体的包资源(查看缓存：yarn cache dir)<ol>
+<li>首先会尝试在缓存中查找依赖包，如果没有命中缓存，则将依赖包下载到缓存中。（判断系统中存在符合 “cachefolder+slug+node_modules+pkg.name” 规则的路径）</li>
+<li>对于没有命中缓存的包，Yarn 会维护一个 fetch 队列，按照规则进行网络请求。这里也是 yarn 诞生之初解决 npm v3 安装缓慢问题的优化点，<strong>支持并行下载</strong></li>
+</ol>
+</li>
+<li><strong>D、链接包（linking dependencies:</strong> 这一步主要是将缓存中的依赖，复制到项目目录下，同时遵循扁平化原则  </li>
+<li><strong>F、构建包（building fresh packages）:</strong> 如果依赖包中存在二进制包需要进行编译，会在这一步进行。 </li>
+</ol>
+<h3 id="2-yarn和npm区别"><a href="#2-yarn和npm区别" class="headerlink" title="2. yarn和npm区别"></a>2. yarn和npm区别</h3><ol>
+<li>lockfile。package-lock.json 自带版本锁定+依赖结构，你想改动一些依赖，可能影响的范围要比表面看起来的复杂的多；而 yarn.lock 自带版本锁定，并没有确定的依赖结构，使用 yarn 管理项目依赖，需要 package.json + yarn.lock 共同确定依赖的结构</li>
+<li>依赖管理策略</li>
+<li>性能， yarn性能在有缓存、重新install的情况下会比npm好不少</li>
+</ol>
+<h2 id="pnpm"><a href="#pnpm" class="headerlink" title="pnpm"></a>pnpm</h2><h3 id="1-特点"><a href="#1-特点" class="headerlink" title="1. 特点"></a>1. 特点</h3><ol>
+<li>包安装速度极快</li>
+<li>磁盘空间利用非常高效</li>
+<li>支持 monorepo<br>之前对于多个项目的管理，我们一般都是使用多个 git 仓库，但 monorepo 的宗旨就是用一个 git 仓库来管理多个子项目，所有的子项目都存放在根目录的packages目录下，那么一个子项目就代表一个package</li>
+<li>安全性更高</li>
+</ol>
+<h3 id="2-原理"><a href="#2-原理" class="headerlink" title="2. 原理"></a>2. 原理</h3><h4 id="1-速度快"><a href="#1-速度快" class="headerlink" title="1. 速度快"></a>1. 速度快</h4><p><strong>在绝多大数场景下，pnpm包安装的速度都是明显优于npm/yarn，速度会比 npm/yarn快2-3倍</strong></p>
+<ol>
+<li>yarn PnP：直接去掉 node_modules，将依赖包内容写在磁盘，节省了 node 文件 I/O 的开销，这样也能提升安装速度。（具体原理见这篇文章<a href="https://loveky.github.io/2019/02/11/yarn-pnp/" target="_blank" rel="noopener">https://loveky.github.io/2019/02/11/yarn-pnp/</a>)</li>
+</ol>
+<h4 id="2-存储管理"><a href="#2-存储管理" class="headerlink" title="2. 存储管理"></a>2. 存储管理</h4><p><strong>a. 基于内容寻址的文件系统来存储磁盘上所有的文件</strong> </p>
+<ol>
+<li>不会重复安装同一个包: 如果 100 个项目都依赖 lodash，那么 lodash 很可能就被安装了 100 次，磁盘中就有 100 个地方写入了这部分代码， 使用 pnpm 只会安装一次，磁盘中只有一个地方写入</li>
+<li>即使一个包的不同版本，pnpm 也会极大程度地复用之前版本的代码：比如 lodash 有 100 个文件，更新版本之后多了一个文件，那么磁盘当中并不会重新写入 101 个文件，而是保留原来的 100 个文件的 hardlink，仅仅写入那一个新增的文件</li>
+</ol>
+<h4 id="3-依赖管理"><a href="#3-依赖管理" class="headerlink" title="3. 依赖管理"></a>3. 依赖管理</h4><h4 id="4-安全管理"><a href="#4-安全管理" class="headerlink" title="4. 安全管理"></a>4. 安全管理</h4><h3 id="3-日常使用"><a href="#3-日常使用" class="headerlink" title="3. 日常使用"></a>3. 日常使用</h3><ol>
+<li>pnpm install</li>
+<li>pnpm update</li>
+<li><p>pnpm uninstall</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 移除 axios </span></span><br><span class="line"><span class="comment">// --filter 来指定 package。</span></span><br><span class="line">pnpm uninstall axios --filter package-a</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>pnpm link</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将本地项目连接到另一个项目。注意，使用的是硬链接，而不是软链</span></span><br><span class="line">pnpm link ../../axios</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><br></p>
+<p><a href="https://jishuin.proginn.com/p/763bfbd3bcff" target="_blank" rel="noopener">文章来源</a></p>
+<p><a href="https://cloud.tencent.com/developer/article/1555982" target="_blank" rel="noopener">文章来源</a></p>
+<p><a href="https://jishuin.proginn.com/p/763bfbd655cc" target="_blank" rel="noopener">文章来源</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

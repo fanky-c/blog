@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        react学习笔记 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#事件处理"><span class="toc-text">事件处理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1，注意事项"><span class="toc-text">1，注意事项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2，向事件处理程序传递参数"><span class="toc-text">2，向事件处理程序传递参数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Redux"><span class="toc-text">Redux</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-介绍"><span class="toc-text">1, 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-工作流程"><span class="toc-text">2, 工作流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-组件拆分和react-redux、Provider、connect-连接器"><span class="toc-text">3,组件拆分和react-redux、Provider、connect(连接器)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#参考例子"><span class="toc-text">参考例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#React-router-v4版本"><span class="toc-text">React-router(v4版本)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1，-包的选择"><span class="toc-text">1， 包的选择</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2，路由不在集中存放一起，可以和Ui组件放在一起，成为组件的一部分。"><span class="toc-text">2，路由不在集中存放一起，可以和Ui组件放在一起，成为组件的一部分。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3，包含式路由与exact"><span class="toc-text">3，包含式路由与exact</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4，独立路由Switch"><span class="toc-text">4，独立路由Switch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5，link"><span class="toc-text">5，link</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6，异步加载路由和模块"><span class="toc-text">6，异步加载路由和模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-手动控制路由的跳转"><span class="toc-text">7, 手动控制路由的跳转</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#constructor-super-props"><span class="toc-text">constructor(super(props))</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#constructor-——构造方法"><span class="toc-text">constructor( )——构造方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#super-–-继承。"><span class="toc-text">super() – 继承。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#es5-new"><span class="toc-text">es5 new</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#es5和es6继承机制区别"><span class="toc-text">es5和es6继承机制区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#学习文章参考"><span class="toc-text">学习文章参考</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        react学习笔记
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-10-24 14:28:05</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#react" title="react">react</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#react-router" title="react-router">react-router</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#react-redux" title="react-redux">react-redux</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h3><h4 id="1，注意事项"><a href="#1，注意事项" class="headerlink" title="1，注意事项"></a>1，注意事项</h4><ul>
+<li>React事件绑定属性的命名采用驼峰式写法，而不是小写。</li>
+<li><p>如果是用jsx的语法需要穿一个函数作为事件处理函数，而不是一个字符串</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;button onClick=&#123;activateLasers&#125;&gt;</span><br><span class="line">  Activate Lasers</span><br><span class="line">&lt;<span class="regexp">/button&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 React 中另一个不同是你不能使用返回 false 的方式阻止默认行为。你必须明确的使用 preventDefault。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ActionLink</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">handleClick</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    e.preventDefault();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'The link was clicked.'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;a href=<span class="string">"#"</span> onClick=&#123;handleClick&#125;&gt;</span><br><span class="line">      Click me</span><br><span class="line">    &lt;<span class="regexp">/a&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ES6 class语法定义组件，事件处理器会成为类的一个方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Toggle</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">    <span class="keyword">this</span>.state = &#123;<span class="attr">isToggleOn</span>: <span class="literal">true</span>&#125;;</span><br><span class="line">    <span class="comment">// This binding is necessary to make `this` work in the callback</span></span><br><span class="line">    <span class="keyword">this</span>.handleClick = <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  handleClick() &#123;</span><br><span class="line">    <span class="keyword">this</span>.setState(<span class="function"><span class="params">prevState</span> =&gt;</span> (&#123;</span><br><span class="line">      isToggleOn: !prevState.isToggleOn</span><br><span class="line">    &#125;));</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;button onClick=&#123;<span class="keyword">this</span>.handleClick&#125;&gt;</span><br><span class="line">        &#123;<span class="keyword">this</span>.state.isToggleOn ? <span class="string">'ON'</span> : <span class="string">'OFF'</span>&#125;</span><br><span class="line">      &lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2，向事件处理程序传递参数"><a href="#2，向事件处理程序传递参数" class="headerlink" title="2，向事件处理程序传递参数"></a>2，向事件处理程序传递参数</h4><ul>
+<li><p>下面两种方式是等价的，分别通过 arrow functions 和 Function.prototype.bind 来为事件处理函数传递参数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;button onClick=&#123;(e) =&gt; <span class="keyword">this</span>.deleteRow(id, e)&#125;&gt;Delete Row&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">&lt;button onClick=&#123;this.deleteRow.bind(this, id)&#125;&gt;Delete Row&lt;/</span>button&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>箭头函数必须显示传递e, bind方式要隐示传递</p>
+</li>
+<li>通过bind 方式向监听函数传参，在类组件中定义的监听函数，事件对象 e 要排在所传递参数的后面<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Popper</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span></span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>()&#123;</span><br><span class="line">        <span class="keyword">super</span>();</span><br><span class="line">        <span class="keyword">this</span>.state = &#123;<span class="attr">name</span>:<span class="string">'Hello world!'</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    preventPop(name, e)&#123;    <span class="comment">//事件对象e要放在最后</span></span><br><span class="line">        e.preventDefault();</span><br><span class="line">        alert(name);</span><br><span class="line">    &#125;   </span><br><span class="line">    render()&#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            &lt;div&gt;</span><br><span class="line">                &lt;p&gt;hello&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">                &#123;/</span>* Pass params via bind() method. *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">                &lt;a href="https:/</span><span class="regexp">/reactjs.org" onClick=&#123;this.preventPop.bind(this,this.state.name)&#125;&gt;Click&lt;/</span>a&gt;</span><br><span class="line">            &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">        );</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Redux"><a href="#Redux" class="headerlink" title="Redux"></a>Redux</h3><h4 id="1-介绍"><a href="#1-介绍" class="headerlink" title="1, 介绍"></a>1, 介绍</h4><ul>
+<li>Store</li>
+<li>State</li>
+<li>Action</li>
+<li>Action Creator</li>
+<li>store.dispatch()</li>
+<li>Reducer</li>
+<li>store.subscribe()</li>
+</ul>
+<h4 id="2-工作流程"><a href="#2-工作流程" class="headerlink" title="2, 工作流程"></a>2, 工作流程</h4><ul>
+<li><p>首先，用户发出 Action</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.dispatch(action);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>然后，Store 自动调用 Reducer，并且传入两个参数：当前 State 和收到的 Action。 Reducer 会返回新的 State 。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> nextState = todoApp(previousState, action);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>State 一旦有变化，Store 就会调用监听函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.subscribe(listener)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以通过store.getState()得到当前状态。如果使用的是 React，这时可以触发重新渲染 View。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> newState = store.getState();</span><br><span class="line">component.setState(newState);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>参考[<a href="http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_one_basic_usages.html]" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2016/09/redux_tutorial_part_one_basic_usages.html]</a></p>
+<h4 id="3-组件拆分和react-redux、Provider、connect-连接器"><a href="#3-组件拆分和react-redux、Provider、connect-连接器" class="headerlink" title="3,组件拆分和react-redux、Provider、connect(连接器)"></a>3,组件拆分和react-redux、Provider、connect(连接器)</h4><ul>
+<li>在组件开发中，按职责我们可以划分：容器类组件、展示类组件，前者负责从state获取属性，后者负责渲染界面和自身的状态控制。</li>
+<li><p>react-redux 为 React 组件和 Redux 提供的 state 提供了连接。当然可以直接在 React 中使用 Redux：在最外层容器组件中初始化 store，然后将 state 上的属性作为 props 层层传递下去。但是这样并是我们推荐的状态管理方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class App extends Component&#123;</span><br><span class="line">  componentWillMount()&#123;</span><br><span class="line">    store.subscribe((state)=&gt;this.setState(state))</span><br><span class="line">  &#125;</span><br><span class="line">  render()&#123;</span><br><span class="line">    return &lt;Comp state=&#123;this.state&#125;</span><br><span class="line">                 onIncrease=&#123;()=&gt;store.dispatch(actions.increase())&#125;</span><br><span class="line">                 onDecrease=&#123;()=&gt;store.dispatch(actions.decrease())&#125;/&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>我们推荐的方式是react-redux：1，内容组件最外层包裹Provider，将之前创建的store作为prop传给Provider。Provider接收redux的createStore()的结果，并且放到context里，让子组件可以通过context属性直接获取到这个createStore的结果。且返回一个与store连接后的容器组件。2，Provider内的任何一个组件，如果需要使用state中的数据，就必须是「被 connect 过的」组件——使用connect方法对当前内容组件包装后的产物，connect会返回一个与store连接后的新组件。3，connect会返回一个与store连接后的新组件。会接收到mapStateToProps，会在内部subscribe全局state的改变，来判断props是否更改，如果需要更新，才触发更新。</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; Component &#125; from &apos;react&apos;;</span><br><span class="line">import PropTypes from &apos;prop-types&apos;;</span><br><span class="line">import &#123; connect &#125; from &apos;react-redux&apos;;</span><br><span class="line">import &#123; bindActionCreators &#125; from &apos;redux&apos;;</span><br><span class="line">import * as dictActions from &apos;../../actions/dict&apos;;</span><br><span class="line"></span><br><span class="line">class DictPage extends Component &#123;</span><br><span class="line">  constructor(props)&#123;</span><br><span class="line">    super(props);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  componentWillMount()&#123;</span><br><span class="line">     const &#123; getDictsResult &#125; = this.props;</span><br><span class="line">     getDictsResult(&#123;</span><br><span class="line">       q: &apos;good&apos;,</span><br><span class="line">       lang: &apos;en&apos;</span><br><span class="line">     &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  componentDidMount()&#123;</span><br><span class="line">    const &#123; dict &#125; = this.props;</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (&lt;div&gt;xxxxx&lt;/div&gt;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">//创建输入逻辑mapStateToProps,是store、state映射</span><br><span class="line">function mapStateToProps(state) &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    dict: state.dict.data.data</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//输出逻辑mapDispatchToProps，是dispatch映射</span><br><span class="line">function mapDispatchToProps(dispatch) &#123;</span><br><span class="line">  return bindActionCreators(dictActions, dispatch);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//把容器组件和ui组件结合导出</span><br><span class="line">export default connect(mapStateToProps, mapDispatchToProps)(DictPage);</span><br></pre></td></tr></table></figure>
+<h4 id="参考例子"><a href="#参考例子" class="headerlink" title="参考例子"></a>参考例子</h4><ul>
+<li>时间旅行案例：<a href="https://www.ibm.com/developerworks/cn/web/wa-manage-state-with-redux-p4-david-geary/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/web/wa-manage-state-with-redux-p4-david-geary/index.html</a></li>
+</ul>
+<h3 id="React-router-v4版本"><a href="#React-router-v4版本" class="headerlink" title="React-router(v4版本)"></a>React-router(v4版本)</h3><h4 id="1，-包的选择"><a href="#1，-包的选择" class="headerlink" title="1， 包的选择"></a>1， 包的选择</h4><ul>
+<li>浏览器用的router在react-router-dom里。所以浏览器里使用的时候只需要import react-router-dom就可以。react-router-native供React Native应用使用。</li>
+</ul>
+<h4 id="2，路由不在集中存放一起，可以和Ui组件放在一起，成为组件的一部分。"><a href="#2，路由不在集中存放一起，可以和Ui组件放在一起，成为组件的一部分。" class="headerlink" title="2，路由不在集中存放一起，可以和Ui组件放在一起，成为组件的一部分。"></a>2，路由不在集中存放一起，可以和Ui组件放在一起，成为组件的一部分。</h4><h4 id="3，包含式路由与exact"><a href="#3，包含式路由与exact" class="headerlink" title="3，包含式路由与exact"></a>3，包含式路由与exact</h4><ul>
+<li>如匹配 path=”/users” 的路由会匹配 path=”/“的路由，在页面中这两个模块会同时进行渲染，所以就多了exact。</li>
+</ul>
+<h4 id="4，独立路由Switch"><a href="#4，独立路由Switch" class="headerlink" title="4，独立路由Switch"></a>4，独立路由Switch</h4><ul>
+<li>采用Switch 只有一个路由会被渲染，并且总是渲染第一个匹配到的组件。</li>
+</ul>
+<h4 id="5，link"><a href="#5，link" class="headerlink" title="5，link"></a>5，link</h4><ul>
+<li>to（string / object）：要跳转的路径或地址；</li>
+<li>replace ：为 true 时，点击链接后将使用新地址替换掉访问历史记录里面的原地址。反之不会替换记录，默认为false。</li>
+<li>NavLink ：<navlink>是<link>的一个特定版本，会在匹配上当前URL的时候会给已经渲染的元素添加样式参数。</navlink></li>
+</ul>
+<h4 id="6，异步加载路由和模块"><a href="#6，异步加载路由和模块" class="headerlink" title="6，异步加载路由和模块"></a>6，异步加载路由和模块</h4><ul>
+<li><a href="https://www.jianshu.com/p/ba3c295be412" target="_blank" rel="noopener">参考</a></li>
+</ul>
+<h4 id="7-手动控制路由的跳转"><a href="#7-手动控制路由的跳转" class="headerlink" title="7, 手动控制路由的跳转"></a>7, 手动控制路由的跳转</h4><ul>
+<li><p>使用 withRouter高阶组件，提供了history让你使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import React from &quot;react&quot;;</span><br><span class="line">import &#123;withRouter&#125; from &quot;react-router-dom&quot;;</span><br><span class="line"></span><br><span class="line">class MyComponent extends React.Component &#123;</span><br><span class="line">  ...</span><br><span class="line">  myFunction() &#123;</span><br><span class="line">    this.props.history.push(&quot;/some/Path&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line">const MyComponent=withRouter(connect(mapStateToProps,mapDispatchToProps)(MyComponent))</span><br><span class="line">export default MyComponent;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用Context,在Router组件中通过Contex暴露了一个router对象。context增加了耦合难度尽量少用或者用在全局登录状态、颜色等等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import React from &quot;react&quot;;</span><br><span class="line">import PropTypes from &quot;prop-types&quot;;</span><br><span class="line"></span><br><span class="line">class MyComponent extends React.Component &#123;</span><br><span class="line">  static contextTypes = &#123;</span><br><span class="line">    router: PropTypes.object</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">  myFunction() &#123;</span><br><span class="line">    this.context.router.history.push(&quot;/some/Path&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>引入Redirect，重定向。</p>
+</li>
+<li><p>引入react-router-redux库，操作redux，进行时间旅行调试。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import React from &quot;react&quot;;</span><br><span class="line">import &#123; push &#125; from &apos;react-router-redux&apos;</span><br><span class="line">import PropTypes from &quot;prop-types&quot;;</span><br><span class="line"></span><br><span class="line">class MyComponent extends React.Component &#123;</span><br><span class="line">  static contextTypes = &#123;</span><br><span class="line">    store: PropTypes.object</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">  myFunction() &#123;</span><br><span class="line">    this.context.store.dispatch(push(&apos;path&apos;))</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="constructor-super-props"><a href="#constructor-super-props" class="headerlink" title="constructor(super(props))"></a>constructor(super(props))</h3><h4 id="constructor-——构造方法"><a href="#constructor-——构造方法" class="headerlink" title="constructor( )——构造方法"></a>constructor( )——构造方法</h4><ul>
+<li>ES6对类的默认方法，new命令生成实例自动调用，如果没有显示定义会默认添加空的constructor方法。</li>
+<li><p>es5没有继承写法，通过prototype来达到目的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//构造函数People</span><br><span class="line">   function People (name,age)&#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.age = age</span><br><span class="line">    &#125;</span><br><span class="line">    People.prototype.sayName = function()&#123;</span><br><span class="line">        return &apos;我的名字是：&apos;+this.name;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ES6中，可以通过class来实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class People&#123;</span><br><span class="line">        //构造方法constructor就等于上面的构造函数People</span><br><span class="line">        constructor(name,age)&#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">            this.age = age;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        sayName()&#123;</span><br><span class="line">            return &apos;我的名字是：&apos;+this.name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="super-–-继承。"><a href="#super-–-继承。" class="headerlink" title="super() – 继承。"></a>super() – 继承。</h4><ul>
+<li><p>子类是没有自己的this对象的，它只能继承自父类的this对象，然后对其进行加工，而super( )就是将父类中的this对象继承给子类的。没有super，子类就得不到this对象</p>
+<pre><code>class People{
+      constructor(name,age){
+          this.name = name;
+          this.age = age;
+      }
+      sayName(){
+          return &apos;我的名字是：&apos;+this.name;
+      }
+  }
+
+  class har extends People{
+      constructor(name,age,sex){
+          super(name,age);//调用父类的constructor(name,age)
+          this.sex = sex;
+      }
+      haha(){
+          return this.sex + &apos; &apos; + super.sayName();//调用父类的sayName() 
+      }
+  }
+</code></pre><h4 id="es5-new"><a href="#es5-new" class="headerlink" title="es5 new"></a>es5 new</h4></li>
+<li>1.生成一个空的对象并将其作为 this；</li>
+<li>2.将空对象的 <strong>proto</strong> 指向构造函数的 prototype；</li>
+<li>3.运行该构造函数；</li>
+<li>4.如果构造函数没有 return 或者 return 一个返回 this 值是基本类型，则返回this；如果 return 一个引用类型，则返回这个引用类型。</li>
+</ul>
+<h4 id="es5和es6继承机制区别"><a href="#es5和es6继承机制区别" class="headerlink" title="es5和es6继承机制区别"></a>es5和es6继承机制区别</h4><ul>
+<li>es5先创建子类的实例对象this，然后再将父类的方法添加到this上（ Parent.apply(this) ） </li>
+<li>ES6采用的是先创建父类的实例this（故要先调用 super( )方法），完后再用子类的构造函数修改this</li>
+</ul>
+<h3 id="学习文章参考"><a href="#学习文章参考" class="headerlink" title="学习文章参考"></a>学习文章参考</h3><ul>
+<li><a href="https://juejin.im/post/5b4de4496fb9a04fc226a7af" target="_blank" rel="noopener">https://juejin.im/post/5b4de4496fb9a04fc226a7af</a></li>
+</ul>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

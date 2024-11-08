@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Event Bus实现原理 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#vue、react不同组件怎么通信"><span class="toc-text">vue、react不同组件怎么通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vue"><span class="toc-text">Vue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#React"><span class="toc-text">React</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Event-Bus"><span class="toc-text">Event Bus</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Event Bus实现原理
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-12-23 17:14:51</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#vue/react通信" title="vue/react通信">vue/react通信</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Event Bus" title="Event Bus">Event Bus</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="vue、react不同组件怎么通信"><a href="#vue、react不同组件怎么通信" class="headerlink" title="vue、react不同组件怎么通信"></a>vue、react不同组件怎么通信</h3><h4 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h4><ol>
+<li>父子组件：props、$refs、$children</li>
+<li>子父组件：$parent、$emit自定义事件</li>
+<li>如果项目够复杂,可能需要Vuex等全局状态管理库通信</li>
+<li><p>非父子组件用Event Bus通信（$emit、$on）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//main.js</span><br><span class="line">var eventBus = &#123;</span><br><span class="line">  install(Vue,options) &#123;</span><br><span class="line">      Vue.prototype.$bus = vue</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Vue.use(eventBus);</span><br><span class="line"></span><br><span class="line">//children.js</span><br><span class="line">this.$bus.$emit(&apos;dosth&apos;, params);</span><br><span class="line"></span><br><span class="line">//children.js</span><br><span class="line">this.$bus.$on(&apos;dosth , (params)=&gt;&#123;&#125;); </span><br><span class="line">beforeDestory()&#123;</span><br><span class="line">  this.$bus.$off(&apos;dosth&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>$dispatch(vue2已经废除)和$broadcast(vue2已经废除)</p>
+</li>
+</ol>
+<h4 id="React"><a href="#React" class="headerlink" title="React"></a>React</h4><ol>
+<li><p>父子组件：props，如果父组件与子组件之间不止一个层级，可通过…运算符（Object 剩余和展开属性）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Child_1 extends Component&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return &lt;div&gt;</span><br><span class="line">      &lt;p&gt;&#123;this.props.msg&#125;&lt;/p&gt;</span><br><span class="line">      &lt;Child_1_1 &#123;...this.props&#125;/&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Child_1_1 extends Component&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return &lt;p&gt;&#123;this.props.msg&#125;&lt;/p&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>子父组件：props回调方法</p>
+</li>
+<li>项目复杂的话用Redux、Mobx等全局状态管理管库</li>
+<li>非父子组件,用发布订阅模式的Event模块</li>
+<li>用新的Context Api<ol>
+<li>父组件首先声明自己可以支持 context，定义 childContextTypes 方法。</li>
+<li>父组件需要定义方法，返回 context 对象，定义 getChildContext 方法。</li>
+<li>子组间声明自己需要使用 context，定义 contextTypes 方法。</li>
+</ol>
+</li>
+</ol>
+<h4 id="Event-Bus"><a href="#Event-Bus" class="headerlink" title="Event Bus"></a>Event Bus</h4><ol>
+<li>它实际上是发布订阅模式。</li>
+<li><p>实现流程</p>
+<ol>
+<li><p>实现类class</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class EventEmeitter&#123;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">       this._evt = this._evt || new Map();</span><br><span class="line">       this._maxListener = this._maxListener || 10;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>监听和触发</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class EventEmeitter&#123;</span><br><span class="line">  emit(type, ...args)&#123;</span><br><span class="line">       let handler;</span><br><span class="line">       handler = this._evt.get(type); //new Map()方法</span><br><span class="line">       if (args.length &gt; 0) &#123;</span><br><span class="line">           handler.apply(this, args);</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           handler.call(this);</span><br><span class="line">       &#125;</span><br><span class="line">       return true;</span><br><span class="line">  &#125;</span><br><span class="line">  on(type, fn)&#123;</span><br><span class="line">       if (!this._evt.get(type)) &#123;</span><br><span class="line">           this._evt.set(type, fn);</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

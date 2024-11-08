@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        egg学习文档 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Egg介绍"><span class="toc-text">Egg介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Egg设计原则"><span class="toc-text">Egg设计原则</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#插件机制"><span class="toc-text">插件机制</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#约定优先于配置"><span class="toc-text">约定优先于配置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Egg功能"><span class="toc-text">Egg功能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Egg内置对象"><span class="toc-text">Egg内置对象</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#继承Koa"><span class="toc-text">继承Koa</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-Application"><span class="toc-text">1. Application</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-Context"><span class="toc-text">2. Context</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-Request-amp-Response"><span class="toc-text">3. Request &amp; Response</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Egg框架扩展"><span class="toc-text">Egg框架扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#1-Controller"><span class="toc-text">1. Controller</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-Service"><span class="toc-text">2. Service</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-Helper"><span class="toc-text">3. Helper</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4-Config"><span class="toc-text">4. Config</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#5-Logger"><span class="toc-text">5. Logger</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#6-Subscription"><span class="toc-text">6. Subscription</span></a></li></ol></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        egg学习文档
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-06-27 20:31:36</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#Egg.js" title="Egg.js">Egg.js</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#Node.js框架" title="Node.js框架">Node.js框架</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="Egg介绍"><a href="#Egg介绍" class="headerlink" title="Egg介绍"></a>Egg介绍</h3><h4 id="Egg设计原则"><a href="#Egg设计原则" class="headerlink" title="Egg设计原则"></a>Egg设计原则</h4><h5 id="插件机制"><a href="#插件机制" class="headerlink" title="插件机制"></a>插件机制</h5><ol>
+<li>可以通过插件根据自己的业务定制配置。 例如MySQL数据库封装成了 egg-mysql, Nunjucks 模板封装成了 egg-view-nunjucks.</li>
+</ol>
+<h5 id="约定优先于配置"><a href="#约定优先于配置" class="headerlink" title="约定优先于配置"></a>约定优先于配置</h5><ol>
+<li><p>插件开发、配置、使用约定</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"dependencies"</span>: &#123;</span><br><span class="line">    <span class="string">"egg"</span>: <span class="string">"^2.0.0"</span>,</span><br><span class="line">    <span class="string">"egg-mysql"</span>: <span class="string">"^3.0.0"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// config/plugin.js</span></span><br><span class="line"><span class="comment">// config/plugin.$&#123;env&#125;.js/plugin.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  mysql: &#123;</span><br><span class="line">    enable: <span class="literal">true</span>,</span><br><span class="line">    package: <span class="string">'egg-mysql'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>项目目录结构约定</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">egg-project</span><br><span class="line">├── package.json</span><br><span class="line">├── app.js (可选)</span><br><span class="line">├── agent.js (可选)</span><br><span class="line">├── app</span><br><span class="line">|   ├── router.js  <span class="comment">//用于配置 URL 路由规则</span></span><br><span class="line">│   ├── controller  <span class="comment">//用于解析用户的输入，处理后返回相应的结果</span></span><br><span class="line">│   |   └── home.js</span><br><span class="line">│   ├── service (可选)  <span class="comment">//用于编写业务逻辑层</span></span><br><span class="line">│   |   └── user.js</span><br><span class="line">│   ├── middleware (可选) <span class="comment">//用于编写中间件</span></span><br><span class="line">│   |   └── response_time.js</span><br><span class="line">│   ├── schedule (可选)  <span class="comment">//用于定时任务</span></span><br><span class="line">│   |   └── my_task.js</span><br><span class="line">│   ├── public (可选)  <span class="comment">//放置静态资源</span></span><br><span class="line">│   |   └── reset.css</span><br><span class="line">│   ├── view (可选)    <span class="comment">//用于放置模板文件</span></span><br><span class="line">│   |   └── home.tpl</span><br><span class="line">│   └── extend (可选)   <span class="comment">//用于框架的扩展</span></span><br><span class="line">│       ├── helper.js (可选)</span><br><span class="line">│       ├── request.js (可选)</span><br><span class="line">│       ├── response.js (可选)</span><br><span class="line">│       ├── context.js (可选)</span><br><span class="line">│       ├── application.js (可选)</span><br><span class="line">│       └── agent.js (可选)</span><br><span class="line">├── config</span><br><span class="line">|   ├── plugin.js  <span class="comment">//用于配置需要加载的插件</span></span><br><span class="line">|   ├── plugin.local.js</span><br><span class="line">|   ├── config.default.js <span class="comment">//用于编写配置文件</span></span><br><span class="line">│   ├── config.prod.js</span><br><span class="line">|   ├── config.test.js (可选)</span><br><span class="line">|   ├── config.local.js (可选)</span><br><span class="line">|   └── config.unittest.js (可选)</span><br><span class="line">└── test</span><br><span class="line">    ├── middleware</span><br><span class="line">    |   └── response_time.test.js</span><br><span class="line">    └── controller</span><br><span class="line">        └── home.test.js</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Egg功能"><a href="#Egg功能" class="headerlink" title="Egg功能"></a>Egg功能</h3><h4 id="Egg内置对象"><a href="#Egg内置对象" class="headerlink" title="Egg内置对象"></a>Egg内置对象</h4><h5 id="继承Koa"><a href="#继承Koa" class="headerlink" title="继承Koa"></a>继承Koa</h5><h6 id="1-Application"><a href="#1-Application" class="headerlink" title="1. Application"></a>1. Application</h6><ol>
+<li><p>介绍</p>
+<ul>
+<li>Application 对象几乎可以在编写应用时的任何一个地方获取到</li>
+</ul>
+</li>
+<li><p>获取方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="params">app</span> =&gt;</span> &#123;</span><br><span class="line">  app.cache = <span class="keyword">new</span> Cache();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// app/controller/user.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> fetch() &#123;</span><br><span class="line">    <span class="comment">//第一种方法  </span></span><br><span class="line">    <span class="keyword">this</span>.ctx.body = <span class="keyword">this</span>.app.cache.get(<span class="keyword">this</span>.ctx.query.id);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//第二种方法： 和Koa一样 通过Context对象</span></span><br><span class="line">    <span class="comment">//this.ctx.body = this.ctx.app.cache.get(this.ctx.query.id);</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h6 id="2-Context"><a href="#2-Context" class="headerlink" title="2. Context"></a>2. Context</h6><ol>
+<li><p>介绍：</p>
+<ul>
+<li>Context 是一个请求级别的对象，继承自 Koa.Context。在每一次收到用户请求时，框架会实例化一个 Context 对象，这个对象封装了这次用户请求的信息，并提供了许多便捷的方法来获取请求参数或者设置响应信息。框架会将所有的 Service 挂载到 Context 实例上，一些插件也会将一些其他的方法和对象挂载到它上面</li>
+</ul>
+</li>
+<li><p>获取方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="params">app</span> =&gt;</span> &#123;</span><br><span class="line">  app.beforeStart(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> ctx = app.createAnonymousContext();</span><br><span class="line">    <span class="comment">// preload before app start</span></span><br><span class="line">    <span class="keyword">await</span> ctx.service.posts.load();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// app/middleware/index.js</span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// app/controller/home.js</span></span><br><span class="line"><span class="keyword">const</span> Controller = <span class="built_in">require</span>(<span class="string">'egg'</span>).Controller;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HomeController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> index() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; ctx &#125; = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">await</span> ctx.render(<span class="string">'index'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// app/schedule/refresh.js</span></span><br><span class="line">exports.task = <span class="keyword">async</span> ctx =&gt; &#123;</span><br><span class="line">  <span class="keyword">await</span> ctx.service.posts.refresh();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h6 id="3-Request-amp-Response"><a href="#3-Request-amp-Response" class="headerlink" title="3. Request &amp; Response"></a>3. Request &amp; Response</h6><ol>
+<li>介绍<ul>
+<li>Request &amp; Response是一个请求级别的对象，继承自 Koa.Request &amp; Koa.Response</li>
+</ul>
+</li>
+<li>获取方式<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// app/controller/user.js</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserController</span> <span class="keyword">extends</span> <span class="title">Controller</span> </span>&#123;</span><br><span class="line">  <span class="keyword">async</span> fetch() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; app, ctx &#125; = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">const</span> id = ctx.request.query.id;</span><br><span class="line">    ctx.response.body = app.cache.get(id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h5 id="Egg框架扩展"><a href="#Egg框架扩展" class="headerlink" title="Egg框架扩展"></a>Egg框架扩展</h5><h6 id="1-Controller"><a href="#1-Controller" class="headerlink" title="1. Controller"></a>1. Controller</h6><h6 id="2-Service"><a href="#2-Service" class="headerlink" title="2. Service"></a>2. Service</h6><h6 id="3-Helper"><a href="#3-Helper" class="headerlink" title="3. Helper"></a>3. Helper</h6><h6 id="4-Config"><a href="#4-Config" class="headerlink" title="4. Config"></a>4. Config</h6><h6 id="5-Logger"><a href="#5-Logger" class="headerlink" title="5. Logger"></a>5. Logger</h6><h6 id="6-Subscription"><a href="#6-Subscription" class="headerlink" title="6. Subscription"></a>6. Subscription</h6><p><a href="https://eggjs.org/zh-cn/basics/objects.html" target="_blank" rel="noopener">文章来源于egg中文文档</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

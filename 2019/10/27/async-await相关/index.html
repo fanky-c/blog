@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        async/await相关 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#async函数"><span class="toc-text">async函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#async介绍"><span class="toc-text">async介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#async使用"><span class="toc-text">async使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#await函数"><span class="toc-text">await函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#await使用"><span class="toc-text">await使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#await错误处理"><span class="toc-text">await错误处理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#async缺点以及优化方法"><span class="toc-text">async缺点以及优化方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        async/await相关
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-10-27 17:08:30</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#async" title="async">async</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#await" title="await">await</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="async函数"><a href="#async函数" class="headerlink" title="async函数"></a>async函数</h3><h4 id="async介绍"><a href="#async介绍" class="headerlink" title="async介绍"></a>async介绍</h4><ol>
+<li>返回值是Promise， 可以直接使用 then() 方法进行调用。</li>
+<li>更好的语义。async 和 await 相较于 * 和 yield 更加语义化</li>
+<li>让异步代码看起来更像同步代码</li>
+</ol>
+<h4 id="async使用"><a href="#async使用" class="headerlink" title="async使用"></a>async使用</h4><h3 id="await函数"><a href="#await函数" class="headerlink" title="await函数"></a>await函数</h3><h4 id="await使用"><a href="#await使用" class="headerlink" title="await使用"></a>await使用</h4><ol>
+<li>await这个关键字只能在使用async定义的函数里面使用。</li>
+<li></li>
+</ol>
+<h4 id="await错误处理"><a href="#await错误处理" class="headerlink" title="await错误处理"></a>await错误处理</h4><ol>
+<li>推荐await命令放在try/catch</li>
+<li>Promise的catch()捕获错误</li>
+</ol>
+<h3 id="async缺点以及优化方法"><a href="#async缺点以及优化方法" class="headerlink" title="async缺点以及优化方法"></a>async缺点以及优化方法</h3><h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>大量使用await函数，每个await将等待前一个Promise完成，这样会导致代码变慢（而实际上你想要的是promises同时开始处理，只对结果做同步处理）。</p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>方案： 在这里，我们将三个Promise对象存储在变量中，这样可以同时启动它们关联的进程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">function timeoutPromise(interval) &#123;</span><br><span class="line">  return new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">    setTimeout(function()&#123;</span><br><span class="line">      resolve(&quot;done&quot;);</span><br><span class="line">    &#125;, interval);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//优化前</span><br><span class="line">async function timeTest() &#123;</span><br><span class="line">  await timeoutPromise(3000);</span><br><span class="line">  await timeoutPromise(3000);</span><br><span class="line">  await timeoutPromise(3000);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//优化后</span><br><span class="line">async function timeTest() &#123;</span><br><span class="line">  const timeoutPromise1 = timeoutPromise(3000);</span><br><span class="line">  const timeoutPromise2 = timeoutPromise(3000);</span><br><span class="line">  const timeoutPromise3 = timeoutPromise(3000);</span><br><span class="line"></span><br><span class="line">  await timeoutPromise1;</span><br><span class="line">  await timeoutPromise2;</span><br><span class="line">  await timeoutPromise3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//测试</span><br><span class="line">let startTime = Date.now();</span><br><span class="line">timeTest().then(() =&gt; &#123;</span><br><span class="line">  let finishTime = Date.now();</span><br><span class="line">  let timeTaken = finishTime - startTime;</span><br><span class="line">  alert(&quot;Time taken in milliseconds: &quot; + timeTaken);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

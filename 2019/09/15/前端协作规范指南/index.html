@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        前端协作规范指南 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#为啥需要规范？"><span class="toc-text">为啥需要规范？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#工作流规范"><span class="toc-text">工作流规范</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-开发规范"><span class="toc-text">1.开发规范</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-构建规范"><span class="toc-text">2.构建规范</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-发布工作流规范"><span class="toc-text">3.发布工作流规范</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-CD持续交付-部署规范"><span class="toc-text">4.CD持续交付/部署规范</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-任务管理规范"><span class="toc-text">5.任务管理规范</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#技术栈规范"><span class="toc-text">技术栈规范</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#从技术框架角度"><span class="toc-text">从技术框架角度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#从团队角度"><span class="toc-text">从团队角度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#从业务角度"><span class="toc-text">从业务角度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#项目组织规范"><span class="toc-text">项目组织规范</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#项目组织结构"><span class="toc-text">项目组织结构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编码规范"><span class="toc-text">编码规范</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-javascript"><span class="toc-text">1.javascript</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-css"><span class="toc-text">2.css</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-html"><span class="toc-text">3.html</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-代码格式化"><span class="toc-text">4.代码格式化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Code-Review"><span class="toc-text">5.Code Review</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文档规范"><span class="toc-text">文档规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前后端协作规范"><span class="toc-text">前后端协作规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#技术沉淀"><span class="toc-text">技术沉淀</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        前端协作规范指南
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2019-09-15 21:34:41</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#前端规范" title="前端规范">前端规范</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#团队协作" title="团队协作">团队协作</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="为啥需要规范？"><a href="#为啥需要规范？" class="headerlink" title="为啥需要规范？"></a>为啥需要规范？</h3><ol>
+<li>降低新成员融入团队成本，同时也避免挖坑。</li>
+<li>提高开发效率、团队协作效率，降低沟通成功。</li>
+<li>实现代码风格高度统一，方便review,可以提高代码可维护性。</li>
+<li>规范是实现自动化基础。</li>
+</ol>
+<h3 id="工作流规范"><a href="#工作流规范" class="headerlink" title="工作流规范"></a>工作流规范</h3><h4 id="1-开发规范"><a href="#1-开发规范" class="headerlink" title="1.开发规范"></a>1.开发规范</h4><ol>
+<li>版本规范，大小版本号</li>
+<li>项目分支规范(mastet、dev、hotfix、feature-xxx)</li>
+<li>提交信息规范，不符合规范的代码和git提交信息不能入库。有利于review和自动化生成CHANGELOG</li>
+</ol>
+<h4 id="2-构建规范"><a href="#2-构建规范" class="headerlink" title="2.构建规范"></a>2.构建规范</h4><ol>
+<li>约定优先配置。</li>
+<li>方便升级。可以参考vue-cli、create-react-app等等</li>
+</ol>
+<h4 id="3-发布工作流规范"><a href="#3-发布工作流规范" class="headerlink" title="3.发布工作流规范"></a>3.发布工作流规范</h4><ol>
+<li>代表变更</li>
+<li>提交代码变更到远程版本库</li>
+<li>程序通过CI(持续集成)测试</li>
+<li>合并到master分支</li>
+<li>生成和提交CHANGELOG</li>
+<li>打上Tag</li>
+<li>推送</li>
+</ol>
+<h4 id="4-CD持续交付-部署规范"><a href="#4-CD持续交付-部署规范" class="headerlink" title="4.CD持续交付/部署规范"></a>4.CD持续交付/部署规范</h4><h4 id="5-任务管理规范"><a href="#5-任务管理规范" class="headerlink" title="5.任务管理规范"></a>5.任务管理规范</h4><ol>
+<li>看板是目前最为流行的任务管理工具。</li>
+<li>图标类：甘特图。</li>
+<li>工具类：Trello等</li>
+</ol>
+<h3 id="技术栈规范"><a href="#技术栈规范" class="headerlink" title="技术栈规范"></a>技术栈规范</h3><h4 id="从技术框架角度"><a href="#从技术框架角度" class="headerlink" title="从技术框架角度"></a>从技术框架角度</h4><ol>
+<li>选择成长性的技术框架，要面向未来面向未来。例如选择Vue、React等有大厂支撑、社区的活跃度、开发活跃度。</li>
+<li>API稳定。考虑业务升级改造的成本。</li>
+<li>生态系统是否完善。相关的组件是否齐全，社区的开发人员贡献。</li>
+</ol>
+<h4 id="从团队角度"><a href="#从团队角度" class="headerlink" title="从团队角度"></a>从团队角度</h4><ol>
+<li>选择团队最熟悉的技术；很好的控制使用过程中的风险，方便对程序进行调优。</li>
+<li>从团体成长角度上看，可以选择新技术。作为leader需要考虑的是：<ol>
+<li>学习成本。考虑团队成员的接纳能力。如果成本小于收获的利益，在团队里面推行估计阻力会比较大</li>
+<li>收益。是否能够解决当前的某些痛点</li>
+<li>风险。一般我们不能将一个实验阶段的技术使用的生产环境中</li>
+</ol>
+</li>
+</ol>
+<h4 id="从业务角度"><a href="#从业务角度" class="headerlink" title="从业务角度"></a>从业务角度</h4><ol>
+<li>理解当前的业务，理解用户的需求，当下需要解决的首要问题，以及可能有的风险是那些。<br>将目标进行分解，进行具体技术选型、模式设计、架构设计。</li>
+</ol>
+<h3 id="项目组织规范"><a href="#项目组织规范" class="headerlink" title="项目组织规范"></a>项目组织规范</h3><h4 id="项目组织结构"><a href="#项目组织结构" class="headerlink" title="项目组织结构"></a>项目组织结构</h4><ol>
+<li>README.md:</li>
+<li>CHANGELOG.md:</li>
+<li>package.json:</li>
+<li>.gitignore: </li>
+<li>.gitattributes: git配置，有一些跨平台差异的行为可能需要在这里配置一下，如换行规则</li>
+<li>docs/: 项目的细化文档, 可选.</li>
+<li>build: 项目工具类脚本放置在这里，非必须。如果使用统一构建工具，则没有这个目录</li>
+<li>dist/: 项目构建结果输出目录</li>
+<li>src/: 源代码目录</li>
+<li>tests/: 单元测试目录. 按照Jest规范, <strong>tests</strong>目录通常和被测试的模块在同一个父目录下</li>
+<li>envConfig: 环境变量配置 </li>
+</ol>
+<h3 id="编码规范"><a href="#编码规范" class="headerlink" title="编码规范"></a>编码规范</h3><h4 id="1-javascript"><a href="#1-javascript" class="headerlink" title="1.javascript"></a>1.javascript</h4><ol>
+<li>工具：eslint</li>
+<li>规范：业界Airbnb规范</li>
+<li>类型检测：Flow、Typescript(个人推荐)</li>
+</ol>
+<h4 id="2-css"><a href="#2-css" class="headerlink" title="2.css"></a>2.css</h4><ol>
+<li>工具：stylelint</li>
+<li>规范： Airbnb css/ Sass Styleguide</li>
+<li>方法论： BEM命名规范</li>
+</ol>
+<h4 id="3-html"><a href="#3-html" class="headerlink" title="3.html"></a>3.html</h4><h4 id="4-代码格式化"><a href="#4-代码格式化" class="headerlink" title="4.代码格式化"></a>4.代码格式化</h4><ol>
+<li>工具：Prettier,代码格式化都可以交给他。</li>
+</ol>
+<h4 id="5-Code-Review"><a href="#5-Code-Review" class="headerlink" title="5.Code Review"></a>5.Code Review</h4><ol>
+<li>code review好处<ol>
+<li>让其他成员快速熟悉代码</li>
+<li>让开发者提高自的代码质量</li>
+<li>提高成员的编码质量</li>
+</ol>
+</li>
+</ol>
+<h3 id="文档规范"><a href="#文档规范" class="headerlink" title="文档规范"></a>文档规范</h3><h3 id="前后端协作规范"><a href="#前后端协作规范" class="headerlink" title="前后端协作规范"></a>前后端协作规范</h3><h3 id="技术沉淀"><a href="#技术沉淀" class="headerlink" title="技术沉淀"></a>技术沉淀</h3><p><a href="https://juejin.im/post/5d3a7134f265da1b5d57f1ed" target="_blank" rel="noopener">资料来源于掘金</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

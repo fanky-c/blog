@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <!--  禁止百度引擎抓取 -->
+    <meta name="Baiduspider" content="noarchive">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        nginx - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx常用操作"><span class="toc-text">nginx常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#开启"><span class="toc-text">开启</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#停止"><span class="toc-text">停止</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#A-从容停止-需要知道进程号"><span class="toc-text">A:从容停止  需要知道进程号:</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#B-强制停止"><span class="toc-text">B:强制停止</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#配置文件校验"><span class="toc-text">配置文件校验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#重启"><span class="toc-text">重启</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx的web请求处理机制"><span class="toc-text">Nginx的web请求处理机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正向代理和反向代理"><span class="toc-text">正向代理和反向代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#server-name-和-upstream-和-proxy-pass"><span class="toc-text">server_name 和 upstream 和 proxy_pass</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#server-name"><span class="toc-text">server_name</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#upstream"><span class="toc-text">upstream</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#proxy-pass"><span class="toc-text">proxy_pass</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#location-匹配规则"><span class="toc-text">location 匹配规则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-url匹配规则"><span class="toc-text">1. url匹配规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-匹配规则的优先顺序"><span class="toc-text">2. 匹配规则的优先顺序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-alias-和-root-的区别"><span class="toc-text">3. alias 和 root 的区别</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-root-实际访问文件路径会拼接URL中的路径"><span class="toc-text">1. root: 实际访问文件路径会拼接URL中的路径</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-alias-实际访问文件路径不会拼接URL中的路径"><span class="toc-text">2. alias: 实际访问文件路径不会拼接URL中的路径</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rewrite使用"><span class="toc-text">rewrite使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#rewrite-介绍"><span class="toc-text">rewrite 介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rewrite使用-1"><span class="toc-text">rewrite使用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1、语法"><span class="toc-text">1、语法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2、案例"><span class="toc-text">2、案例</span></a></li></ol></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        nginx
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-11-14 17:11:06</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#nginx" title="nginx">nginx</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#正向代理和反向代理" title="正向代理和反向代理">正向代理和反向代理</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#负载均衡" title="负载均衡">负载均衡</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="nginx常用操作"><a href="#nginx常用操作" class="headerlink" title="nginx常用操作"></a>nginx常用操作</h3><h4 id="开启"><a href="#开启" class="headerlink" title="开启"></a>开启</h4><ul>
+<li>第一种方法  格式为： ngin地址 -c nginx配置文件位置</li>
+<li>例如：/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf</li>
+</ul>
+<h4 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h4><h5 id="A-从容停止-需要知道进程号"><a href="#A-从容停止-需要知道进程号" class="headerlink" title="A:从容停止  需要知道进程号:"></a>A:从容停止  需要知道进程号:</h5><ul>
+<li>1,查看nginx进程号命令为:ps -ef|grep nginx  只需要查看master的进程号</li>
+<li>2,停止命令 kill -QUIT  进程号</li>
+</ul>
+<h5 id="B-强制停止"><a href="#B-强制停止" class="headerlink" title="B:强制停止"></a>B:强制停止</h5><ul>
+<li>kill -9 进程号</li>
+</ul>
+<h4 id="配置文件校验"><a href="#配置文件校验" class="headerlink" title="配置文件校验"></a>配置文件校验</h4><ul>
+<li>步骤一：进入sbin目录  命令 cd /usr/local/nginx/sbin  步骤二： ./nginx -t</li>
+<li>或者 sudo /usr/local/nginx/sbin/nginx -t</li>
+</ul>
+<h4 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h4><ul>
+<li>步骤一：进入sbin目录  命令 cd /usr/local/nginx/sbin  步骤二：./nginx -s reload</li>
+<li>或者 sudo /usr/local/nginx/sbin/nginx -s reload </li>
+</ul>
+<h3 id="Nginx的web请求处理机制"><a href="#Nginx的web请求处理机制" class="headerlink" title="Nginx的web请求处理机制"></a>Nginx的web请求处理机制</h3><p>Nginx结合多进程机制和异步机制对外提供服务，异步机制使用的是异步非阻塞方式。Nginx的master进程会生成多个worker进程，master进程负责管理这些worker进程的生命周期、接受外部命令、解析perl脚本等。而worker进程则用于接受和处理客户端请求。</p>
+<p>每个worker进程能够使用异步非阻塞方式处理多个客户端请求。当某个worker进程接收到客户端的请求后，会调用IO进程处理，如果不能立即得到结果，worker进程就去处理其他的请求。当IO返回结果后，就会通知worker进程，而worker进程得到通知后，就会挂起当前正在处理的事务，拿IO返回结果去响应客户端请求，worker进程采用的是epoll事件驱动模型与IO进行通信的。epoll模型底层采用的是“回调callback”代替里轮询，使效率高于select模型。</p>
+<h3 id="正向代理和反向代理"><a href="#正向代理和反向代理" class="headerlink" title="正向代理和反向代理"></a>正向代理和反向代理</h3><ol>
+<li>正向代理：<br>正向代理服务器是服务器的用户(客户端)架设的主机，与服务器无关，被访问的服务不知道用户真正的地址。 例如vpn访问</li>
+<li>反向代理：<br>反向代理服务器和目标服务器对外就是一个服务器，暴露的是代理服务器地址，隐藏了真实服务器IP地址，用户不知道访问的服务真正的地址。 例如proxy_pass</li>
+</ol>
+<p><img src="/img/ng1.png" style="max-width:95%"></p>
+<h3 id="server-name-和-upstream-和-proxy-pass"><a href="#server-name-和-upstream-和-proxy-pass" class="headerlink" title="server_name 和 upstream 和 proxy_pass"></a>server_name 和 upstream 和 proxy_pass</h3><h4 id="server-name"><a href="#server-name" class="headerlink" title="server_name"></a>server_name</h4><p> <strong><em>1. 介绍</em></strong><br> server name 为虚拟服务器（单一主机或主机群上运行多个网站或服务的技术）的识别路径。因此不同的域名会通过请求头中的HOST字段（http1.1以上支持），匹配到特定的server块，转发到对应的应用服务器中去。</p>
+<blockquote>
+<p>虚拟主机，就是将一台物理服务器虚拟为多个服务器来使用，从而实现在一台服务器上配置多个站点，即可以在一台物理主机上配置多个域名。Nginx中，一个server标签就是一台虚拟主机，配置多个server标签就虚拟出了多台主机。</p>
+</blockquote>
+<p> <strong><em>2. 使用</em></strong><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">	listen 80;</span><br><span class="line">	server_name www.123.com;</span><br><span class="line">	location / &#123;</span><br><span class="line">		default_type text/html;</span><br><span class="line">		content_by_lua &apos;</span><br><span class="line">			ngx.say(&quot;&lt;p&gt;first&lt;/p&gt;&quot;)</span><br><span class="line">		&apos;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">server &#123;</span><br><span class="line">	listen  80;</span><br><span class="line">	server_name www.zkh.com;</span><br><span class="line">	location / &#123;</span><br><span class="line">		default_type text/html;</span><br><span class="line">		content_by_lua &apos;</span><br><span class="line">			ngx.say(&quot;&lt;p&gt;second&lt;/p&gt;&quot;)</span><br><span class="line">		&apos;;        </span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">访问：www.123.com  --&gt; first</span><br><span class="line">访问：www.zkh.com --&gt; second</span><br></pre></td></tr></table></figure></p>
+<h4 id="upstream"><a href="#upstream" class="headerlink" title="upstream"></a>upstream</h4><p> <strong><em>1. 介绍</em></strong><br>   常用负载均衡：能够将客户端的请求均匀地分发到后台各个应用服务器上，从而缓解服务器压力；并且当服务器出现宕机或者扩容时，也能正常运行。</p>
+<p> <strong><em>2. 使用</em></strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">   upstream web &#123;</span><br><span class="line">    server 192.168.1.128:9200;</span><br><span class="line">    server 192.168.1.128:3000;</span><br><span class="line">   &#125;</span><br><span class="line">   server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line">        location /</span><br><span class="line">        &#123;</span><br><span class="line">            proxy_pass http://web;</span><br><span class="line">        &#125;</span><br><span class="line">    ｝</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="proxy-pass"><a href="#proxy-pass" class="headerlink" title="proxy_pass"></a>proxy_pass</h4><p><strong><em>1. 介绍</em></strong><br>反向代理：proxy_pass说明是动态请求，需要进行转发，比如代理到nodejs、java上</p>
+<h3 id="location-匹配规则"><a href="#location-匹配规则" class="headerlink" title="location 匹配规则"></a>location 匹配规则</h3><h4 id="1-url匹配规则"><a href="#1-url匹配规则" class="headerlink" title="1. url匹配规则"></a>1. url匹配规则</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location [=|~|~*|^~|@] /uri/ &#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>=： 精确匹配后面的url</li>
+<li>~： 正则匹配，区分大小写</li>
+<li>~*：正则匹配，不区分大小写</li>
+<li>^~：普通字符匹配， 如果该选项匹配，只匹配该选项， 一般用来匹配目录</li>
+<li>@： “@” 定义一个命名的 location，使用在内部定向时，例如 error_page</li>
+</ul>
+<h4 id="2-匹配规则的优先顺序"><a href="#2-匹配规则的优先顺序" class="headerlink" title="2. 匹配规则的优先顺序"></a>2. 匹配规则的优先顺序</h4><ul>
+<li>= 前缀的指令严格匹配这个查询。 如果找到则停止搜索</li>
+<li>所有剩下的常规字符串，最长的匹配。 如果这个匹配使用^~前缀，搜索停止</li>
+<li>正则表达式， 在配置文件中定义的顺序</li>
+<li>如果第3条规则产生匹配的话，结果被使用。 否则，使用第2条规则的结果</li>
+</ul>
+<h4 id="3-alias-和-root-的区别"><a href="#3-alias-和-root-的区别" class="headerlink" title="3. alias 和 root 的区别"></a>3. alias 和 root 的区别</h4><h5 id="1-root-实际访问文件路径会拼接URL中的路径"><a href="#1-root-实际访问文件路径会拼接URL中的路径" class="headerlink" title="1. root: 实际访问文件路径会拼接URL中的路径"></a>1. root: 实际访问文件路径会拼接URL中的路径</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location ^~ <span class="regexp">/tea/</span> &#123;  </span><br><span class="line">   root /usr/local/nginx/html/;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 请求：http://test.com/tea/tea1.html</span></span><br><span class="line"><span class="comment">// 实际访问：/usr/local/nginx/html/tea/tea1.html 文件</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-alias-实际访问文件路径不会拼接URL中的路径"><a href="#2-alias-实际访问文件路径不会拼接URL中的路径" class="headerlink" title="2. alias: 实际访问文件路径不会拼接URL中的路径"></a>2. alias: 实际访问文件路径不会拼接URL中的路径</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location ^~ <span class="regexp">/tea/</span> &#123;  </span><br><span class="line">   alias /usr/local/nginx/html/;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 请求：http://test.com/tea/tea1.html</span></span><br><span class="line"><span class="comment">// 实际访问：/usr/local/nginx/html/tea1.html 文件</span></span><br></pre></td></tr></table></figure>
+<h3 id="rewrite使用"><a href="#rewrite使用" class="headerlink" title="rewrite使用"></a>rewrite使用</h3><h4 id="rewrite-介绍"><a href="#rewrite-介绍" class="headerlink" title="rewrite 介绍"></a>rewrite 介绍</h4><ol>
+<li><p>从功能看 rewrite 和 location 似乎有点像，都能实现跳转，主要区别在于 rewrite是在同一域名内更改获取资源的路径，而 location 是对一类路径做控制访问或反向代理，还可以proxy_pass（代理转发）到其他机器。</p>
+</li>
+<li><p>rewrite只能放在server{ }，location{ }，if{ }中，并且默认只能对域名后边的除去传递的参数外的字符串起作用</p>
+</li>
+<li><p>例如http：//<a href="http://www.benet.com/abc/bbs/index.php?a=1&amp;b=2" target="_blank" rel="noopener">www.benet.com/abc/bbs/index.php?a=1&amp;b=2</a> 只对 /abc/bbs/index.php 重写</p>
+</li>
+</ol>
+<h4 id="rewrite使用-1"><a href="#rewrite使用-1" class="headerlink" title="rewrite使用"></a>rewrite使用</h4><h5 id="1、语法"><a href="#1、语法" class="headerlink" title="1、语法"></a>1、语法</h5><p>rewrite <regex> <replacement> [flag]</replacement></regex></p>
+<p><strong>flag不同参数：</strong></p>
+<p>last ∶本条规则匹配完成后，继续向下匹配新的location URL规则，一般用在 server和if中。</p>
+<p>break ∶本条规则匹配完成即终止，不再匹配后面的任何规则，一般使用在 location 中。</p>
+<p>redirect ∶返回302临时重定向，浏览器地址会显示跳转后的URL地址。</p>
+<p>permanent ∶返回301永久重定向，浏览器地址栏会显示跳转后的URL地址。</p>
+<h5 id="2、案例"><a href="#2、案例" class="headerlink" title="2、案例"></a>2、案例</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    <span class="comment"># 顺序执行如下两条rewrite指令 </span></span><br><span class="line">    rewrite ^/test1 /test2;</span><br><span class="line">    rewrite ^/test2 /test3;  <span class="comment"># 此处发起新一轮 location 匹配 URI为/test3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">    rewrite ^/test1 /test2;</span><br><span class="line">    rewrite ^/test2 /test3 last;  <span class="comment"># 此处发起新一轮location匹配 uri为/test3</span></span><br><span class="line">    rewrite ^/test3 /test4;</span><br><span class="line">    proxy_pass http://www.baidu.com;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">    rewrite ^/test1 /test2;</span><br><span class="line">    <span class="comment"># 此处不会发起新一轮location匹配；当是会终止执行后续rewrite模块指令重写后的 URI 为 /more/index.html</span></span><br><span class="line">    rewrite ^/test2 /more/index.html <span class="built_in">break</span>;  </span><br><span class="line">    rewrite /more/index\.html /test4; <span class="comment"># 这条指令会被忽略</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 因为 proxy_pass 不是rewrite模块的指令 所以它不会被 break终止</span></span><br><span class="line">    proxy_pass https://www.baidu.com;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 由于最后加了个 ?，原来的请求参数将不会被追加到 rewrite 之后的 URI 后面*</span></span><br><span class="line">rewrite ^/users/(.*)$ /show?user=<span class="variable">$1</span>? last;</span><br></pre></td></tr></table></figure>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>
