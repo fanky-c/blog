@@ -52,7 +52,7 @@ git reset commitID hello.php # 回退hello.php文件的版本到某一个版本
 git reset HEAD^ --hard
 ```
 
-### c、放弃本地分支所有修改，跟远程dev-test分支保持一致
+### c、放弃本地修改，用远程dev-test分支覆盖本地分支
 ```sh
 git fetch --all
 git reset --hard origin/dev-test
