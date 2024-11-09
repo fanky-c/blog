@@ -51,6 +51,13 @@ git reset commitID hello.php # 回退hello.php文件的版本到某一个版本
 ```sh
 git reset HEAD^ --hard
 ```
+
+### c、放弃本地分支所有修改，跟远程dev-test分支保持一致
+```sh
+git fetch --all
+git reset --hard origin/dev-test
+git pull
+```
 ## 远程仓库
 >git reset 是把HEAD向后移动了一下，而git revert是HEAD继续前进
 
