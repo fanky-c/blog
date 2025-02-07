@@ -156,16 +156,16 @@
 </li>
 <li><p>server -&gt; client  (syn + ack)</p>
 </li>
-<li><p>client -&gt; server  (ack + 内容) </p>
+<li><p>client -&gt; server  (ack + 内容)</p>
 </li>
 </ol>
 <h4 id="SSL握手"><a href="#SSL握手" class="headerlink" title="SSL握手"></a>SSL握手</h4><ol>
-<li><p>clinet -&gt; server </p>
+<li><p>clinet -&gt; server</p>
 <ol>
 <li>客户端版本号、32字节随机值、客户端支持的加密算法</li>
 </ol>
 </li>
-<li><p>server -&gt; client </p>
+<li><p>server -&gt; client</p>
 <ol>
 <li>客户端版本号、32字节随机值、客户端支持的加密算法</li>
 <li>服务端公钥、证书颁发机构</li>
@@ -183,6 +183,10 @@
 </ol>
 </li>
 </ol>
+<ol start="5">
+<li>client -&gt; server<br>这一步是否需要？？？？</li>
+</ol>
+<p><img src="/img/tcp-ssl.jpg"></p>
 
         
         <div id="comment-container">
