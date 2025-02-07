@@ -26,13 +26,13 @@ tags:
 
 2. server -> client  (syn + ack)
 
-3. client -> server  (ack + 内容) 
+3. client -> server  (ack + 内容)
 
 #### SSL握手
-1. clinet -> server 
+1. clinet -> server
    1. 客户端版本号、32字节随机值、客户端支持的加密算法
 
-2. server -> client 
+2. server -> client
    1. 客户端版本号、32字节随机值、客户端支持的加密算法
    2. 服务端公钥、证书颁发机构
 
@@ -42,3 +42,11 @@ tags:
 
 4. server -> client
   1. 告诉客户端会使用协商好的密钥来加密
+
+
+5. client -> server
+这一步是否需要？？？？
+
+
+
+<img src="/img/tcp-ssl.jpg" />
