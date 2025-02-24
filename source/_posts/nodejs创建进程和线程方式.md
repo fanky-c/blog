@@ -89,7 +89,7 @@ if (cluster.isMaster) {
 * cluster.fork() 创建多个 Worker（默认和 CPU 核心数一致）。
 * 各个 Worker 进程共享同一端口，提高性能。
 
-### 3、child_process 和 cluster 区别
+### child_process 和 cluster 区别
 
 <table border="1" cellspacing="0">
     <tr>
@@ -178,7 +178,7 @@ run();
 优点：
 * poolifier 提供线程池机制，避免频繁创建和销毁 Worker 线程，提高性能。
 
-## 3、区别
+## 3、process 和 threads 区别
 
 <table border="1" cellspacing="0">
   <thead>
