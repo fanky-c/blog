@@ -12,10 +12,40 @@ tags:
 ### 方式一 child_process
 
 child_process 提供四种方法来创建子进程：
-* spawn()
-* exec()
-* execFile()
-* fork()
+* spawn() --  适用于长时间运行的进程
+* exec() -- 适用于短时间执行的 shell 命令
+* execFile() --  直接运行可执行文件
+* fork() --  专门用于创建 Node.js 子进程，并支持进程间通信（IPC）
+
+使用 spawn() 创建子进程示例：
+
+```js
+const { spawn } = require('child_process');
+const child = spawn('node', ['child.js']); // 运行 child.js 作为子进程
+child.stdout.on('data', (data) => {
+    console.log(`子进程输出: ${data}`);
+});
+child.on('close', (code) => {
+    console.log(`子进程退出，退出码 ${code}`);
+});
+```
+
+使用 fork() 创建子进程示例：
+```js
+// 主进程文件
+const { fork } = require('child_process');
+const child = fork('child.js');
+child.on('message', (msg) => {
+    console.log(`主进程收到消息: ${msg}`);
+});
+child.send('Hello from parent');
+
+// 子进程child.js 文件
+process.on('message', (msg) => {
+    console.log(`子进程收到消息: ${msg}`);
+    process.send('Hello from child');
+});
+```
 
 
 
