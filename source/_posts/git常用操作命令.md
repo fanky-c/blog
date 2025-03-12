@@ -119,6 +119,17 @@ git merge dev
 git status
 ```
 
+### 常见场景
+
+#### 1、本地分支强制更新为远程分支最新状态
+```sh
+// 从远程仓库 origin 获取分支 branch 的最新更新，但不会自动合并或修改本地文件。
+git fetch origin [branch]
+
+// 强制将当前分支重置为远程分支 branch 的最新状态, 本地所有未提交的更改都会被清除，包括未提交的代码和未推送的提交。
+git reset --hard origin/[branch]
+```
+
 <br>
 
 1、 [rebase 和 merge 的区别](https://mp.weixin.qq.com/s/cOXKqYw-bzX1eiwFVx6KMg)
