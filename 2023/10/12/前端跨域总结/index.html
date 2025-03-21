@@ -179,7 +179,34 @@
 <p> 预检”请求用的请求方法是OPTIONS，表示这个请求是用来询问的。请求头信息里面，关键字段是Origin，表示请求来自哪个源。除了Origin字段，”预检”请求的头信息包括两个特殊字段。</p>
 <p>  1）Access-Control-Request-Method：必选</p>
 <p>  2）Access-Control-Request-Headers：可选</p>
-<p><strong>C、总结</strong></p>
+<p><strong>C、哪些操作会触发 CORS 检查？</strong></p>
+<ol>
+<li><p>fetch / XMLHttpRequest 访问跨域资源</p>
+<ul>
+<li>不同源（协议、域名、端口任意不同都算跨域）</li>
+<li>服务器 必须返回 Access-Control-Allow-Origin，否则浏览器拦截响应。</li>
+</ul>
+</li>
+<li><p>fetch / XMLHttpRequest 发送复杂请求（会触发预检 OPTIONS 请求）</p>
+<ul>
+<li>复杂请求</li>
+</ul>
+</li>
+<li><p>fetch / XMLHttpRequest 请求跨域的静态资源</p>
+<ul>
+<li>直接用 fetch() 请求 CSS、JS、JSON、图片 等资源。</li>
+<li>服务器必须返回 Access-Control-Allow-Origin，否则请求失败。</li>
+<li>\&lt;script>、\&lt;link>、\&lt;img> 这些 HTML 标签不会触发 CORS，即使跨域也能加载：</li>
+</ul>
+</li>
+<li><p>Web 字体 (@font-face)、Web Worker、视频等</p>
+<ul>
+<li>@font-face 加载跨域字体</li>
+<li>视频 / 音频</li>
+</ul>
+</li>
+</ol>
+<p><strong>D、总结</strong></p>
 <ol>
 <li>简单请求不会触发预检请求（OPTIONS），但仍然受 CORS 规则限制。</li>
 <li>是否能跨域，最终取决于服务器是否返回正确的 CORS 头信息（Access-Control-Allow-Origin）。</li>
