@@ -91,7 +91,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是稳定性"><span class="toc-text">什么是稳定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要关注稳定性"><span class="toc-text">为什么要关注稳定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何保障稳定性"><span class="toc-text">如何保障稳定性</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是稳定性"><span class="toc-text">什么是稳定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要关注稳定性"><span class="toc-text">为什么要关注稳定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何保障稳定性"><span class="toc-text">如何保障稳定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前端请求层常见问题"><span class="toc-text">前端请求层常见问题</span></a></li></ol>
 </div>
     
 </div>
@@ -154,6 +154,18 @@
 <li>事后优改进</li>
 </ol>
 <p><img src="/img/frontService1.png"></p>
+<h2 id="前端请求层常见问题"><a href="#前端请求层常见问题" class="headerlink" title="前端请求层常见问题"></a>前端请求层常见问题</h2><ul>
+<li>「失败和错误处理」：优雅地处理请求失败和服务器返回的错误，提升用户体验。</li>
+<li>「失败重试」：在请求失败时自动重试，增加请求的成功率。</li>
+<li>「接口降级」：在服务不可用时，提供备选方案，保证应用的基本功能。</li>
+<li>「模拟接口」：在后端服务尚未开发完成时，模拟接口响应，加速前端开发。</li>
+<li>「模拟列表接口」：模拟分页、排序等列表操作，方便前端调试和测试。</li>
+<li>「接口聚合和竞态」：合并多个接口请求，减少网络开销；处理接口请求的竞态问题，确保数据的一致性。</li>
+<li>「逻辑聚合」：将多个资源的创建和更新等操作聚合成一个请求，简化前端逻辑。</li>
+<li>「控制并发数量」：限制同时进行的请求数量，避免过度消耗资源。</li>
+<li>「前端分页」：在前端进行数据分页，减轻后端压力。</li>
+<li>「超时设置」：为每个请求设置超时时间，防止长时间等待。</li>
+</ul>
 <p><br></p>
 <p><a href="https://mp.weixin.qq.com/s/lWh-FLi4dTHC5RHSERtBeg" target="_blank" rel="noopener">文章来源于</a></p>
 
