@@ -135,8 +135,14 @@ git reset --hard origin/[branch]
 git checkout <commit_id> -- <file_path>
 
 // 示例
-git checkout db5bb0c0b3d02c6218affe4522e -- src/payPlatform/result/services/index.js
-git restore --source=db5bb0c0b3d02c6218affe4522e src/payPlatform/result/services/index.js
+
+// 1、查看某个文件的 commit 记录
+git log src/app.js
+
+// 2、恢复文件到某个 commit 的状态
+git checkout db5bb0c0b3d02c6218affe4522e -- src/app.js
+// 或者
+git restore --source=db5bb0c0b3d02c6218affe4522e src/app.js
 ```
 
 <br>
