@@ -130,6 +130,15 @@ git fetch origin [branch]
 git reset --hard origin/[branch]
 ```
 
+### 2、把某个文件恢复到某个 commit 的状态（回滚某个文件到某个版本）
+```sh
+git checkout <commit_id> -- <file_path>
+
+// 示例
+git checkout db5bb0c0b3d02c6218affe4522e -- src/payPlatform/result/services/index.js
+git restore --source=db5bb0c0b3d02c6218affe4522e src/payPlatform/result/services/index.js
+```
+
 <br>
 
 1、 [rebase 和 merge 的区别](https://mp.weixin.qq.com/s/cOXKqYw-bzX1eiwFVx6KMg)
