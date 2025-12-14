@@ -1,6 +1,14 @@
 ### 说明
 托管在github博客的源码分支
 
+### 分支
+
+dev/blog 开发分支
+
+release/blog 产物分支
+
+master 默认分支
+
 ### 使用方法：
 
 * 开发服务:  npm run dev
@@ -10,7 +18,7 @@
 * 打包提交到服务器： npm run deploy
 
 
-## 注意事项
+### 注意事项
 
 node版本最好为v12，v14打包html文件偶现空白
 
