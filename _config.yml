@@ -16,6 +16,8 @@ SEOTitle: fanky_c的博客 | fanky_c's Blog
 header-img: img/home-bg.jpg
 email: 396850524@qq.com
 keyword: "网易"  
+google_site_verification: xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI
+baiduspider: noarchive
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -141,4 +143,3 @@ deploy:
   repo: https://github.com/fanky-c/blog.git
   branch: release/blog
   message: 提交博客信息
-
