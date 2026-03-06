@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    
+    
+    <meta name="Baiduspider" content="noarchive">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        二叉树遍历和实际应用 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树遍历"><span class="toc-text">二叉树遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#二叉树构造"><span class="toc-text">二叉树构造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#深度优先遍历，前序遍历（Pre-order）：根-→-左-→-右"><span class="toc-text">深度优先遍历，前序遍历（Pre-order）：根 → 左 → 右</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#深度优先遍历，中序遍历（In-order）：左-→-根-→-右"><span class="toc-text">深度优先遍历，中序遍历（In-order）：左 → 根 → 右</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#深度优先遍历，后序遍历（Post-order）：左-→-右-→-根"><span class="toc-text">深度优先遍历，后序遍历（Post-order）：左 → 右 → 根</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#广度优先遍历，层序遍历（Level-order）：一层一层从左到右"><span class="toc-text">广度优先遍历，层序遍历（Level-order）：一层一层从左到右</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二叉树应用"><span class="toc-text">二叉树应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前序遍历-DOM"><span class="toc-text">前序遍历 DOM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟-DOM-diff"><span class="toc-text">虚拟 DOM diff</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#可视化组件（树结构-UI）"><span class="toc-text">可视化组件（树结构 UI）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前端路由或菜单生成"><span class="toc-text">前端路由或菜单生成</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        二叉树遍历和实际应用
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2025-07-31 19:41:31</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#二叉树遍历" title="二叉树遍历">二叉树遍历</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#二叉树应用" title="二叉树应用">二叉树应用</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="二叉树遍历"><a href="#二叉树遍历" class="headerlink" title="二叉树遍历"></a>二叉树遍历</h2><h3 id="二叉树构造"><a href="#二叉树构造" class="headerlink" title="二叉树构造"></a>二叉树构造</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(val) &#123;</span><br><span class="line">        <span class="keyword">this</span>.val = val;</span><br><span class="line">        <span class="keyword">this</span>.left = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">this</span>.right = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例构造一棵简单的二叉树</span></span><br><span class="line"><span class="comment">//       1</span></span><br><span class="line"><span class="comment">//      /  \</span></span><br><span class="line"><span class="comment">//     2    3</span></span><br><span class="line"><span class="comment">//    / \  / \</span></span><br><span class="line"><span class="comment">//   4   5 6  7</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> root = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">root.left = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line">root.right = <span class="keyword">new</span> TreeNode(<span class="number">3</span>);</span><br><span class="line">root.left.left = <span class="keyword">new</span> TreeNode(<span class="number">4</span>);</span><br><span class="line">root.left.right = <span class="keyword">new</span> TreeNode(<span class="number">5</span>);</span><br><span class="line">root.right.left = <span class="keyword">new</span> TreeNode(<span class="number">6</span>);</span><br><span class="line">root.right.right = <span class="keyword">new</span> TreeNode(<span class="number">7</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="深度优先遍历，前序遍历（Pre-order）：根-→-左-→-右"><a href="#深度优先遍历，前序遍历（Pre-order）：根-→-左-→-右" class="headerlink" title="深度优先遍历，前序遍历（Pre-order）：根 → 左 → 右"></a>深度优先遍历，前序遍历（Pre-order）：根 → 左 → 右</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">preorderRecursive</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!node) <span class="keyword">return</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'深度优先遍历，根 -&gt; 左 -&gt; 右：'</span>, node.val);</span><br><span class="line">  preorderRecursive(node.left);</span><br><span class="line">  preorderRecursive(node.right);</span><br><span class="line">&#125;</span><br><span class="line">preorderRecursive(root);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">深度优先遍历，根 -&gt; 左 -&gt; 右： 1</span></span><br><span class="line"><span class="comment">深度优先遍历，根 -&gt; 左 -&gt; 右： 2</span></span><br><span class="line"><span class="comment">深度优先遍历，根 -&gt; 左 -&gt; 右： 4</span></span><br><span class="line"><span class="comment">深度优先遍历，根 -&gt; 左 -&gt; 右： 5</span></span><br><span class="line"><span class="comment">深度优先遍历，根 -&gt; 左 -&gt; 右： 3</span></span><br><span class="line"><span class="comment">深度优先遍历，根 -&gt; 左 -&gt; 右： 6</span></span><br><span class="line"><span class="comment">深度优先遍历，根 -&gt; 左 -&gt; 右： 7</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="深度优先遍历，中序遍历（In-order）：左-→-根-→-右"><a href="#深度优先遍历，中序遍历（In-order）：左-→-根-→-右" class="headerlink" title="深度优先遍历，中序遍历（In-order）：左 → 根 → 右"></a>深度优先遍历，中序遍历（In-order）：左 → 根 → 右</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inorderRecursive</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!node) <span class="keyword">return</span>;</span><br><span class="line">  inorderRecursive(node.left);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'深度优先遍历，左 -&gt; 根 -&gt; 右：'</span>,node.val);</span><br><span class="line">  inorderRecursive(node.right);</span><br><span class="line">&#125;</span><br><span class="line">inorderRecursive(root);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">深度优先遍历，左 -&gt; 根 -&gt; 右： 4</span></span><br><span class="line"><span class="comment">深度优先遍历，左 -&gt; 根 -&gt; 右： 2</span></span><br><span class="line"><span class="comment">深度优先遍历，左 -&gt; 根 -&gt; 右： 5</span></span><br><span class="line"><span class="comment">深度优先遍历，左 -&gt; 根 -&gt; 右： 1</span></span><br><span class="line"><span class="comment">深度优先遍历，左 -&gt; 根 -&gt; 右： 6</span></span><br><span class="line"><span class="comment">深度优先遍历，左 -&gt; 根 -&gt; 右： 3</span></span><br><span class="line"><span class="comment">深度优先遍历，左 -&gt; 根 -&gt; 右： 7</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="深度优先遍历，后序遍历（Post-order）：左-→-右-→-根"><a href="#深度优先遍历，后序遍历（Post-order）：左-→-右-→-根" class="headerlink" title="深度优先遍历，后序遍历（Post-order）：左 → 右 → 根"></a>深度优先遍历，后序遍历（Post-order）：左 → 右 → 根</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">postorderRecursive</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!node) <span class="keyword">return</span>;</span><br><span class="line">  postorderRecursive(node.left);</span><br><span class="line">  postorderRecursive(node.right);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'深度优先遍历，左 → 右 → 根：'</span>, node.val);</span><br><span class="line">&#125;</span><br><span class="line">postorderRecursive(root);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">深度优先遍历，左 → 右 → 根： 4</span></span><br><span class="line"><span class="comment">深度优先遍历，左 → 右 → 根： 5</span></span><br><span class="line"><span class="comment">深度优先遍历，左 → 右 → 根： 2</span></span><br><span class="line"><span class="comment">深度优先遍历，左 → 右 → 根： 6</span></span><br><span class="line"><span class="comment">深度优先遍历，左 → 右 → 根： 7</span></span><br><span class="line"><span class="comment">深度优先遍历，左 → 右 → 根： 3</span></span><br><span class="line"><span class="comment">深度优先遍历，左 → 右 → 根： 1</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="广度优先遍历，层序遍历（Level-order）：一层一层从左到右"><a href="#广度优先遍历，层序遍历（Level-order）：一层一层从左到右" class="headerlink" title="广度优先遍历，层序遍历（Level-order）：一层一层从左到右"></a>广度优先遍历，层序遍历（Level-order）：一层一层从左到右</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">levelOrderTraversal</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!node) <span class="keyword">return</span>;</span><br><span class="line">  <span class="keyword">const</span> queue = [node];</span><br><span class="line">  <span class="keyword">while</span> (queue.length) &#123;</span><br><span class="line">    <span class="keyword">const</span> current = queue.shift();</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'广度优先遍历, 层序遍历'</span>, current.val);</span><br><span class="line">    <span class="keyword">if</span> (current.left) queue.push(current.left);</span><br><span class="line">    <span class="keyword">if</span> (current.right) queue.push(current.right);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">levelOrderTraversal(root);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">广度优先遍历, 层序遍历 1</span></span><br><span class="line"><span class="comment">广度优先遍历, 层序遍历 2</span></span><br><span class="line"><span class="comment">广度优先遍历, 层序遍历 3</span></span><br><span class="line"><span class="comment">广度优先遍历, 层序遍历 4</span></span><br><span class="line"><span class="comment">广度优先遍历, 层序遍历 5</span></span><br><span class="line"><span class="comment">广度优先遍历, 层序遍历 6</span></span><br><span class="line"><span class="comment">广度优先遍历, 层序遍历 7</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h2 id="二叉树应用"><a href="#二叉树应用" class="headerlink" title="二叉树应用"></a>二叉树应用</h2><h3 id="前序遍历-DOM"><a href="#前序遍历-DOM" class="headerlink" title="前序遍历 DOM"></a>前序遍历 DOM</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">traverseDOM</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!node) <span class="keyword">return</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(node.tagName); <span class="comment">// visit root</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> child <span class="keyword">of</span> node.children) &#123;</span><br><span class="line">    traverseDOM(child); <span class="comment">// left -&gt; right</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">traverseDOM(<span class="built_in">document</span>.body);</span><br></pre></td></tr></table></figure>
+<h3 id="虚拟-DOM-diff"><a href="#虚拟-DOM-diff" class="headerlink" title="虚拟 DOM diff"></a>虚拟 DOM diff</h3><p>使用后序遍历（自底向上）进行比较，便于复用</p>
+<h3 id="可视化组件（树结构-UI）"><a href="#可视化组件（树结构-UI）" class="headerlink" title="可视化组件（树结构 UI）"></a>可视化组件（树结构 UI）</h3><p>文件夹结构、组织架构图、流程图等</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 简单的 Tree 渲染逻辑</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">renderTree</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!node) <span class="keyword">return</span> <span class="string">''</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;div class="tree-node"&gt;</span></span><br><span class="line"><span class="string">      <span class="subst">$&#123;node.name&#125;</span></span></span><br><span class="line"><span class="string">      &lt;div class="children"&gt;</span></span><br><span class="line"><span class="string">        <span class="subst">$&#123;renderTree(node.left)&#125;</span></span></span><br><span class="line"><span class="string">        <span class="subst">$&#123;renderTree(node.right)&#125;</span></span></span><br><span class="line"><span class="string">      &lt;/div&gt;</span></span><br><span class="line"><span class="string">    &lt;/div&gt;</span></span><br><span class="line"><span class="string">  `</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="前端路由或菜单生成"><a href="#前端路由或菜单生成" class="headerlink" title="前端路由或菜单生成"></a>前端路由或菜单生成</h3><p>从嵌套路由或后台返回的菜单结构，生成平面结构或 DOM 元素，也常用树遍历实现。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">flatRoutes</span>(<span class="params">tree</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> result = [];</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">dfs</span>(<span class="params">node, path = <span class="string">''</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> fullPath = <span class="string">`<span class="subst">$&#123;path&#125;</span>/<span class="subst">$&#123;node.path&#125;</span>`</span>;</span><br><span class="line">    result.push(fullPath);</span><br><span class="line">    <span class="keyword">if</span> (node.children) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">const</span> child <span class="keyword">of</span> node.children) dfs(child, fullPath);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  dfs(tree);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

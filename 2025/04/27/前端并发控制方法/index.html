@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    
+    
+    <meta name="Baiduspider" content="noarchive">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        前端并发控制方法 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、限制并发数量"><span class="toc-text">1、限制并发数量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#全部并发"><span class="toc-text">全部并发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#分批并发"><span class="toc-text">分批并发</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#限制并发"><span class="toc-text">限制并发</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、请求排队（串行执行）"><span class="toc-text">2、请求排队（串行执行）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、防抖（debounce）"><span class="toc-text">3、防抖（debounce）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、节流（throttle）"><span class="toc-text">4、节流（throttle）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、请求锁（防止重复请求）"><span class="toc-text">5、请求锁（防止重复请求）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、请求取消（AbortController）"><span class="toc-text">6、请求取消（AbortController）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、竞态请求处理"><span class="toc-text">7、竞态请求处理</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        前端并发控制方法
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2025-04-27 12:03:42</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#前端并发控制" title="前端并发控制">前端并发控制</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h3 id="1、限制并发数量"><a href="#1、限制并发数量" class="headerlink" title="1、限制并发数量"></a>1、限制并发数量</h3><h4 id="全部并发"><a href="#全部并发" class="headerlink" title="全部并发"></a>全部并发</h4><p><strong>promise.all</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> urls = [</span><br><span class="line">  <span class="string">'https://api.example.com/data1'</span>,</span><br><span class="line">  <span class="string">'https://api.example.com/data2'</span>,</span><br><span class="line">  <span class="string">'https://api.example.com/data3'</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 把每个 URL 变成一个 fetch Promise</span></span><br><span class="line"><span class="keyword">const</span> promises = urls.map(<span class="function"><span class="params">url</span> =&gt;</span> fetch(url).then(<span class="function"><span class="params">response</span> =&gt;</span> response.json()));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用 Promise.all 并发执行</span></span><br><span class="line"><span class="built_in">Promise</span>.all(promises)</span><br><span class="line">  .then(<span class="function"><span class="params">results</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'全部请求成功:'</span>, results);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="params">error</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.error(<span class="string">'有请求失败:'</span>, error);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>promise.allSettled</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="分批并发"><a href="#分批并发" class="headerlink" title="分批并发"></a>分批并发</h4><h4 id="限制并发"><a href="#限制并发" class="headerlink" title="限制并发"></a>限制并发</h4><h3 id="2、请求排队（串行执行）"><a href="#2、请求排队（串行执行）" class="headerlink" title="2、请求排队（串行执行）"></a>2、请求排队（串行执行）</h3><h3 id="3、防抖（debounce）"><a href="#3、防抖（debounce）" class="headerlink" title="3、防抖（debounce）"></a>3、防抖（debounce）</h3><h3 id="4、节流（throttle）"><a href="#4、节流（throttle）" class="headerlink" title="4、节流（throttle）"></a>4、节流（throttle）</h3><h3 id="5、请求锁（防止重复请求）"><a href="#5、请求锁（防止重复请求）" class="headerlink" title="5、请求锁（防止重复请求）"></a>5、请求锁（防止重复请求）</h3><h3 id="6、请求取消（AbortController）"><a href="#6、请求取消（AbortController）" class="headerlink" title="6、请求取消（AbortController）"></a>6、请求取消（AbortController）</h3><h3 id="7、竞态请求处理"><a href="#7、竞态请求处理" class="headerlink" title="7、竞态请求处理"></a>7、竞态请求处理</h3><p><br></p>
+<p><a href="https://mp.weixin.qq.com/s/W94coYEetdwZAh11Cq3bHQ" target="_blank" rel="noopener">文章来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

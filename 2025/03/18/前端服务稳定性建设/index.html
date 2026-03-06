@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    
+    
+    <meta name="Baiduspider" content="noarchive">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        前端服务稳定性建设 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是稳定性"><span class="toc-text">什么是稳定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要关注稳定性"><span class="toc-text">为什么要关注稳定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何保障稳定性"><span class="toc-text">如何保障稳定性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前端请求层常见问题"><span class="toc-text">前端请求层常见问题</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        前端服务稳定性建设
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2025-03-18 16:27:11</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#前端服务稳定性" title="前端服务稳定性">前端服务稳定性</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#前端服务质量保障" title="前端服务质量保障">前端服务质量保障</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="什么是稳定性"><a href="#什么是稳定性" class="headerlink" title="什么是稳定性"></a>什么是稳定性</h2><p>是指一个系统或服务在面对各种负载、错误、异常情况或外部环境变化时，仍能保持正常运行、提供可靠服务的能力。</p>
+<h2 id="为什么要关注稳定性"><a href="#为什么要关注稳定性" class="headerlink" title="为什么要关注稳定性"></a>为什么要关注稳定性</h2><ol>
+<li>用户体验。 频繁的宕机或错误会导致用户流失和失去产品信任度；</li>
+<li>经济损失。 电商、支付、云厂商等业务需要24/7运行，服务不稳定会导致直接经济损失；</li>
+<li>团队协助。 频繁的线上事故导致内部业务方对研发团队失去信心。</li>
+</ol>
+<h2 id="如何保障稳定性"><a href="#如何保障稳定性" class="headerlink" title="如何保障稳定性"></a>如何保障稳定性</h2><ol>
+<li>事前降发生</li>
+<li>事中降影响</li>
+<li>事后优改进</li>
+</ol>
+<p><img src="/img/frontService1.png"></p>
+<h2 id="前端请求层常见问题"><a href="#前端请求层常见问题" class="headerlink" title="前端请求层常见问题"></a>前端请求层常见问题</h2><ul>
+<li>「失败和错误处理」：优雅地处理请求失败和服务器返回的错误，提升用户体验。</li>
+<li>「失败重试」：在请求失败时自动重试，增加请求的成功率。</li>
+<li>「接口降级」：在服务不可用时，提供备选方案，保证应用的基本功能。</li>
+<li>「模拟接口」：在后端服务尚未开发完成时，模拟接口响应，加速前端开发。</li>
+<li>「模拟列表接口」：模拟分页、排序等列表操作，方便前端调试和测试。</li>
+<li>「接口聚合和竞态」：合并多个接口请求，减少网络开销；处理接口请求的竞态问题，确保数据的一致性。</li>
+<li>「逻辑聚合」：将多个资源的创建和更新等操作聚合成一个请求，简化前端逻辑。</li>
+<li>「控制并发数量」：限制同时进行的请求数量，避免过度消耗资源。</li>
+<li>「前端分页」：在前端进行数据分页，减轻后端压力。</li>
+<li>「超时设置」：为每个请求设置超时时间，防止长时间等待。</li>
+</ul>
+<p><br></p>
+<p><a href="https://mp.weixin.qq.com/s/lWh-FLi4dTHC5RHSERtBeg" target="_blank" rel="noopener">文章来源于</a></p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>

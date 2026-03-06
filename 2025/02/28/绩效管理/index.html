@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    
+    
+    <meta name="Baiduspider" content="noarchive">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="js、nodejs、css、nginx、vue、react">
+    <meta name="keyword" content="网易">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        绩效管理 - fanky_c的博客 | fanky_c&#39;s Blog
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>fanky_c</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#绩效计划的制定（计划）"><span class="toc-text">绩效计划的制定（计划）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、目标来源"><span class="toc-text">1、目标来源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、目标分解"><span class="toc-text">2、目标分解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#物理分解"><span class="toc-text">物理分解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#化学分解"><span class="toc-text">化学分解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、目标设置原则"><span class="toc-text">3、目标设置原则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SMART原则"><span class="toc-text">SMART原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MECE原则"><span class="toc-text">MECE原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#权重合理原则"><span class="toc-text">权重合理原则</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绩效执行的跟踪（执行）"><span class="toc-text">绩效执行的跟踪（执行）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、反馈"><span class="toc-text">1、反馈</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-目的"><span class="toc-text">a. 目的</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-常见类型及情景"><span class="toc-text">b. 常见类型及情景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c、有效反馈-amp-无效反馈"><span class="toc-text">c、有效反馈&amp;无效反馈</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#d、原则"><span class="toc-text">d、原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#e、星星法则（STAR）"><span class="toc-text">e、星星法则（STAR）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、辅导"><span class="toc-text">2、辅导</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-目的-1"><span class="toc-text">a. 目的</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绩效回顾和面谈（回顾）"><span class="toc-text">绩效回顾和面谈（回顾）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、绩效评估常见误区"><span class="toc-text">1、绩效评估常见误区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、评分规则"><span class="toc-text">2、评分规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、面谈遵循的FOSS原则"><span class="toc-text">3、面谈遵循的FOSS原则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、面谈其他原则"><span class="toc-text">4、面谈其他原则</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        绩效管理
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2025-02-28 10:37:44</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#绩效管理" title="绩效管理">绩效管理</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#技术管理" title="技术管理">技术管理</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="绩效计划的制定（计划）"><a href="#绩效计划的制定（计划）" class="headerlink" title="绩效计划的制定（计划）"></a>绩效计划的制定（计划）</h2><h3 id="1、目标来源"><a href="#1、目标来源" class="headerlink" title="1、目标来源"></a>1、目标来源</h3><ol>
+<li>公司的战略目标分解</li>
+<li>部门或者岗位的职责</li>
+</ol>
+<h3 id="2、目标分解"><a href="#2、目标分解" class="headerlink" title="2、目标分解"></a>2、目标分解</h3><h4 id="物理分解"><a href="#物理分解" class="headerlink" title="物理分解"></a>物理分解</h4><p>用途：分解目标中量化的、硬性的， 可以直接拆分的目标</p>
+<h4 id="化学分解"><a href="#化学分解" class="headerlink" title="化学分解"></a>化学分解</h4><p>用途：用于分解目标中难以量化，定性的目标。 例如：提高团队稳定性、部门协作满意度</p>
+<p>运用：分3个步骤：</p>
+<ol>
+<li>第一步，梳理任务的工作流</li>
+<li>第二步，明确任务涉及岗位，核心关注本团队岗位</li>
+<li>第三步：梳理各岗位在流程中关键行为、成果以及时间进度</li>
+</ol>
+<p>定性目标值设置</p>
+<ol>
+<li>数量</li>
+<li>时间</li>
+<li>质量</li>
+<li>成本</li>
+</ol>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p><strong>可量化的量化，不可量化的尽量细化，不可细化的尽量流程</strong></p>
+<h3 id="3、目标设置原则"><a href="#3、目标设置原则" class="headerlink" title="3、目标设置原则"></a>3、目标设置原则</h3><h4 id="SMART原则"><a href="#SMART原则" class="headerlink" title="SMART原则"></a>SMART原则</h4><ol>
+<li>具体化。用具体语言描述要达成的要求</li>
+<li>可衡量。 目标比较明确、可比较</li>
+<li>可达成。 经过努力可达成</li>
+<li>相关联。 指标和岗位相关</li>
+<li>有时限。 有明确具体的时间限制</li>
+</ol>
+<p>基本思路： 基于xx背景， 通过xxx, 实现/到达xxx结果。</p>
+<h4 id="MECE原则"><a href="#MECE原则" class="headerlink" title="MECE原则"></a>MECE原则</h4><ol>
+<li>相关独立。 例如： 考核毛利，就不应该再考核毛利率</li>
+<li>不重叠。  例如：考核客户数量， 就不应该考核KA客户数量</li>
+</ol>
+<h4 id="权重合理原则"><a href="#权重合理原则" class="headerlink" title="权重合理原则"></a>权重合理原则</h4><ol>
+<li>关键绩效指标建议总个数 5-7</li>
+<li>所有关键指标权重之和为100%</li>
+<li>单个指标权重5%到30%</li>
+<li>各个指标权重比例呈明显差异，减少全部平均分配比重</li>
+</ol>
+<h2 id="绩效执行的跟踪（执行）"><a href="#绩效执行的跟踪（执行）" class="headerlink" title="绩效执行的跟踪（执行）"></a>绩效执行的跟踪（执行）</h2><h3 id="1、反馈"><a href="#1、反馈" class="headerlink" title="1、反馈"></a>1、反馈</h3><h4 id="a-目的"><a href="#a-目的" class="headerlink" title="a. 目的"></a>a. 目的</h4><p>尽快让下属知道他们做的怎么样</p>
+<h4 id="b-常见类型及情景"><a href="#b-常见类型及情景" class="headerlink" title="b. 常见类型及情景"></a>b. 常见类型及情景</h4><ol>
+<li><p>类型一：指标共识</p>
+<ul>
+<li>情景一， 初始化指标确定</li>
+<li>情景二， 指标过程调整</li>
+</ul>
+</li>
+<li><p>类型二：行为纠偏，促进目标达成</p>
+<ul>
+<li>情景一， 员工过程执行出现偏差</li>
+</ul>
+</li>
+<li><p>类型三：资源争取</p>
+<ul>
+<li>情景一，需要上级支持</li>
+</ul>
+</li>
+<li><p>类型四：指标复盘和计划</p>
+<ul>
+<li>情景一， 指标复盘</li>
+</ul>
+</li>
+</ol>
+<h4 id="c、有效反馈-amp-无效反馈"><a href="#c、有效反馈-amp-无效反馈" class="headerlink" title="c、有效反馈&amp;无效反馈"></a>c、有效反馈&amp;无效反馈</h4><ol>
+<li><p>有效： 增强、促进动机、带来更好的表现、给与鼓励和能量</p>
+</li>
+<li><p>无效： 挫伤积极性、混淆、消极失望、降低工作绩效表现</p>
+</li>
+</ol>
+<h4 id="d、原则"><a href="#d、原则" class="headerlink" title="d、原则"></a>d、原则</h4><ol>
+<li>及时。 事后及时给与反馈， 达成共识</li>
+<li>平衡。 首先给与正面反馈， 然后再给出待改善反馈</li>
+<li>具体： 待改善的反馈一定要是具体</li>
+</ol>
+<h4 id="e、星星法则（STAR）"><a href="#e、星星法则（STAR）" class="headerlink" title="e、星星法则（STAR）"></a>e、星星法则（STAR）</h4><ol>
+<li>正面：<ul>
+<li>ST –&gt; 情景和任务</li>
+<li>A –&gt; 行为 Action</li>
+<li>R –&gt; 结果 Result</li>
+</ul>
+</li>
+<li>待改善：<ul>
+<li>ST –&gt; 情景和任务</li>
+<li>A –&gt; 建议</li>
+<li>R –&gt; 预期结果</li>
+</ul>
+</li>
+</ol>
+<h3 id="2、辅导"><a href="#2、辅导" class="headerlink" title="2、辅导"></a>2、辅导</h3><h4 id="a-目的-1"><a href="#a-目的-1" class="headerlink" title="a. 目的"></a>a. 目的</h4><p>持续不断地挖掘员工潜力、使其绩效最优化并协助员工达到目标</p>
+<h2 id="绩效回顾和面谈（回顾）"><a href="#绩效回顾和面谈（回顾）" class="headerlink" title="绩效回顾和面谈（回顾）"></a>绩效回顾和面谈（回顾）</h2><h3 id="1、绩效评估常见误区"><a href="#1、绩效评估常见误区" class="headerlink" title="1、绩效评估常见误区"></a>1、绩效评估常见误区</h3><ol>
+<li><p>轮流坐庄： 为了避免得罪人， 大家轮流低/高绩效</p>
+</li>
+<li><p>趋中效应： 不从实际出发，撇开两头，取中间状态， 不好不坏</p>
+</li>
+<li><p>近因效应： 以某人最近发生的事情考核， 导致片面考核结果</p>
+</li>
+<li><p>光环效应： 因员工某一方面的优势掩盖其他所有缺点</p>
+</li>
+<li><p>类己效应：上级因下属的某些特性和自己相似而对其有好感，从而给出高评价</p>
+</li>
+<li><p>首因效应：上级对下属形成的第一次影响，长期影响上级对下属评价</p>
+</li>
+</ol>
+<h3 id="2、评分规则"><a href="#2、评分规则" class="headerlink" title="2、评分规则"></a>2、评分规则</h3><ol>
+<li><p>斜线式。 公司希望该指标更快更好完成。 门槛值&lt;完成值&lt;挑战值， 得分=aX+b; 完成值&gt;=挑战值, 得分=cX+d</p>
+</li>
+<li><p>层差法。 完成率80%-100%，40分； 完成率100%-120%，80分</p>
+</li>
+<li><p>加减分法。 每发生1次减2分、每减低1%扣5分、每新增1个加10分</p>
+</li>
+<li><p>二分法。 要么达到，要么未达到</p>
+</li>
+</ol>
+<h3 id="3、面谈遵循的FOSS原则"><a href="#3、面谈遵循的FOSS原则" class="headerlink" title="3、面谈遵循的FOSS原则"></a>3、面谈遵循的FOSS原则</h3><ol>
+<li><p>Fact：尽量客观陈述事实和自己感受，不妄加评论，不人身攻击 （可建筑STAR模型）</p>
+</li>
+<li><p>Opinion：你是面谈主持人， 经可能让员工在你的引导下充分表达自己</p>
+</li>
+<li><p>Suggestion：绩效管理的核心是为了改善将来的业界表现， 所以需要和员工共同制定改进计划</p>
+</li>
+<li><p>Support：你是团队负责人，员工是在你的领导下做出目前的业界的， 所以无论员工业绩如何你都有责任， 你应该成为他首选的支持者</p>
+</li>
+</ol>
+<h3 id="4、面谈其他原则"><a href="#4、面谈其他原则" class="headerlink" title="4、面谈其他原则"></a>4、面谈其他原则</h3><ol>
+<li>不要陷入对“其他组员”绩效的讨论。 今天我们讨论的重点是你的表现， 每个人都有自己的挑战和优点， 我们只需要关注自己的成长</li>
+<li>不承诺会改变绩效</li>
+<li>不承诺会加薪或晋升。因为需要考虑综合各种因素和你的变现，不过我们可以一起制定提升计划</li>
+</ol>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+
+    <div style="position:fixed;right:10px;bottom:15px;color: #999;cursor: pointer;" onclick="window.scrollTo(0,0)">回到顶部</div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+        <li>
+            <a target="_blank"  href="https://github.com/fanky-c">
+                            <span class="fa-stack fa-lg">
+                                <i class="iconfont icon-github"></i>
+                            </span>
+            </a>
+        </li>
+        
+
+        
+
+    </ul>
+    
+    <p style="padding-top:10px;">
+        <span>/</span>
+        
+            
+               <span><a href="http://www.fankyc.cn">fanky_c</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="https://beian.miit.gov.cn" target="_blank">粤ICP备19149804号</a></span>
+            
+        <span>/</span>
+        
+            
+               <span><a href="#">It helps SEO</a></span>
+            
+        <span>/</span>
+        
+    </p>
+    
+    <p style="padding-top:5px;">
+        <!--<span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>-->
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a>
+    </p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
+
+</html>
