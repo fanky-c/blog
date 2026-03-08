@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览器事件机制三个阶段"><span class="toc-text">浏览器事件机制三个阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#事件捕获阶段"><span class="toc-text">事件捕获阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#处于目标阶段"><span class="toc-text">处于目标阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#事件冒泡阶段"><span class="toc-text">事件冒泡阶段</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件委托"><span class="toc-text">事件委托</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#原理"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优势"><span class="toc-text">优势</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-text">浏览器事件机制三个阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E6%8D%95%E8%8E%B7%E9%98%B6%E6%AE%B5"><span class="toc-text">事件捕获阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E4%BA%8E%E7%9B%AE%E6%A0%87%E9%98%B6%E6%AE%B5"><span class="toc-text">处于目标阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1%E9%98%B6%E6%AE%B5"><span class="toc-text">事件冒泡阶段</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%A7%94%E6%89%98"><span class="toc-text">事件委托</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%8A%BF"><span class="toc-text">优势</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -142,8 +149,10 @@
 </span>
     </div>
     <div class="post-content ">
-        <h3 id="浏览器事件机制三个阶段"><a href="#浏览器事件机制三个阶段" class="headerlink" title="浏览器事件机制三个阶段"></a>浏览器事件机制三个阶段</h3><h4 id="事件捕获阶段"><a href="#事件捕获阶段" class="headerlink" title="事件捕获阶段"></a>事件捕获阶段</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//捕获阶段注册事件</span></span><br><span class="line">   <span class="built_in">document</span>.getElementById(<span class="string">"button"</span>).addEventListener(<span class="string">"click"</span>,<span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"button"</span>);</span><br><span class="line">            event.stopPropagation(); <span class="comment">//阻止事件捕获</span></span><br><span class="line">            event.stopImmediatePropagation(); <span class="comment">//阻止其他事件（包括默认事件）</span></span><br><span class="line">        &#125;,<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="处于目标阶段"><a href="#处于目标阶段" class="headerlink" title="处于目标阶段"></a>处于目标阶段</h4><h4 id="事件冒泡阶段"><a href="#事件冒泡阶段" class="headerlink" title="事件冒泡阶段"></a>事件冒泡阶段</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//冒泡阶段注册事件</span></span><br><span class="line">   <span class="built_in">document</span>.getElementById(<span class="string">"button"</span>).addEventListener(<span class="string">"click"</span>,<span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"button"</span>);</span><br><span class="line">            event.stopPropagation(); <span class="comment">//阻止冒泡</span></span><br><span class="line">        &#125;,<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+        <h3 id="浏览器事件机制三个阶段"><a href="#浏览器事件机制三个阶段" class="headerlink" title="浏览器事件机制三个阶段"></a>浏览器事件机制三个阶段</h3><h4 id="事件捕获阶段"><a href="#事件捕获阶段" class="headerlink" title="事件捕获阶段"></a>事件捕获阶段</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//捕获阶段注册事件</span></span><br><span class="line">   <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>,<span class="keyword">function</span>(<span class="params">event</span>)&#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">            event.<span class="title function_">stopPropagation</span>(); <span class="comment">//阻止事件捕获</span></span><br><span class="line">            event.<span class="title function_">stopImmediatePropagation</span>(); <span class="comment">//阻止其他事件（包括默认事件）</span></span><br><span class="line">        &#125;,<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="处于目标阶段"><a href="#处于目标阶段" class="headerlink" title="处于目标阶段"></a>处于目标阶段</h4><h4 id="事件冒泡阶段"><a href="#事件冒泡阶段" class="headerlink" title="事件冒泡阶段"></a>事件冒泡阶段</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//冒泡阶段注册事件</span></span><br><span class="line">   <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>,<span class="keyword">function</span>(<span class="params">event</span>)&#123;</span><br><span class="line">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;button&quot;</span>);</span><br><span class="line">            event.<span class="title function_">stopPropagation</span>(); <span class="comment">//阻止冒泡</span></span><br><span class="line">        &#125;,<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
 <h3 id="事件委托"><a href="#事件委托" class="headerlink" title="事件委托"></a>事件委托</h3><h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><ol>
 <li>利用事件冒泡机制</li>
 </ol>
@@ -229,7 +238,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

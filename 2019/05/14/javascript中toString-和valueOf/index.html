@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#toString-NaN"><span class="toc-text">toString()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍-1"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#案例"><span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#valueOf-NaN"><span class="toc-text">valueOf()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍-2"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#案例-1"><span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#调用时机"><span class="toc-text">调用时机</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#toString-NaN"><span class="toc-text">toString()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#valueOf-NaN"><span class="toc-text">valueOf()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-2"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B-1"><span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E6%97%B6%E6%9C%BA"><span class="toc-text">调用时机</span></a></li></ol>
 </div>
     
 </div>
@@ -149,17 +156,20 @@
 <h3 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString()"></a>toString()</h3><h4 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h4><ol>
 <li>toString() 返回对象字符串表示</li>
 </ol>
-<h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3.</span>toString(); <span class="comment">// "3"</span></span><br><span class="line"><span class="string">'3'</span>.toString(); <span class="comment">// "3"</span></span><br><span class="line"><span class="literal">true</span>.toString(); <span class="comment">// "true"</span></span><br><span class="line">&#123;<span class="attr">test</span>: <span class="number">3</span>, <span class="attr">app</span>: <span class="string">"test"</span>&#125;.toString(); <span class="comment">//"[object Object]"</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="built_in">console</span>.log(<span class="number">3</span>)&#125;.toString(); <span class="comment">// "function()&#123;console.log(3)&#125;"</span></span><br><span class="line">[<span class="string">'test'</span>, <span class="string">'test2'</span>].toString(); <span class="comment">//"test,test2"  相当于调用Array.join(',')</span></span><br><span class="line">/\d/.toString();  <span class="comment">// "/\d/"</span></span><br></pre></td></tr></table></figure>
+<h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3.</span><span class="title function_">toString</span>(); <span class="comment">// &quot;3&quot;</span></span><br><span class="line"><span class="string">&#x27;3&#x27;</span>.<span class="title function_">toString</span>(); <span class="comment">// &quot;3&quot;</span></span><br><span class="line"><span class="literal">true</span>.<span class="title function_">toString</span>(); <span class="comment">// &quot;true&quot;</span></span><br><span class="line">&#123;<span class="attr">test</span>: <span class="number">3</span>, <span class="attr">app</span>: <span class="string">&quot;test&quot;</span>&#125;.<span class="title function_">toString</span>(); <span class="comment">//&quot;[object Object]&quot;</span></span><br><span class="line"><span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">3</span>)&#125;.<span class="title function_">toString</span>(); <span class="comment">// &quot;function()&#123;console.log(3)&#125;&quot;</span></span><br><span class="line">[<span class="string">&#x27;test&#x27;</span>, <span class="string">&#x27;test2&#x27;</span>].<span class="title function_">toString</span>(); <span class="comment">//&quot;test,test2&quot;  相当于调用Array.join(&#x27;,&#x27;)</span></span><br><span class="line"><span class="regexp">/\d/</span>.<span class="title function_">toString</span>();  <span class="comment">// &quot;/\d/&quot;</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="valueOf-NaN"><a href="#valueOf-NaN" class="headerlink" title="valueOf()"></a>valueOf()</h3><h4 id="介绍-2"><a href="#介绍-2" class="headerlink" title="介绍"></a>介绍</h4><ol>
 <li>valueOf() 如果对象存在任意原始值，它就默认将对象转换为表示它的原始值，如果对象是复合值，而且大多数对象无法真正表示为一个原始值，因此默认的valueOf( )方法简单地返回对象本身，而不是返回一个原始值。</li>
 </ol>
-<h4 id="案例-1"><a href="#案例-1" class="headerlink" title="案例"></a>案例</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3.</span>valueOf(); <span class="comment">// 3  返回原始值</span></span><br><span class="line"><span class="string">'3'</span>.valueOf(); <span class="comment">// "3"  返回原始值</span></span><br><span class="line"><span class="literal">true</span>.valueOf(); <span class="comment">// true  返回原始值</span></span><br><span class="line">&#123;<span class="attr">test</span>: <span class="number">3</span>, <span class="attr">app</span>: <span class="string">"test"</span>&#125;.valueOf(); <span class="comment">//&#123;test: 3, app: "test"&#125; 返回自身</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="built_in">console</span>.log(<span class="number">3</span>)&#125;.valueOf(); <span class="comment">// function()&#123;console.log(3)&#125; 返回自身</span></span><br><span class="line">[<span class="string">'test'</span>, <span class="string">'test2'</span>].valueOf(); <span class="comment">//["test,test2"]  返回自身</span></span><br></pre></td></tr></table></figure>
+<h4 id="案例-1"><a href="#案例-1" class="headerlink" title="案例"></a>案例</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3.</span><span class="title function_">valueOf</span>(); <span class="comment">// 3  返回原始值</span></span><br><span class="line"><span class="string">&#x27;3&#x27;</span>.<span class="title function_">valueOf</span>(); <span class="comment">// &quot;3&quot;  返回原始值</span></span><br><span class="line"><span class="literal">true</span>.<span class="title function_">valueOf</span>(); <span class="comment">// true  返回原始值</span></span><br><span class="line">&#123;<span class="attr">test</span>: <span class="number">3</span>, <span class="attr">app</span>: <span class="string">&quot;test&quot;</span>&#125;.<span class="title function_">valueOf</span>(); <span class="comment">//&#123;test: 3, app: &quot;test&quot;&#125; 返回自身</span></span><br><span class="line"><span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">3</span>)&#125;.<span class="title function_">valueOf</span>(); <span class="comment">// function()&#123;console.log(3)&#125; 返回自身</span></span><br><span class="line">[<span class="string">&#x27;test&#x27;</span>, <span class="string">&#x27;test2&#x27;</span>].<span class="title function_">valueOf</span>(); <span class="comment">//[&quot;test,test2&quot;]  返回自身</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="调用时机"><a href="#调用时机" class="headerlink" title="调用时机"></a>调用时机</h3><ol>
-<li><p>案例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//案例一</span><br><span class="line">var a = &apos;31&apos;;</span><br><span class="line">console.log(+a);// 31</span><br><span class="line"></span><br><span class="line">//案例二</span><br><span class="line">var example = &#123;test:&apos;123&apos;&#125;;</span><br><span class="line">console.log(+example);// NaN</span><br><span class="line"></span><br><span class="line">//案例三</span><br><span class="line">console.log(&apos;test&apos;+&#123;&#125;); //&quot;test[object Object]&quot;</span><br><span class="line"></span><br><span class="line">//案例四</span><br><span class="line">var example = &#123;test:&apos;1232&apos;&#125;;</span><br><span class="line">alert(example);// &quot;[object Object]&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>结论： </p>
-<ol>
+<li>案例</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//案例一</span><br><span class="line">var a = &#x27;31&#x27;;</span><br><span class="line">console.log(+a);// 31</span><br><span class="line"></span><br><span class="line">//案例二</span><br><span class="line">var example = &#123;test:&#x27;123&#x27;&#125;;</span><br><span class="line">console.log(+example);// NaN</span><br><span class="line"></span><br><span class="line">//案例三</span><br><span class="line">console.log(&#x27;test&#x27;+&#123;&#125;); //&quot;test[object Object]&quot;</span><br><span class="line"></span><br><span class="line">//案例四</span><br><span class="line">var example = &#123;test:&#x27;1232&#x27;&#125;;</span><br><span class="line">alert(example);// &quot;[object Object]&quot;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>结论： <ol>
 <li>案例一二：一元加操作符在操作对象的时候，会先调用对象的valueOf方法来转换，最后再用Number( )方法转换</li>
 <li>案例三：对象和字符串相加，肯定转换为字符串啊，所以调用了对象的toString方法，变为[object Object]了</li>
 <li>alert是调用toString()方法，和字符串和对象相加一样</li>
@@ -245,7 +255,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是BFC"><span class="toc-text">什么是BFC?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何产生BFC"><span class="toc-text">如何产生BFC?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BFC的作用？"><span class="toc-text">BFC的作用？</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFBFC"><span class="toc-text">什么是BFC?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BA%A7%E7%94%9FBFC"><span class="toc-text">如何产生BFC?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BFC%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="toc-text">BFC的作用？</span></a></li></ol>
 </div>
     
 </div>
@@ -152,14 +159,15 @@
 <h3 id="如何产生BFC"><a href="#如何产生BFC" class="headerlink" title="如何产生BFC?"></a>如何产生BFC?</h3><ol>
 <li>html根元素</li>
 <li>float不为none（默认值）</li>
-<li>display:table-cell/inline-block</li>
+<li>display:table-cell&#x2F;inline-block</li>
 <li>overflow不为visible（默认值）</li>
-<li>position不为static/releative</li>
+<li>position不为static&#x2F;releative</li>
 </ol>
 <h3 id="BFC的作用？"><a href="#BFC的作用？" class="headerlink" title="BFC的作用？"></a>BFC的作用？</h3><ol>
-<li><p>解决不和浮动元素重叠（浮动元素跟随非浮动元素）</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"float:left;"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
+<li>解决不和浮动元素重叠（浮动元素跟随非浮动元素）</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;float:left;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
 <li><p>清除元素内部浮动</p>
 </li>
 <li><p>解决上下相邻2个元素重叠</p>
@@ -243,7 +251,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

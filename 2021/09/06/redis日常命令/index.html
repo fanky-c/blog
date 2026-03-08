@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis是什么"><span class="toc-text">redis是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用场景"><span class="toc-text">使用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-削峰"><span class="toc-text">a. 削峰</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b-热数据"><span class="toc-text">b. 热数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-计数器"><span class="toc-text">c. 计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-分布式锁"><span class="toc-text">d. 分布式锁</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis功能"><span class="toc-text">redis功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-数据缓存"><span class="toc-text">a. 数据缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b-数据持久化"><span class="toc-text">b. 数据持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-哨兵、复制"><span class="toc-text">c. 哨兵、复制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-集群"><span class="toc-text">d. 集群</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis优劣势"><span class="toc-text">redis优劣势</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-优势"><span class="toc-text">a. 优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-劣势"><span class="toc-text">d. 劣势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis-常用问题"><span class="toc-text">redis 常用问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存穿透"><span class="toc-text">缓存穿透</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存击穿"><span class="toc-text">缓存击穿</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍-1"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案-1"><span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缓存雪崩"><span class="toc-text">缓存雪崩</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#介绍-2"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案-2"><span class="toc-text">解决方案</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#缓存更新策略"><span class="toc-text">缓存更新策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis常用命令"><span class="toc-text">redis常用命令</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">redis是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">使用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-%E5%89%8A%E5%B3%B0"><span class="toc-text">a. 削峰</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b-%E7%83%AD%E6%95%B0%E6%8D%AE"><span class="toc-text">b. 热数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="toc-text">c. 计数器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-text">d. 分布式锁</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E5%8A%9F%E8%83%BD"><span class="toc-text">redis功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-%E6%95%B0%E6%8D%AE%E7%BC%93%E5%AD%98"><span class="toc-text">a. 数据缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#b-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-text">b. 数据持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#c-%E5%93%A8%E5%85%B5%E3%80%81%E5%A4%8D%E5%88%B6"><span class="toc-text">c. 哨兵、复制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-%E9%9B%86%E7%BE%A4"><span class="toc-text">d. 集群</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E4%BC%98%E5%8A%A3%E5%8A%BF"><span class="toc-text">redis优劣势</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#a-%E4%BC%98%E5%8A%BF"><span class="toc-text">a. 优势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#d-%E5%8A%A3%E5%8A%BF"><span class="toc-text">d. 劣势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis-%E5%B8%B8%E7%94%A8%E9%97%AE%E9%A2%98"><span class="toc-text">redis 常用问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F"><span class="toc-text">缓存穿透</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF"><span class="toc-text">缓存击穿</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-1"><span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9"><span class="toc-text">缓存雪崩</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D-2"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2"><span class="toc-text">解决方案</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="toc-text">缓存更新策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">redis常用命令</span></a></li></ol>
 </div>
     
 </div>
@@ -146,7 +153,7 @@
     </div>
     <div class="post-content ">
         <h2 id="redis是什么"><a href="#redis是什么" class="headerlink" title="redis是什么"></a>redis是什么</h2><p>redis是key-value数据库， 支持数据持久化， 支持list、hash、set数据结构</p>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="a-削峰"><a href="#a-削峰" class="headerlink" title="a. 削峰"></a>a. 削峰</h3><p>常见的秒杀活动中并发请求量会非常大，为了防止我们DB宕机，需要通过中间件进行削峰限流。很简单一个应用方法，前端接受10000/s的并发请求，而后端接口只能处理100/s并发请求，那么将前端的并发请求扔到redis队列中缓存起来，最大不超过100个</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><h3 id="a-削峰"><a href="#a-削峰" class="headerlink" title="a. 削峰"></a>a. 削峰</h3><p>常见的秒杀活动中并发请求量会非常大，为了防止我们DB宕机，需要通过中间件进行削峰限流。很简单一个应用方法，前端接受10000&#x2F;s的并发请求，而后端接口只能处理100&#x2F;s并发请求，那么将前端的并发请求扔到redis队列中缓存起来，最大不超过100个</p>
 <h3 id="b-热数据"><a href="#b-热数据" class="headerlink" title="b. 热数据"></a>b. 热数据</h3><p>一些系统频繁请求的数据存放到redis中减少DB压力。举个例子：每个系统中都会有字典数据，这些数据不会经常变但是访问特别频繁，将这些数据存放到redis中加快访问速度减少DB压力</p>
 <h3 id="c-计数器"><a href="#c-计数器" class="headerlink" title="c. 计数器"></a>c. 计数器</h3><p>利用redis提供的递增和递减命令实现计数器功能， 例如：计算用户请求某个接口次数</p>
 <h3 id="d-分布式锁"><a href="#d-分布式锁" class="headerlink" title="d. 分布式锁"></a>d. 分布式锁</h3><p>分布式服务中需要对某个资源进行保护，保证不会产生并发，通过redis的分布式锁实现</p>
@@ -161,60 +168,77 @@
 <h2 id="redis-常用问题"><a href="#redis-常用问题" class="headerlink" title="redis 常用问题"></a>redis 常用问题</h2><h3 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>缓存穿透是指缓存服务器中没有缓存数据，数据库中也没有符合条件的数据，导致业务系统每次都绕过缓存服务器查询下游的数据库，缓存服务器完全失去了其应用的作用, 下游的数据库很容易宕机</p>
 <h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><ol>
 <li>当查询数据库没有数据默认给缓存value设置 null 过期时间为5s或者2s具体看场景。</li>
-<li>布隆过滤器(Bloom Filter)：可以将查询的数据条件都哈希到一个足够大的布隆过滤器中，用户发送的请求会先被布隆过滤器拦截，一定不存在的数据就直接拦截返回了，从而避免下一步对数据库的压力。<h3 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h3><h4 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h4>缓存击穿是指当某一key的缓存过期时大并发量的请求同时访问此key，瞬间击穿缓存服务器直接访问数据库，让数据库处于负载的情况。<h4 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h4></li>
+<li>布隆过滤器(Bloom Filter)：可以将查询的数据条件都哈希到一个足够大的布隆过滤器中，用户发送的请求会先被布隆过滤器拦截，一定不存在的数据就直接拦截返回了，从而避免下一步对数据库的压力。</li>
+</ol>
+<h3 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h3><h4 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h4><p>缓存击穿是指当某一key的缓存过期时大并发量的请求同时访问此key，瞬间击穿缓存服务器直接访问数据库，让数据库处于负载的情况。</p>
+<h4 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h4><ol>
 <li>异步定时更新：某一个热点数据的过期时间是1小时，那么每59分钟，通过定时任务去更新这个热点key，并重新设置其过期时间</li>
-<li>互斥锁：在缓存处理上，通常使用一个互斥锁来解决缓存击穿的问题。简单来说就是当Redis中根据key获得的value值为空时，先锁上，然后从数据库加载，加载完毕，释放锁。若其他线程也在请求该key时，发现获取锁失败，则先阻塞。<h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><h4 id="介绍-2"><a href="#介绍-2" class="headerlink" title="介绍"></a>介绍</h4>缓存数据在相近时间大量过期或者缓存服务宕机，导致并发请求在某一时刻全部落到DB，导致DB宕机。<h4 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h4></li>
+<li>互斥锁：在缓存处理上，通常使用一个互斥锁来解决缓存击穿的问题。简单来说就是当Redis中根据key获得的value值为空时，先锁上，然后从数据库加载，加载完毕，释放锁。若其他线程也在请求该key时，发现获取锁失败，则先阻塞。</li>
+</ol>
+<h3 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h3><h4 id="介绍-2"><a href="#介绍-2" class="headerlink" title="介绍"></a>介绍</h4><p>缓存数据在相近时间大量过期或者缓存服务宕机，导致并发请求在某一时刻全部落到DB，导致DB宕机。</p>
+<h4 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h4><ol>
 <li>过期时间随机生成</li>
 <li>热点数据永不过期</li>
 <li>缓存服务集群化部署，避免服务单机故障</li>
 </ol>
-<p><br><br><img src="/img/redis.jpg" width="90%"><br><br></p>
+<br>
+<img src="/img/redis.jpg" width="90%" >
+<br>
+
 <h2 id="缓存更新策略"><a href="#缓存更新策略" class="headerlink" title="缓存更新策略"></a>缓存更新策略</h2><ol>
 <li>对一致性要求不高就设置缓存过期时间， 根据业务具体情况设置5分钟等</li>
-<li><p>对一致性要求非常高：</p>
-<ol>
+<li>对一致性要求非常高：<ol>
 <li><p>先删除缓存，再更新数据库。 解决方案延时双删，步骤：</p>
-<ol>
-<li><strong>线程1删除缓存，然后去更新数据库</strong></li>
-<li><strong>线程2来读缓存，发现缓存已经被删除，所以直接从数据库中读取，这时候由于线程1还没有更新完成，所以读到的是旧值，然后把旧值写入缓存</strong></li>
-<li><strong>线程1，根据估算的时间，sleep，由于sleep的时间大于线程2读数据+写缓存的时间，所以缓存被再次删除</strong></li>
-<li><strong>如果还有其他线程来读取缓存的话，就会再次从数据库中读取到最新值</strong></li>
-</ol>
+</li>
+<li><p><strong>线程1删除缓存，然后去更新数据库</strong></p>
+</li>
+<li><p><strong>线程2来读缓存，发现缓存已经被删除，所以直接从数据库中读取，这时候由于线程1还没有更新完成，所以读到的是旧值，然后把旧值写入缓存</strong></p>
+</li>
+<li><p><strong>线程1，根据估算的时间，sleep，由于sleep的时间大于线程2读数据+写缓存的时间，所以缓存被再次删除</strong></p>
+</li>
+<li><p><strong>如果还有其他线程来读取缓存的话，就会再次从数据库中读取到最新值</strong></p>
 </li>
 <li><p>先更新数据库，再删除缓存。</p>
-<ol>
-<li>解决方案引入消息队列（太复杂，不推荐）</li>
-</ol>
+</li>
+<li><p>解决方案引入消息队列（太复杂，不推荐）</p>
 </li>
 </ol>
 </li>
 </ol>
 <h2 id="redis常用命令"><a href="#redis常用命令" class="headerlink" title="redis常用命令"></a>redis常用命令</h2><ol>
-<li><p>链接远程redis</p>
+<li>链接远程redis</li>
+</ol>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 主机 -p 端口 -a 密码</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>选择具体数据库， 一共有16个</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select <span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取key value</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">get</span> key ---&gt; <span class="keyword">get</span> NODE_BIGOLIVEE_BFF:abcdc</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取hash value</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hmget key NODE_BIGOLIVEE_BFF:abcdc</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获取redis key 过期时间</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ttl NODE_BIGOLIVEE_BFF:abcdc</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>设置redis key 过期时间</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expire NODE_BIGOLIVEE_BFF:abcdc <span class="number">30</span>  <span class="comment">// 设置30秒后过期</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><br><br><br></p>
-<ol>
-<li><a href="https://redis.readthedocs.io/en/2.4/key.html" target="_blank" rel="noopener">文章来源</a></li>
-<li><a href="https://www.huaweicloud.com/articles/2a40a0aba67a3368598e77ebb6650aa7.html" target="_blank" rel="noopener">文章来源</a></li>
-</ol>
 
+<ol start="2">
+<li>选择具体数据库， 一共有16个</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>获取key value</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get key ---&gt; get <span class="attr">NODE_BIGOLIVEE_BFF</span>:abcdc</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>获取hash value</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hmget key <span class="attr">NODE_BIGOLIVEE_BFF</span>:abcdc</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>获取redis key 过期时间</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ttl <span class="attr">NODE_BIGOLIVEE_BFF</span>:abcdc</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>设置redis key 过期时间</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">expire <span class="attr">NODE_BIGOLIVEE_BFF</span>:abcdc <span class="number">30</span>  <span class="comment">// 设置30秒后过期</span></span><br></pre></td></tr></table></figure>
+
+<br />
+<br />
+1. [文章来源](https://redis.readthedocs.io/en/2.4/key.html)
+2. [文章来源](https://www.huaweicloud.com/articles/2a40a0aba67a3368598e77ebb6650aa7.html)
         
         <div id="comment-container">
         </div>
@@ -292,7 +316,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

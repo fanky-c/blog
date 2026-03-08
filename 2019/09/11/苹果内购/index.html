@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#支付状态"><span class="toc-text">支付状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#支付流程"><span class="toc-text">支付流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-直接和Apple服务器进行购买和验证"><span class="toc-text">1. 直接和Apple服务器进行购买和验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-自己架设服务器进行验证"><span class="toc-text">2. 自己架设服务器进行验证</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#虚拟物品类型"><span class="toc-text">虚拟物品类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iap注意事项"><span class="toc-text">iap注意事项</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%AF%E4%BB%98%E7%8A%B6%E6%80%81"><span class="toc-text">支付状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%AF%E4%BB%98%E6%B5%81%E7%A8%8B"><span class="toc-text">支付流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E7%9B%B4%E6%8E%A5%E5%92%8CApple%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9B%E8%A1%8C%E8%B4%AD%E4%B9%B0%E5%92%8C%E9%AA%8C%E8%AF%81"><span class="toc-text">1. 直接和Apple服务器进行购买和验证</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%87%AA%E5%B7%B1%E6%9E%B6%E8%AE%BE%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9B%E8%A1%8C%E9%AA%8C%E8%AF%81"><span class="toc-text">2. 自己架设服务器进行验证</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E7%89%A9%E5%93%81%E7%B1%BB%E5%9E%8B"><span class="toc-text">虚拟物品类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#iap%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">iap注意事项</span></a></li></ol>
 </div>
     
 </div>
@@ -163,7 +170,7 @@
 <li>消耗品（Consumable products）：比如游戏内金币等。</li>
 <li>不可消耗品（Non-consumable products）：简单来说就是一次购买，终身可用（用户可随时从App Store restore）。</li>
 <li>自动更新订阅品（Auto-renewable subscriptions）：和不可消耗品的不同点是有失效时间。比如一整年的付费周刊。在这种模式下，开发者定期投递内容，用户在订阅期内随时可以访问这些内容。订阅快要过期时，系统将自动更新订阅（如果用户同意）</li>
-<li>非自动更新订阅品（Non-renewable subscriptions）：一般使用场景是从用户从IAP购买后，购买信息存放在自己的开发者服务器上。失效日期/可用是由开发者服务器自行控制的，而非由App Store控制，这一点与自动更新订阅品有差异。</li>
+<li>非自动更新订阅品（Non-renewable subscriptions）：一般使用场景是从用户从IAP购买后，购买信息存放在自己的开发者服务器上。失效日期&#x2F;可用是由开发者服务器自行控制的，而非由App Store控制，这一点与自动更新订阅品有差异。</li>
 <li>免费订阅品（Free subscriptions）：在Newsstand中放置免费订阅的一种方式。免费订阅永不过期。只能用于Newsstand-enabled apps。</li>
 </ol>
 <blockquote>
@@ -171,11 +178,14 @@
 </blockquote>
 <h3 id="iap注意事项"><a href="#iap注意事项" class="headerlink" title="iap注意事项"></a>iap注意事项</h3><ol>
 <li>ios7之后，苹果的票据保存在Bundle.main.appStoreReceiptURL,票据只有一份且加密。</li>
-<li>SKPaymentTransactionObserver监听支付结果；当客户端调用finishTransaction时，则表示订单已经完成，则客户端不再接收到支付成功的回调，如果没有finishTransaction，则苹果会一直回调（每次打开App(监听)就会回调，直到调用finishTransaction完成订单）<br><img src="/img/iap.png" width="700" height="auto" alt="离线日志" align="center"></li>
-<li>purchasing状态下还没有唯一标识transactionIdentifier，只有在purchased和restore状态下才有</li>
-<li>同一个商品，如果上次支付用户支付成功SKPaymentTransactionStatePurchased，但是没有调用finishTransaction），再次下单购买的时候，会提示恢复购买，只会调用Purchasing，不会监听到其他状态，并且用户不会扣钱，如果重新打开App，重新监听SKPaymentTransactionObserver，会收到多条回调，并且对应的transactionId一样，也就是同一个商品，再未完成前，不会重复扣款，只有上一个订单完成后，才会继续支付扣款</li>
+<li>SKPaymentTransactionObserver监听支付结果；当客户端调用finishTransaction时，则表示订单已经完成，则客户端不再接收到支付成功的回调，如果没有finishTransaction，则苹果会一直回调（每次打开App(监听)就会回调，直到调用finishTransaction完成订单）</li>
 </ol>
-<p><a href="http://note.youdao.com/noteshare?id=a5d076c025d7970d5047fb83753a80ee" target="_blank" rel="noopener">有道云笔记iap</a><br><a href="https://note.youdao.com/ynoteshare1/index.html?id=d549ec4ee4b562974e2bfa4952c07a47&amp;type=note" target="_blank" rel="noopener">有道云笔记mac</a></p>
+<img src="/img/iap.png" width = "700" height = "auto" alt="离线日志" align=center />
+3. purchasing状态下还没有唯一标识transactionIdentifier，只有在purchased和restore状态下才有
+4. 同一个商品，如果上次支付用户支付成功SKPaymentTransactionStatePurchased，但是没有调用finishTransaction），再次下单购买的时候，会提示恢复购买，只会调用Purchasing，不会监听到其他状态，并且用户不会扣钱，如果重新打开App，重新监听SKPaymentTransactionObserver，会收到多条回调，并且对应的transactionId一样，也就是同一个商品，再未完成前，不会重复扣款，只有上一个订单完成后，才会继续支付扣款
+
+
+<p><a href="http://note.youdao.com/noteshare?id=a5d076c025d7970d5047fb83753a80ee">有道云笔记iap</a><br><a href="https://note.youdao.com/ynoteshare1/index.html?id=d549ec4ee4b562974e2bfa4952c07a47&type=note">有道云笔记mac</a></p>
 
         
         <div id="comment-container">
@@ -254,7 +264,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#接口数据安全介绍"><span class="toc-text">接口数据安全介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#接口数据安全的方案"><span class="toc-text">接口数据安全的方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、数据加密，防止报文明文传输"><span class="toc-text">1、数据加密，防止报文明文传输</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#数据如何加密"><span class="toc-text">数据如何加密</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#https加密过程"><span class="toc-text">https加密过程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#日常业务中敏感度高的接口（登录、注册、付款接口）"><span class="toc-text">日常业务中敏感度高的接口（登录、注册、付款接口）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、数据加签和验签"><span class="toc-text">2、数据加签和验签</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#a、什么是加签验签呢"><span class="toc-text">a、什么是加签验签呢</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#b、有了https等加密数据，为什么还需要加签验签"><span class="toc-text">b、有了https等加密数据，为什么还需要加签验签</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、token授权认证机制"><span class="toc-text">3、token授权认证机制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#a、token的授权认证方案"><span class="toc-text">a、token的授权认证方案</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#b、如何保证token的安全"><span class="toc-text">b、如何保证token的安全</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、时间戳timestamp超时机制"><span class="toc-text">4、时间戳timestamp超时机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、时间戳timestamp-nonce方案防止重放攻击"><span class="toc-text">5、时间戳timestamp+nonce方案防止重放攻击</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6、限流机制"><span class="toc-text">6、限流机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7、黑名单机制"><span class="toc-text">7、黑名单机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8、白名单机制"><span class="toc-text">8、白名单机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9、数据脱敏掩"><span class="toc-text">9、数据脱敏掩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10、数据参数一些合法性校验-前后端都必须做"><span class="toc-text">10、数据参数一些合法性校验(前后端都必须做)</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E4%BB%8B%E7%BB%8D"><span class="toc-text">接口数据安全介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E7%9A%84%E6%96%B9%E6%A1%88"><span class="toc-text">接口数据安全的方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86%EF%BC%8C%E9%98%B2%E6%AD%A2%E6%8A%A5%E6%96%87%E6%98%8E%E6%96%87%E4%BC%A0%E8%BE%93"><span class="toc-text">1、数据加密，防止报文明文传输</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A6%82%E4%BD%95%E5%8A%A0%E5%AF%86"><span class="toc-text">数据如何加密</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#https%E5%8A%A0%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="toc-text">https加密过程</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%97%A5%E5%B8%B8%E4%B8%9A%E5%8A%A1%E4%B8%AD%E6%95%8F%E6%84%9F%E5%BA%A6%E9%AB%98%E7%9A%84%E6%8E%A5%E5%8F%A3%EF%BC%88%E7%99%BB%E5%BD%95%E3%80%81%E6%B3%A8%E5%86%8C%E3%80%81%E4%BB%98%E6%AC%BE%E6%8E%A5%E5%8F%A3%EF%BC%89"><span class="toc-text">日常业务中敏感度高的接口（登录、注册、付款接口）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E5%8A%A0%E7%AD%BE%E5%92%8C%E9%AA%8C%E7%AD%BE"><span class="toc-text">2、数据加签和验签</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#a%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%8A%A0%E7%AD%BE%E9%AA%8C%E7%AD%BE%E5%91%A2"><span class="toc-text">a、什么是加签验签呢</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#b%E3%80%81%E6%9C%89%E4%BA%86https%E7%AD%89%E5%8A%A0%E5%AF%86%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E9%9C%80%E8%A6%81%E5%8A%A0%E7%AD%BE%E9%AA%8C%E7%AD%BE"><span class="toc-text">b、有了https等加密数据，为什么还需要加签验签</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81token%E6%8E%88%E6%9D%83%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6"><span class="toc-text">3、token授权认证机制</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#a%E3%80%81token%E7%9A%84%E6%8E%88%E6%9D%83%E8%AE%A4%E8%AF%81%E6%96%B9%E6%A1%88"><span class="toc-text">a、token的授权认证方案</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#b%E3%80%81%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81token%E7%9A%84%E5%AE%89%E5%85%A8"><span class="toc-text">b、如何保证token的安全</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4%E3%80%81%E6%97%B6%E9%97%B4%E6%88%B3timestamp%E8%B6%85%E6%97%B6%E6%9C%BA%E5%88%B6"><span class="toc-text">4、时间戳timestamp超时机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5%E3%80%81%E6%97%B6%E9%97%B4%E6%88%B3timestamp-nonce%E6%96%B9%E6%A1%88%E9%98%B2%E6%AD%A2%E9%87%8D%E6%94%BE%E6%94%BB%E5%87%BB"><span class="toc-text">5、时间戳timestamp+nonce方案防止重放攻击</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6%E3%80%81%E9%99%90%E6%B5%81%E6%9C%BA%E5%88%B6"><span class="toc-text">6、限流机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7%E3%80%81%E9%BB%91%E5%90%8D%E5%8D%95%E6%9C%BA%E5%88%B6"><span class="toc-text">7、黑名单机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8%E3%80%81%E7%99%BD%E5%90%8D%E5%8D%95%E6%9C%BA%E5%88%B6"><span class="toc-text">8、白名单机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9%E3%80%81%E6%95%B0%E6%8D%AE%E8%84%B1%E6%95%8F%E6%8E%A9"><span class="toc-text">9、数据脱敏掩</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10%E3%80%81%E6%95%B0%E6%8D%AE%E5%8F%82%E6%95%B0%E4%B8%80%E4%BA%9B%E5%90%88%E6%B3%95%E6%80%A7%E6%A0%A1%E9%AA%8C-%E5%89%8D%E5%90%8E%E7%AB%AF%E9%83%BD%E5%BF%85%E9%A1%BB%E5%81%9A"><span class="toc-text">10、数据参数一些合法性校验(前后端都必须做)</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -150,9 +157,11 @@
 <li>对称加密：  加密和解密使用相同密钥的加密算法。简单点可以使用对称加密算法（如AES）来加解密，或者哈希算法处理（如MD5）。</li>
 <li>非对称加密：非对称加密算法需要两个密钥（公开密钥和私有密钥）。公钥与私钥是成对存在的，如果用公钥对数据进行加密，只有对应的私钥才能解密。更安全的做法，就是用非对称加密算法（如RSA或者SM2），公钥加密，私钥解密。</li>
 </ol>
-<h5 id="https加密过程"><a href="#https加密过程" class="headerlink" title="https加密过程"></a>https加密过程</h5><p><img src="/img/https1.jpg" style="max-width:95%"></p>
+<h5 id="https加密过程"><a href="#https加密过程" class="headerlink" title="https加密过程"></a>https加密过程</h5><img src="/img/https1.jpg" style="max-width:95%" />
+
 <p><strong>上图需关注：非对称加密和对称加密阶段</strong></p>
-<p><img src="/img/https.png" style="max-width:95%"></p>
+<img src="/img/https.png" style="max-width:95%" />
+
 <ol>
 <li>客户端发起Https请求，连接到服务器的443端口。</li>
 <li>服务器必须要有一套数字证书（证书内容有公钥、证书颁发机构、失效日期等）。</li>
@@ -165,19 +174,23 @@
 </ol>
 <h5 id="日常业务中敏感度高的接口（登录、注册、付款接口）"><a href="#日常业务中敏感度高的接口（登录、注册、付款接口）" class="headerlink" title="日常业务中敏感度高的接口（登录、注册、付款接口）"></a>日常业务中敏感度高的接口（登录、注册、付款接口）</h5><p>日常业务呢，数据传输加密这块的话，用https就可以啦，如果安全性要求较高的，比如登陆注册这些，需要传输密码的，密码就可以使用RSA等非对称加密算法，对密码加密。如果你的业务，安全性要求很高，你可以模拟https这个流程，对报文，再做一次加解密</p>
 <h4 id="2、数据加签和验签"><a href="#2、数据加签和验签" class="headerlink" title="2、数据加签和验签"></a>2、数据加签和验签</h4><h5 id="a、什么是加签验签呢"><a href="#a、什么是加签验签呢" class="headerlink" title="a、什么是加签验签呢"></a>a、什么是加签验签呢</h5><ol>
-<li><strong>数据加签</strong><br><img src="/img/https1.png" style="max-width:95%"></li>
+<li><strong>数据加签</strong></li>
 </ol>
+<img src="/img/https1.png" style="max-width:95%" />
+
 <p>数据加签：用Hash算法（如MD5，或者SHA-256）把原始请求参数生成报文摘要，然后用私钥对这个摘要进行加密，就得到这个报文对应的数字签名sign（这个过程就是加签）。通常来说呢，请求方会把数字签名和报文原文一并发送给接收方。</p>
 <ol>
-<li><strong>数据验签</strong><br><img src="/img/https2.png" style="max-width:95%"></li>
+<li><strong>数据验签</strong></li>
 </ol>
+<img src="/img/https2.png" style="max-width:95%" />
+
 <p>接收方拿到原始报文和数字签名（sign）后，用同一个Hash算法(比如都用MD5)从报文中生成摘要A。另外，用对方提供的公钥对数字签名进行解密，得到摘要B，对比A和B是否相同，就可以得知报文有没有被篡改过。</p>
 <blockquote>
 <p>其实加签，我的理解的话，就是把请求参数，按照一定规则，利用hash算法+加密算法生成一个唯一标签sign。验签的话，就是把请求参数按照相同的规则处理，再用相同的hash算法，和对应的密钥解密处理，以对比这个签名是否一致</p>
 </blockquote>
-<h5 id="b、有了https等加密数据，为什么还需要加签验签"><a href="#b、有了https等加密数据，为什么还需要加签验签" class="headerlink" title="b、有了https等加密数据，为什么还需要加签验签"></a>b、有了https等加密数据，为什么还需要加签验签</h5><p>数据在传输过程中被加密了，理论上，即使被抓包，数据也不会被篡改。<a href="https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&amp;mid=2247494171&amp;idx=1&amp;sn=80479acae752311581258015faa41673&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">但是https不是绝对安全的哦</a>，还有一个点：https加密的部分只是在外网，然后有很多服务是内网相互跳转的，加签也可以在这里保证不被中间人篡改，所以一般转账类安全性要求高的接口开发，都需要加签验签</p>
+<h5 id="b、有了https等加密数据，为什么还需要加签验签"><a href="#b、有了https等加密数据，为什么还需要加签验签" class="headerlink" title="b、有了https等加密数据，为什么还需要加签验签"></a>b、有了https等加密数据，为什么还需要加签验签</h5><p>数据在传输过程中被加密了，理论上，即使被抓包，数据也不会被篡改。<a href="https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247494171&idx=1&sn=80479acae752311581258015faa41673&scene=21#wechat_redirect">但是https不是绝对安全的哦</a>，还有一个点：https加密的部分只是在外网，然后有很多服务是内网相互跳转的，加签也可以在这里保证不被中间人篡改，所以一般转账类安全性要求高的接口开发，都需要加签验签</p>
 <h4 id="3、token授权认证机制"><a href="#3、token授权认证机制" class="headerlink" title="3、token授权认证机制"></a>3、token授权认证机制</h4><p>日常开发中，我们的网站或者APP，都是需要用户登录的。那么如果是非登录接口，是如何确保安全，如何确认用户身份的呢？可以使用token授权机制。</p>
-<h5 id="a、token的授权认证方案"><a href="#a、token的授权认证方案" class="headerlink" title="a、token的授权认证方案"></a>a、token的授权认证方案</h5><p>用户在客户端输入用户名和密码，点击登录后，服务器会校验密码成功，会给客户端返回一个唯一值token，并将token以键值对的形式存放在缓存（一般是Redis）中。后续客户端对需要授权模块的所有操作都要带上这个token，服务器端接收到请求后，先进行token验证，如果token存在，才表明是合法请求<br><img src="/img/token.png" style="max-width:95%"></p>
+<h5 id="a、token的授权认证方案"><a href="#a、token的授权认证方案" class="headerlink" title="a、token的授权认证方案"></a>a、token的授权认证方案</h5><p>用户在客户端输入用户名和密码，点击登录后，服务器会校验密码成功，会给客户端返回一个唯一值token，并将token以键值对的形式存放在缓存（一般是Redis）中。后续客户端对需要授权模块的所有操作都要带上这个token，服务器端接收到请求后，先进行token验证，如果token存在，才表明是合法请求<br><img src="/img/token.png" style="max-width:95%" /></p>
 <ol>
 <li>用户输入用户名和密码，发起登录请求</li>
 <li>服务端校验密码，如果校验通过，生成一个全局唯一的token。</li>
@@ -198,13 +211,13 @@
 <p>nonce指唯一的随机字符串，用来标识每个被签名的请求。我们可以将每次请求的nonce参数存储到一个“set集合”中，或者可以json格式存储到数据库或缓存中。每次处理HTTP请求时，首先判断该请求的nonce参数是否在该“集合”中，如果存在则认为是非法请求。</p>
 <p>然而对服务器来说，永久保存nonce的代价是非常大的。可以结合timestamp来优化。因为timstamp参数对于超过3min的请求，都认为非法请求，所以我们只需要存储3min的nonce参数的“集合”即可。</p>
 <h4 id="6、限流机制"><a href="#6、限流机制" class="headerlink" title="6、限流机制"></a>6、限流机制</h4><p>如果用户本来就是就是真实用户，他恶意频繁调用接口，想搞垮你的系统呢？这种情况就需要接入限流了。</p>
-<p>常用的限流算法有令牌桶和漏桶算法。大家可以看下我的这篇文章<a href="https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&amp;mid=2247490393&amp;idx=1&amp;sn=98189caa486406f8fa94d84ba0667604&amp;chksm=cf21c470f8564d665ce04ccb9dc7502633246da87a0541b07ba4ac99423b28ce544cdd6c036b&amp;token=162724582&amp;lang=zh_CN&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">四种限流</a></p>
+<p>常用的限流算法有令牌桶和漏桶算法。大家可以看下我的这篇文章<a href="https://mp.weixin.qq.com/s?__biz=Mzg3NzU5NTIwNg==&mid=2247490393&idx=1&sn=98189caa486406f8fa94d84ba0667604&chksm=cf21c470f8564d665ce04ccb9dc7502633246da87a0541b07ba4ac99423b28ce544cdd6c036b&token=162724582&lang=zh_CN&scene=21#wechat_redirect">四种限流</a></p>
 <h4 id="7、黑名单机制"><a href="#7、黑名单机制" class="headerlink" title="7、黑名单机制"></a>7、黑名单机制</h4><h4 id="8、白名单机制"><a href="#8、白名单机制" class="headerlink" title="8、白名单机制"></a>8、白名单机制</h4><h4 id="9、数据脱敏掩"><a href="#9、数据脱敏掩" class="headerlink" title="9、数据脱敏掩"></a>9、数据脱敏掩</h4><p>对于密码，或者手机号、身份证这些敏感信息，一般都需要脱敏掩码再展示的，如果是密码，还需要加密再保存到数据库。</p>
 <p>对于手机号、身份证信息这些，日常开发中，在日志排查时，看到的都应该是掩码的。目的就是尽量不泄漏这些用户信息，虽然能看日志的只是开发和运维，但是还是需要防一下，做掩码处理。</p>
 <p>对于密码保存到数据库，我们肯定不能直接明文保存。最简单的也需要MD5处理一下再保存，Spring Security中的 BCryptPasswordEncoder也可以，它的底层是采用SHA-256 +随机盐+密钥对密码进行加密，而SHA和MD系列是一样的，都是hash摘要类的算法</p>
 <h4 id="10、数据参数一些合法性校验-前后端都必须做"><a href="#10、数据参数一些合法性校验-前后端都必须做" class="headerlink" title="10、数据参数一些合法性校验(前后端都必须做)"></a>10、数据参数一些合法性校验(前后端都必须做)</h4><p>接口数据的安全性保证，还需要我们的系统，有个数据合法性校验，简单来说就是参数校验，比如身份证长度，手机号长度，是否是数字等等。</p>
-<p><br><br><a href="https://mp.weixin.qq.com/s/xcKXtB6Ck-phhua2fY4aYw" target="_blank" rel="noopener">文章来源</a></p>
-
+<br />
+[文章来源](https://mp.weixin.qq.com/s/xcKXtB6Ck-phhua2fY4aYw)
         
         <div id="comment-container">
         </div>
@@ -282,7 +295,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

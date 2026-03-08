@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#灰度发布优点"><span class="toc-text">灰度发布优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前端灰度发布的要素"><span class="toc-text">前端灰度发布的要素</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-放量规则"><span class="toc-text">1. 放量规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-资源新旧版本"><span class="toc-text">2. 资源新旧版本</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#灰度实现的原理"><span class="toc-text">灰度实现的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#灰度发布的几种形式"><span class="toc-text">灰度发布的几种形式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#前端灰度发布"><span class="toc-text">前端灰度发布</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#后端灰度发布"><span class="toc-text">后端灰度发布</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%81%B0%E5%BA%A6%E5%8F%91%E5%B8%83%E4%BC%98%E7%82%B9"><span class="toc-text">灰度发布优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E7%81%B0%E5%BA%A6%E5%8F%91%E5%B8%83%E7%9A%84%E8%A6%81%E7%B4%A0"><span class="toc-text">前端灰度发布的要素</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E6%94%BE%E9%87%8F%E8%A7%84%E5%88%99"><span class="toc-text">1. 放量规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%B5%84%E6%BA%90%E6%96%B0%E6%97%A7%E7%89%88%E6%9C%AC"><span class="toc-text">2. 资源新旧版本</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%81%B0%E5%BA%A6%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">灰度实现的原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%81%B0%E5%BA%A6%E5%8F%91%E5%B8%83%E7%9A%84%E5%87%A0%E7%A7%8D%E5%BD%A2%E5%BC%8F"><span class="toc-text">灰度发布的几种形式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E7%81%B0%E5%BA%A6%E5%8F%91%E5%B8%83"><span class="toc-text">前端灰度发布</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E7%81%B0%E5%BA%A6%E5%8F%91%E5%B8%83"><span class="toc-text">后端灰度发布</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -169,11 +176,9 @@
 <li>前后端半分离，入口页面托管在服务端（nodejs、php）</li>
 <li>前后端分离<ol>
 <li>前端代码写2套内容，在页面渲染之前发起异步获取灰度规则</li>
-<li>通过修改nginx配置来灰度<ol>
+<li>通过修改nginx配置来灰度</li>
 <li>2套代码，分别部署</li>
 <li>通过nginx加权轮询来控制百分比灰度</li>
-</ol>
-</li>
 <li>nginx+lua脚本+灰度规则</li>
 </ol>
 </li>
@@ -181,8 +186,8 @@
 <h4 id="后端灰度发布"><a href="#后端灰度发布" class="headerlink" title="后端灰度发布"></a>后端灰度发布</h4><ol>
 <li>类似前端ssr服务端渲染</li>
 </ol>
-<p><br><br><a href="https://mp.weixin.qq.com/s/-nZZX0I3PZvEUpUXwmb1MQ" target="_blank" rel="noopener">文章来源于</a></p>
-
+<br />
+[文章来源于](https://mp.weixin.qq.com/s/-nZZX0I3PZvEUpUXwmb1MQ)
         
         <div id="comment-container">
         </div>
@@ -260,7 +265,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

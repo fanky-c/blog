@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#线程之间通信"><span class="toc-text">线程之间通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#performSelector"><span class="toc-text">performSelector</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#load和initialize方法分别在调用时机"><span class="toc-text">load和initialize方法分别在调用时机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#load"><span class="toc-text">+ load</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#initialize"><span class="toc-text">+ initialize</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#runloop和线程的关系"><span class="toc-text">runloop和线程的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#block的实质是什么？-block修饰的变量为什么能在block里面能改变其值？"><span class="toc-text">block的实质是什么？__block修饰的变量为什么能在block里面能改变其值？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建线程的方法是什么-如果在主线程中执行代码，方法是什么-如果想延时执行代码、方法又是什么"><span class="toc-text">创建线程的方法是什么?如果在主线程中执行代码，方法是什么? 如果想延时执行代码、方法又是什么?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#创建线程"><span class="toc-text">创建线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在主线程执行代码"><span class="toc-text">在主线程执行代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#延迟执行"><span class="toc-text">延迟执行</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#delegate和notification区别和场景"><span class="toc-text">delegate和notification区别和场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#区别"><span class="toc-text">区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#场景"><span class="toc-text">场景</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E4%B9%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="toc-text">线程之间通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#performSelector"><span class="toc-text">performSelector</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#load%E5%92%8Cinitialize%E6%96%B9%E6%B3%95%E5%88%86%E5%88%AB%E5%9C%A8%E8%B0%83%E7%94%A8%E6%97%B6%E6%9C%BA"><span class="toc-text">load和initialize方法分别在调用时机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#load"><span class="toc-text">+ load</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#initialize"><span class="toc-text">+ initialize</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#runloop%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">runloop和线程的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#block%E7%9A%84%E5%AE%9E%E8%B4%A8%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F-block%E4%BF%AE%E9%A5%B0%E7%9A%84%E5%8F%98%E9%87%8F%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E5%9C%A8block%E9%87%8C%E9%9D%A2%E8%83%BD%E6%94%B9%E5%8F%98%E5%85%B6%E5%80%BC%EF%BC%9F"><span class="toc-text">block的实质是什么？__block修饰的变量为什么能在block里面能改变其值？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95%E6%98%AF%E4%BB%80%E4%B9%88-%E5%A6%82%E6%9E%9C%E5%9C%A8%E4%B8%BB%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81%EF%BC%8C%E6%96%B9%E6%B3%95%E6%98%AF%E4%BB%80%E4%B9%88-%E5%A6%82%E6%9E%9C%E6%83%B3%E5%BB%B6%E6%97%B6%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81%E3%80%81%E6%96%B9%E6%B3%95%E5%8F%88%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-text">创建线程的方法是什么?如果在主线程中执行代码，方法是什么? 如果想延时执行代码、方法又是什么?</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="toc-text">创建线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%A8%E4%B8%BB%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C%E4%BB%A3%E7%A0%81"><span class="toc-text">在主线程执行代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E6%89%A7%E8%A1%8C"><span class="toc-text">延迟执行</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#delegate%E5%92%8Cnotification%E5%8C%BA%E5%88%AB%E5%92%8C%E5%9C%BA%E6%99%AF"><span class="toc-text">delegate和notification区别和场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-text">区别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-text">场景</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -144,11 +151,11 @@
     <div class="post-content ">
         <h3 id="线程之间通信"><a href="#线程之间通信" class="headerlink" title="线程之间通信"></a>线程之间通信</h3><h4 id="performSelector"><a href="#performSelector" class="headerlink" title="performSelector"></a>performSelector</h4><ol>
 <li><ul>
-<li>(void)performSelectorOnMainThread:(SEL)aSelector withObject:(id)arg waitUntilDone:(BOOL)wait;  //返回主线程</li>
+<li>(void)performSelectorOnMainThread:(SEL)aSelector withObject:(id)arg waitUntilDone:(BOOL)wait;  &#x2F;&#x2F;返回主线程</li>
 </ul>
 </li>
 <li><ul>
-<li>(void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withObject:(id)arg waitUntilDone:(BOOL)wait; //返回指定线程</li>
+<li>(void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withObject:(id)arg waitUntilDone:(BOOL)wait; &#x2F;&#x2F;返回指定线程</li>
 </ul>
 </li>
 </ol>
@@ -167,9 +174,11 @@
 <li>主线程的 RunLoop 是自动创建并启动</li>
 <li>子线程的 RunLoop 需要手动创建(懒加载,只创建一次)</li>
 <li>RunLoop保存在一个全局的Dictionary里，线程作为key,RunLoop作为value</li>
-<li>RunLoop在第一次获取时创建，在线程结束时销毁<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> //启动RunLoop</span><br><span class="line">[[NSRunLoop currentRunLoop] run];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//第一个参数:指定运行模式</span><br><span class="line">//第二个参数:指定 RunLoop 的过期时间,即:到了这个时间后RunLoop 就失效了</span><br><span class="line">[[NSRunLoop currentRunLoop] runMode:kCFRunLoopDefaultModebeforeDate:[NSDate distantFuture]];</span><br></pre></td></tr></table></figure>
-</li>
+<li>RunLoop在第一次获取时创建，在线程结束时销毁</li>
 </ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> //启动RunLoop</span><br><span class="line">[[NSRunLoop currentRunLoop] run];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//第一个参数:指定运行模式</span><br><span class="line">//第二个参数:指定 RunLoop 的过期时间,即:到了这个时间后RunLoop 就失效了</span><br><span class="line">[[NSRunLoop currentRunLoop] runMode:kCFRunLoopDefaultModebeforeDate:[NSDate distantFuture]];</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="block的实质是什么？-block修饰的变量为什么能在block里面能改变其值？"><a href="#block的实质是什么？-block修饰的变量为什么能在block里面能改变其值？" class="headerlink" title="block的实质是什么？__block修饰的变量为什么能在block里面能改变其值？"></a>block的实质是什么？__block修饰的变量为什么能在block里面能改变其值？</h3><ol>
 <li>block其实也是一个oc对象，内部有一个isa指针</li>
 <li>__block 所起到的作用就是只要观察到该变量被 block 所持有，就将“外部变量”在栈中的内存地址放到了堆中。进而在block内部也可以修改外部变量的值。</li>
@@ -188,7 +197,9 @@
 </ol>
 <h3 id="delegate和notification区别和场景"><a href="#delegate和notification区别和场景" class="headerlink" title="delegate和notification区别和场景"></a>delegate和notification区别和场景</h3><h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><ol>
 <li>delegate效率高于notification</li>
-<li>delegate比notification更加直观<h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4></li>
+<li>delegate比notification更加直观</li>
+</ol>
+<h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4><ol>
 <li>nofification适合2个不是很紧密的模块， 例如多线程传值。</li>
 <li>delegate是一种简单的回调，且主要集中在一个模块。例如想把值从底层传到上层。</li>
 </ol>
@@ -270,7 +281,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

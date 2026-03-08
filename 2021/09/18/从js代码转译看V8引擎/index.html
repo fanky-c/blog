@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#字节码和机器码"><span class="toc-text">字节码和机器码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AST（抽象语法树）"><span class="toc-text">AST（抽象语法树）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js在v8引擎中执行"><span class="toc-text">js在v8引擎中执行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-初期V8引擎架构"><span class="toc-text">1. 初期V8引擎架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-现在V8引擎架构"><span class="toc-text">2. 现在V8引擎架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-现在V8引擎引入字节码的好处"><span class="toc-text">3. 现在V8引擎引入字节码的好处</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js代码在现在V8引擎运行"><span class="toc-text">js代码在现在V8引擎运行</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81%E5%92%8C%E6%9C%BA%E5%99%A8%E7%A0%81"><span class="toc-text">字节码和机器码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AST%EF%BC%88%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91%EF%BC%89"><span class="toc-text">AST（抽象语法树）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js%E5%9C%A8v8%E5%BC%95%E6%93%8E%E4%B8%AD%E6%89%A7%E8%A1%8C"><span class="toc-text">js在v8引擎中执行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%88%9D%E6%9C%9FV8%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84"><span class="toc-text">1. 初期V8引擎架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%8E%B0%E5%9C%A8V8%E5%BC%95%E6%93%8E%E6%9E%B6%E6%9E%84"><span class="toc-text">2. 现在V8引擎架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E7%8E%B0%E5%9C%A8V8%E5%BC%95%E6%93%8E%E5%BC%95%E5%85%A5%E5%AD%97%E8%8A%82%E7%A0%81%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-text">3. 现在V8引擎引入字节码的好处</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js%E4%BB%A3%E7%A0%81%E5%9C%A8%E7%8E%B0%E5%9C%A8V8%E5%BC%95%E6%93%8E%E8%BF%90%E8%A1%8C"><span class="toc-text">js代码在现在V8引擎运行</span></a></li></ol>
 </div>
     
 </div>
@@ -154,7 +161,7 @@
 <h3 id="js在v8引擎中执行"><a href="#js在v8引擎中执行" class="headerlink" title="js在v8引擎中执行"></a>js在v8引擎中执行</h3><h4 id="1-初期V8引擎架构"><a href="#1-初期V8引擎架构" class="headerlink" title="1. 初期V8引擎架构"></a>1. 初期V8引擎架构</h4><ol>
 <li>第一步： 将js源码转化成AST（抽象语法树）</li>
 <li>第二步： 通过引擎编译AST变成机器码二进制文件， 然后直接运行机器码二进制文件</li>
-<li>第三步： 在执行第二步过程中，标记重复执行的函数，将标记的代码生成更加高效的二进制代码（缓存在内存和硬盘中）， 节省了重复编译的时间。 </li>
+<li>第三步： 在执行第二步过程中，标记重复执行的函数，将标记的代码生成更加高效的二进制代码（缓存在内存和硬盘中）， 节省了重复编译的时间。</li>
 </ol>
 <h4 id="2-现在V8引擎架构"><a href="#2-现在V8引擎架构" class="headerlink" title="2. 现在V8引擎架构"></a>2. 现在V8引擎架构</h4><ol>
 <li>第一步： 将js源码转化为AST(抽象语法树)</li>
@@ -167,7 +174,9 @@
 <li>代码复杂度降低。 引入字节码大大降低V8适配不同的CPU所需要的代码复杂程度</li>
 </ol>
 <h3 id="js代码在现在V8引擎运行"><a href="#js代码在现在V8引擎运行" class="headerlink" title="js代码在现在V8引擎运行"></a>js代码在现在V8引擎运行</h3><p>js源码  –&gt;  AST  –&gt; 字节码  –&gt; 解释器执行  –&gt; 机器码  –&gt; 输出结果</p>
-<p><br><br>[文章来源]（<a href="https://juejin.cn/post/6844904152745639949#heading-6）" target="_blank" rel="noopener">https://juejin.cn/post/6844904152745639949#heading-6）</a></p>
+<br>
+[文章来源]（https://juejin.cn/post/6844904152745639949#heading-6）
+
 
         
         <div id="comment-container">
@@ -246,7 +255,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#定义"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#使用"><span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#atomic"><span class="toc-text">atomic</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nonatomic"><span class="toc-text">nonatomic</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#copy"><span class="toc-text">copy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#assign"><span class="toc-text">assign</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strong"><span class="toc-text">strong</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#weak"><span class="toc-text">weak</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#readonly"><span class="toc-text">readonly</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#atomic"><span class="toc-text">atomic</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nonatomic"><span class="toc-text">nonatomic</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#copy"><span class="toc-text">copy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#assign"><span class="toc-text">assign</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#strong"><span class="toc-text">strong</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#weak"><span class="toc-text">weak</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#readonly"><span class="toc-text">readonly</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -148,11 +155,13 @@
 </span>
     </div>
     <div class="post-content ">
-        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>定义属性中的特性有atomic、nonatomic、copy、assign、strong、weak等，一般格式如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) NSString *name;</span><br></pre></td></tr></table></figure></p>
+        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>定义属性中的特性有atomic、nonatomic、copy、assign、strong、weak等，一般格式如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@<span class="title function_">property</span> (nonatomic, strong) <span class="title class_">NSString</span> *name; </span><br></pre></td></tr></table></figure>
+
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="atomic"><a href="#atomic" class="headerlink" title="atomic"></a>atomic</h4><ol>
 <li>默认属性</li>
 <li>当前进程进行到一半，其他线程来访问当前线程，可以保证先执行完毕当前线程</li>
-<li>只是保证setter/getter 完整，不是线程安全</li>
+<li>只是保证setter&#x2F;getter 完整，不是线程安全</li>
 </ol>
 <h4 id="nonatomic"><a href="#nonatomic" class="headerlink" title="nonatomic"></a>nonatomic</h4><ol>
 <li>非默认属性</li>
@@ -170,7 +179,7 @@
 </ol>
 <h4 id="strong"><a href="#strong" class="headerlink" title="strong"></a>strong</h4><ol>
 <li>默认属性</li>
-<li>strong = retain iOS引入ARC后，用strong替代了retain</li>
+<li>strong &#x3D; retain iOS引入ARC后，用strong替代了retain</li>
 <li>所有实例变量、局部变量默认都是strong</li>
 <li>创建一个强引用的指针，引用对象引用计数加1</li>
 <li>如果有多个对象同时引用一个属性，任一对象对该属性的修改都会影响其他对象获取的值</li>
@@ -263,7 +272,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

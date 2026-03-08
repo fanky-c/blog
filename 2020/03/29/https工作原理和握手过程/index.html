@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#协议"><span class="toc-text">协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加密算法"><span class="toc-text">加密算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#对称算法"><span class="toc-text">对称算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#非对称算法"><span class="toc-text">非对称算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#https工作原理"><span class="toc-text">https工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#https握手过程"><span class="toc-text">https握手过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP三次握手"><span class="toc-text">TCP三次握手</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SSL握手"><span class="toc-text">SSL握手</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8F%E8%AE%AE"><span class="toc-text">协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="toc-text">加密算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E7%A7%B0%E7%AE%97%E6%B3%95"><span class="toc-text">对称算法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%9E%E5%AF%B9%E7%A7%B0%E7%AE%97%E6%B3%95"><span class="toc-text">非对称算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#https%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">https工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#https%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B"><span class="toc-text">https握手过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="toc-text">TCP三次握手</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SSL%E6%8F%A1%E6%89%8B"><span class="toc-text">SSL握手</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -143,7 +150,7 @@
     </div>
     <div class="post-content ">
         <h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><ol>
-<li>https 相对于http多了一个SSL/TLS一层（ip -&gt; tcp -&gt; ssl/tls -&gt; http）</li>
+<li>https 相对于http多了一个SSL&#x2F;TLS一层（ip -&gt; tcp -&gt; ssl&#x2F;tls -&gt; http）</li>
 </ol>
 <h3 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h3><h4 id="对称算法"><a href="#对称算法" class="headerlink" title="对称算法"></a>对称算法</h4><ol>
 <li>加密和解密都是使用的同一个密钥。</li>
@@ -178,16 +185,13 @@
 </ol>
 </li>
 <li><p>server -&gt; client</p>
-<ol>
-<li>告诉客户端会使用协商好的密钥来加密</li>
-</ol>
+</li>
+<li><p>告诉客户端会使用协商好的密钥来加密</p>
+</li>
+<li><p>client -&gt; server<br>这一步是否需要？？？？</p>
 </li>
 </ol>
-<ol start="5">
-<li>client -&gt; server<br>这一步是否需要？？？？</li>
-</ol>
-<p><img src="/img/tcp-ssl.jpg"></p>
-
+<img src="/img/tcp-ssl.jpg" />
         
         <div id="comment-container">
         </div>
@@ -265,7 +269,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

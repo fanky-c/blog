@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#内存回收"><span class="toc-text">内存回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#手动回收（对象设置为null）"><span class="toc-text">手动回收（对象设置为null）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#自动回收（对象没有被引用就视为垃圾回收）"><span class="toc-text">自动回收（对象没有被引用就视为垃圾回收）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#垃圾回收算法"><span class="toc-text">垃圾回收算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内存泄露如果避免"><span class="toc-text">内存泄露如果避免</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%9B%9E%E6%94%B6"><span class="toc-text">内存回收</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%9B%9E%E6%94%B6%EF%BC%88%E5%AF%B9%E8%B1%A1%E8%AE%BE%E7%BD%AE%E4%B8%BAnull%EF%BC%89"><span class="toc-text">手动回收（对象设置为null）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%9B%9E%E6%94%B6%EF%BC%88%E5%AF%B9%E8%B1%A1%E6%B2%A1%E6%9C%89%E8%A2%AB%E5%BC%95%E7%94%A8%E5%B0%B1%E8%A7%86%E4%B8%BA%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%EF%BC%89"><span class="toc-text">自动回收（对象没有被引用就视为垃圾回收）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="toc-text">垃圾回收算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E5%A6%82%E6%9E%9C%E9%81%BF%E5%85%8D"><span class="toc-text">内存泄露如果避免</span></a></li></ol>
 </div>
     
 </div>
@@ -140,7 +147,7 @@
     </div>
     <div class="post-content ">
         <h3 id="内存回收"><a href="#内存回收" class="headerlink" title="内存回收"></a>内存回收</h3><h4 id="手动回收（对象设置为null）"><a href="#手动回收（对象设置为null）" class="headerlink" title="手动回收（对象设置为null）"></a>手动回收（对象设置为null）</h4><ol>
-<li>a = null;</li>
+<li>a &#x3D; null;</li>
 </ol>
 <h4 id="自动回收（对象没有被引用就视为垃圾回收）"><a href="#自动回收（对象没有被引用就视为垃圾回收）" class="headerlink" title="自动回收（对象没有被引用就视为垃圾回收）"></a>自动回收（对象没有被引用就视为垃圾回收）</h4><ol>
 <li>局部变量和全部变量<ol>
@@ -158,13 +165,14 @@
 <li>解决方法： <ol>
 <li>尽量少用全局变量</li>
 <li>在 JavaScript文件头部加上 ‘use strict’，使用严格模式避免意外的全局变量。</li>
-<li>局部变量一定要用var、let<pre><code> function foo(arg) {
-   bar = &quot;this is a hidden global variable&quot;;
-}
-</code></pre></li>
+<li>局部变量一定要用var、let</li>
 </ol>
 </li>
 </ol>
+<pre><code>      function foo(arg) &#123;
+        bar = &quot;this is a hidden global variable&quot;;
+    &#125;
+</code></pre>
 </li>
 <li>被遗忘的定时器</li>
 <li>脱离了DOM的引用<ol>
@@ -255,7 +263,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概论"><span class="toc-text">概论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vue的核心可以分为四个大块"><span class="toc-text">vue的核心可以分为四个大块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vue的源码目录"><span class="toc-text">vue的源码目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模板编译代码解读"><span class="toc-text">模板编译代码解读</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a，生成AST"><span class="toc-text">a，生成AST</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b，优化静态内容"><span class="toc-text">b，优化静态内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c，生成render字符串"><span class="toc-text">c，生成render字符串</span></a></li></ol></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%AE%BA"><span class="toc-text">概论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vue%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8F%AF%E4%BB%A5%E5%88%86%E4%B8%BA%E5%9B%9B%E4%B8%AA%E5%A4%A7%E5%9D%97"><span class="toc-text">vue的核心可以分为四个大块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vue%E7%9A%84%E6%BA%90%E7%A0%81%E7%9B%AE%E5%BD%95"><span class="toc-text">vue的源码目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E7%BC%96%E8%AF%91%E4%BB%A3%E7%A0%81%E8%A7%A3%E8%AF%BB"><span class="toc-text">模板编译代码解读</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a%EF%BC%8C%E7%94%9F%E6%88%90AST"><span class="toc-text">a，生成AST</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b%EF%BC%8C%E4%BC%98%E5%8C%96%E9%9D%99%E6%80%81%E5%86%85%E5%AE%B9"><span class="toc-text">b，优化静态内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c%EF%BC%8C%E7%94%9F%E6%88%90render%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">c，生成render字符串</span></a></li></ol></li></ol></li></ol>
 </div>
     
 </div>
@@ -143,7 +150,7 @@
     </div>
     <div class="post-content ">
         <h2 id="概论"><a href="#概论" class="headerlink" title="概论"></a>概论</h2><p>本文主要讲vue源码分析 – <strong>模板编译</strong></p>
-<p><em>以v2.5.16版本为分析例子(<a href="https://github.com/vuejs/vue/tree/v2.5.16" target="_blank" rel="noopener">https://github.com/vuejs/vue/tree/v2.5.16</a>)</em></p>
+<p><em>以v2.5.16版本为分析例子(<a href="https://github.com/vuejs/vue/tree/v2.5.16">https://github.com/vuejs/vue/tree/v2.5.16</a>)</em></p>
 <h3 id="vue的核心可以分为四个大块"><a href="#vue的核心可以分为四个大块" class="headerlink" title="vue的核心可以分为四个大块"></a>vue的核心可以分为四个大块</h3><ul>
 <li>数据处理和双向绑定</li>
 <li>模板编译</li>
@@ -168,32 +175,17 @@
 <li>instance： vue实例相关的内容，比如生命周期，事件等。</li>
 <li>observer： vue双向绑定部分的代码</li>
 <li>vdom： 虚拟dom相关的代码</li>
-<li>util： vue的工具方法 </li>
+<li>util： vue的工具方法</li>
 </ul>
 </li>
 <li>platforms：一个是web平台，我们常用的就是这个。一个是weex平台，weex是一个用于开发原生应用的框架，也可以把它视作vue-native。  </li>
 <li>server：服务端渲染的相关代码。  </li>
 <li>shared： vue共享的工具和方法。        </li>
-<li>sfc： .vue 文件解析 </li>
+<li>sfc： .vue 文件解析</li>
 </ul>
 </li>
 </ul>
-<h3 id="模板编译代码解读"><a href="#模板编译代码解读" class="headerlink" title="模板编译代码解读"></a>模板编译代码解读</h3><pre><code class="js"><span class="keyword">export</span> <span class="keyword">const</span> createCompiler = createCompilerCreator(<span class="function"><span class="keyword">function</span> <span class="title">baseCompile</span>(<span class="params"></span></span>
-<span class="function"><span class="params">  template: string,</span></span>
-<span class="function"><span class="params">  options: CompilerOptions</span></span>
-<span class="function"><span class="params"></span>): <span class="title">CompiledResult</span> </span>{
-  <span class="keyword">const</span> ast = parse(template.trim(), options)
-  <span class="keyword">if</span> (options.optimize !== <span class="literal">false</span>) {
-    optimize(ast, options)
-  }
-  <span class="keyword">const</span> code = generate(ast, options)
-  <span class="keyword">return</span> {
-    ast,
-    render: code.render,
-    staticRenderFns: code.staticRenderFns
-  }
-})
-</code></pre>
+<h3 id="模板编译代码解读"><a href="#模板编译代码解读" class="headerlink" title="模板编译代码解读"></a>模板编译代码解读</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> createCompiler = <span class="title function_">createCompilerCreator</span>(<span class="keyword">function</span> <span class="title function_">baseCompile</span>(<span class="params"></span></span><br><span class="line"><span class="params">  template: string,</span></span><br><span class="line"><span class="params">  options: CompilerOptions</span></span><br><span class="line"><span class="params"></span>): <span class="title class_">CompiledResult</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> ast = <span class="title function_">parse</span>(template.<span class="title function_">trim</span>(), options)</span><br><span class="line">  <span class="keyword">if</span> (options.<span class="property">optimize</span> !== <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="title function_">optimize</span>(ast, options)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> code = <span class="title function_">generate</span>(ast, options)</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    ast,</span><br><span class="line">    <span class="attr">render</span>: code.<span class="property">render</span>,</span><br><span class="line">    <span class="attr">staticRenderFns</span>: code.<span class="property">staticRenderFns</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>vue模板编译的三个重要阶段都在上面的baseCompile函数中，这三个阶段分别是：</p>
 <ul>
 <li>生成AST</li>
@@ -204,59 +196,42 @@
 <p>AST即抽象语法树，我们的代码运行在浏览器的时候，浏览器首先就会把我们的代码解析为AST然后再进一步把语法树转化为字节码或者直接生成机器码。所以他对于浏览器很重要，同样的对于开发者来说，AST也很重要，我们通过ast可以精准定位到代码的任何地方，从而可以对代码进行一系列操作。比如代码的语法检查，压缩以及代码结构的改变等等。webpack、UglifyJS等工具的核心都是通过ast来操作代码的。语法树记录了其对应代码的所有信息。</p>
 <p><em>JavaScript Parser</em></p>
 <p>代码解析成AST，是通过js Parser来实现的，不同的parser，生成的AST格式是不同的。比如chrome和firefox，由于jsParser不同，其生成的AST格式也不同，优化AST的格式有时也是浏览器厂商提高浏览器效率的一种方式。</p>
-<p><a href="https://astexplorer.net/" target="_blank" rel="noopener">这个网站</a>可以即时看到不同parser解析出的ast</p>
-<pre><code class="js"><span class="keyword">const</span> ast = parse(template.trim(), options)
-</code></pre>
+<p><a href="https://astexplorer.net/">这个网站</a>可以即时看到不同parser解析出的ast</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ast = <span class="title function_">parse</span>(template.<span class="title function_">trim</span>(), options)</span><br></pre></td></tr></table></figure>
+
+
 <h4 id="b，优化静态内容"><a href="#b，优化静态内容" class="headerlink" title="b，优化静态内容"></a>b，优化静态内容</h4><p>静态内容就是和数据没有关系，当数据更新时，不需要刷新的内容。比如{ { text } }就是非静态内容，当数据变化的时候，这里的内容也会被更新。<br>baseCompile函数中，通过下面这行代码实现了静态内容的优化</p>
-<pre><code class="js"><span class="keyword">if</span> (options.optimize !== <span class="literal">false</span>) {
-    optimize(ast, options)
-  }
-</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (options.<span class="property">optimize</span> !== <span class="literal">false</span>) &#123;</span><br><span class="line">    <span class="title function_">optimize</span>(ast, options)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <p>这其中的optimize函数，其实主要做了两件事:</p>
 <ul>
 <li>标记静态&amp;非静态节点</li>
-<li>标记静态根结点  </li>
+<li>标记静态根结点</li>
 </ul>
-<pre><code class="js">markStatic(root) <span class="comment">// 标记所有静态&amp;非静态节点</span>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">markStatic</span>(root) <span class="comment">// 标记所有静态&amp;非静态节点</span></span><br><span class="line">  </span><br><span class="line"><span class="title function_">markStaticRoots</span>(root, <span class="literal">false</span>) <span class="comment">// 标记静态根节点</span></span><br></pre></td></tr></table></figure>
 
-markStaticRoots(root, <span class="literal">false</span>) <span class="comment">// 标记静态根节点</span>
-</code></pre>
 <ul>
 <li>标记静态&amp;非静态结点</li>
 </ul>
 <p>其标记的思路是从最底层往上一步一步的去标记静态节点。先标记最底层的叶子结点，再往上标记其父节点。一旦当前节点被标记为非静态节点，那么他所有的父节点都会被标记为非静态节点。</p>
-<p>每个结点是否为静态的判断依据是：isStatic(node)=true &amp;&amp; 子节点是静态节点</p>
+<p>每个结点是否为静态的判断依据是：isStatic(node)&#x3D;true &amp;&amp; 子节点是静态节点</p>
 <p>isStatic函数:</p>
-<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">isStatic</span> (<span class="params">node: ASTNode</span>): <span class="title">boolean</span> </span>{
-  <span class="keyword">if</span> (node.type === <span class="number">2</span>) { <span class="comment">// expression</span>
-    <span class="keyword">return</span> <span class="literal">false</span>
-  }
-  <span class="keyword">if</span> (node.type === <span class="number">3</span>) { <span class="comment">// text</span>
-    <span class="keyword">return</span> <span class="literal">true</span>
-  }
-  <span class="keyword">return</span> !!(node.pre || (
-    !node.hasBindings &amp;&amp; <span class="comment">// no dynamic bindings</span>
-    !node.if &amp;&amp; !node.for &amp;&amp; <span class="comment">// not v-if or v-for or v-else</span>
-    !isBuiltInTag(node.tag) &amp;&amp; <span class="comment">// not a built-in</span>
-    isPlatformReservedTag(node.tag) &amp;&amp; <span class="comment">// not a component</span>
-    !isDirectChildOfTemplateFor(node) &amp;&amp;
-    <span class="built_in">Object</span>.keys(node).every(isStaticKey) <span class="comment">// node中的所有属性  是否isStaticKey()为true</span>
-  ))
-}
-</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isStatic</span> (<span class="params">node: ASTNode</span>): boolean &#123;</span><br><span class="line">  <span class="keyword">if</span> (node.<span class="property">type</span> === <span class="number">2</span>) &#123; <span class="comment">// expression</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (node.<span class="property">type</span> === <span class="number">3</span>) &#123; <span class="comment">// text</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> !!(node.<span class="property">pre</span> || (</span><br><span class="line">    !node.<span class="property">hasBindings</span> &amp;&amp; <span class="comment">// no dynamic bindings</span></span><br><span class="line">    !node.<span class="property">if</span> &amp;&amp; !node.<span class="property">for</span> &amp;&amp; <span class="comment">// not v-if or v-for or v-else</span></span><br><span class="line">    !<span class="title function_">isBuiltInTag</span>(node.<span class="property">tag</span>) &amp;&amp; <span class="comment">// not a built-in</span></span><br><span class="line">    <span class="title function_">isPlatformReservedTag</span>(node.<span class="property">tag</span>) &amp;&amp; <span class="comment">// not a component</span></span><br><span class="line">    !<span class="title function_">isDirectChildOfTemplateFor</span>(node) &amp;&amp;</span><br><span class="line">    <span class="title class_">Object</span>.<span class="title function_">keys</span>(node).<span class="title function_">every</span>(isStaticKey) <span class="comment">// node中的所有属性  是否isStaticKey()为true</span></span><br><span class="line">  ))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><em>其实就是先判断当前结点是否为表达式，是的话直接返回false，再判断是会否为纯为本，是的话直接返回true，如果都不是，再去判断是否绑定了v-for、v-if等属性。</em></p>
 <ul>
-<li>标记静态根结点  </li>
+<li>标记静态根结点</li>
 </ul>
 <p>与标记静态&amp;非静态结点的方向正好相反，标记静态跟结点是从根结点，到叶子节点，上往下去标记的。</p>
 <p>每个结点是否为静态结点的标记依据是：</p>
 <p>该结点为静态结点&amp;&amp;（结点有多个子节点||有一个子节点，但是这个子节点不是纯文本）</p>
 <p>以上就是标记跟结点的实现思路。</p>
-<p>至此所有静态/非静态信息就标记完了。这些标记在每次vue更新DOM时都会起到很重要的优化作用，因为遇到静态节点，就知道，其自身以及子节点内容都无需更新，可直接跳过，由此很大的提高了vue的更新速度。</p>
+<p>至此所有静态&#x2F;非静态信息就标记完了。这些标记在每次vue更新DOM时都会起到很重要的优化作用，因为遇到静态节点，就知道，其自身以及子节点内容都无需更新，可直接跳过，由此很大的提高了vue的更新速度。</p>
 <h4 id="c，生成render字符串"><a href="#c，生成render字符串" class="headerlink" title="c，生成render字符串"></a>c，生成render字符串</h4><p>baseCompile函数中，下面这行为生成render字符串的代码</p>
-<pre><code class="js"><span class="keyword">const</span> code = generate(ast, options)  
-</code></pre>
-<p>文档参考：<a href="https://ustbhuangyi.github.io/vue-analysis/prepare/directory.html" target="_blank" rel="noopener">https://ustbhuangyi.github.io/vue-analysis/prepare/directory.html</a>   </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> code = <span class="title function_">generate</span>(ast, options)  </span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>文档参考：<a href="https://ustbhuangyi.github.io/vue-analysis/prepare/directory.html">https://ustbhuangyi.github.io/vue-analysis/prepare/directory.html</a>   </p>
 
         
         <div id="comment-container">
@@ -335,7 +310,9 @@ markStaticRoots(root, <span class="literal">false</span>) <span class="comment">
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

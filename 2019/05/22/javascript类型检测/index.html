@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -146,20 +153,25 @@
     </div>
     <div class="post-content ">
         <h4 id="typeof"><a href="#typeof" class="headerlink" title="typeof"></a>typeof</h4><ol>
-<li><p>基本类型（number、string、undefined、boolean）</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">1</span> <span class="comment">//</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="string">'1'</span> <span class="comment">//</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">true</span> <span class="comment">//  </span></span><br><span class="line"><span class="keyword">typeof</span> x <span class="comment">// undefined </span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">typeof</span> x == <span class="string">'undefined'</span>) <span class="comment">// true</span></span><br><span class="line"><span class="keyword">if</span>(x)  <span class="comment">//直接报错</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>function(函数)</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="keyword">typeof</span> <span class="class"><span class="keyword">class</span> <span class="title">C</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">typeof</span> <span class="built_in">Math</span>.sin</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>object</p>
+<li>基本类型（number、string、undefined、boolean）</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">1</span> <span class="comment">//</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="string">&#x27;1&#x27;</span> <span class="comment">//</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">true</span> <span class="comment">//  </span></span><br><span class="line"><span class="keyword">typeof</span> x <span class="comment">// undefined </span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">typeof</span> x == <span class="string">&#x27;undefined&#x27;</span>) <span class="comment">// true</span></span><br><span class="line"><span class="keyword">if</span>(x)  <span class="comment">//直接报错</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>function(函数)</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="keyword">function</span>(<span class="params"></span>)&#123;&#125;</span><br><span class="line"><span class="keyword">typeof</span> <span class="keyword">class</span> <span class="title class_">C</span> &#123;&#125;</span><br><span class="line"><span class="keyword">typeof</span> <span class="title class_">Math</span>.<span class="property">sin</span> </span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>object</li>
+</ol>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">// 当时设计的原因</span></span><br><span class="line"><span class="keyword">typeof</span> [] <span class="comment">//</span></span><br><span class="line"><span class="keyword">typeof</span> &#123;&#125; <span class="comment">//</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+
 <h4 id="instanceof"><a href="#instanceof" class="headerlink" title="instanceof"></a>instanceof</h4><ol>
-<li>判断某个对象的是另外一个对象实例<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// A 的 __proto__ 指向 B 的 prototype 时，就认为 A 就是 B 的实例</span></span><br><span class="line">[] <span class="keyword">instanceof</span> <span class="built_in">Array</span>; <span class="comment">//true</span></span><br><span class="line">(&#123;&#125;) <span class="keyword">instanceof</span> <span class="built_in">Object</span>;<span class="comment">//true</span></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Date</span>() <span class="keyword">instanceof</span> <span class="built_in">Date</span>;<span class="comment">//true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//无法判断继承</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Parent</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Child</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Other</span>(<span class="params"></span>)</span>&#123;&#125;;</span><br><span class="line">Child.prototype = <span class="keyword">new</span> Parent();</span><br><span class="line"><span class="keyword">let</span> child = <span class="keyword">new</span> Child();</span><br><span class="line">child <span class="keyword">instanceof</span> Child; <span class="comment">// true</span></span><br><span class="line">child <span class="keyword">instanceof</span> Parent; <span class="comment">// true</span></span><br><span class="line">child <span class="keyword">instanceof</span> <span class="built_in">Object</span>; <span class="comment">// true</span></span><br><span class="line">child <span class="keyword">instanceof</span> Other;  <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Child.prototype.__proto__ = Parent.prototype</span></span><br><span class="line"><span class="comment">//Parent.prototype.__proto__ = Object.prototype</span></span><br><span class="line"><span class="comment">//Object.prototype.__proto__ = null</span></span><br></pre></td></tr></table></figure>
-</li>
+<li>判断某个对象的是另外一个对象实例</li>
 </ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// A 的 __proto__ 指向 B 的 prototype 时，就认为 A 就是 B 的实例</span></span><br><span class="line">[] <span class="keyword">instanceof</span> <span class="title class_">Array</span>; <span class="comment">//true</span></span><br><span class="line">(&#123;&#125;) <span class="keyword">instanceof</span> <span class="title class_">Object</span>;<span class="comment">//true</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Date</span>() <span class="keyword">instanceof</span> <span class="title class_">Date</span>;<span class="comment">//true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//无法判断继承</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Parent</span>(<span class="params"></span>)&#123;&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Child</span>(<span class="params"></span>)&#123;&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Other</span>(<span class="params"></span>)&#123;&#125;;</span><br><span class="line"><span class="title class_">Child</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="keyword">new</span> <span class="title class_">Parent</span>();</span><br><span class="line"><span class="keyword">let</span> child = <span class="keyword">new</span> <span class="title class_">Child</span>();</span><br><span class="line">child <span class="keyword">instanceof</span> <span class="title class_">Child</span>; <span class="comment">// true</span></span><br><span class="line">child <span class="keyword">instanceof</span> <span class="title class_">Parent</span>; <span class="comment">// true</span></span><br><span class="line">child <span class="keyword">instanceof</span> <span class="title class_">Object</span>; <span class="comment">// true</span></span><br><span class="line">child <span class="keyword">instanceof</span> <span class="title class_">Other</span>;  <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Child.prototype.__proto__ = Parent.prototype</span></span><br><span class="line"><span class="comment">//Parent.prototype.__proto__ = Object.prototype</span></span><br><span class="line"><span class="comment">//Object.prototype.__proto__ = null</span></span><br></pre></td></tr></table></figure>
+
+
 <h4 id="Object-prototype-toString-call-obj-slice-8-1"><a href="#Object-prototype-toString-call-obj-slice-8-1" class="headerlink" title="Object.prototype.toString.call(obj).slice(8, -1)"></a>Object.prototype.toString.call(obj).slice(8, -1)</h4>
         
         <div id="comment-container">
@@ -238,7 +250,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

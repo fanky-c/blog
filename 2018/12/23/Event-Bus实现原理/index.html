@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#vue、react不同组件怎么通信"><span class="toc-text">vue、react不同组件怎么通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vue"><span class="toc-text">Vue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#React"><span class="toc-text">React</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Event-Bus"><span class="toc-text">Event Bus</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#vue%E3%80%81react%E4%B8%8D%E5%90%8C%E7%BB%84%E4%BB%B6%E6%80%8E%E4%B9%88%E9%80%9A%E4%BF%A1"><span class="toc-text">vue、react不同组件怎么通信</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Vue"><span class="toc-text">Vue</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#React"><span class="toc-text">React</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Event-Bus"><span class="toc-text">Event Bus</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -146,18 +153,18 @@
 <li>父子组件：props、$refs、$children</li>
 <li>子父组件：$parent、$emit自定义事件</li>
 <li>如果项目够复杂,可能需要Vuex等全局状态管理库通信</li>
-<li><p>非父子组件用Event Bus通信（$emit、$on）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//main.js</span><br><span class="line">var eventBus = &#123;</span><br><span class="line">  install(Vue,options) &#123;</span><br><span class="line">      Vue.prototype.$bus = vue</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Vue.use(eventBus);</span><br><span class="line"></span><br><span class="line">//children.js</span><br><span class="line">this.$bus.$emit(&apos;dosth&apos;, params);</span><br><span class="line"></span><br><span class="line">//children.js</span><br><span class="line">this.$bus.$on(&apos;dosth , (params)=&gt;&#123;&#125;); </span><br><span class="line">beforeDestory()&#123;</span><br><span class="line">  this.$bus.$off(&apos;dosth&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>$dispatch(vue2已经废除)和$broadcast(vue2已经废除)</p>
-</li>
+<li>非父子组件用Event Bus通信（$emit、$on）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//main.js</span><br><span class="line">var eventBus = &#123;</span><br><span class="line">  install(Vue,options) &#123;</span><br><span class="line">      Vue.prototype.$bus = vue</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Vue.use(eventBus);</span><br><span class="line"></span><br><span class="line">//children.js</span><br><span class="line">this.$bus.$emit(&#x27;dosth&#x27;, params);</span><br><span class="line"></span><br><span class="line">//children.js</span><br><span class="line">this.$bus.$on(&#x27;dosth , (params)=&gt;&#123;&#125;); </span><br><span class="line">beforeDestory()&#123;</span><br><span class="line">  this.$bus.$off(&#x27;dosth&#x27;);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>$dispatch(vue2已经废除)和$broadcast(vue2已经废除)</li>
 </ol>
 <h4 id="React"><a href="#React" class="headerlink" title="React"></a>React</h4><ol>
-<li><p>父子组件：props，如果父组件与子组件之间不止一个层级，可通过…运算符（Object 剩余和展开属性）。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Child_1 extends Component&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return &lt;div&gt;</span><br><span class="line">      &lt;p&gt;&#123;this.props.msg&#125;&lt;/p&gt;</span><br><span class="line">      &lt;Child_1_1 &#123;...this.props&#125;/&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Child_1_1 extends Component&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return &lt;p&gt;&#123;this.props.msg&#125;&lt;/p&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>子父组件：props回调方法</p>
-</li>
+<li>父子组件：props，如果父组件与子组件之间不止一个层级，可通过…运算符（Object 剩余和展开属性）。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Child_1 extends Component&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return &lt;div&gt;</span><br><span class="line">      &lt;p&gt;&#123;this.props.msg&#125;&lt;/p&gt;</span><br><span class="line">      &lt;Child_1_1 &#123;...this.props&#125;/&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Child_1_1 extends Component&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return &lt;p&gt;&#123;this.props.msg&#125;&lt;/p&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>子父组件：props回调方法</li>
 <li>项目复杂的话用Redux、Mobx等全局状态管理管库</li>
 <li>非父子组件,用发布订阅模式的Event模块</li>
 <li>用新的Context Api<ol>
@@ -169,15 +176,14 @@
 </ol>
 <h4 id="Event-Bus"><a href="#Event-Bus" class="headerlink" title="Event Bus"></a>Event Bus</h4><ol>
 <li>它实际上是发布订阅模式。</li>
-<li><p>实现流程</p>
-<ol>
-<li><p>实现类class</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class EventEmeitter&#123;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">       this._evt = this._evt || new Map();</span><br><span class="line">       this._maxListener = this._maxListener || 10;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>监听和触发</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class EventEmeitter&#123;</span><br><span class="line">  emit(type, ...args)&#123;</span><br><span class="line">       let handler;</span><br><span class="line">       handler = this._evt.get(type); //new Map()方法</span><br><span class="line">       if (args.length &gt; 0) &#123;</span><br><span class="line">           handler.apply(this, args);</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           handler.call(this);</span><br><span class="line">       &#125;</span><br><span class="line">       return true;</span><br><span class="line">  &#125;</span><br><span class="line">  on(type, fn)&#123;</span><br><span class="line">       if (!this._evt.get(type)) &#123;</span><br><span class="line">           this._evt.set(type, fn);</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>实现流程<ol>
+<li>实现类class</li>
 </ol>
-</li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class EventEmeitter&#123;</span><br><span class="line">    constructor()&#123;</span><br><span class="line">       this._evt = this._evt || new Map();</span><br><span class="line">       this._maxListener = this._maxListener || 10;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>监听和触发</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class EventEmeitter&#123;</span><br><span class="line">  emit(type, ...args)&#123;</span><br><span class="line">       let handler;</span><br><span class="line">       handler = this._evt.get(type); //new Map()方法</span><br><span class="line">       if (args.length &gt; 0) &#123;</span><br><span class="line">           handler.apply(this, args);</span><br><span class="line">       &#125; else &#123;</span><br><span class="line">           handler.call(this);</span><br><span class="line">       &#125;</span><br><span class="line">       return true;</span><br><span class="line">  &#125;</span><br><span class="line">  on(type, fn)&#123;</span><br><span class="line">       if (!this._evt.get(type)) &#123;</span><br><span class="line">           this._evt.set(type, fn);</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 
         
@@ -257,7 +263,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

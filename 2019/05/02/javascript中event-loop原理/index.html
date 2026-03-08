@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js任务广义分类"><span class="toc-text">js任务广义分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#同步任务"><span class="toc-text">同步任务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#异步任务"><span class="toc-text">异步任务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js任务细致分类"><span class="toc-text">js任务细致分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#宏任务（MacroTask）"><span class="toc-text">宏任务（MacroTask）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#微任务（MicroTask）-优先于宏任务"><span class="toc-text">微任务（MicroTask）,优先于宏任务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#浏览器中Event-Loop"><span class="toc-text">浏览器中Event Loop</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#事件循环"><span class="toc-text">事件循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#任务队列图"><span class="toc-text">任务队列图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#案例"><span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NodeJS中Event-Loop"><span class="toc-text">NodeJS中Event Loop</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js%E4%BB%BB%E5%8A%A1%E5%B9%BF%E4%B9%89%E5%88%86%E7%B1%BB"><span class="toc-text">js任务广义分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="toc-text">同步任务</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1"><span class="toc-text">异步任务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#js%E4%BB%BB%E5%8A%A1%E7%BB%86%E8%87%B4%E5%88%86%E7%B1%BB"><span class="toc-text">js任务细致分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%8F%E4%BB%BB%E5%8A%A1%EF%BC%88MacroTask%EF%BC%89"><span class="toc-text">宏任务（MacroTask）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BE%AE%E4%BB%BB%E5%8A%A1%EF%BC%88MicroTask%EF%BC%89-%E4%BC%98%E5%85%88%E4%BA%8E%E5%AE%8F%E4%BB%BB%E5%8A%A1"><span class="toc-text">微任务（MicroTask）,优先于宏任务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%ADEvent-Loop"><span class="toc-text">浏览器中Event Loop</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF"><span class="toc-text">事件循环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97%E5%9B%BE"><span class="toc-text">任务队列图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B"><span class="toc-text">案例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NodeJS%E4%B8%ADEvent-Loop"><span class="toc-text">NodeJS中Event Loop</span></a></li></ol>
 </div>
     
 </div>
@@ -150,28 +157,30 @@
 <li>同步任务：进入主线程，一个一个执行。</li>
 </ol>
 <h4 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h4><ol>
-<li>异步任务：进入  <code>event table</code> , 注册回调函数 <code>callback</code>, 任务完成之后，将 <code>callback</code> 移入  <code>event queue</code>， 等待主线程调用。</li>
+<li>异步任务：进入  <code>event table </code> , 注册回调函数 <code>callback</code>, 任务完成之后，将 <code>callback</code> 移入  <code>event queue</code>， 等待主线程调用。</li>
 </ol>
 <h3 id="js任务细致分类"><a href="#js任务细致分类" class="headerlink" title="js任务细致分类"></a>js任务细致分类</h3><h4 id="宏任务（MacroTask）"><a href="#宏任务（MacroTask）" class="headerlink" title="宏任务（MacroTask）"></a>宏任务（MacroTask）</h4><ol>
-<li>setTimeout、setInterval、script、I/O、UI Rendering</li>
+<li>setTimeout、setInterval、script、I&#x2F;O、UI Rendering</li>
 </ol>
 <h4 id="微任务（MicroTask）-优先于宏任务"><a href="#微任务（MicroTask）-优先于宏任务" class="headerlink" title="微任务（MicroTask）,优先于宏任务"></a>微任务（MicroTask）,优先于宏任务</h4><ol>
 <li>Process.nextTick（Node独有）、Promise</li>
 </ol>
-<h3 id="浏览器中Event-Loop"><a href="#浏览器中Event-Loop" class="headerlink" title="浏览器中Event Loop"></a>浏览器中Event Loop</h3><h4 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h4><p><img src="/img/eventloop.webp"><br><strong><em> 事件循环 负责执行代码、收集和处理事件以及执行队列中的子任务: </em></strong></p>
-<ol>
-<li>Javascript 有一个主线程和执行栈，所有的任务都会被放到调用栈等待主线程执行</li>
-<li>同步任务会被放在调用栈中，按照顺序等待主线程依次执行</li>
-<li>主线程之外存在一个任务队列，所有任务在主线程中以执行栈的方式运行</li>
-<li>同步任务都在主线程上执行，栈中代码在执行的时候会调用 Web API，此时会产生一些异步任务</li>
-<li>异步任务会在有了结果（比如被监听的事件发生时）后，将注册的回调函数放入任务队列中</li>
-<li>执行栈中任务执行完毕后，此时主线程处于空闲状态，会从任务队列中获取任务进行处理</li>
-</ol>
+<h3 id="浏览器中Event-Loop"><a href="#浏览器中Event-Loop" class="headerlink" title="浏览器中Event Loop"></a>浏览器中Event Loop</h3><h4 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h4><img src="/img/eventloop.webp" />
+*** 事件循环 负责执行代码、收集和处理事件以及执行队列中的子任务: ***
+1. Javascript 有一个主线程和执行栈，所有的任务都会被放到调用栈等待主线程执行
+2. 同步任务会被放在调用栈中，按照顺序等待主线程依次执行
+3. 主线程之外存在一个任务队列，所有任务在主线程中以执行栈的方式运行
+4. 同步任务都在主线程上执行，栈中代码在执行的时候会调用 Web API，此时会产生一些异步任务
+5. 异步任务会在有了结果（比如被监听的事件发生时）后，将注册的回调函数放入任务队列中
+6. 执行栈中任务执行完毕后，此时主线程处于空闲状态，会从任务队列中获取任务进行处理
+
 <p>以上过程会不断重复，这就是浏览器的运行机制，也是Event Loop</p>
 <p><strong>更加详细的流程：</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">JavaScript中的事件循环机制基于异步执行，用于处理非阻塞 I/O 操作、定时器等异步任务。以下是事件循环机制的基本流程：</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> 执行全局同步代码： 当 JavaScript 程序开始执行时，首先执行全局同步代码，将同步任务推入执行栈（Call Stack）中。</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> 执行栈（Call Stack）： 执行栈是一个存储函数调用的栈结构。每当调用一个函数，它会被推入执行栈的顶部；</span><br><span class="line">当函数执行完毕，它会从栈顶弹出。执行栈是同步执行的。</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span> 执行异步任务： 当遇到异步任务时，将异步任务的回调函数推入任务队列（Task Queue）中。</span><br><span class="line">异步任务包括定时器、事件监听器、Ajax 请求等。</span><br><span class="line"></span><br><span class="line"><span class="number">4.</span> 事件循环开始： 当执行栈为空时，事件循环开始工作。</span><br><span class="line">事件循环会检查任务队列是否有任务。如果有，将任务推入执行栈中执行。</span><br><span class="line"></span><br><span class="line"><span class="number">5.</span> 执行异步任务回调： 异步任务的回调函数在执行栈中执行。</span><br><span class="line">如果异步任务中有新的异步任务，它们会被推入任务队列中，等待下一轮事件循环。</span><br><span class="line"></span><br><span class="line"><span class="number">6.</span> 重复： 重复以上过程，形成一个循环。每轮事件循环称为一个 tick。</span><br></pre></td></tr></table></figure>
-<h4 id="任务队列图"><a href="#任务队列图" class="headerlink" title="任务队列图"></a>任务队列图</h4><p><img src="/img/event_loop.png" alt="任务队列" height="auto"></p>
-<h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">        resolve()</span><br><span class="line">    &#125;).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">5</span>); <span class="comment">// 为啥5会立即执行？---&gt; 虽然位于Promise的构造函数中，但在这个例子构造函数没有任何触发异步操作的地方，所以它也会同步执行。</span></span><br><span class="line">    resolve()</span><br><span class="line">&#125;).then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">6</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1 5 10 6 2 3 4</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">JavaScript</span>中的事件循环机制基于异步执行，用于处理非阻塞 I/O 操作、定时器等异步任务。以下是事件循环机制的基本流程：</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> 执行全局同步代码： 当 <span class="title class_">JavaScript</span> 程序开始执行时，首先执行全局同步代码，将同步任务推入执行栈（<span class="title class_">Call</span> <span class="title class_">Stack</span>）中。</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> 执行栈（<span class="title class_">Call</span> <span class="title class_">Stack</span>）： 执行栈是一个存储函数调用的栈结构。每当调用一个函数，它会被推入执行栈的顶部；</span><br><span class="line">当函数执行完毕，它会从栈顶弹出。执行栈是同步执行的。</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span> 执行异步任务： 当遇到异步任务时，将异步任务的回调函数推入任务队列（<span class="title class_">Task</span> <span class="title class_">Queue</span>）中。</span><br><span class="line">异步任务包括定时器、事件监听器、<span class="title class_">Ajax</span> 请求等。</span><br><span class="line"></span><br><span class="line"><span class="number">4.</span> 事件循环开始： 当执行栈为空时，事件循环开始工作。</span><br><span class="line">事件循环会检查任务队列是否有任务。如果有，将任务推入执行栈中执行。</span><br><span class="line"></span><br><span class="line"><span class="number">5.</span> 执行异步任务回调： 异步任务的回调函数在执行栈中执行。</span><br><span class="line">如果异步任务中有新的异步任务，它们会被推入任务队列中，等待下一轮事件循环。</span><br><span class="line"></span><br><span class="line"><span class="number">6.</span> 重复： 重复以上过程，形成一个循环。每轮事件循环称为一个 tick。</span><br></pre></td></tr></table></figure>
+
+<h4 id="任务队列图"><a href="#任务队列图" class="headerlink" title="任务队列图"></a>任务队列图</h4><img src="/img/event_loop.png"  alt="任务队列" height="auto"/>
+
+<h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span>);</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">3</span>)</span><br><span class="line">        <span class="title function_">resolve</span>()</span><br><span class="line">    &#125;).<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">4</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">5</span>); <span class="comment">// 为啥5会立即执行？---&gt; 虽然位于Promise的构造函数中，但在这个例子构造函数没有任何触发异步操作的地方，所以它也会同步执行。</span></span><br><span class="line">    <span class="title function_">resolve</span>()</span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">6</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1 5 10 6 2 3 4</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ol>
 <li>第一轮事件循环<ol>
 <li>进入主线程遇到console.log(1), 输出 1</li>
@@ -196,21 +205,19 @@
 <li>timers（定时器）： 执行 setTimeout 和 setInterval 中到期的回调函数。</li>
 <li>pending callbacks： 执行某些系统操作的回调函数，如TCP错误之类的操作。</li>
 <li>idle, prepare： 仅用于内部操作。</li>
-<li>poll（轮询）： 处理 I/O 事件。当轮询队列不为空时，事件循环会遍历队列执行回调。如果轮询队列为空且有 setImmediate 回调，事件循环会直接进入下一阶段。</li>
+<li>poll（轮询）： 处理 I&#x2F;O 事件。当轮询队列不为空时，事件循环会遍历队列执行回调。如果轮询队列为空且有 setImmediate 回调，事件循环会直接进入下一阶段。</li>
 <li>check： 执行 setImmediate 的回调函数。</li>
 <li>close callbacks： 执行关闭的回调函数，例如 socket.on(‘close’, …)。</li>
 </ol>
 <p>3、事件循环的执行过程： 当 Node.js 启动时，它会执行全局脚本，并且事件循环开始。每个阶段的执行都是一个循环。在每个循环中，事件循环会执行当前阶段的所有回调函数，然后移动到下一个阶段。</p>
-<p>4、异步操作的触发： 在 Node.js 中，异步操作的触发通常包括 I/O 操作、定时器到期、以及其他异步操作（如 setImmediate、process.nextTick 等）。</p>
+<p>4、异步操作的触发： 在 Node.js 中，异步操作的触发通常包括 I&#x2F;O 操作、定时器到期、以及其他异步操作（如 setImmediate、process.nextTick 等）。</p>
 <p>5、触发异步操作后的回调： 当异步操作完成后，相应的回调函数会被推入到相应的事件队列中，等待事件循环执行。</p>
 <p>6、事件队列和回调的执行： 每个阶段都有一个事件队列，用于存放相应阶段的回调函数。当事件循环进入某个阶段时，会依次执行该阶段队列中的回调函数。</p>
 <p>总体来说，Node.js 事件循环机制通过事件队列和不同的阶段来实现异步非阻塞的执行模型。这使得 Node.js 能够高效地处理大量并发请求，而不会阻塞整个应用程序。</p>
-<p><br><br>文章来源：</p>
-<ol>
-<li><a href="https://juejin.im/post/5c3d8956e51d4511dc72c200#heading-25" target="_blank" rel="noopener">参考1</a></li>
-<li><a href="https://mp.weixin.qq.com/s/omqXH1SxJyvl7N8y-6Zp3Q" target="_blank" rel="noopener">参考2</a></li>
-</ol>
-
+<br>
+文章来源：
+1. [参考1](https://juejin.im/post/5c3d8956e51d4511dc72c200#heading-25)
+2. [参考2](https://mp.weixin.qq.com/s/omqXH1SxJyvl7N8y-6Zp3Q)
         
         <div id="comment-container">
         </div>
@@ -288,7 +295,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

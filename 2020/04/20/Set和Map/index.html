@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Set"><span class="toc-text">Set</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定义"><span class="toc-text">定义</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WeakSet"><span class="toc-text">WeakSet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定义-1"><span class="toc-text">定义</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定义-2"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#类型转换"><span class="toc-text">类型转换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WeakMap"><span class="toc-text">WeakMap</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定义-3"><span class="toc-text">定义</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Set"><span class="toc-text">Set</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WeakSet"><span class="toc-text">WeakSet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="toc-text">定义</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map"><span class="toc-text">Map</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-2"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-text">类型转换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WeakMap"><span class="toc-text">WeakMap</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89-3"><span class="toc-text">定义</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -162,25 +169,31 @@
 <li>可以遍历，方法很多可以跟各种数据格式转换</li>
 </ol>
 <h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><ol>
-<li><p>map ==&gt; array</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">3</span>]])</span><br><span class="line"><span class="built_in">console</span>.log([...map])	<span class="comment">// [[1, 1], [2, 2], [3, 3]]</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>array ==&gt; map</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">3</span>]])</span><br><span class="line"><span class="built_in">console</span>.log(map)	<span class="comment">// Map &#123;1 =&gt; 1, 2 =&gt; 2, 3 =&gt; 3&#125;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>map ==&gt; object</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mapToObj</span>(<span class="params">map</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj = <span class="built_in">Object</span>.create(<span class="literal">null</span>)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> [key, value] <span class="keyword">of</span> map) &#123;</span><br><span class="line">        obj[key] = value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> obj</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>().set(<span class="string">'name'</span>, <span class="string">'An'</span>).set(<span class="string">'des'</span>, <span class="string">'JS'</span>)</span><br><span class="line">mapToObj(map)  <span class="comment">// &#123;name: "An", des: "JS"&#125;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>object ==&gt; map</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">objToMap</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>()</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> <span class="built_in">Object</span>.keys(obj)) &#123;</span><br><span class="line">        map.set(key, obj[key])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> map</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">objToMap(&#123;<span class="string">'name'</span>: <span class="string">'An'</span>, <span class="string">'des'</span>: <span class="string">'JS'</span>&#125;) <span class="comment">// Map &#123;"name" =&gt; "An", "des" =&gt; "JS"&#125;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>map ==&gt; json</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mapToJson</span>(<span class="params">map</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">JSON</span>.stringify([...map])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> map = <span class="keyword">new</span> <span class="built_in">Map</span>().set(<span class="string">'name'</span>, <span class="string">'An'</span>).set(<span class="string">'des'</span>, <span class="string">'JS'</span>)</span><br><span class="line">mapToJson(map)	<span class="comment">// [["name","An"],["des","JS"]]</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>json ==&gt; map</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jsonToStrMap</span>(<span class="params">jsonStr</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> objToMap(<span class="built_in">JSON</span>.parse(jsonStr));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">jsonToStrMap(<span class="string">'&#123;"name": "An", "des": "JS"&#125;'</span>) <span class="comment">// Map &#123;"name" =&gt; "An", "des" =&gt; "JS"&#125;</span></span><br></pre></td></tr></table></figure>
-</li>
+<li>map &#x3D;&#x3D;&gt; array</li>
 </ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">3</span>]])</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>([...map])	<span class="comment">// [[1, 1], [2, 2], [3, 3]]</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>array &#x3D;&#x3D;&gt; map</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">3</span>]])</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(map)	<span class="comment">// Map &#123;1 =&gt; 1, 2 =&gt; 2, 3 =&gt; 3&#125;</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>map &#x3D;&#x3D;&gt; object</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">mapToObj</span>(<span class="params">map</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> obj = <span class="title class_">Object</span>.<span class="title function_">create</span>(<span class="literal">null</span>)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> [key, value] <span class="keyword">of</span> map) &#123;</span><br><span class="line">        obj[key] = value</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> obj</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>().<span class="title function_">set</span>(<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;An&#x27;</span>).<span class="title function_">set</span>(<span class="string">&#x27;des&#x27;</span>, <span class="string">&#x27;JS&#x27;</span>)</span><br><span class="line"><span class="title function_">mapToObj</span>(map)  <span class="comment">// &#123;name: &quot;An&quot;, des: &quot;JS&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>object &#x3D;&#x3D;&gt; map</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">objToMap</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>()</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">of</span> <span class="title class_">Object</span>.<span class="title function_">keys</span>(obj)) &#123;</span><br><span class="line">        map.<span class="title function_">set</span>(key, obj[key])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> map</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">objToMap</span>(&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;An&#x27;</span>, <span class="string">&#x27;des&#x27;</span>: <span class="string">&#x27;JS&#x27;</span>&#125;) <span class="comment">// Map &#123;&quot;name&quot; =&gt; &quot;An&quot;, &quot;des&quot; =&gt; &quot;JS&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>map &#x3D;&#x3D;&gt; json</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">mapToJson</span>(<span class="params">map</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>([...map])</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>().<span class="title function_">set</span>(<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;An&#x27;</span>).<span class="title function_">set</span>(<span class="string">&#x27;des&#x27;</span>, <span class="string">&#x27;JS&#x27;</span>)</span><br><span class="line"><span class="title function_">mapToJson</span>(map)	<span class="comment">// [[&quot;name&quot;,&quot;An&quot;],[&quot;des&quot;,&quot;JS&quot;]]</span></span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>json &#x3D;&#x3D;&gt; map</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">jsonToStrMap</span>(<span class="params">jsonStr</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">objToMap</span>(<span class="title class_">JSON</span>.<span class="title function_">parse</span>(jsonStr));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">jsonToStrMap</span>(<span class="string">&#x27;&#123;&quot;name&quot;: &quot;An&quot;, &quot;des&quot;: &quot;JS&quot;&#125;&#x27;</span>) <span class="comment">// Map &#123;&quot;name&quot; =&gt; &quot;An&quot;, &quot;des&quot; =&gt; &quot;JS&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="WeakMap"><a href="#WeakMap" class="headerlink" title="WeakMap"></a>WeakMap</h3><h4 id="定义-3"><a href="#定义-3" class="headerlink" title="定义"></a>定义</h4><ol>
 <li>WeakMap 对象是一组键值对的集合，其中的键是弱引用对象，而值可以是任意。</li>
 <li>不能遍历</li>
@@ -263,7 +276,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

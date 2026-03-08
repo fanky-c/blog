@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#js数据类型"><span class="toc-text">js数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#基本类型"><span class="toc-text">基本类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#引用类型"><span class="toc-text">引用类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#区别"><span class="toc-text">区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#拷贝"><span class="toc-text">拷贝</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#浅拷贝"><span class="toc-text">浅拷贝</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#深拷贝"><span class="toc-text">深拷贝</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#js%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">js数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="toc-text">基本类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="toc-text">引用类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-text">区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%B7%E8%B4%9D"><span class="toc-text">拷贝</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-text">浅拷贝</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%B1%E6%8B%B7%E8%B4%9D"><span class="toc-text">深拷贝</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -144,7 +151,7 @@
     <div class="post-content ">
         <h3 id="js数据类型"><a href="#js数据类型" class="headerlink" title="js数据类型"></a>js数据类型</h3><h4 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h4><ol>
 <li>Null、String、Bool、Number、Symbol、Undefined<ol>
-<li>Symbol: 如果有一种机制，保证每个属性的名字都是独一无二的就好了，这样就从根本上防止属性名的冲突。这就是 ES6 引入Symbol的原因。<a href="http://es6.ruanyifeng.com/#docs/symbol" target="_blank" rel="noopener">参考</a></li>
+<li>Symbol: 如果有一种机制，保证每个属性的名字都是独一无二的就好了，这样就从根本上防止属性名的冲突。这就是 ES6 引入Symbol的原因。<a href="http://es6.ruanyifeng.com/#docs/symbol">参考</a></li>
 </ol>
 </li>
 </ol>
@@ -160,24 +167,23 @@
 </ol>
 <h3 id="拷贝"><a href="#拷贝" class="headerlink" title="拷贝"></a>拷贝</h3><h4 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h4><ol>
 <li>Object.assign();</li>
-<li><p>自己实现方法:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function shallowClone(source = &#123;&#125;)&#123;</span><br><span class="line"> var target = &#123;&#125;;</span><br><span class="line"> for ( let i in source) &#123;</span><br><span class="line">   target[i] = source[i];</span><br><span class="line"> &#125;</span><br><span class="line"> return target;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>缺点就对象虽然被复制但是还是会指向相同内存，修改任何一方都影响另一方。</p>
-</li>
+<li>自己实现方法:</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function shallowClone(source = &#123;&#125;)&#123;</span><br><span class="line"> var target = &#123;&#125;;</span><br><span class="line"> for ( let i in source) &#123;</span><br><span class="line">   target[i] = source[i];</span><br><span class="line"> &#125;</span><br><span class="line"> return target;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>缺点就对象虽然被复制但是还是会指向相同内存，修改任何一方都影响另一方。</li>
 </ol>
 <h4 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h4><ol>
-<li><p>JSON.parse方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const oldObj = &#123;</span><br><span class="line">  a: 1,</span><br><span class="line">  b: [ &apos;e&apos;, &apos;f&apos;, &apos;g&apos; ],</span><br><span class="line">  c: &#123; h: &#123; i: 2 &#125; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const newObj = JSON.parse(JSON.stringify(oldObj));</span><br></pre></td></tr></table></figure>
-<ol>
-<li>缺点：无法拷贝Function、RegExp；循环引用错误； </li>
+<li>JSON.parse方法</li>
 </ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const oldObj = &#123;</span><br><span class="line">  a: 1,</span><br><span class="line">  b: [ &#x27;e&#x27;, &#x27;f&#x27;, &#x27;g&#x27; ],</span><br><span class="line">  c: &#123; h: &#123; i: 2 &#125; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const newObj = JSON.parse(JSON.stringify(oldObj));</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>缺点：无法拷贝Function、RegExp；循环引用错误； </p>
+</li>
+<li><p>自己实现方法</p>
 </li>
 </ol>
-<ol>
-<li>自己实现方法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">function checkType(obj)&#123;</span><br><span class="line">    retrun Object.prototype.toString.call(obj).slice(8, -1);  //[object,String]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function deepClone(target) &#123;</span><br><span class="line">  let result, targetType = checkedType(target)</span><br><span class="line"></span><br><span class="line">  if (targetType === &apos;object&apos;) &#123;</span><br><span class="line">    result = &#123;&#125;</span><br><span class="line">  &#125; else if (targetType === &apos;Array&apos;) &#123;</span><br><span class="line">    result = []</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    return target</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  for (let i in target) &#123;</span><br><span class="line">    let value = target[i]</span><br><span class="line">    if (checkedType(value) ===&apos;Object&apos; || checkedType(value) ===&apos;Array&apos;) &#123;</span><br><span class="line">      result[i] = deepClone(value)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      result[i] = value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">function checkType(obj)&#123;</span><br><span class="line">    retrun Object.prototype.toString.call(obj).slice(8, -1);  //[object,String]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function deepClone(target) &#123;</span><br><span class="line">  let result, targetType = checkedType(target)</span><br><span class="line"></span><br><span class="line">  if (targetType === &#x27;object&#x27;) &#123;</span><br><span class="line">    result = &#123;&#125;</span><br><span class="line">  &#125; else if (targetType === &#x27;Array&#x27;) &#123;</span><br><span class="line">    result = []</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    return target</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  for (let i in target) &#123;</span><br><span class="line">    let value = target[i]</span><br><span class="line">    if (checkedType(value) ===&#x27;Object&#x27; || checkedType(value) ===&#x27;Array&#x27;) &#123;</span><br><span class="line">      result[i] = deepClone(value)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      result[i] = value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
         
         <div id="comment-container">
         </div>
@@ -255,7 +261,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>

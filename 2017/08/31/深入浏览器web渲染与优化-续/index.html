@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
-    <!--  禁止百度引擎抓取 -->
+    
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    
+    
     <meta name="Baiduspider" content="noarchive">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="js、nodejs、css、nginx、vue、react">
-    <meta name="keyword" content="网易">
+    <meta name="keyword"  content="网易">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
     <title>
@@ -18,13 +21,17 @@
     </title>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/aircloud.css">
-    <link rel="stylesheet" href="/css/gitment.css">
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
     <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
     <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
     <!-- ga & ba script hoook -->
     <script></script>
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 <body>
 
@@ -91,7 +98,7 @@
     </div>
     
         <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#其他方式优化"><span class="toc-text">其他方式优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#后台提速"><span class="toc-text">后台提速</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#降低网络时延"><span class="toc-text">降低网络时延</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#内容防劫持"><span class="toc-text">内容防劫持</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#QUIC和http2"><span class="toc-text">QUIC和http2</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%96%B9%E5%BC%8F%E4%BC%98%E5%8C%96"><span class="toc-text">其他方式优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%90%8E%E5%8F%B0%E6%8F%90%E9%80%9F"><span class="toc-text">后台提速</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%99%8D%E4%BD%8E%E7%BD%91%E7%BB%9C%E6%97%B6%E5%BB%B6"><span class="toc-text">降低网络时延</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%86%85%E5%AE%B9%E9%98%B2%E5%8A%AB%E6%8C%81"><span class="toc-text">内容防劫持</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#QUIC%E5%92%8Chttp2"><span class="toc-text">QUIC和http2</span></a></li></ol></li></ol>
 </div>
     
 </div>
@@ -144,13 +151,13 @@
 </blockquote>
 <p>上一篇文章我们主要是从浏览器内核的线程角度来分析相关工作的，对整体流程没有宏观清晰的分析，这次我们从宏观到微观，从整体到局部，来进行分析和探究可以优化的地方。</p>
 <p>首先，一个网页的加载，需要什么工作呢？</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender2/P1.png" alt></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/P1.png"></p>
 <p>这个工作可以分为三部分：云(云端)、管(传输链路)、端(客户端)，从云经过管传到端，然后经过加载解析排版渲染，从而完成网页从请求到呈现的工作(当然，我们这里没有涉及协议的分析，实际上根据协议不同，这个传输可能是多次传输)。</p>
 <p>数据到端之后，又经过以下过程，才最终显示出来：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender2/P2.png" alt></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/P2.png"></p>
 <p>在这个过程中，我们怎么衡量性能呢？</p>
 <p>固然，我们有诸多浏览器提供的API，这些API能让我们获取到较多信息并且记录上报：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender2/P3.png" alt></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/P3.png"></p>
 <p>但是这些具体数值表达的含义有限，并且他们实际上也不等于用户体验。</p>
 <p>所以，找到一个科学并且可以检测的标准，并且这个标准可以和用户体验有正相关关系，这个是至关重要的。</p>
 <p>目前这个标准是<strong>首屏时间</strong>(就之前自己的了解，具体的还区分首屏展示时间和首屏可交互时间，但是这里讲师不做区分，就下文提供的测算方法而言，显然这里指的是首屏展示时间，<em>另外，展示后到用户的第一次操作都会有一个至少1s的延时，毕竟用户手指按下的动作是会比较慢的，这个时间js的交互都能完成了，所以首屏展示时间更加重要–from dorsywang</em>)</p>
@@ -178,9 +185,10 @@
 <p>采用首屏探测机制，优先解析首屏内容。</p>
 <p>另外，这里可以前端配合去做首屏优化：</p>
 <p>在首屏的位置插入首屏标签，内核解析到标签后立即终止解析并且排版上屏</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=‘x5-pagetype’ content=‘optpage&apos;&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=‘x5-pagetype’ content=‘optpage&#x27;&gt;</span><br></pre></td></tr></table></figure>
 <p>然后在首屏分界的地方：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;first-screen/&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;first-screen/&gt;</span><br></pre></td></tr></table></figure>
+
 <p>有了这，可以专门去优化首屏标签之前的内容(这个标签前尽量展现耗时少和不需要阻塞解析的资源)。</p>
 <p>另外，X5内核也提供了主资源预拉取的接口，并且考虑到预拉取的cookie问题，还提供了preconnect预链接。<br><em>TIP:主资源中关联的子资源预拉取不用主动调用</em></p>
 <ul>
@@ -201,7 +209,7 @@
 <li>HTTP1.1启用包头节省</li>
 <li>服务器缓存</li>
 <li>文本资源压缩传输GZIP(6)</li>
-<li>图片尺寸压缩、图片质量压缩、支持webp和sharpp/hevc格式。</li>
+<li>图片尺寸压缩、图片质量压缩、支持webp和sharpp&#x2F;hevc格式。</li>
 </ul>
 <h5 id="降低网络时延"><a href="#降低网络时延" class="headerlink" title="降低网络时延"></a>降低网络时延</h5><ul>
 <li>就快接入和就近接入</li>
@@ -213,15 +221,15 @@
 <ul>
 <li>延迟少</li>
 <li>前向纠错</li>
-<li>没有<strong>线头阻塞[注1]</strong>的多路复用</li>
+<li>没有**线头阻塞[注1]**的多路复用</li>
 <li>通信通道的定义基于ID而不是IP+端口，使得切换网络后继续转发链接成为可能</li>
 </ul>
 <p>——————</p>
 <p>注1：线头阻塞：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender2/P4.png" alt></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/P4.png"></p>
 <p>——————</p>
 <p>附1: 带宽和延迟对网页加载的影响：</p>
-<p><img src="https://www.10000h.top/images/data_img/webRender2/X1.png" alt></p>
+<p><img src="https://www.10000h.top/images/data_img/webRender2/X1.png"></p>
 
         
         <div id="comment-container">
@@ -300,7 +308,9 @@
     window.isPost = true
 </script>
 <script src="/js/jquery.min.js"></script>
+
 <script src="/js/index.js"></script>
+
 <!-- <script async src="//cdn.jsdelivr.net/gh/sukkaw/busuanzi@2.3/bsz.pure.mini.js"></script> -->
 
 </html>
