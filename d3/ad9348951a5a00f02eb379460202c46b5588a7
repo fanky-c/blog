@@ -1,0 +1,18 @@
+source/_posts/前端鉴权方式.md
+  h_4c794560c7551e 76,79,122-133
+  h_4c794560c7551e 121
+package.json
+  h_4c794560c7551e 11,31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "d3ad9348951a5a00f02eb379460202c46b5588a7",
+  "prompts": {},
+  "logical_commit_id": "d3ad9348951a5a00f02eb379460202c46b5588a7",
+  "humans": {
+    "h_4c794560c7551e": {
+      "author": "zhaochao <zhaochao@bigo.sg>"
+    }
+  }
+}
