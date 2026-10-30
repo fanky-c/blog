@@ -635,6 +635,10 @@ body {
   text-indent: 2em;
   letter-spacing: 1px;
 }
+.post-content img {
+  max-width: 100%;
+  height: auto;
+}
 .post-content p img {
   width: 80%;
 }
