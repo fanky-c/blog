@@ -1,0 +1,24 @@
+package.json
+  s_c77c5ef506a98c::t_71b24a28b84c85 11
+package-lock.json
+  s_c77c5ef506a98c::t_7c6bbcb2f53b8f 173,187,208,229,240,263,274,291,317,338,389,397,408,425,436,450,498,539,547,645,665,730,735,756,791,824,971,1321,1330,1338,1353,1364,1698,1778,1799,1835,1850,1953,2057,2152,2157,2215,2226,2234,2266,2303,2318,2323,2343,2391,2402,2448,2527,2544,2558,2668,2691,2699,2704,2718,2759,2809,2877,2900,2938,2976,2984,2995,3003,3086,3139
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "e66884529aca6d88b77668ebec02b0398af7a6f7",
+  "prompts": {},
+  "logical_commit_id": "e66884529aca6d88b77668ebec02b0398af7a6f7",
+  "sessions": {
+    "s_c77c5ef506a98c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18b05-3c8c-77e1-9229-62bf83481725",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "zhaochao <zhaochao@bigo.sg>",
+      "total_additions": 1,
+      "total_deletions": 1
+    }
+  }
+}
