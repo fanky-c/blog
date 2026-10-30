@@ -1,0 +1,17 @@
+2021/08/22/前端鉴权方式/index.html
+  h_4c794560c7551e 101,217,249-253
+search.json
+  h_4c794560c7551e 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "5ce9f87d163c4b609c1255a26e40f940212ab2f9",
+  "prompts": {},
+  "logical_commit_id": "5ce9f87d163c4b609c1255a26e40f940212ab2f9",
+  "humans": {
+    "h_4c794560c7551e": {
+      "author": "zhaochao <zhaochao@bigo.sg>"
+    }
+  }
+}
