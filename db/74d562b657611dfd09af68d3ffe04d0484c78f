@@ -1,0 +1,21 @@
+2018/12/05/macOs开发笔记/index.html
+  h_4c794560c7551e 142,145,148
+css/aircloud.css
+  h_4c794560c7551e 638-641
+page/13/index.html
+  h_4c794560c7551e 281,284,287
+search.json
+  h_4c794560c7551e 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "db74d562b657611dfd09af68d3ffe04d0484c78f",
+  "prompts": {},
+  "logical_commit_id": "db74d562b657611dfd09af68d3ffe04d0484c78f",
+  "humans": {
+    "h_4c794560c7551e": {
+      "author": "zhaochao <zhaochao@bigo.sg>"
+    }
+  }
+}
